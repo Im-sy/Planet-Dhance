@@ -35,7 +35,7 @@ const VideoPlayer = ({title, vodPlaylistId}: VideoPlayerProps) => {
                 url={playList[playIndex].url}
                 config={{
                     youtube: {
-                        playerVars: {fs: 0, showinfo: 0}
+                        playerVars: {fs: 0, sshowinfo: 0}
                     }
                 }}
                 playing
@@ -44,8 +44,8 @@ const VideoPlayer = ({title, vodPlaylistId}: VideoPlayerProps) => {
                 progressInterval={1000}
                 pip={true}
                 onEnded={() => {handleNextVideo(playList, playIndex)}}
-                width={'329px'}
-                height={'584px'}
+                width={'100vw'}
+                height={'100vh'}
             />
         </>
     )
