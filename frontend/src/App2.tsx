@@ -7,28 +7,39 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 import myVideo from './videos/IMG_0960.mp4';
+import './App.css';
 
+const progressStyle: CSSProperties = {
+  position: 'absolute',
+  top: '10px',
+  width: '360px',
+  height: '10px',
+  backgroundColor: 'gray',
+};
+
+const videoZone: CSSProperties = {
+  position: 'relative',
+};
 interface playProps {
-	url: string,
-	playing: boolean,
-	muted: boolean,
-	played: number,
-	loaded: number,
+  url: string;
+  playing: boolean;
+  muted: boolean;
+  played: number;
+  loaded: number;
 }
 
 export default function App2() {
+  const [playState, setPlayState] = useState<playProps>({
+    url: '',
+    playing: true,
+    muted: true,
+    played: 0,
+    loaded: 0,
+  });
 
-	const [playState, setPlayState] = useState<playProps>({
-		url: '',
-		playing: true,
-		muted: true,
-		played: 0,
-		loaded: 0
-	})
+  const { url, playing, muted, played, loaded } = playState;
 
-	const {url, playing, muted, played, loaded} = playState;
-
-	const handlePlayPause = () => {
+  const handlePlayPause = () => {
     setPlayState({ ...playState, playing: !playing });
   };
 
@@ -37,9 +48,15 @@ export default function App2() {
     setPlayState({ ...playState, muted: !muted });
   };
 
-	const handlePlay = () => {
-    console.log("onPlay");
-    setPlayState({ ...playState, playing: true });
+  const handlePlay = () => {
+    console.log('onPlay');
+    const inState = {
+      ...playState,
+    };
+    inState.playing = !inState.playing;
+    console.log(inState);
+
+    setPlayState(inState);
   };
 
 	const handlePause = () => {
@@ -47,7 +64,7 @@ export default function App2() {
 		setPlayState({ ...playState, playing: false });
   };
 
-	const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlayState({ ...playState, played: parseFloat(e.target.value) });
   };
 
@@ -113,5 +130,5 @@ export default function App2() {
 				<progress max={1} value={played} />
 			</div>
     </div>
-  )
+  );
 }
