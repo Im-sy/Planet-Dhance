@@ -1,5 +1,10 @@
-import React, { CSSProperties, SetStateAction, useState } from 'react';
-import ReactPlayer, { ReactPlayerProps } from 'react-player';
+import React, { SetStateAction, useState } from 'react'
+import ReactPlayer, { ReactPlayerProps } from "react-player";
+import { IconButton, Checkbox } from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 import myVideo from './videos/IMG_0960.mp4';
 import './App.css';
@@ -38,15 +43,9 @@ export default function App2() {
     setPlayState({ ...playState, playing: !playing });
   };
 
-  const handleToggleMuted = () => {
-    const inState = {
-      ...playState,
-    };
-    console.log('onMuted');
-
-    inState.muted = !inState.muted;
-    console.log(inState);
-    setPlayState(inState);
+	const handleToggleMuted = () => {
+		console.log("muted", muted)
+    setPlayState({ ...playState, muted: !muted });
   };
 
   const handlePlay = () => {
@@ -60,66 +59,76 @@ export default function App2() {
     setPlayState(inState);
   };
 
-  const handlePause = () => {
-    console.log('onPause');
-    setPlayState({ ...playState, playing: false });
+	const handlePause = () => {
+    console.log("onPause");
+		setPlayState({ ...playState, playing: false });
   };
 
   const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlayState({ ...playState, played: parseFloat(e.target.value) });
   };
 
-  const handleProgress = (state: ReactPlayerProps) => {
-    const inState = {
-      ...playState,
-      ...state,
-    };
-    console.log('onProgress', inState);
-    setPlayState(inState as SetStateAction<playProps>);
+	const handleProgress = (state: ReactPlayerProps) => {
+		const inState = {
+			...playState, ...state
+		}
+    console.log("onProgress", inState);
+		setPlayState(inState as SetStateAction<playProps>);
   };
 
   return (
     <div>
-      <div style={videoZone}>
-        <ReactPlayer
-          className="react-player"
-          width="360px"
-          height="800px"
-          url={myVideo}
-          playing
-          loop
-          muted={muted}
-          onPlay={handlePlay}
-          onPause={handlePause}
-          onProgress={handleProgress}
-        >
-        </ReactPlayer>
-				<progress
-            style={progressStyle}
-            className="progressbar"
-            max={1}
-            value={played}
-          />
-      </div>
-      <div>
-        <label htmlFor="muted">Muted</label>
-        <input
-          id="muted"
-          type="checkbox"
-          checked={muted}
-          onChange={handleToggleMuted}
-        />
-      </div>
-      <div>
-        <input
-          type="range"
-          min={0}
-          max={0.999999}
-          step="any"
-          value={played}
-          onChange={handleSeekChange}
-        />
-      </div>
+      <h1>ReactPlayer Demo</h1>
+			<div>
+				<ReactPlayer className="react-player"
+					width="98vw" height="98vh"
+					url={myVideo}
+					playing={playing}
+					loop
+					muted={muted}
+					onPlay={handlePlay}
+					onPause={handlePause}
+					onProgress={handleProgress} />
+			</div>
+			<div>
+				<button onClick={handlePlayPause}>
+					{playing ? "pause" : "play"}
+				</button>
+				<IconButton onClick={handlePlayPause}
+					aria-label={playing ? "pause" : "play"}>
+					{playing ? <PauseIcon /> : <PlayArrowIcon />}
+				</IconButton>
+			</div>
+			<div>
+				<label htmlFor="muted">Muted</label>
+				<input
+					id="muted"
+					type="checkbox"
+					checked={muted}
+					onChange={handleToggleMuted}
+				/>
+				<Checkbox checked={muted}
+					onChange={handleToggleMuted}
+					icon={<VolumeUpIcon />}
+					checkedIcon={<VolumeOffIcon />} />
+				<IconButton onClick={handleToggleMuted}
+					aria-label={muted ? "off" : "on"}>
+					{muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+				</IconButton>
+			</div>
+			<div>
+				<input
+					type="range"
+					min={0}
+					max={0.999999}
+					step="any"
+					value={played}
+					onChange={handleSeekChange}
+				/>
+			</div>
+			<div>
+				<progress max={1} value={played} />
+			</div>
     </div>
   );
 }
