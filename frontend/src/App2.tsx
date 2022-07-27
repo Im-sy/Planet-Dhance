@@ -1,5 +1,10 @@
 import React, { SetStateAction, useState } from 'react'
 import ReactPlayer, { ReactPlayerProps } from "react-player";
+import { IconButton, Checkbox } from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 import myVideo from './videos/IMG_0960.mp4';
 
@@ -28,6 +33,7 @@ export default function App2() {
   };
 
 	const handleToggleMuted = () => {
+		console.log("muted", muted)
     setPlayState({ ...playState, muted: !muted });
   };
 
@@ -38,7 +44,7 @@ export default function App2() {
 
 	const handlePause = () => {
     console.log("onPause");
-    setPlayState({ ...playState, playing: false });
+		setPlayState({ ...playState, playing: false });
   };
 
 	const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,10 +52,12 @@ export default function App2() {
   };
 
 	const handleProgress = (state: ReactPlayerProps) => {
-    console.log("onProgress", state);
-    setPlayState(state as SetStateAction<playProps>);
+		const inState = {
+			...playState, ...state
+		}
+    console.log("onProgress", inState);
+		setPlayState(inState as SetStateAction<playProps>);
   };
-
 
   return (
     <div>
@@ -58,12 +66,21 @@ export default function App2() {
 				<ReactPlayer className="react-player"
 					width="98vw" height="98vh"
 					url={myVideo}
-					playing
+					playing={playing}
 					loop
 					muted={muted}
 					onPlay={handlePlay}
 					onPause={handlePause}
 					onProgress={handleProgress} />
+			</div>
+			<div>
+				<button onClick={handlePlayPause}>
+					{playing ? "pause" : "play"}
+				</button>
+				<IconButton onClick={handlePlayPause}
+					aria-label={playing ? "pause" : "play"}>
+					{playing ? <PauseIcon /> : <PlayArrowIcon />}
+				</IconButton>
 			</div>
 			<div>
 				<label htmlFor="muted">Muted</label>
@@ -73,16 +90,24 @@ export default function App2() {
 					checked={muted}
 					onChange={handleToggleMuted}
 				/>
+				<Checkbox checked={muted}
+					onChange={handleToggleMuted}
+					icon={<VolumeUpIcon />}
+					checkedIcon={<VolumeOffIcon />} />
+				<IconButton onClick={handleToggleMuted}
+					aria-label={muted ? "off" : "on"}>
+					{muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+				</IconButton>
 			</div>
 			<div>
-			<input
-				type="range"
-				min={0}
-				max={0.999999}
-				step="any"
-				value={played}
-				onChange={handleSeekChange}
-			/>
+				<input
+					type="range"
+					min={0}
+					max={0.999999}
+					step="any"
+					value={played}
+					onChange={handleSeekChange}
+				/>
 			</div>
 			<div>
 				<progress max={1} value={played} />
