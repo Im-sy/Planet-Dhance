@@ -1,5 +1,5 @@
 
-import React, { CSSProperties, SetStateAction, useState } from 'react';
+import React, { CSSProperties, SetStateAction, useState, useEffect, useRef } from 'react';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import { IconButton, Checkbox } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -86,7 +86,25 @@ const saveStyle: CSSProperties = {
   border : '0'
 };
 
+const retakeStyle: CSSProperties = {
+  position: 'absolute',
+  top: '600px',
+  left: '400px',
+  width: '90px',
+  height: '40px',
+  backgroundColor: 'rgba( 255, 255, 255, 1 )',
+  border : '0'
+};
 
+const timerStyle: CSSProperties = {
+  position: 'absolute',
+  top: '400px',
+  left: '200px',
+  width: '90px',
+  height: '40px',
+  // backgroundColor: 'rgba( 255, 255, 255, 1 )',
+  // border : '0'
+};
 
 //---------------------------------------------------
 const progressStyle: CSSProperties = {
@@ -118,6 +136,139 @@ export default function App3() {
   };
 
   //-----------------------------------------------------------
+  // timer 부분
+      // We need ref in this, because we are dealing
+    // with JS setInterval to keep track of it and
+    // stop it when needed
+    const Ref = useRef(null);
+  
+    // The state for our timer
+    const [timer, setTimer] = useState(' ');
+
+  
+    const getTimeRemaining = (e:any) => {
+        const total = Date.parse(e) - Date.parse(new Date().toString());
+        const seconds = Math.floor((total / 1000) % 60);
+        const minutes = Math.floor((total / 1000 / 60) % 60);
+        const hours = Math.floor((total / 1000 / 60 / 60) % 24);
+        return {
+            total, hours, minutes, seconds
+        };
+    }
+  
+  
+    const startTimer = (e:any) => {
+        let { total, hours, minutes, seconds } 
+                    = getTimeRemaining(e);
+        // if (total >= 0) {
+        if (seconds >= 0) {
+  
+            // update the timer
+            // check if less than 10 then we need to 
+            // add '0' at the beginning of the variable
+            // setTimer(
+           console.log(seconds)
+            setTimer(
+                (hours > -1 ? ' ' : ' ') + 
+                (minutes > -1 ? ' ': ' ' )+ 
+                (seconds > -1 ? seconds : ' ')
+            )
+            // seconds===-1 로 안하면, 계속 실행됨
+        }else if(seconds===-1){
+          console.log(total, seconds)
+          
+          // 0초가 되면 타이머 사라짐
+          setTimer(
+            (hours > -1 ? ' ' : ' ') + 
+            (minutes > -1 ? ' ': ' ' )+ 
+            (seconds > -1 ? ' ' : ' ') )
+
+
+            if (!(recordWebcam.status === CAMERA_STATUS.CLOSED ||
+              recordWebcam.status === CAMERA_STATUS.RECORDING ||
+              recordWebcam.status === CAMERA_STATUS.PREVIEW))
+            {console.log('time to start recording')
+            recordWebcam.start()}
+
+
+          
+          
+        }
+    }
+  
+  
+    const clearTimer = (e:any) => {
+  
+        // If you adjust it you should also need to
+        // adjust the Endtime formula we are about
+        // to code next    
+        // setTimer('00:00:03');
+        setTimer('3');
+  
+        // If you try to remove this line the 
+        // updating of timer Variable will be
+        // after 1000ms or 1sec
+        if (Ref.current) clearInterval(Ref.current);
+        const id = setInterval(() => {
+          // console.log("남은시간",timer)
+          // console.log(Ref.current)
+                startTimer(e);
+              
+       
+        }, 1000)
+        Ref.current = id;
+
+
+    }
+  
+    const getDeadTime = () => {
+        let deadline = new Date();
+  
+        // This is where you need to adjust if 
+        // you entend to add more time
+        deadline.setSeconds(deadline.getSeconds() + 3);
+        return deadline;
+    }
+  
+    // We can use useEffect so that when the component
+    // mount the timer will start as soon as possible
+  
+    // We put empty array to act as componentDid
+    // mount only
+    // useEffect(() => {
+    //     clearTimer(getDeadTime());
+    // }, []);
+  
+    // Another way to call the clearTimer() to start
+    // the countdown is via action event from the
+    // button first we create function to be called
+    // by the button
+    const onClickReset = () => {
+        clearTimer(getDeadTime());
+    }
+
+
+
+
+
+  // // timer 2
+  // function startCountdown(seconds: number) {
+  //   let counter = seconds;
+      
+  //   const interval = setInterval(() => {
+  //     console.log(counter);
+  //     counter--;
+        
+  //     if (counter < 0 ) {
+  //       clearInterval(interval);
+  //       console.log('Ding!');
+  //     }
+  //   }, 1000);
+  // }
+
+  //--------------------------------------------
+
+
 
 
   const [playState, setPlayState] = useState<playProps>({
@@ -178,6 +329,14 @@ export default function App3() {
     setPlayState(inState as SetStateAction<playProps>);
   };
 
+
+  const challengeEnd = () => {
+    console.log('안무티칭영상이 끝났습니다.')
+    recordWebcam.stop();
+    recordWebcam.download();
+    document.getElementById('webcam').style.visibility = "hidden";
+  }
+
   return (
     <div >
 
@@ -191,7 +350,7 @@ export default function App3() {
       <progress max={1} value={played} />
       <div style={videoZone}>
 
-        <video
+        <video id='webcam'
             ref={recordWebcam.webcamRef}
             style={webcamStyle}
             autoPlay
@@ -205,11 +364,11 @@ export default function App3() {
           height="800px"
           url={myVideo}
           playing={playing}
-          loop
           muted={muted}
           onPlay={handlePlay}
           onPause={handlePause}
           onProgress={handleProgress}
+          onEnded={challengeEnd}
         />
         <progress
           style={progressStyle}
@@ -219,7 +378,19 @@ export default function App3() {
         />
 
         {/* 영상녹화시작 */}
-        <button  onClick={recordWebcam.start} 
+        {/* <button  onClick={recordWebcam.start} 
+                  style={challengeStartStyle}
+                  disabled={
+                    recordWebcam.status === CAMERA_STATUS.CLOSED ||
+                    recordWebcam.status === CAMERA_STATUS.RECORDING ||
+                    recordWebcam.status === CAMERA_STATUS.PREVIEW
+                  }>
+            챌린지 시작
+        </button> */}
+
+
+        {/* 타이머 영상녹화시작 */}
+        <button  onClick={onClickReset} 
                   style={challengeStartStyle}
                   disabled={
                     recordWebcam.status === CAMERA_STATUS.CLOSED ||
@@ -253,6 +424,19 @@ export default function App3() {
           >
             Download
           </button>
+
+        {/* 다시찍기(녹화시작은 안함) */}
+        <button
+          disabled={recordWebcam.status !== CAMERA_STATUS.PREVIEW}
+          onClick={recordWebcam.retake}
+          style={retakeStyle}
+        >
+          Retake
+        </button>  
+
+        {/* timer & reset */}
+          <h2 style={timerStyle}>{timer}</h2>
+          {/* <button onClick={onClickReset}>Reset</button> */}
 
       </div>
 
