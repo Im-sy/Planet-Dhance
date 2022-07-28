@@ -4,12 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import App2 from './App2';
+import App3 from './App3';
+import Cam from './cam';
+import CamA from './cam_autoopen';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
 
-    <App2 />
+    <App3 />
+    // <Cam  />
+    // <CamA  />
 
 );
 
