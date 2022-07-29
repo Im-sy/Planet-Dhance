@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 public class Follow {
-    @Column(columnDefinition = "INT UNSIGNED", name ="music_id")
+    @Column(columnDefinition = "INT UNSIGNED", name ="follow_id")
     @Id
     @GeneratedValue
     private int id;

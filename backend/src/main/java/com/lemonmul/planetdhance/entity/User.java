@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Getter
 public class User {
-    @Column(columnDefinition = "INT UNSIGNED", name ="music_id")
+    @Column(columnDefinition = "INT UNSIGNED", name ="user_id")
     @Id
     @GeneratedValue
     private int id;
@@ -22,9 +22,9 @@ public class User {
 
     private String introduce;
 
-    private String img_url;
+    private String imgUrl;
 
-    private LocalDateTime reg_date;
+    private LocalDateTime regDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nation_id")

@@ -17,13 +17,13 @@ public class Music {
 
     private String artist;
 
-    private String img_url;
+    private String imgUrl;
 
-    private String model_url;
+    private String modelUrl;
 
-    private String guide_url;
+    private String guideUrl;
 
-    private String mv_url;
+    private String mvUrl;
 
     @OneToMany(mappedBy = "music")
     private List<Clear> clears;

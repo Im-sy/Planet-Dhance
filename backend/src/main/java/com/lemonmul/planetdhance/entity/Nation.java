@@ -10,7 +10,7 @@ import javax.persistence.Id;
 @Entity
 @Getter
 public class Nation {
-    @Column(columnDefinition = "INT UNSIGNED", name ="music_id")
+    @Column(columnDefinition = "INT UNSIGNED", name ="nation_id")
     @Id
     @GeneratedValue
     private int id;
