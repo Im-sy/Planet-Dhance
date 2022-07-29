@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class VideoTag {
 
     @Id @GeneratedValue
-    @Column(columnDefinition="INT UNSIGEND",name = "video_tag_id")
+    @Column(columnDefinition="INT UNSIGNED",name = "video_tag_id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)

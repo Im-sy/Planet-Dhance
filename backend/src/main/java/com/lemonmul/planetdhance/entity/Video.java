@@ -11,7 +11,7 @@ import java.util.List;
 public class Video {
 
     @Id @GeneratedValue
-    @Column(columnDefinition="INT UNSIGEND",name = "video_id")
+    @Column(columnDefinition="INT UNSIGNED",name = "video_id")
     private int id;
 
     private String videoUrl;
@@ -29,6 +29,13 @@ public class Video {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "music_id")
+    private Music music;
+
     @OneToMany(mappedBy = "video")
     private List<VideoTag> videoTags;
+
+    @OneToMany(mappedBy = "like")
+    private List<Like> likes;
 }

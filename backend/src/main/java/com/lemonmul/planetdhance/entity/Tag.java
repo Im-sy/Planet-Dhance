@@ -10,7 +10,7 @@ import java.util.List;
 public class Tag {
 
     @Id @GeneratedValue
-    @Column(columnDefinition="INT UNSIGEND",name = "tag_id")
+    @Column(columnDefinition="INT UNSIGNED",name = "tag_id")
     private int id;
 
     private String name;

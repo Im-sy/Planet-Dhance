@@ -2,10 +2,8 @@ package com.lemonmul.planetdhance.entity;
 
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,4 +16,7 @@ public class Nation {
     private String flag;
 
     private String name;
+
+    @OneToMany(mappedBy = "user")
+    private List<User> users;
 }

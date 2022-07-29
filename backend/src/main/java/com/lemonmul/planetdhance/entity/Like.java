@@ -5,11 +5,12 @@ import lombok.Getter;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "likes")
 @Getter
 public class Like {
 
     @Id @GeneratedValue
-    @Column(columnDefinition="INT UNSIGEND",name = "like_id")
+    @Column(columnDefinition="INT UNSIGNED",name = "like_id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
