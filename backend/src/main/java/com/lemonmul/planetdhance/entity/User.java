@@ -36,9 +36,9 @@ public class User {
     @OneToMany(mappedBy = "to")
     private List<Follow> tos;
 
-    @OneToMany(mappedBy = "like")
+    @OneToMany(mappedBy = "user")
     private List<Like> likes;
 
-    @OneToMany(mappedBy = "clear")
+    @OneToMany(mappedBy = "user")
     private List<Clear> clears;
 }

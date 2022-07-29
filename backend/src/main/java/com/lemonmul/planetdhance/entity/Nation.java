@@ -17,6 +17,6 @@ public class Nation {
 
     private String name;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "id")
     private List<User> users;
 }

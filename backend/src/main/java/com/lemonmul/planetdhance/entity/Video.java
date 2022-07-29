@@ -36,6 +36,6 @@ public class Video {
     @OneToMany(mappedBy = "video")
     private List<VideoTag> videoTags;
 
-    @OneToMany(mappedBy = "like")
+    @OneToMany(mappedBy = "video")
     private List<Like> likes;
 }
