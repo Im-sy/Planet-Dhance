@@ -1,6 +1,8 @@
 package com.lemonmul.planetdhance.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -8,9 +10,10 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Video {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition="INT UNSIGNED",name = "video_id")
     private int id;
 
@@ -38,4 +41,5 @@ public class Video {
 
     @OneToMany(mappedBy = "video")
     private List<Like> likes;
+
 }
