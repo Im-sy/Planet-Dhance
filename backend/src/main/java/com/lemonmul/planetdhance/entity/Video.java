@@ -26,6 +26,8 @@ public class Video {
 
     private int hit;
 
+    private int likeCnt;
+
     private LocalDateTime regDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

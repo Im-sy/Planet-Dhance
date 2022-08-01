@@ -29,6 +29,8 @@ public class User {
 
     private LocalDateTime regDate;
 
+    private LocalDateTime renewDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nation_id")
     private Nation nation;
@@ -44,4 +46,5 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Clear> clears;
+
 }
