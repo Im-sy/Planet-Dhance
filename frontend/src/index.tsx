@@ -5,11 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import App2 from './App2';
 import App3 from './App3';
+import ModeChange from './modeChange';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-    <App3 />
+    // <App3 />
+    <ModeChange />
 );
 
 // If you want to start measuring performance in your app, pass a function
