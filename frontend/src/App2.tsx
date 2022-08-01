@@ -8,6 +8,7 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 import myVideo from './videos/IMG_0960.mp4';
 import './App.css';
+import Emoji from './Emoji';
 
 const progressStyle: CSSProperties = {
   position: 'absolute',
@@ -72,7 +73,11 @@ export default function App2() {
   };
 
   return (
-    <div >
+    <div className='App2'>
+      {played>=0.3 ? <Emoji emoji='💘'/> : ''}
+      {played>=0.6 ? <Emoji emoji='😍'/> : ''}
+      {played>=0.9 ? <Emoji emoji='🎉'/> : ''}
+      {played===1 ? <Emoji emoji='💯'/> : ''}
       <h1>ReactPlayer Demo</h1>
       <progress max={1} value={played} />
       <div style={videoZone}>
@@ -82,11 +87,12 @@ export default function App2() {
           height="800px"
           url={myVideo}
           playing={playing}
-          loop
+          // loop
           muted={muted}
           onPlay={handlePlay}
           onPause={handlePause}
           onProgress={handleProgress}
+          onEnded={() => {console.log('ended')}}
         />
         <progress
           style={progressStyle}
