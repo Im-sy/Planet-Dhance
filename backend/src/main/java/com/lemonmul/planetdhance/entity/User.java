@@ -1,6 +1,6 @@
 package com.lemonmul.planetdhance.entity;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -8,6 +8,9 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class User {
     @Column(columnDefinition = "INT UNSIGNED", name ="user_id")
     @Id
