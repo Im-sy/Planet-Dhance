@@ -4,12 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import App2 from './App2';
+import ActionAreaCard from './Card';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <App2 />
+  // <App2 />
+  <ActionAreaCard />
 );
 
 // If you want to start measuring performance in your app, pass a function
