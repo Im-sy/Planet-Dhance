@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas" width="300" height="300"></canvas>
+    
+    <script type="importmap">
+        {
+            "imports": {
+            "three": "https://unpkg.com/three@0.141.0/build/three.module.js",
+            "GLTFLoader" : "https://unpkg.com/three@0.141.0/examples/jsm/loaders/GLTFLoader.js"
+            }
+        }
+
+    </script>
+
+
+    <script type="module">
+        import {GLTFLoader} from 'GLTFLoader';
+        import * as THREE from 'three';
+        // 3D Obj 보여줄 때, 카메라, 조명, 배경 설정!
+
+        let scene = new THREE.Scene();
+        // scene.add(정육면체)
+        let renderer = new THREE.WebGLRenderer({
+            canvas : document.querySelector('#canvas'),
+            antialias : true
+            
+        });
+        // renderer.outputEncoding = THREE.sRGBEncoding; // 색감이 원래 이미지 대로나오도록
+        // renderer.outputEncoding = THREE.RGBADepthPacking; // 색감이 원래 이미지 대로나오도록
+        renderer.outputEncoding = THREE.BasicDepthPacking; // 색감이 원래 이미지 대로나오도록
+
+        // 카메라
+        // let camera = new THREE.PerspectiveCamera(30,1);
+        let camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight);
+        camera.position.set(0,0,5);
+
+        // 배경
+        scene.background = new THREE.Color('white');
+
+        // 조명
+        let light = new THREE.DirectionalLight(0xffff00, 10);
+        scene.add(light)
+
+
+
+        // GLTF 파일 가져오는 법
+        let loader = new GLTFLoader();
+        // loader.load('earth2/scene.gltf', function(gltf){ //ok
+        loader.load('earth3/scene.gltf', function(gltf){ // ok
+        // loader.load('earth/scene.gltf', function(gltf){
+        // loader.load('toy_paper_globe/scene.gltf', function(gltf){
+            scene.add(gltf.scene);
+
+            function animate(){
+                requestAnimationFrame(animate)
+                // 여기 적으면 1초에 60번 실행됨
+                gltf.scene.rotation.y += 0.01 // y축으로 회전시켜주세요
+                // gltf.scene.rotation.y += 0.01 // x축으로 회전시켜주세요
+                renderer.render(scene, camera); // 렌더링    
+            }
+            animate()  // 함수 실행
+        }); // function 이용해서 이미지 load 후에 실행할 함수 설정 가능
+
+
+        
+    </script>
+
+
+</body>
+</html>
