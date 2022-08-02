@@ -1,6 +1,7 @@
 import React from 'react'
 import GridView from './GridView'
 import SearchSongInfo from './SearchSongInfo'
+import NavBar from './NavBar'
 
 export default function SearchSong() {
   return (
@@ -10,13 +11,14 @@ export default function SearchSong() {
       </div>
       <div>
         <SearchSongInfo />
-        <SearchSongInfo />
-        <SearchSongInfo />
+        {/* <SearchSongInfo />
+        <SearchSongInfo /> */}
       </div>
       <br />
       <div>
         <GridView />
       </div>
+      <NavBar />
     </div>
   )
 }

@@ -5,7 +5,7 @@ import ActionAreaCard from './Card';
 export default function GridView() {
   const cardrendering = () => {
     const cardList = []
-    for (let i=0; i<30; i++) {
+    for (let i=0; i<18; i++) {
       cardList.push(
         <Grid item sm={4}>
           <ActionAreaCard
@@ -20,7 +20,7 @@ export default function GridView() {
 
   return (
     <div>
-      <Grid container spacing={0} style={{justifyContent: 'center'}}>
+      <Grid container spacing={0.4} style={{justifyContent: 'center'}}>
         {cardrendering()}
       </Grid>
     </div>
