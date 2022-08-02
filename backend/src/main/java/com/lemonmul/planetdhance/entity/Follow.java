@@ -8,9 +8,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Follow {
     @Column(columnDefinition = "INT UNSIGNED", name ="follow_id")
+//    @Column(name ="follow_id")
     @Id
     @GeneratedValue
     private int id;

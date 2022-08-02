@@ -9,11 +9,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Tag {
 
     @Id @GeneratedValue
     @Column(columnDefinition="INT UNSIGNED",name = "tag_id")
+//    @Column(name ="tag_id")
     private int id;
 
     private String name;

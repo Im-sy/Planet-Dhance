@@ -9,9 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Music {
     @Column(columnDefinition = "INT UNSIGNED", name ="music_id")
+//    @Column(name ="music_id")
     @Id
     @GeneratedValue
     private int id;

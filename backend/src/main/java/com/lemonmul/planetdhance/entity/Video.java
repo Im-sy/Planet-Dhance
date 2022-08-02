@@ -10,11 +10,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Video {
 
     @Id @GeneratedValue
     @Column(columnDefinition="INT UNSIGNED",name = "video_id")
+//    @Column(name ="video_id")
     private int id;
 
     private String videoUrl;

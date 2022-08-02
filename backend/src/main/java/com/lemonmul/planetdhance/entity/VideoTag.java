@@ -8,11 +8,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class VideoTag {
 
     @Id @GeneratedValue
     @Column(columnDefinition="INT UNSIGNED",name = "video_tag_id")
+//    @Column(name ="video_tag_id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
