@@ -1,6 +1,6 @@
 package com.lemonmul.planetdhance.entity;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -8,6 +8,9 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class User {
     @Column(columnDefinition = "INT UNSIGNED", name ="user_id")
     @Id
@@ -26,6 +29,8 @@ public class User {
 
     private LocalDateTime regDate;
 
+    private LocalDateTime renewDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nation_id")
     private Nation nation;
@@ -41,4 +46,5 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Clear> clears;
+
 }
