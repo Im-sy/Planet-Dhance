@@ -10,9 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Nation {
     @Column(columnDefinition = "INT UNSIGNED", name ="nation_id")
+//    @Column(name ="nation_id")
     @Id
     @GeneratedValue
     private int id;

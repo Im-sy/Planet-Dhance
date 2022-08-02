@@ -9,11 +9,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Like {
 
     @Id @GeneratedValue
     @Column(columnDefinition="INT UNSIGNED",name = "like_id")
+//    @Column(name ="like_id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)

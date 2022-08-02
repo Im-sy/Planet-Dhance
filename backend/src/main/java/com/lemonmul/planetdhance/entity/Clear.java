@@ -8,9 +8,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Clear {
     @Column(columnDefinition = "INT UNSIGNED", name ="clear_id")
+//    @Column(name ="clear_id")
     @Id
     @GeneratedValue
     private int id;
