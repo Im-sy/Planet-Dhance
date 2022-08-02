@@ -23,4 +23,23 @@ public class Like {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    //==생성 메서드==//
+    public static Like createLike(Video video,User user){
+        Like like=new Like();
+        like.setVideo(video);
+        like.setUser(user);
+        return like;
+    }
+
+    //==연관관계 메서드==//
+    public void setVideo(Video video){
+        this.video=video;
+        video.getLikes().add(this);
+    }
+
+    public void setUser(User user){
+        this.user=user;
+        user.getLikes().add(this);
+    }
 }

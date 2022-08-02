@@ -3,6 +3,7 @@ package com.lemonmul.planetdhance.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,5 +27,5 @@ public class Tag {
     private int hit;
 
     @OneToMany(mappedBy = "tag")
-    private List<VideoTag> videoTags;
+    private List<VideoTag> videoTags=new ArrayList<>();
 }

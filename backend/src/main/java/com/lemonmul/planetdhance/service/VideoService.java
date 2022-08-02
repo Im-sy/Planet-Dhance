@@ -17,9 +17,9 @@ public class VideoService {
     private final VideoRepo videoRepo;
 
     /**
-     * 영상 리스트 (공개 영상만 조회)
+     * 영상 리스트 - 최신
      */
-    public Slice<Video> findVideoList(Pageable pageable){
-        return videoRepo.findByScope(VideoScope.PUBLIC,pageable);
+    public Slice<Video> findPublicNewestVideoList(VideoScope videoScope,Pageable pageable){
+        return videoRepo.findByScopeOrderByRegDateDesc(videoScope,pageable);
     }
 }

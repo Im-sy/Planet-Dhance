@@ -3,6 +3,7 @@ package com.lemonmul.planetdhance.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,5 +22,10 @@ public class Nation {
     private String name;
 
     @OneToMany(mappedBy = "id")
-    private List<User> users;
+    private List<User> users=new ArrayList<>();
+
+    public Nation(String flag, String name) {
+        this.flag = flag;
+        this.name = name;
+    }
 }

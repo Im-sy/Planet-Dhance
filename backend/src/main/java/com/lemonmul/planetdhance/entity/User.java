@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,15 +37,15 @@ public class User {
     private Nation nation;
 
     @OneToMany(mappedBy = "from")
-    private List<Follow> froms;
+    private List<Follow> froms=new ArrayList<>();
 
     @OneToMany(mappedBy = "to")
-    private List<Follow> tos;
+    private List<Follow> tos=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Like> likes;
+    private List<Like> likes=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Clear> clears;
+    private List<Clear> clears=new ArrayList<>();
 
 }

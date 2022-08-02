@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VideoRepo extends JpaRepository<Video,Long> {
 
-    Slice<Video> findByScope(VideoScope scope, Pageable pageable);
+    Slice<Video> findByScopeOrderByRegDateDesc(VideoScope scope, Pageable pageable);
 }

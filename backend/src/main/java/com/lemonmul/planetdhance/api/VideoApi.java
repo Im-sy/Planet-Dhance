@@ -22,44 +22,38 @@ public class VideoApi {
     private final VideoService videoService;
 
     /**
-     * 영상 리스트
+     * 영상 리스트 - 최신
      *
-     * 요청 파라미터 예시: /video/list?sort=hit,desc&page=1&size=3
-     * sort [hit,**like**,regDate]
-     * page는 0부터 시작, 안주면 0
-     * size는 굳이 필요 없을듯? 기본값은 20
-     *
-     * TODO 백에서 알아서 다음 페이지 주는 방법은 없겠지..?
-     * TODO tag나 like 필요하면 fetch join으로 한번에 데려오기
-     * TODO size 기본값 프론트랑 얘기해보기
+     * 요청 파라미터 예시: /video/list/newest
+     * size는 기본값 30
      */
-    @GetMapping("/list")
-    public Slice<VideoDto> videoList(Pageable pageable){
-
-        Slice<Video> videoList = videoService.findVideoList(pageable);
-        Slice<VideoDto> videoDtos = videoList.map(VideoDto::new);
+    @GetMapping("/list/latest")
+    public Slice<VideoDto> newestList(@PageableDefault(sort = "regDate",direction = Sort.Direction.DESC) Pageable pageable){
+        Slice<Video> videoList = videoService.findPublicNewestVideoList(VideoScope.PUBLIC, pageable);
+        Slice<VideoDto> videoDtos=videoList.map(VideoDto::new);
 
         return videoDtos;
     }
 
+
+
+//    @GetMapping("/list")
+//    public Slice<VideoDto> videoList(Pageable pageable){
+//
+//        Slice<Video> videoList = videoService.findVideoList(pageable);
+//        Slice<VideoDto> videoDtos = videoList.map(VideoDto::new);
+//
+//        return videoDtos;
+//    }
+
     @Data
     static class VideoDto{
-        private String videoUrl;
+        private int videoId;
         private String imgUrl;
-        private int hit;
-//        private List<VideoTagDto> videoTags;
-//        private List<LikeDto> likes;
 
         public VideoDto(Video video) {
-            videoUrl=video.getVideoUrl();
+            videoId=video.getId();
             imgUrl=video.getImgUrl();
-            hit= video.getHit();
-//            videoTags=video.getVideoTags().stream()
-//                    .map(VideoTagDto::new)
-//                    .collect(Collectors.toList());
-//            likes=video.getLikes().stream()
-//                    .map(LikeDto::new)
-//                    .collect(Collectors.toList());
         }
     }
 

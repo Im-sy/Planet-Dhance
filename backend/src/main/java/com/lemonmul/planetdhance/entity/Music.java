@@ -3,6 +3,7 @@ package com.lemonmul.planetdhance.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,8 +30,8 @@ public class Music {
     private String mvUrl;
 
     @OneToMany(mappedBy = "music")
-    private List<Clear> clears;
+    private List<Clear> clears=new ArrayList<>();
 
     @OneToMany(mappedBy = "music")
-    private List<Video> videos;
+    private List<Video> videos=new ArrayList<>();
 }

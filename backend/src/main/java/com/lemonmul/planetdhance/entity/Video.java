@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,9 +43,9 @@ public class Video {
     private Music music;
 
     @OneToMany(mappedBy = "video")
-    private List<VideoTag> videoTags;
+    private List<VideoTag> videoTags=new ArrayList<>();
 
     @OneToMany(mappedBy = "video")
-    private List<Like> likes;
+    private List<Like> likes=new ArrayList<>();
 
 }
