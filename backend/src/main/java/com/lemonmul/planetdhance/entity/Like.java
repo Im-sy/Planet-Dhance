@@ -33,12 +33,13 @@ public class Like {
     }
 
     //==연관관계 메서드==//
-    public void setVideo(Video video){
+    private void setVideo(Video video){
         this.video=video;
         video.getLikes().add(this);
+        video.addLikeCnt();
     }
 
-    public void setUser(User user){
+    private void setUser(User user){
         this.user=user;
         user.getLikes().add(this);
     }

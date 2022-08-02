@@ -50,7 +50,42 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Clear> clears=new ArrayList<>();
 
-    public User(String imgUrl){
-        this.imgUrl = imgUrl;
+    @OneToMany(mappedBy = "user")
+    private List<Video> videos=new ArrayList<>();
+
+    //==생성 메서드==//
+    public static User createUser(String nickname,String introduce,String imgUrl,Nation nation){
+        User user=new User();
+        user.nickname=nickname;
+        user.setIntroduce(introduce);
+        user.setImgUrl(imgUrl);
+        user.regDate=LocalDateTime.now();
+        user.renewDate=user.regDate;
+        user.role=Role.USER;
+        user.nation=nation;
+        //Tag 테이블에 nickname 추가
+        Tag.createTag(user.nickname, TagType.NICKNAME,user.imgUrl);
+        return user;
     }
+
+    public void setImgUrl(String imgUrl){
+        if(imgUrl==null){
+            //TODO 기본 이미지 설정
+            imgUrl="default img path";
+        }
+        this.imgUrl=imgUrl;
+    }
+
+    public void setIntroduce(String introduce){
+        //기본 자기소개 설정
+        if(introduce==null){
+            introduce="hello!";
+        }
+        this.introduce=introduce;
+    }
+
+    public void setRenewDate(LocalDateTime renewDate){
+        this.renewDate=renewDate;
+    }
+
 }
