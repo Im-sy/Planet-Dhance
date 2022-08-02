@@ -6,6 +6,8 @@ import PauseIcon from '@mui/icons-material/Pause';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
+import { ProgressBar } from './ProgressBar';
+
 import myVideo from './videos/IMG_0960.mp4';
 import sample1 from './videos/sample1.mp4';
 import sample2 from './videos/sample2.mp4';
@@ -96,11 +98,8 @@ export default function App2() {
           onProgress={handleProgress}
           onEnded={() => {console.log('ended')}}
         />
-        <progress
-          style={progressStyle}
-          className="progressbar"
-          max={1}
-          value={played}
+        <ProgressBar
+          played={played}
         />
       </div>
       <div>
