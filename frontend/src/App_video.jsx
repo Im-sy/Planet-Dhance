@@ -33,7 +33,6 @@ export default function App() {
     if (videoRef.current) {
       videoRef.current.addEventListener('loadedmetadata', function () {
         const { w, h } = getVideoSizeData(videoRef);
-        console.log((videoRef.currentTime = '5'));
         canvasRef.current.width = w;
         canvasRef.current.height = h;
         videoRef.currentTime = 6;
@@ -43,30 +42,50 @@ export default function App() {
         });
       });
     }
-    blob.then(function (myBlob) {
-      //sacve test
-      const objectURL = URL.createObjectURL(myBlob);
-      const a = document.createElement('a');
-      a.download = 'testFile';
-      a.click();
-    });
+    // file download function : make blob and...
+    // blob.then(function (myBlob) {
+    //   //sacve test
+    //   const objectURL = URL.createObjectURL(myBlob);
+    //   const a = document.createElement('a');
+    //   a.download = 'testFile';
+    //   a.click();
+    // });
     // var file = new File([blob], "name");
     // console.log(file);
+    async function makeThumbnail(){
+    let duration = 17;
+    let fractions = [];
+    for (let i = 0; i <= duration; i += duration / 10) {
+      fractions.push(Math.floor(i));
+    }
+    console.log(fractions);
+    const data = await Promise.all(fractions.map( time => {
+      return snap(time)
+    }))
+    console.log(data);
+    setThumbnail(data);
+    }
+    makeThumbnail();
   }, []);
 
-  function snap() {
+  async function snap(time) {
+    console.log(time);
     if (context && videoRef.current) {
       const video = document.querySelector('video');
-      console.log(video);
-      video.currentTime = 6;
+      video.currentTime = parseInt(time);
       context.fillRect(0, 0, dimensions.w, dimensions.h);
       context.drawImage(videoRef.current, 0, 0, dimensions.w, dimensions.h);
       // save
       const canvasHTML = document.querySelector('canvas');
       const imgURL = canvasHTML.toDataURL('image/png');
-      setThumbnail([...thumbnail, imgURL]);
-      console.log(thumbnail);
+      // setThumbnail([...thumbnail, imgURL]);
+      return (imgURL)
     }
+  }
+
+  function drawImage(context){
+    context.fillRect(0, 0, dimensions.w, dimensions.h);
+    context.drawImage(videoRef.current, 0, 0, dimensions.w, dimensions.h);
   }
 
   return (
