@@ -3,7 +3,7 @@ import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import MuiBottomNavigationAction from '@mui/material/BottomNavigationAction';
 import navFav from './navbtns/navFav.png'
-import navHome from './navbtns/navHome.png'
+import navHome2 from './navbtns/navHome2.png'
 import navSearch from './navbtns/navSearch.png'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { styled } from "@mui/material/styles";
@@ -31,10 +31,10 @@ export default function NavBar() {
         >
           <BottomNavigationAction
             label="Home" 
-            icon={<img src={navHome} alt="navHome" width="30"></img>}/>
+            icon={<img src={navHome2} alt="navHome" width="50"></img>}/>
           <BottomNavigationAction label="Search" icon={<img src={navSearch} alt="navSearch" width="30"></img>} />
           <BottomNavigationAction label="Favorites" icon={<img src={navFav} alt="navFav" width="30"></img>} />
-          <BottomNavigationAction label="My" icon={<AccountCircleIcon color="secondary"/>} />
+          <BottomNavigationAction label="My" icon={<AccountCircleIcon color="secondary" sx={{ fontSize: 30 }}/>} />
         </BottomNavigation>
       </Paper>
     </div>
