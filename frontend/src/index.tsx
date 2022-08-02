@@ -6,13 +6,17 @@ import reportWebVitals from './reportWebVitals';
 import App2 from './App2';
 import ActionAreaCard from './Card';
 import GridView from './GridView';
+import SearchTag from './SearchTag';
+import SearchSong from './SearchSong';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   // <App2 />
-  <GridView />
+  // <GridView />
+  // <SearchTag />
+  <SearchSong />
 );
 
 // If you want to start measuring performance in your app, pass a function
