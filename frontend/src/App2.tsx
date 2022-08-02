@@ -7,6 +7,8 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 import myVideo from './videos/IMG_0960.mp4';
+import sample1 from './videos/sample1.mp4';
+import sample2 from './videos/sample2.mp4';
 import './App.css';
 import Emoji from './Emoji';
 
@@ -78,14 +80,14 @@ export default function App2() {
       {played>=0.6 ? <Emoji emoji='😍'/> : ''}
       {played>=0.9 ? <Emoji emoji='🎉'/> : ''}
       {played===1 ? <Emoji emoji='💯'/> : ''}
-      <h1>ReactPlayer Demo</h1>
-      <progress max={1} value={played} />
+      {/* <h1>ReactPlayer Demo</h1>
+      <progress max={1} value={played} /> */}
       <div style={videoZone}>
         <ReactPlayer
           className="react-player"
           width="360px"
           height="800px"
-          url={myVideo}
+          url={sample1}
           playing={playing}
           // loop
           muted={muted}
