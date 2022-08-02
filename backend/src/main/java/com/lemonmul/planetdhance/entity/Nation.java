@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Nation {
     @Column(columnDefinition = "INT UNSIGNED", name ="nation_id")
-//    @Column(name ="nation_id")
     @Id
     @GeneratedValue
     private int id;

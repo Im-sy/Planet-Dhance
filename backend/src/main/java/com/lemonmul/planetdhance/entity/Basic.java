@@ -16,7 +16,5 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Basic extends User{
 
-    private String email;
-
     private String pwd;
 }

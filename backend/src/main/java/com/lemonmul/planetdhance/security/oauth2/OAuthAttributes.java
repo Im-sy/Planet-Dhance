@@ -1,4 +1,6 @@
-package com.lemonmul.planetdhance.entity;
+package com.lemonmul.planetdhance.security.oauth2;
+
+import com.lemonmul.planetdhance.security.oauth2.user.UserProfile;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -13,7 +15,6 @@ public enum OAuthAttributes {
                 (String) attributes.get("picture")
         );
     });
-//    FACEBOOK("facebook", )
 
     private final String registrationId;
     private final Function<Map<String, Object>, UserProfile> of;

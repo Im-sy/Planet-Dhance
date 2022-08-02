@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "DTYPE")
+@ToString
 public class User {
     @Column(columnDefinition = "INT UNSIGNED", name ="user_id")
 //    @Column(name ="user_id")
@@ -21,18 +22,20 @@ public class User {
     @GeneratedValue
     private int id;
 
+    protected String email;
+
     private String nickname;
 
     private String introduce;
 
-    private String imgUrl;
+    protected String imgUrl;
 
     private LocalDateTime regDate;
 
     private LocalDateTime renewDate;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    protected Role role;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nation_id")
