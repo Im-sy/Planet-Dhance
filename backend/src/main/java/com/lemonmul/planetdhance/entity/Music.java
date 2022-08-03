@@ -15,7 +15,7 @@ public class Music {
 //    @Column(name ="music_id")
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     private String title;
 

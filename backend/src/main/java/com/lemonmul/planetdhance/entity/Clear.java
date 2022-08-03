@@ -13,7 +13,7 @@ public class Clear {
 //    @Column(name ="clear_id")
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "music_id")
