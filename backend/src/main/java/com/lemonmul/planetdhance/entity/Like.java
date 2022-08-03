@@ -12,9 +12,8 @@ import javax.persistence.*;
 public class Like {
 
     @Id @GeneratedValue
-    @Column(columnDefinition="INT UNSIGNED",name = "like_id")
-//    @Column(name ="like_id")
-    private int id;
+    @Column(name ="like_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "video_id")

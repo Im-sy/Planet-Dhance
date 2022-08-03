@@ -25,7 +25,7 @@ public class VideoApi {
     /**
      * 영상 리스트 - 최신
      *
-     * 요청 파라미터 예시: /video/list/latest/[마지막 video_id]
+     * 요청 파라미터 예시: /video/list/latest/{마지막 video_id}
      * size는 기본값 18
      */
     @GetMapping("/list/latest/{lastId}")
@@ -49,7 +49,7 @@ public class VideoApi {
 
     @Data
     static class VideoDto{
-        private int videoId;
+        private Long videoId;
         private String imgUrl;
 
         public VideoDto(Video video) {

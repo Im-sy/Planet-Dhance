@@ -17,9 +17,8 @@ import java.util.List;
 public class Video {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition="INT UNSIGNED",name = "video_id")
-//    @Column(name ="video_id")
-    private int id;
+    @Column(name ="video_id")
+    private Long id;
 
     private String videoUrl;
 

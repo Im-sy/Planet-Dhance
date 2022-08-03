@@ -67,8 +67,6 @@ public class User {
         user.renewDate=user.regDate;
         user.role=Role.USER;
         user.setNation(nation);
-        //Tag 테이블에 nickname 추가
-        Tag.createTag(user.nickname, TagType.NICKNAME,user.imgUrl);
         return user;
     }
 

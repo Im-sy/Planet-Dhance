@@ -13,9 +13,8 @@ import java.util.List;
 public class Tag {
 
     @Id @GeneratedValue
-    @Column(columnDefinition="INT UNSIGNED",name = "tag_id")
-//    @Column(name ="tag_id")
-    private int id;
+    @Column(name ="tag_id")
+    private Long id;
 
     private String name;
 
