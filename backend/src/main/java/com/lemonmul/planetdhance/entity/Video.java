@@ -93,4 +93,5 @@ public class Video {
     public void addLikeCnt(){
         this.likeCnt++;
     }
+
 }

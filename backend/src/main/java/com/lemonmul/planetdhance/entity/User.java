@@ -53,6 +53,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Video> videos=new ArrayList<>();
 
+    public User(String imgUrl){
+        this.imgUrl = imgUrl;
+    }
+
     //==생성 메서드==//
     public static User createUser(String nickname,String introduce,String imgUrl,Nation nation){
         User user=new User();
@@ -62,7 +66,7 @@ public class User {
         user.regDate=LocalDateTime.now();
         user.renewDate=user.regDate;
         user.role=Role.USER;
-        user.nation=nation;
+        user.setNation(nation);
         //Tag 테이블에 nickname 추가
         Tag.createTag(user.nickname, TagType.NICKNAME,user.imgUrl);
         return user;
@@ -82,6 +86,12 @@ public class User {
             introduce="hello!";
         }
         this.introduce=introduce;
+    }
+
+    //==연관관계 메서드==//
+    public void setNation(Nation nation){
+        this.nation=nation;
+        nation.getUsers().add(this);
     }
 
     public void setRenewDate(LocalDateTime renewDate){

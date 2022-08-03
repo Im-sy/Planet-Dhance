@@ -14,14 +14,14 @@ public class Nation {
     @Column(columnDefinition = "INT UNSIGNED", name ="nation_id")
 //    @Column(name ="nation_id")
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String flag;
 
     private String name;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "nation")
     private List<User> users=new ArrayList<>();
 
     //==생성 메서드==//
