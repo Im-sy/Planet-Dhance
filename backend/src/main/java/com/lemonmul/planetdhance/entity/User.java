@@ -59,18 +59,15 @@ public class User {
         this.imgUrl = imgUrl;
     }
 
-    //==생성 메서드==//
-    public static User createUser(String email, String nickname,String introduce,String imgUrl,Nation nation){
-        User user=new User();
-        user.email = email;
-        user.nickname=nickname;
-        user.setIntroduce(introduce);
-        user.setImgUrl(imgUrl);
-        user.regDate=LocalDateTime.now();
-        user.renewDate=user.regDate;
-        user.role=Role.USER;
-        user.setNation(nation);
-        return user;
+    public User(String email, String nickname, String introduce, String imgUrl, Nation nation, Role role){
+        this.email = email;
+        this.nickname = nickname;
+        this.setIntroduce(introduce);
+        this.setImgUrl(imgUrl);
+        this.setNation(nation);
+        this.role = role;
+        this.regDate = LocalDateTime.now();
+        this.renewDate = this.regDate;
     }
 
     public void setImgUrl(String imgUrl){
@@ -92,11 +89,10 @@ public class User {
     //==연관관계 메서드==//
     public void setNation(Nation nation){
         this.nation=nation;
-        nation.getUsers().add(this);
+//        nation.getUsers().add(this);
     }
 
     public void setRenewDate(LocalDateTime renewDate){
         this.renewDate=renewDate;
     }
-
 }
