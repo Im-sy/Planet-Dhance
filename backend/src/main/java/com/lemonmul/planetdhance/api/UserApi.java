@@ -1,6 +1,9 @@
 package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.entity.*;
+import com.lemonmul.planetdhance.security.jwt.JwtToken;
+import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;
+import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
 import com.lemonmul.planetdhance.service.NationService;
 import com.lemonmul.planetdhance.service.UserService;
 import lombok.AllArgsConstructor;
@@ -16,10 +19,26 @@ public class UserApi {
 
     private final UserService userService;
     private final NationService nationService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/signup")
     public boolean signup(@RequestBody SignUpDto signUpDto) {
         return userService.signUp(toUser(signUpDto));
+    }
+
+    @PostMapping("/login")
+    public JwtTokenJson login(@RequestBody LoginDto loginDto) {
+        Basic findUser = (Basic)(userService.login(loginDto.email));
+
+        if(findUser != null){
+            if(findUser.getPwd().equals(loginDto.pwd)){
+                JwtToken jwtToken = new JwtToken(findUser);
+
+                return new JwtTokenJson("loginSuccess", jwtTokenProvider.createToken(jwtToken.getEmail(), jwtToken));
+            }
+        }
+
+        return null;
     }
 
     @Data
@@ -34,6 +53,14 @@ public class UserApi {
         private String pwd;
         private String oAuth2Sub;
         private String type;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class LoginDto {
+        private String email;
+        private String pwd;
     }
 
     private User toUser(SignUpDto signUpDto){

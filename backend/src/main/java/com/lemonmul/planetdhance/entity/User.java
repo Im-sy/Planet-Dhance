@@ -70,6 +70,20 @@ public class User {
         this.renewDate = this.regDate;
     }
 
+    //==생성 메서드==//
+    public static User createUser(String nickname,String introduce,String imgUrl,Nation nation){
+        User user=new User();
+        user.nickname=nickname;
+        user.setIntroduce(introduce);
+        user.setImgUrl(imgUrl);
+        user.regDate=LocalDateTime.now();
+        user.renewDate=user.regDate;
+        user.role=Role.USER;
+        user.setNation(nation);
+        return user;
+    }
+
+
     public void setImgUrl(String imgUrl){
         if(imgUrl==null){
             //TODO 기본 이미지 설정

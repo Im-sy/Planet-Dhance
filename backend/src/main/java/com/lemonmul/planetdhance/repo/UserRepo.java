@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.repo;
 
+import com.lemonmul.planetdhance.entity.Basic;
 import com.lemonmul.planetdhance.entity.Social;
 import com.lemonmul.planetdhance.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
