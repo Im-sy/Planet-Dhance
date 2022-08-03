@@ -11,4 +11,8 @@ spring:
           facebook:
             client-id: 370546671926169
             client-secret: f02f9a6f6c6800c4ef7d166626cc1cf6
-            
+
+#app:
+#  oauth2:
+#    authorizedRedirectUris:
+#      - http://localhost:3000/oauth/redirect

@@ -11,11 +11,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Nation {
-    @Column(columnDefinition = "INT UNSIGNED", name ="nation_id")
-//    @Column(name ="nation_id")
+    @Column(name ="nation_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue
+    private Long id;
 
     private String flag;
 

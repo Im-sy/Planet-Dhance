@@ -9,11 +9,10 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Follow {
-    @Column(columnDefinition = "INT UNSIGNED", name ="follow_id")
-//    @Column(name ="follow_id")
+    @Column(name ="follow_id")
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_id")

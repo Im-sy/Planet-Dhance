@@ -1,23 +1,23 @@
 package com.lemonmul.planetdhance.config;
 
-import com.lemonmul.planetdhance.service.OAuthService;
+import com.lemonmul.planetdhance.security.oauth2.CustomOAuth2UserService;
+import com.lemonmul.planetdhance.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-//@EnableWebSecurity
-//@Configuration
+@EnableWebSecurity
+@Configuration
+@RequiredArgsConstructor
 //@ConditionalOnDefaultWebSecurity
 //@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class SecurityConfig {
 
-    private final OAuthService oAuthService;
-
-    public SecurityConfig(OAuthService oAuthService){
-        this.oAuthService = oAuthService;
-    }
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
 //    @Order(SecurityProperties.BASIC_AUTH_ORDER)
@@ -29,7 +29,9 @@ public class SecurityConfig {
                 .and()
                 .oauth2Login()
                 .userInfoEndpoint()
-                .userService(oAuthService);
+                .userService(customOAuth2UserService)
+                .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler);
 
         return http.build();
     }
