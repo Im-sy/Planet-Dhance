@@ -19,7 +19,7 @@ public class MusicService {
     /*
     * 전체 음악 데이터 반환
     */
-    public Optional<Music> getMusicInfo(Integer id){
+    public Optional<Music> getMusicInfo(Long id){
         return musicRepo.findById(id);
     }
 

@@ -21,43 +21,37 @@ public class MusicApi {
     private final MusicService musicService;
 
     /*
-    * 곡 검색 페이지 진입 시
-    * title, artist, mv_url, img_url 전달
+    * 챌린지 페이지 진입 시
     *
-    * 요청 파라미터 예시: /Music/Search
-    * 원하는 column 만 가져오기..?
-     */
-    @GetMapping("/Search/{id}")
-    public MusicDto musicForSearch(@PathVariable Integer id){
+    * 요청 파라미터 예시: /Music/Challenge/{id}
+    *
+    * */
+    @GetMapping("/Challenge/{id}")
+    public Optional<MusicDto> musicForChallenge(@PathVariable Long id){
         Optional<Music> music = musicService.getMusicInfo(id);
         Optional<MusicDto> musicDto = music.map(MusicDto::new); // 응..?..
 
         return musicDto;
     }
 
-    /*
-    * 챌린지 페이지 진입 시
-    *
-    * 요청 파라미터 예시: /Music/Challenge
-    *
-    * */
-    @GetMapping("/Challenge/{id}")
-    public Music musicForChallenge(@PathVariable Integer id){
-        return musicService.getMusicInfo(id);
-    }
-
     @Data
     static class MusicDto {
         private String musicTitle;
         private String musicArtist;
-        private String musicMvUrl;
-        private String musicImgUrl;
+        private String musicModelUrl;
+        private String musicGuideUrl;
 
         public MusicDto(Music music) {
             musicTitle = music.getTitle();
-            musicArtist = music.getMvUrl();
-            musicMvUrl = music.getMvUrl();
-            musicImgUrl = music.getImgUrl();
+            musicArtist = music.getArtist();
+            musicModelUrl = music.getModelUrl();
+            musicGuideUrl = music.getGuideUrl();
         }
     }
+
+    /*
+     * 곡 검색 페이지 진입 시 => Community 에서 처리
+     * title, artist, mv_url, img_url 전달
+     */
+
 }
