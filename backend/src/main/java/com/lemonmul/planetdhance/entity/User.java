@@ -16,49 +16,49 @@ import java.util.List;
 @DiscriminatorColumn(name = "DTYPE")
 @ToString
 public class User {
-    @Column(columnDefinition = "INT UNSIGNED", name ="user_id")
-//    @Column(name ="user_id")
+    @Column(name ="user_id")
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     protected String email;
 
-    private String nickname;
+    protected String nickname;
 
-    private String introduce;
+    protected String introduce;
 
     protected String imgUrl;
 
-    private LocalDateTime regDate;
+    protected LocalDateTime regDate;
 
-    private LocalDateTime renewDate;
+    protected LocalDateTime renewDate;
 
     @Enumerated(EnumType.STRING)
     protected Role role;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nation_id")
-    private Nation nation;
+    protected Nation nation;
 
     @OneToMany(mappedBy = "from")
-    private List<Follow> froms=new ArrayList<>();
+    protected List<Follow> froms=new ArrayList<>();
 
     @OneToMany(mappedBy = "to")
-    private List<Follow> tos=new ArrayList<>();
+    protected List<Follow> tos=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Like> likes=new ArrayList<>();
+    protected List<Like> likes=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Clear> clears=new ArrayList<>();
+    protected List<Clear> clears=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Video> videos=new ArrayList<>();
+    protected List<Video> videos=new ArrayList<>();
 
     //==생성 메서드==//
-    public static User createUser(String nickname,String introduce,String imgUrl,Nation nation){
+    public static User createUser(String email, String nickname,String introduce,String imgUrl,Nation nation){
         User user=new User();
+        user.email = email;
         user.nickname=nickname;
         user.setIntroduce(introduce);
         user.setImgUrl(imgUrl);

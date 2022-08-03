@@ -4,7 +4,8 @@ import com.lemonmul.planetdhance.entity.Social;
 import com.lemonmul.planetdhance.entity.User;
 import com.lemonmul.planetdhance.repo.UserRepo;
 import com.lemonmul.planetdhance.security.oauth2.user.JwtToken;
-import com.lemonmul.planetdhance.security.oauth2.user.UserProfile;
+import com.lemonmul.planetdhance.security.oauth2.user.JwtTokenJson;
+import com.lemonmul.planetdhance.security.oauth2.user.SignUpData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -13,12 +14,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 
@@ -29,46 +28,39 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final UserRepo userRepo;
 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String targetUrl = "";
+        MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
+        MediaType jsonMimeType = MediaType.APPLICATION_JSON;
 
         Social findSocial = userRepo.findByOauth2Sub(authentication.getName()).orElse(null);
-        if(findSocial != null){
-            targetUrl = "http://localhost:8080/success.html";
 
-            HttpSession session = request.getSession();
-            JwtToken jwtToken = new JwtToken();
+        if(findSocial != null){
             String email = findSocial.getEmail();
             String nickname = findSocial.getNickname();
-//            String nation = findSocial.getNation().getName();
+//            String nationName = findSocial.getNation().getName();
+            JwtToken jwtToken = new JwtToken(email, nickname);
+//            JwtToken jwtToken = new JwtToken(email, nickname, nationName);
 
-            targetUrl = UriComponentsBuilder.fromUriString(targetUrl)
-                    .queryParam("email", email)
-                    .queryParam("nickname", nickname)
-//                    .queryParam("nation", nation)
-                    .build().toUriString();
+            if (jsonConverter.canWrite(jwtToken.getClass(), jsonMimeType)) {
+                jsonConverter.write(jwtToken, jsonMimeType, new ServletServerHttpResponse(response));
+            }
 
-            clearAuthenticationAttributes(request, response);
-            getRedirectStrategy().sendRedirect(request, response, targetUrl);
+            // TODO: jwtToken에 들어있는 내용을 실제로 토큰화 하고
+            //  jwtTokenJson에 타입(loginSuccess)이랑 같이 넣어줘야 함
+//            JwtTokenJson jwtTokenJson = JwtTokenJson();
+
+//            if (jsonConverter.canWrite(jwtTokenJson.getClass(), jsonMimeType)) {
+//                jsonConverter.write(jwtTokenJson, jsonMimeType, new ServletServerHttpResponse(response));
+//            }
         }else{
             Map<String, Object> attributes = ((DefaultOAuth2User) authentication.getPrincipal()).getAttributes();
-            UserProfile userProfile = OAuthAttributes.extract((String)attributes.get("registrationId"), attributes);
+            SignUpData signUpData = OAuthAttributes.extract((String)attributes.get("registrationId"), attributes);
 
-            MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
-            MediaType jsonMimeType = MediaType.APPLICATION_JSON;
-
-            User user = userProfile.toSocial();
+            User user = signUpData.toSocial();
             userRepo.save(user);
 
-            if (jsonConverter.canWrite(userProfile.getClass(), jsonMimeType)) {
-                jsonConverter.write(userProfile, jsonMimeType, new ServletServerHttpResponse(response));
+            if (jsonConverter.canWrite(signUpData.getClass(), jsonMimeType)) {
+                jsonConverter.write(signUpData, jsonMimeType, new ServletServerHttpResponse(response));
             }
         }
-
-
-    }
-
-    private void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
-        super.clearAuthenticationAttributes(request);
-
     }
 }
