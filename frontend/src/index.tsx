@@ -9,6 +9,7 @@ import GridView from './GridView';
 import SearchTag from './SearchTag';
 import SearchSong from './SearchSong';
 import { HashResult } from './HashResult';
+import Carousel from './Carousel';
 
 
 const root = ReactDOM.createRoot(
@@ -19,7 +20,8 @@ root.render(
   // <GridView />
   // <SearchTag />
   // <SearchSong />
-  <HashResult />
+  // <HashResult />
+  <Carousel />
 );
 
 // If you want to start measuring performance in your app, pass a function
