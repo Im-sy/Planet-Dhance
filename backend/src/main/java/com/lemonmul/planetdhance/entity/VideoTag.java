@@ -11,9 +11,8 @@ import javax.persistence.*;
 public class VideoTag {
 
     @Id @GeneratedValue
-    @Column(columnDefinition="INT UNSIGNED",name = "video_tag_id")
-//    @Column(name ="video_tag_id")
-    private int id;
+    @Column(name ="video_tag_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "video_id")

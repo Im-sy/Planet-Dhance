@@ -49,13 +49,9 @@ public class Music {
 
     private void setTitle(String title){
         this.title=title;
-        //TODO 관리자 생기면 태그 추가 여기서
-        Tag.createTag(title,TagType.TITLE,imgUrl);
     }
 
     private void setArtist(String artist){
         this.artist=artist;
-        //TODO 관리자 생기면 태그 추가 여기서
-        Tag.createTag(artist,TagType.ARTIST,"artist img");
     }
 }

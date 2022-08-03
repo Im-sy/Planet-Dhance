@@ -10,6 +10,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,15 +25,15 @@ public class VideoApi {
     /**
      * 영상 리스트 - 최신
      *
-     * 요청 파라미터 예시: /video/list/newest
-     * size는 기본값 30
+     * 요청 파라미터 예시: /video/list/latest/{마지막 video_id}
+     * size는 기본값 18
      */
-    @GetMapping("/list/latest")
-    public Slice<VideoDto> newestList(@PageableDefault(sort = "regDate",direction = Sort.Direction.DESC) Pageable pageable){
-        Slice<Video> videoList = videoService.findPublicNewestVideoList(VideoScope.PUBLIC, pageable);
-        Slice<VideoDto> videoDtos=videoList.map(VideoDto::new);
-
-        return videoDtos;
+    @GetMapping("/list/latest/{lastId}")
+    public Slice<VideoDto> newestList(@PathVariable int lastId){
+        //반환할 영상 개수
+        int size=18;
+        Slice<Video> videoList = videoService.findPublicNewestVideoList(lastId,size,VideoScope.PUBLIC);
+        return videoList.map(VideoDto::new);
     }
 
 
@@ -48,7 +49,7 @@ public class VideoApi {
 
     @Data
     static class VideoDto{
-        private int videoId;
+        private Long videoId;
         private String imgUrl;
 
         public VideoDto(Video video) {

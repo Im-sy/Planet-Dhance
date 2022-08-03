@@ -4,6 +4,7 @@ import com.lemonmul.planetdhance.entity.Video;
 import com.lemonmul.planetdhance.entity.VideoScope;
 import com.lemonmul.planetdhance.repo.VideoRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,8 @@ public class VideoService {
     /**
      * 영상 리스트 - 최신
      */
-    public Slice<Video> findPublicNewestVideoList(VideoScope videoScope,Pageable pageable){
-        return videoRepo.findByScopeOrderByRegDateDesc(videoScope,pageable);
+    public Slice<Video> findPublicNewestVideoList(int lastId,int size,VideoScope videoScope){
+        Pageable pageable=PageRequest.of(0,size);
+        return videoRepo.findByIdLessThanAndScopeOrderByRegDateDesc(lastId,videoScope,pageable);
     }
 }

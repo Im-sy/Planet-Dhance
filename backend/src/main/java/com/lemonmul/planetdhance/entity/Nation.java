@@ -14,27 +14,25 @@ public class Nation {
     @Column(columnDefinition = "INT UNSIGNED", name ="nation_id")
 //    @Column(name ="nation_id")
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String flag;
 
     private String name;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "nation")
     private List<User> users=new ArrayList<>();
 
     //==생성 메서드==//
     public static Nation createNation(String flag,String name){
         Nation nation=new Nation();
         nation.flag = flag;
-        nation.name = name;
+        nation.setName(name);
         return nation;
     }
 
     private void setName(String name){
         this.name=name;
-        //TODO 관리자가 생기면 태그 추가 여기서
-        Tag.createTag(name,TagType.NATION,"nation img");
     }
 }
