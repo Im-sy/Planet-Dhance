@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/Music")
+@RequestMapping("/music")
 public class MusicApi {
 
     private final MusicService musicService;
@@ -26,7 +26,7 @@ public class MusicApi {
     * 요청 파라미터 예시: /Music/Challenge/{id}
     *
     * */
-    @GetMapping("/Challenge/{id}")
+    @GetMapping("/challenge/{id}")
     public Optional<MusicDto> musicForChallenge(@PathVariable Long id){
         Optional<Music> music = musicService.getMusicInfo(id);
         Optional<MusicDto> musicDto = music.map(MusicDto::new); // 응..?..
