@@ -1,7 +1,7 @@
 package com.lemonmul.planetdhance.service;
 
-import com.lemonmul.planetdhance.entity.Video;
-import com.lemonmul.planetdhance.entity.VideoScope;
+import com.lemonmul.planetdhance.entity.video.Video;
+import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.repo.VideoRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

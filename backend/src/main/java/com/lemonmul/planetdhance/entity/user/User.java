@@ -1,5 +1,7 @@
-package com.lemonmul.planetdhance.entity;
+package com.lemonmul.planetdhance.entity.user;
 
+import com.lemonmul.planetdhance.entity.*;
+import com.lemonmul.planetdhance.entity.video.Video;
 import lombok.*;
 
 import javax.persistence.*;
@@ -59,10 +61,20 @@ public class User {
         this.imgUrl = imgUrl;
     }
 
+    public User(String email, String nickname, String introduce, String imgUrl, Nation nation, Role role){
+        this.email = email;
+        this.nickname = nickname;
+        this.setIntroduce(introduce);
+        this.setImgUrl(imgUrl);
+        this.setNation(nation);
+        this.role = role;
+        this.regDate = LocalDateTime.now();
+        this.renewDate = this.regDate;
+    }
+
     //==생성 메서드==//
-    public static User createUser(String email, String nickname,String introduce,String imgUrl,Nation nation){
+    public static User createUser(String nickname,String introduce,String imgUrl,Nation nation){
         User user=new User();
-        user.email = email;
         user.nickname=nickname;
         user.setIntroduce(introduce);
         user.setImgUrl(imgUrl);
@@ -72,6 +84,7 @@ public class User {
         user.setNation(nation);
         return user;
     }
+
 
     public void setImgUrl(String imgUrl){
         if(imgUrl==null){
@@ -92,11 +105,10 @@ public class User {
     //==연관관계 메서드==//
     public void setNation(Nation nation){
         this.nation=nation;
-        nation.getUsers().add(this);
+//        nation.getUsers().add(this);
     }
 
     public void setRenewDate(LocalDateTime renewDate){
         this.renewDate=renewDate;
     }
-
 }

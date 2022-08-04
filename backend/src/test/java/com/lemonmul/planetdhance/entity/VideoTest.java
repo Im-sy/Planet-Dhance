@@ -1,5 +1,8 @@
 package com.lemonmul.planetdhance.entity;
 
+import com.lemonmul.planetdhance.entity.user.User;
+import com.lemonmul.planetdhance.entity.video.Video;
+import com.lemonmul.planetdhance.entity.video.VideoScope;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,8 +13,6 @@ import javax.persistence.EntityManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -28,7 +29,7 @@ class VideoTest {
 
         User user1=User.createUser("user1",null,null,nation1);
         em.persist(user1);
-        User user2=User.createUser("user2",null,null,nation1);
+        User user2= User.createUser("user2",null,null,nation1);
         em.persist(user2);
 
         Music music1=Music.createMusic("title1","artist1","album img1","model url1","guide url1","mv url1");

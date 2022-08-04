@@ -1,7 +1,7 @@
 package com.lemonmul.planetdhance.api;
 
-import com.lemonmul.planetdhance.entity.Tag;
-import com.lemonmul.planetdhance.entity.TagType;
+import com.lemonmul.planetdhance.entity.tag.Tag;
+import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.service.TagService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

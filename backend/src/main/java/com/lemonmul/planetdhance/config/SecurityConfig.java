@@ -1,13 +1,19 @@
 package com.lemonmul.planetdhance.config;
 
+import com.lemonmul.planetdhance.security.jwt.JwtAuthenticationFilter;
+import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
 import com.lemonmul.planetdhance.security.oauth2.CustomOAuth2UserService;
 import com.lemonmul.planetdhance.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -19,9 +25,16 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Bean
-//    @Order(SecurityProperties.BASIC_AUTH_ORDER)
-    public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+//    @Order(100)
+    public SecurityFilterChain OAuth2filterChain(HttpSecurity http) throws  Exception {
 
         http
                 .csrf().disable()
@@ -31,8 +44,31 @@ public class SecurityConfig {
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService)
                 .and()
-                .successHandler(oAuth2AuthenticationSuccessHandler);
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .and()
+                .authorizeRequests()
+//                .anyRequest().authenticated()
+                .antMatchers("/tag/**").hasRole("USER")
+                .antMatchers("/user/**").permitAll()
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+//    @Bean
+//    @Order(200)
+//    public SecurityFilterChain JwtTokenFilterChain(HttpSecurity http) throws Exception {
+//
+//        http
+//                .csrf().disable()
+//                .authorizeRequests()
+////                .antMatchers("/dance/**").hasRole("USER")
+////                .antMatchers("/**").hasRole("USER")
+//                .anyRequest().authenticated()
+//                .and()
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
+//    }
 }

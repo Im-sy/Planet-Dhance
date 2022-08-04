@@ -1,4 +1,4 @@
-package com.lemonmul.planetdhance.security.oauth2.user;
+package com.lemonmul.planetdhance.security.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class JwtTokenJson {
-    private int state;
+    private String state;
     private String token;
 }

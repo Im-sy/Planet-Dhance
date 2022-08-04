@@ -1,7 +1,7 @@
 package com.lemonmul.planetdhance.service;
 
-import com.lemonmul.planetdhance.entity.Tag;
-import com.lemonmul.planetdhance.entity.TagType;
+import com.lemonmul.planetdhance.entity.tag.Tag;
+import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.repo.TagRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

@@ -9,6 +9,7 @@ import java.util.function.Function;
 public enum OAuthAttributes {
     GOOGLE("google", (attributes) -> {
         return new SignUpData(
+                "signup",
                 String.valueOf(attributes.get("sub")),
                 (String) attributes.get("email"),
                 (String) attributes.get("locale"),
