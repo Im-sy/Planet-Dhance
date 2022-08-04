@@ -22,18 +22,12 @@ public class JwtToken implements UserDetails {
     private String nickname;
     private String nationName;
     @ElementCollection(fetch = FetchType.EAGER)
-//    @Builder.Default
-    private List<String> roles = new ArrayList<>();
-//
-//    public JwtToken(String email, String nickname) {
-//        this.email = email;
-//        this.nickname = nickname;
-//    }
+    private List<String> roles;
 
     public JwtToken(User user){
         this.email = user.getEmail();
         this.nickname = user.getNickname();
-//        this.nationName = user.getNation().getName();
+        this.nationName = user.getNation().getName();
         this.roles = Collections.singletonList(user.getRole().getKey());
     }
 
