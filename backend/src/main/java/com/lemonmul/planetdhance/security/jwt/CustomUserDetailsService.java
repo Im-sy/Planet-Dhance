@@ -1,6 +1,6 @@
 package com.lemonmul.planetdhance.security.jwt;
 
-import com.lemonmul.planetdhance.entity.User;
+import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

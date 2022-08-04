@@ -1,15 +1,12 @@
-package com.lemonmul.planetdhance.entity;
+package com.lemonmul.planetdhance.entity.user;
 
+import com.lemonmul.planetdhance.entity.Nation;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,7 +16,7 @@ public class Basic extends User{
 
     private String pwd;
 
-    public Basic(String email, String nickname,String introduce,String imgUrl,Nation nation, Role role) {
+    public Basic(String email, String nickname, String introduce, String imgUrl, Nation nation, Role role) {
         super(email, nickname, introduce, imgUrl, nation, role);
     }
 

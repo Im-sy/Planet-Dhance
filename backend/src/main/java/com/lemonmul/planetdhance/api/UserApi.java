@@ -1,6 +1,10 @@
 package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.entity.*;
+import com.lemonmul.planetdhance.entity.user.Basic;
+import com.lemonmul.planetdhance.entity.user.Role;
+import com.lemonmul.planetdhance.entity.user.Social;
+import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;

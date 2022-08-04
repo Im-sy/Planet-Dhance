@@ -1,5 +1,7 @@
-package com.lemonmul.planetdhance.entity;
+package com.lemonmul.planetdhance.entity.user;
 
+import com.lemonmul.planetdhance.entity.*;
+import com.lemonmul.planetdhance.entity.video.Video;
 import lombok.*;
 
 import javax.persistence.*;

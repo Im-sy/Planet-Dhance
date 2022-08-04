@@ -1,15 +1,10 @@
 package com.lemonmul.planetdhance.repo;
 
-import com.lemonmul.planetdhance.entity.Basic;
-import com.lemonmul.planetdhance.entity.Social;
-import com.lemonmul.planetdhance.entity.User;
+import com.lemonmul.planetdhance.entity.user.Social;
+import com.lemonmul.planetdhance.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Optional;
 
 public interface UserRepo extends JpaRepository<User, Long> {

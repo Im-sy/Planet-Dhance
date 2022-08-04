@@ -1,7 +1,6 @@
 package com.lemonmul.planetdhance.security.oauth2;
 
-import com.lemonmul.planetdhance.entity.Social;
-import com.lemonmul.planetdhance.entity.User;
+import com.lemonmul.planetdhance.entity.user.Social;
 import com.lemonmul.planetdhance.repo.UserRepo;
 import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;

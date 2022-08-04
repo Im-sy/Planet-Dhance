@@ -1,12 +1,12 @@
-package com.lemonmul.planetdhance.entity;
+package com.lemonmul.planetdhance.entity.user;
 
+import com.lemonmul.planetdhance.entity.Nation;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -22,7 +22,7 @@ public class Social extends User{
         this.role = Role.USER;
     }
 
-    public Social(String email, String nickname,String introduce,String imgUrl,Nation nation, Role role) {
+    public Social(String email, String nickname, String introduce, String imgUrl, Nation nation, Role role) {
         super(email, nickname, introduce, imgUrl, nation, role);
     }
 

@@ -1,7 +1,7 @@
 package com.lemonmul.planetdhance.repo;
 
-import com.lemonmul.planetdhance.entity.Tag;
-import com.lemonmul.planetdhance.entity.TagType;
+import com.lemonmul.planetdhance.entity.tag.Tag;
+import com.lemonmul.planetdhance.entity.tag.TagType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;

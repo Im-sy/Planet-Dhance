@@ -1,6 +1,5 @@
 package com.lemonmul.planetdhance.security.jwt;
 
-import com.lemonmul.planetdhance.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -15,9 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

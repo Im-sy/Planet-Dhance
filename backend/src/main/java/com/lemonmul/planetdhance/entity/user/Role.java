@@ -1,4 +1,4 @@
-package com.lemonmul.planetdhance.entity;
+package com.lemonmul.planetdhance.entity.user;
 
 public enum Role {
     GUEST("ROLE_GUEST"),

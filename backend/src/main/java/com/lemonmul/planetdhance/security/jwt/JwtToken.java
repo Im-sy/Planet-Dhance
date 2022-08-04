@@ -1,10 +1,8 @@
 package com.lemonmul.planetdhance.security.jwt;
 
-import com.lemonmul.planetdhance.entity.Role;
-import com.lemonmul.planetdhance.entity.User;
+import com.lemonmul.planetdhance.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,17 +1,14 @@
 package com.lemonmul.planetdhance.service;
 
-import com.lemonmul.planetdhance.entity.Basic;
+import com.lemonmul.planetdhance.entity.user.Basic;
 import com.lemonmul.planetdhance.entity.Nation;
-import com.lemonmul.planetdhance.entity.Role;
+import com.lemonmul.planetdhance.entity.user.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

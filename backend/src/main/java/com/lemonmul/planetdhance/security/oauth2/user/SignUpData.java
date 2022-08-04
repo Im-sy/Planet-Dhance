@@ -1,6 +1,5 @@
 package com.lemonmul.planetdhance.security.oauth2.user;
 
-import com.lemonmul.planetdhance.entity.Social;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

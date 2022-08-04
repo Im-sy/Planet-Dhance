@@ -1,5 +1,9 @@
-package com.lemonmul.planetdhance.entity;
+package com.lemonmul.planetdhance.entity.video;
 
+import com.lemonmul.planetdhance.entity.Like;
+import com.lemonmul.planetdhance.entity.Music;
+import com.lemonmul.planetdhance.entity.VideoTag;
+import com.lemonmul.planetdhance.entity.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

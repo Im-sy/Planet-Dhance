@@ -1,23 +1,20 @@
 package com.lemonmul.planetdhance.service;
 
 import com.lemonmul.planetdhance.entity.*;
+import com.lemonmul.planetdhance.entity.user.User;
+import com.lemonmul.planetdhance.entity.video.Video;
+import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.repo.TagRepo;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

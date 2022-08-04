@@ -1,14 +1,12 @@
 package com.lemonmul.planetdhance.api;
 
-import com.lemonmul.planetdhance.entity.*;
+import com.lemonmul.planetdhance.entity.video.Video;
+import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.service.VideoService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +30,7 @@ public class VideoApi {
     public Slice<VideoDto> newestList(@PathVariable int lastId){
         //반환할 영상 개수
         int size=18;
-        Slice<Video> videoList = videoService.findPublicNewestVideoList(lastId,size,VideoScope.PUBLIC);
+        Slice<Video> videoList = videoService.findPublicNewestVideoList(lastId,size, VideoScope.PUBLIC);
         return videoList.map(VideoDto::new);
     }
 
