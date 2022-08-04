@@ -5,10 +5,12 @@ import com.lemonmul.planetdhance.entity.user.Basic;
 import com.lemonmul.planetdhance.entity.user.Role;
 import com.lemonmul.planetdhance.entity.user.Social;
 import com.lemonmul.planetdhance.entity.user.User;
+import com.lemonmul.planetdhance.security.jwt.CustomUserDetails;
 import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
 import com.lemonmul.planetdhance.service.NationService;
+import com.lemonmul.planetdhance.service.TokenService;
 import com.lemonmul.planetdhance.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +25,7 @@ public class UserApi {
 
     private final UserService userService;
     private final NationService nationService;
+    private final TokenService tokenService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/signup")
@@ -36,9 +39,13 @@ public class UserApi {
 
         if(findUser != null){
             if(findUser.getPwd().equals(loginDto.pwd)){
-                JwtToken jwtToken = new JwtToken(findUser);
+                CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
+                JwtToken jwtToken = customUserDetails.toJwtToken();
+                String tokenString = jwtTokenProvider.createToken(jwtToken.getEmail(), jwtToken);
+                Token token = new Token(jwtToken.getEmail(), tokenString);
 
-                return new JwtTokenJson("loginSuccess", jwtTokenProvider.createToken(jwtToken.getEmail(), jwtToken));
+                if(tokenService.login(token))
+                    return new JwtTokenJson("loginSuccess", tokenString);
             }
         }
 

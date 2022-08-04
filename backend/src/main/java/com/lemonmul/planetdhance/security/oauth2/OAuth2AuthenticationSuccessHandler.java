@@ -2,6 +2,7 @@ package com.lemonmul.planetdhance.security.oauth2;
 
 import com.lemonmul.planetdhance.entity.user.Social;
 import com.lemonmul.planetdhance.repo.UserRepo;
+import com.lemonmul.planetdhance.security.jwt.CustomUserDetails;
 import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
@@ -29,15 +30,16 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
         MediaType jsonMimeType = MediaType.APPLICATION_JSON;
 
         Social findSocial = userRepo.findByOauth2Sub(authentication.getName()).orElse(null);
 
         if(findSocial != null){
-            JwtToken jwtToken = new JwtToken(findSocial);
-            JwtTokenJson jwtTokenJson = new JwtTokenJson("loginSuccess", jwtTokenProvider.createToken(jwtToken.getEmail(), jwtToken));
+            CustomUserDetails customUserDetails = new CustomUserDetails(findSocial);
+            JwtToken jwtToken = customUserDetails.toJwtToken();
+            JwtTokenJson jwtTokenJson = new JwtTokenJson("loginSuccess", jwtTokenProvider.createToken(customUserDetails.getEmail(), jwtToken));
 
             if (jsonConverter.canWrite(jwtTokenJson.getClass(), jsonMimeType)) {
                 jsonConverter.write(jwtTokenJson, jsonMimeType, new ServletServerHttpResponse(response));
