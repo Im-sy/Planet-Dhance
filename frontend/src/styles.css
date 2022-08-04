@@ -1,0 +1,36 @@
+html,
+body {
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.demo-section {
+  padding-bottom: 2rem;
+  border-bottom: 2px solid;
+}
+
+.demo-section:last-child {
+  border: none;
+}
+
+video {
+  width: 30%;
+  height: 60%;
+}
+
+.container {
+  padding: 0px;
+}
+
+.slick-arrow{
+  display : none !important;
+}
+
+
+/* .{
+  position: 'absolute',
+  top: '10px',
+  width: '360px',
+  height: '10px',
+  backgroundColor: 'gray',
+}; */
