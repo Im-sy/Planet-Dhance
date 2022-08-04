@@ -51,4 +51,14 @@ public class TokenService {
             return true;
         }
     }
+
+    public boolean logout(String email){
+        System.out.println("email = " + email);
+        System.out.println("tokenRepo.findByEmail(email).orElse(null) = " + tokenRepo.findByEmail(email).orElse(null));
+        if(tokenRepo.findByEmail(email).orElse(null) != null){
+            tokenRepo.deleteByEmail(email);
+            return true;
+        }
+        return false;
+    }
 }

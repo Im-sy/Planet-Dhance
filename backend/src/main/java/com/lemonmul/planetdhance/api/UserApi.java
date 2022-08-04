@@ -52,6 +52,11 @@ public class UserApi {
         return null;
     }
 
+    @PostMapping("/logout/{email}")
+    public boolean logout(@PathVariable String email) {
+        return tokenService.logout(email);
+    }
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
