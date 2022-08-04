@@ -23,13 +23,14 @@ public class MusicApi {
     /*
     * 챌린지 페이지 진입 시
     *
-    * 요청 파라미터 예시: /Music/Challenge/{id}
+    * 요청 파라미터 예시: /music/challenge/{id}
     *
     * */
     @GetMapping("/challenge/{id}")
     public Optional<MusicDto> musicForChallenge(@PathVariable Long id){
+
         Optional<Music> music = musicService.getMusicInfo(id);
-        Optional<MusicDto> musicDto = music.map(MusicDto::new); // 응..?..
+        Optional<MusicDto> musicDto = music.map(MusicDto::new);
 
         return musicDto;
     }
@@ -51,7 +52,6 @@ public class MusicApi {
 
     /*
      * 곡 검색 페이지 진입 시 => Community 에서 처리
-     * title, artist, mv_url, img_url 전달
      */
 
 }
