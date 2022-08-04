@@ -81,8 +81,8 @@ class VideoServiceTest {
 
         //when
         int size=18;
-//        Slice<Video> newestVideoList = videoService.findPublicNewestVideoList(videos.get(videos.size()-1).getId(),18, VideoScope.PUBLIC);
-        Slice<Video> newestVideoList = videoService.findPublicNewestVideoList(21,18, VideoScope.PUBLIC);
+        Slice<Video> newestVideoList = videoService.findPublicNewestVideoList(videos.get(videos.size()-1).getId(),18, VideoScope.PUBLIC);
+//        Slice<Video> newestVideoList = videoService.findPublicNewestVideoList(21,18, VideoScope.PUBLIC);
 
         //then
 //        System.out.println("videos.get(videos.size()-1).getId() = " + videos.get(videos.size()-1).getId());

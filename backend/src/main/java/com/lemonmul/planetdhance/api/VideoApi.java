@@ -27,7 +27,7 @@ public class VideoApi {
      * size는 기본값 18
      */
     @GetMapping("/list/latest/{lastId}")
-    public Slice<VideoDto> newestList(@PathVariable int lastId){
+    public Slice<VideoDto> newestList(@PathVariable Long lastId){
         //반환할 영상 개수
         int size=18;
         Slice<Video> videoList = videoService.findPublicNewestVideoList(lastId,size, VideoScope.PUBLIC);
