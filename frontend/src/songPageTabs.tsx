@@ -72,7 +72,7 @@ export default function LabTabs() {
     setValue(newValue);
   };
 
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles(() => ({
     tab: { 
         '& .MuiBox-root': {
           padding: '0px',

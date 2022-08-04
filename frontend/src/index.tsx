@@ -14,6 +14,7 @@ import { DanceCompare } from './DanceCompare';
 import RankScoreCard from './RankScoreCard';
 
 import ModelViewer from './3dearth/ModelViewer';
+import SearchSongInfo from './SearchSongInfo';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -25,8 +26,8 @@ root.render(
   // <SearchSong />
   // <HashResult />
   // <DanceCompare />
-  <RankScoreCard/>
-  <ModelViewer />
+  <RankScoreCard />
+  // <ModelViewer />
 );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
