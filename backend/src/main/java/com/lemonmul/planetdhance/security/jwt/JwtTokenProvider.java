@@ -22,7 +22,8 @@ public class JwtTokenProvider {
     private String secretKey = "planetdhancetenalpecnahd";
 
 //    private long tokenValidTime = 30 * 60 * 1000L;
-    private long tokenValidTime = 60 * 1000L;
+    final long tokenValidTime = 60 * 1000L;
+
 
     private final UserDetailsService userDetailsService;
 
@@ -35,9 +36,8 @@ public class JwtTokenProvider {
     // JWT 토큰 생성
     public String createToken(String email, JwtToken jwtToken) {
         Claims claims = Jwts.claims().setSubject(email); // JWT payload 에 저장되는 정보단위, 보통 여기서 user를 식별하는 값을 넣는다.
-        claims.put("roles", jwtToken.getRoles());
+        claims.put("roles", jwtToken.getRoles()); // 정보는 key / value 쌍으로 저장된다.
         claims.put("details", jwtToken);
-//        claims.put("role", role); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
@@ -56,9 +56,7 @@ public class JwtTokenProvider {
 
     // 토큰에서 회원 정보 추출
     public String getUserPk(String token) {
-        String temp = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-        System.out.println("temp = " + temp);
-        return temp;
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     // Request의 Header에서 token 값을 가져옵니다. "Authorization" : "TOKEN값'
