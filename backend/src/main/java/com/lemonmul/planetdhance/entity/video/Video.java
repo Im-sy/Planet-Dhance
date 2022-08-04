@@ -1,5 +1,9 @@
-package com.lemonmul.planetdhance.entity;
+package com.lemonmul.planetdhance.entity.video;
 
+import com.lemonmul.planetdhance.entity.Like;
+import com.lemonmul.planetdhance.entity.Music;
+import com.lemonmul.planetdhance.entity.VideoTag;
+import com.lemonmul.planetdhance.entity.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +21,8 @@ import java.util.List;
 public class Video {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition="INT UNSIGNED",name = "video_id")
-//    @Column(name ="video_id")
-    private int id;
+    @Column(name ="video_id")
+    private Long id;
 
     private String videoUrl;
 
@@ -93,4 +96,5 @@ public class Video {
     public void addLikeCnt(){
         this.likeCnt++;
     }
+
 }

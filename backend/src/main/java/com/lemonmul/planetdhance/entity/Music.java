@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.entity;
 
+import com.lemonmul.planetdhance.entity.video.Video;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,10 +13,9 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Music {
     @Column(columnDefinition = "INT UNSIGNED", name ="music_id")
-//    @Column(name ="music_id")
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     private String title;
 
@@ -49,13 +49,9 @@ public class Music {
 
     private void setTitle(String title){
         this.title=title;
-        //TODO 관리자 생기면 태그 추가 여기서
-        Tag.createTag(title,TagType.TITLE,imgUrl);
     }
 
     private void setArtist(String artist){
         this.artist=artist;
-        //TODO 관리자 생기면 태그 추가 여기서
-        Tag.createTag(artist,TagType.ARTIST,"artist img");
     }
 }

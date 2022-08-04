@@ -1,5 +1,7 @@
-package com.lemonmul.planetdhance.entity;
+package com.lemonmul.planetdhance.entity.user;
 
+import com.lemonmul.planetdhance.entity.*;
+import com.lemonmul.planetdhance.entity.video.Video;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,44 +16,61 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "DTYPE")
+@ToString
 public class User {
-    @Column(columnDefinition = "INT UNSIGNED", name ="user_id")
-//    @Column(name ="user_id")
+    @Column(name ="user_id")
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
-    private String nickname;
+    protected String email;
 
-    private String introduce;
+    protected String nickname;
 
-    private String imgUrl;
+    protected String introduce;
 
-    private LocalDateTime regDate;
+    protected String imgUrl;
 
-    private LocalDateTime renewDate;
+    protected LocalDateTime regDate;
+
+    protected LocalDateTime renewDate;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    protected Role role;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nation_id")
-    private Nation nation;
+    protected Nation nation;
 
     @OneToMany(mappedBy = "from")
-    private List<Follow> froms=new ArrayList<>();
+    protected List<Follow> froms=new ArrayList<>();
 
     @OneToMany(mappedBy = "to")
-    private List<Follow> tos=new ArrayList<>();
+    protected List<Follow> tos=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Like> likes=new ArrayList<>();
+    protected List<Like> likes=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Clear> clears=new ArrayList<>();
+    protected List<Clear> clears=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Video> videos=new ArrayList<>();
+    protected List<Video> videos=new ArrayList<>();
+
+    public User(String imgUrl){
+        this.imgUrl = imgUrl;
+    }
+
+    public User(String email, String nickname, String introduce, String imgUrl, Nation nation, Role role){
+        this.email = email;
+        this.nickname = nickname;
+        this.setIntroduce(introduce);
+        this.setImgUrl(imgUrl);
+        this.setNation(nation);
+        this.role = role;
+        this.regDate = LocalDateTime.now();
+        this.renewDate = this.regDate;
+    }
 
     //==생성 메서드==//
     public static User createUser(String nickname,String introduce,String imgUrl,Nation nation){
@@ -62,11 +81,10 @@ public class User {
         user.regDate=LocalDateTime.now();
         user.renewDate=user.regDate;
         user.role=Role.USER;
-        user.nation=nation;
-        //Tag 테이블에 nickname 추가
-        Tag.createTag(user.nickname, TagType.NICKNAME,user.imgUrl);
+        user.setNation(nation);
         return user;
     }
+
 
     public void setImgUrl(String imgUrl){
         if(imgUrl==null){
@@ -84,8 +102,13 @@ public class User {
         this.introduce=introduce;
     }
 
+    //==연관관계 메서드==//
+    public void setNation(Nation nation){
+        this.nation=nation;
+//        nation.getUsers().add(this);
+    }
+
     public void setRenewDate(LocalDateTime renewDate){
         this.renewDate=renewDate;
     }
-
 }

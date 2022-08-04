@@ -1,5 +1,7 @@
 package com.lemonmul.planetdhance.entity;
 
+import com.lemonmul.planetdhance.entity.tag.Tag;
+import com.lemonmul.planetdhance.entity.video.Video;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,9 +13,8 @@ import javax.persistence.*;
 public class VideoTag {
 
     @Id @GeneratedValue
-    @Column(columnDefinition="INT UNSIGNED",name = "video_tag_id")
-//    @Column(name ="video_tag_id")
-    private int id;
+    @Column(name ="video_tag_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "video_id")
@@ -24,7 +25,7 @@ public class VideoTag {
     private Tag tag;
 
     //==생성 메서드==//
-    public static VideoTag createVideoTag(Video video,Tag tag){
+    public static VideoTag createVideoTag(Video video, Tag tag){
         VideoTag videoTag=new VideoTag();
         videoTag.setVideo(video);
         videoTag.setTag(tag);

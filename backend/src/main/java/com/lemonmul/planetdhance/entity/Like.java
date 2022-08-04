@@ -1,5 +1,7 @@
 package com.lemonmul.planetdhance.entity;
 
+import com.lemonmul.planetdhance.entity.user.User;
+import com.lemonmul.planetdhance.entity.video.Video;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,9 +14,8 @@ import javax.persistence.*;
 public class Like {
 
     @Id @GeneratedValue
-    @Column(columnDefinition="INT UNSIGNED",name = "like_id")
-//    @Column(name ="like_id")
-    private int id;
+    @Column(name ="like_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "video_id")

@@ -1,4 +1,6 @@
-package com.lemonmul.planetdhance.entity;
+package com.lemonmul.planetdhance.security.oauth2;
+
+import com.lemonmul.planetdhance.security.oauth2.user.SignUpData;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -6,24 +8,24 @@ import java.util.function.Function;
 
 public enum OAuthAttributes {
     GOOGLE("google", (attributes) -> {
-        return new UserProfile(
+        return new SignUpData(
+                "signup",
                 String.valueOf(attributes.get("sub")),
-                (String) attributes.get("name"),
                 (String) attributes.get("email"),
-                (String) attributes.get("picture")
+                (String) attributes.get("locale"),
+                "social"
         );
     });
-//    FACEBOOK("facebook", )
 
     private final String registrationId;
-    private final Function<Map<String, Object>, UserProfile> of;
+    private final Function<Map<String, Object>, SignUpData> of;
 
-    OAuthAttributes(String registrationId, Function<Map<String, Object>, UserProfile> of) {
+    OAuthAttributes(String registrationId, Function<Map<String, Object>, SignUpData> of) {
         this.registrationId = registrationId;
         this.of = of;
     }
 
-    public static UserProfile extract(String registrationId, Map<String, Object> attributes) {
+    public static SignUpData extract(String registrationId, Map<String, Object> attributes) {
         return Arrays.stream(values())
                 .filter(provider -> registrationId.equals(provider.registrationId))
                 .findFirst()
