@@ -77,6 +77,36 @@ public class TagApi {
         return videoList.map(VideoDto::new);
     }
 
+    /**
+     * 곡 태그의 곡 리스트,영상 리스트 반환 (hit&like순) - 곡 검색 페이지 진입
+     *
+     * 요청 파라미터 예시: /tag/music/{해시태그 아이디}
+     * 곡 리스트는 전체
+     * 영상 리스트 size는 기본값 18
+     */
+    @GetMapping("/music/{tag_id}")
+    public TagPageResponse musicsAndMusicVideos(@PathVariable Long tag_id){
+        Tag tag = tagService.findTagById(tag_id);
+        List<Music> musicList = musicService.findTitleVideoList(tag.getName());
+        int page=0;
+        Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+        return new TagPageResponse(musicList,videoList);
+    }
+
+    /**
+     * 곡 태그의 영상 리스트 반환 (hit&like순) - 곡 검색 페이지 무한 스크롤
+     *
+     * 요청 파라미터 예시: /tag/music/{해시태그 아이디}/{page번호}
+     * 영상 리스트 size는 기본값 18
+     */
+    @GetMapping("/music/{tag_id}/{page}")
+    public Slice<VideoDto> musicVideos(@PathVariable Long tag_id,@PathVariable int page){
+        Tag tag = tagService.findTagById(tag_id);
+        List<Music> musicList = musicService.findTitleVideoList(tag.getName());
+        Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+        return videoList.map(VideoDto::new);
+    }
+
     @Data
     static class TagDto{
         private Long id;

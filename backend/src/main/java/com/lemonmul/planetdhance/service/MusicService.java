@@ -35,6 +35,6 @@ public class MusicService {
      * 곡 조회 - 곡 제목
      */
     public List<Music> findTitleVideoList(String title){
-        return musicRepo.findByTitle(title);
+        return musicRepo.findByTitleOrderByRelDate(title);
     }
 }
