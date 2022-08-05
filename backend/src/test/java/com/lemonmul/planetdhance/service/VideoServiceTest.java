@@ -16,6 +16,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,15 +102,15 @@ class VideoServiceTest {
         em.persist(user2);
         em.persist(Tag.createTag(user2.getNickname(),TagType.NICKNAME,user2.getImgUrl()));
 
-        Music music1=Music.createMusic("title1","artist1","album img1","model url1","guide url1","mv url1");
+        Music music1=Music.createMusic("title1","artist1","album img1","model url1","guide url1","mv url1", LocalDateTime.now());
         em.persist(music1);
         em.persist(Tag.createTag(music1.getArtist(),TagType.ARTIST,"artist img1"));
         em.persist(Tag.createTag(music1.getTitle(),TagType.TITLE, music1.getImgUrl()));
-        Music music2=Music.createMusic("title2","artist2","album img2","model url2","guide url2","mv url2");
+        Music music2=Music.createMusic("title2","artist2","album img2","model url2","guide url2","mv url2",LocalDateTime.now());
         em.persist(Tag.createTag(music2.getArtist(),TagType.ARTIST,"artist img2"));
         em.persist(Tag.createTag(music2.getTitle(),TagType.TITLE, music2.getImgUrl()));
         em.persist(music2);
-        Music music3=Music.createMusic("title3","artist2","album img3","model url3","guide url3","mv url3");
+        Music music3=Music.createMusic("title3","artist2","album img3","model url3","guide url3","mv url3",LocalDateTime.now());
         em.persist(Tag.createTag(music3.getArtist(),TagType.ARTIST,"artist img3"));
         em.persist(Tag.createTag(music3.getTitle(),TagType.TITLE, music3.getImgUrl()));
         em.persist(music3);
