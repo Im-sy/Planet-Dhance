@@ -1,11 +1,16 @@
 package com.lemonmul.planetdhance.api;
 
 
+import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Music;
+import com.lemonmul.planetdhance.entity.video.Video;
+import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.service.MusicService;
+import com.lemonmul.planetdhance.service.VideoService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +24,11 @@ import java.util.Optional;
 public class MusicApi {
 
     private final MusicService musicService;
+    private final VideoService videoService;
 
-    /*
+    private static final int size=18;
+
+    /**
     * 챌린지 페이지 진입 시
     *
     * 요청 파라미터 예시: /music/challenge/{id}
@@ -28,11 +36,23 @@ public class MusicApi {
     * */
     @GetMapping("/challenge/{id}")
     public Optional<MusicDto> musicForChallenge(@PathVariable Long id){
-
         Optional<Music> music = musicService.getMusicInfo(id);
-        Optional<MusicDto> musicDto = music.map(MusicDto::new);
+        return music.map(MusicDto::new);
+    }
 
-        return musicDto;
+    /**
+     * 뮤비,최신 영상 리스트,조회수&좋아요 영상 리스트(곡 페이지로 이동)
+     *
+     * 요청 파라미터 예시: /music/list/{곡 아이디}
+     * size는 기본값 18
+     */
+    @GetMapping("/list/{music_id}")
+    public MusicPageResponse mvAndVideoLists(@PathVariable Long music_id){
+        Music music=musicService.getMusicInfo(music_id).get();
+        int page=0;
+        Slice<Video> newestVideoList = videoService.findNewestVideoList(page,size, music,VideoScope.PUBLIC);
+        Slice<Video> hitLikeVideoList = videoService.findHitLikeVideoList(page, size, music, VideoScope.PUBLIC);
+        return new MusicPageResponse(music,newestVideoList,hitLikeVideoList);
     }
 
     @Data
@@ -50,8 +70,16 @@ public class MusicApi {
         }
     }
 
-    /*
-     * 곡 검색 페이지 진입 시 => Community 에서 처리
-     */
+    @Data
+    static class MusicPageResponse{
+        String mvUrl;
+        Slice<VideoDto> newestList;
+        Slice<VideoDto> hitlikeList;
 
+        public MusicPageResponse(Music music,Slice<Video> newest,Slice<Video> hitlike) {
+            mvUrl=music.getMvUrl();
+            newestList=newest.map(VideoDto::new);
+            hitlikeList=hitlike.map(VideoDto::new);
+        }
+    }
 }

@@ -4,6 +4,7 @@ import com.lemonmul.planetdhance.entity.*;
 import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
+import com.lemonmul.planetdhance.repo.MusicRepo;
 import com.lemonmul.planetdhance.repo.TagRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ class VideoServiceTest {
 
     @Autowired
     VideoService videoService;
+    @Autowired
+    MusicRepo musicRepo;
     @Autowired
     TagRepo tagRepo;
     @Autowired
@@ -51,7 +54,8 @@ class VideoServiceTest {
         //when
         int page=0;
         int size=18;
-        Slice<Video> newestVideoList = videoService.findNewestVideoList(page,size, VideoScope.PUBLIC);
+        Music music=musicRepo.findById(4L).get();
+        Slice<Video> newestVideoList = videoService.findNewestVideoList(page,size,music, VideoScope.PUBLIC);
 
         //then
         for (Video video : newestVideoList) {
@@ -63,16 +67,18 @@ class VideoServiceTest {
     @Test
     public void findHitLikeVideoList(){
         //given
-//        initdb();
+        initdb();
 
-        printHitLikeList(0, 5);
-        printHitLikeList(1, 5);
+        Music music=musicRepo.findById(4L).get();
+        printHitLikeList(0, 5,music);
+        printHitLikeList(1, 5,music);
 
     }
 
-    private void printHitLikeList(int page, int size) {
+    private void printHitLikeList(int page, int size,Music music) {
         //when
-        Slice<Video> hitLikeVideoList = videoService.findHitLikeVideoList(page, size, VideoScope.PUBLIC);
+
+        Slice<Video> hitLikeVideoList = videoService.findHitLikeVideoList(page, size, music,VideoScope.PUBLIC);
 
         //then
         for (Video video : hitLikeVideoList) {
