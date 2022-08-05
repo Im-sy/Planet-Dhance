@@ -26,7 +26,7 @@ public class MusicApi {
     private final MusicService musicService;
     private final VideoService videoService;
 
-    private static final int size=5;
+    private static final int size=18;
 
     /**
     * 챌린지 페이지 진입 시
