@@ -24,7 +24,7 @@ public class VideoApi {
     private final VideoService videoService;
     private final MusicService musicService;
 
-    private static final int size=5;
+    private static final int size=18;
 
     /**
      * 영상 리스트 - 최신
