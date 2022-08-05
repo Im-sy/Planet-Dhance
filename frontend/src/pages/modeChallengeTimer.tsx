@@ -9,8 +9,9 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 // import myVideo from './videos/IMG_0960.mp4';
-import myVideo from './videos/fullvideo.mp4';
-import './App.css';
+import myVideo from '../videos/IMG_0960.mp4';
+import '../styles/App.css';
+import "../styles/styles.css";
 
 
 // webcam 부분 1----------------------------------
@@ -24,7 +25,7 @@ import type {
   RecordWebcamOptions,
   RecordWebcamHook
 } from "react-record-webcam";
-import "./styles.css";
+
 
 const OPTIONS: RecordWebcamOptions = {
   // 위치 찾아보기

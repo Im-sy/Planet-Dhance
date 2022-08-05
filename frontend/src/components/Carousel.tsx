@@ -3,8 +3,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ActionAreaCard from './Card';
-import './tailwind_reset.css'
-import './styles.css'
+import '../styles/tailwind_reset.css'
+import '../styles/styles.css'
 
 
 

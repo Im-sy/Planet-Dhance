@@ -4,7 +4,7 @@ import './tailwind_reset.css';
 import sample1 from './videos/sample1.mp4';
 import sample2 from './videos/sample2.mp4';
 
-import { ProgressBar } from './ProgressBar';
+import { ProgressBar } from '../components/UI/ProgressBar';
 
 
 const videoZone: CSSProperties = {

@@ -1,7 +1,7 @@
 import React, { CSSProperties, SetStateAction, useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
-import ActionAreaCard from './Card';
-import SongPageTabs from './songPageTabs';
+import ActionAreaCard from '../components/Card';
+import SongPageTabs from '../components/songPageTabs';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import myVideo from './videos/sparkling.mp4';
 import { IconButton, Checkbox } from '@mui/material';

@@ -1,5 +1,5 @@
 import React from 'react'
-import GridView from './GridView'
+import GridView from '../components/GridView'
 
 export default function SearchTag() {
   return (

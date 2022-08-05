@@ -1,21 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import App2 from './App_video';
-import ActionAreaCard from './Card';
-import GridView from './GridView';
-import SearchTag from './SearchTag';
-import SearchSong from './SearchSong';
-import { HashResult } from './HashResult';
-import Carousel from './Carousel';
-import { DanceCompare } from './DanceCompare';
+import App2 from './pages/App_video';
+import ActionAreaCard from './components/Card';
+import GridView from './components/GridView';
+import SearchTag from './pages/SearchTag';
+import SearchSong from './pages/SearchSong';
+import { HashResult } from './components/HashResult';
+import Carousel from './components/Carousel';
+import { DanceCompare } from './pages/DanceCompare';
 
-import ModelViewer from './3dearth/ModelViewer';
-import SearchSongInfo from './SearchSongInfo';
+import ModelViewer from './components/ModelViewer';
+import SearchSongInfo from './components/SearchSongInfo';
 // import RankScoreCard from './RankScoreCard';
-import ModeChallengeTimer from './modeChallengeTimer';
+import ModeChallengeTimer from './pages/modeChallengeTimer';
 
 // import ModelViewer from './3dearth/ModelViewer';
 

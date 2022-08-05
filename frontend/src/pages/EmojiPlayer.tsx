@@ -6,13 +6,13 @@ import PauseIcon from '@mui/icons-material/Pause';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
-import { ProgressBar } from './ProgressBar';
+import { ProgressBar } from '../components/UI/ProgressBar';
 
 import myVideo from './videos/IMG_0960.mp4';
 import sample1 from './videos/sample1.mp4';
 import sample2 from './videos/sample2.mp4';
 import './App.css';
-import Emoji from './Emoji';
+import Emoji from '../components/Emoji';
 
 const progressStyle: CSSProperties = {
   position: 'absolute',

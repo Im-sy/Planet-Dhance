@@ -1,7 +1,7 @@
 import React from 'react'
-import GridView from './GridView'
-import SearchSongInfo from './SearchSongInfo'
-import NavBar from './NavBar'
+import GridView from '../components/GridView'
+import SearchSongInfo from '../components/SearchSongInfo'
+import NavBar from '../components/NavBar'
 
 export default function SearchSong() {
   return (
