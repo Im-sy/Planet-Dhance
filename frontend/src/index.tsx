@@ -25,7 +25,7 @@ root.render(
   // <SearchSong />
   // <HashResult />
   // <DanceCompare />
-  <RankScoreCard/>
+  // <RankScoreCard/>
   <ModelViewer />
 );
 // If you want to start measuring performance in your app, pass a function
