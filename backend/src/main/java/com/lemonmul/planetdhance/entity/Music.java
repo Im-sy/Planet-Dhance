@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Music {
-    @Column(columnDefinition = "INT UNSIGNED", name ="music_id")
+    @Column(name ="music_id")
     @Id
     @GeneratedValue
     private Long id;
