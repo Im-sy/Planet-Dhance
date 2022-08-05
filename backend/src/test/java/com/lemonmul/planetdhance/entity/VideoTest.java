@@ -27,9 +27,9 @@ class VideoTest {
         Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko");
         em.persist(nation1);
 
-        User user1=User.createUser("user1",null,null,nation1);
+        User user1=User.createUser("email1@xx.xx","user1",null,null,nation1);
         em.persist(user1);
-        User user2= User.createUser("user2",null,null,nation1);
+        User user2= User.createUser("email2@xx.xx","user2",null,null,nation1);
         em.persist(user2);
 
         Music music1=Music.createMusic("title1","artist1","album img1","model url1","guide url1","mv url1");

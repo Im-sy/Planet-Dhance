@@ -20,8 +20,18 @@ public class VideoService {
     /**
      * 영상 리스트 - 최신
      */
-    public Slice<Video> findPublicNewestVideoList(int lastId,int size,VideoScope videoScope){
-        Pageable pageable=PageRequest.of(0,size);
-        return videoRepo.findByIdLessThanAndScopeOrderByRegDateDesc(lastId,videoScope,pageable);
+    public Slice<Video> findNewestVideoList(int page, int size, VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByScopeOrderByRegDateDesc(scope,pageable);
+    }
+
+    /**
+     * 영상 리스트 - 조회수&좋아요
+     *
+     * 조회수&좋아요 가중치 같으면 최신순
+     */
+    public Slice<Video> findHitLikeVideoList(int page,int size,VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByScopeOrderByOrderWeightDescRegDateDesc(scope,pageable);
     }
 }

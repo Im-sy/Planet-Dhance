@@ -31,9 +31,10 @@ public class Video {
 
     private String imgUrl;
 
-    private int hit;
+    private Long hit;
 
-    private int likeCnt;
+    //정렬 가중치(hit+likeCnt*3)
+    private Long orderWeight;
 
     private LocalDateTime regDate;
 
@@ -57,8 +58,8 @@ public class Video {
         video.videoUrl=videoUrl;
         video.scope=scope;
         video.imgUrl=imgUrl;
-        video.hit=0;
-        video.likeCnt=0;
+        video.hit=0L;
+        video.orderWeight =0L;
         video.regDate=LocalDateTime.now();
         video.setUser(user);
         video.setMusic(music);
@@ -91,10 +92,11 @@ public class Video {
     //==비즈니스 로직==//
     public void addHit(){
         this.hit++;
+        this.orderWeight++;
     }
 
     public void addLikeCnt(){
-        this.likeCnt++;
+        this.orderWeight+=3;
     }
 
 }
