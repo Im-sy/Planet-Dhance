@@ -9,7 +9,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
-import "./styles.css";
+import "../styles/styles.css";
+import NavBar from '../components/NavBar'
 
 interface playProps {
   url: string;
@@ -233,7 +234,7 @@ export default function SongPage() {
 
       <SongPageTabs />
 
-
+      <NavBar />
     </div>
   )
 }

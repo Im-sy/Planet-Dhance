@@ -5,7 +5,7 @@ import RankScore from '../components/RankScore'
 import Planet from '../components/Planet'
 import GridView from '../components/GridView'
 import NavBar from '../components/NavBar'
-
+import TopBar from '../components/TopBar';
 
 
 export default function Main() {
@@ -13,7 +13,7 @@ export default function Main() {
     return(
         <div>
             <div>
-                logo component
+                <TopBar />
             </div>
 
             {/* 상단 캐로셀 */}

@@ -2,12 +2,15 @@ import React from 'react'
 import GridView from '../components/GridView'
 import SearchSongInfo from '../components/SearchSongInfo'
 import NavBar from '../components/NavBar'
+import SearchBar from '../components/SearchBar'
+import TopBar from '../components/TopBar'
 
 export default function SearchSong() {
   return (
     <div>
+      <TopBar />
       <div className="search-bar">
-        <h3>검색창 자리</h3>
+        <SearchBar />
       </div>
       <div>
         <SearchSongInfo

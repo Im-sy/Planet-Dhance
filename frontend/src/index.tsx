@@ -16,6 +16,7 @@ import SearchSongInfo from './components/SearchSongInfo';
 // import RankScoreCard from './RankScoreCard';
 import ModeChallengeTimer from './pages/modeChallengeTimer';
 import Main from './pages/Main';
+import AppRouter from './pages/AppRouter';
 
 // import ModelViewer from './3dearth/ModelViewer';
 
@@ -23,7 +24,8 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <Main />
+  // <Main />
+  <AppRouter />
 );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
