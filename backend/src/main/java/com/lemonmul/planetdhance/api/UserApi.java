@@ -42,9 +42,9 @@ public class UserApi {
                 CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
                 JwtToken jwtToken = customUserDetails.toJwtToken();
                 String tokenString = jwtTokenProvider.createToken(jwtToken.getEmail(), jwtToken);
-                Token token = new Token(jwtToken.getEmail(), tokenString);
+                Validate validate = new Validate(jwtToken.getEmail(), tokenString);
 
-                if(tokenService.login(token))
+                if(tokenService.login(validate))
                     return new JwtTokenJson("loginSuccess", tokenString);
             }
         }

@@ -1,6 +1,5 @@
 package com.lemonmul.planetdhance.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,9 +11,9 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Token {
+public class Validate {
 
-    @Column(name ="token_id")
+    @Column(name ="validate_id")
     @Id @GeneratedValue
     private Long id;
 
@@ -23,7 +22,7 @@ public class Token {
     @Column(length = 500)
     private String token;
 
-    public Token(String email, String token){
+    public Validate(String email, String token){
         this.email = email;
         this.token = token;
     }
