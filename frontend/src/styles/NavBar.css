@@ -1,0 +1,9 @@
+.navbar {
+  filter: grayscale(1);
+  color: rgba(255, 255, 255, 0.5)!important;
+}
+
+.navbar.Mui-selected {
+  filter: grayscale(0);
+  color: #E8AA42!important;
+}
