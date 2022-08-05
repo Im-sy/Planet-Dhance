@@ -8,7 +8,7 @@ import '../styles/styles.css'
 
 
 
-export default class AutoPlay extends Component {
+export default class Carousel extends Component {
   render() {
     const settings = {
       // dots: true,

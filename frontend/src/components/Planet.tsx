@@ -8,7 +8,7 @@ function Model() {
   return <primitive scale={2.5} object={scene} />;
 }
 
-const ModelViewer = () => {
+const Planet = () => {
   return (
     <div style = {{height:"100vh", backgroundColor:"#231955"}}>
       <Canvas>
@@ -24,4 +24,4 @@ const ModelViewer = () => {
   );
 };
 
-export default ModelViewer;
+export default Planet;
