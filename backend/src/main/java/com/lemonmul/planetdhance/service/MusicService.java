@@ -28,7 +28,7 @@ public class MusicService {
      * 곡 조회 - 가수
      */
     public List<Music> findArtistVideoList(String artist){
-        return musicRepo.findByArtist(artist);
+        return musicRepo.findByArtistOrderByRelDateDesc(artist);
     }
 
     /**

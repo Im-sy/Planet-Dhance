@@ -32,7 +32,7 @@ public class TagApi {
     private final VideoService videoService;
 
     private static final int tagSize=5;
-    private static final int videoSize=5;
+    private static final int videoSize=18;
 
     /**
      * 연관 검색어 리스트 반환 (검색 빈도순)
@@ -64,7 +64,7 @@ public class TagApi {
     }
 
     /**
-     * 가수 태그의 영상 리스트 반환(hit&like순) - 가수 검색 페이지 무한 스크롤
+     * 가수 태그의 영상 리스트 반환 (hit&like순) - 가수 검색 페이지 무한 스크롤
      *
      * 요청 파라미터 예시: /tag/artist/{해시태그 아이디}/{page번호}
      * 영상 리스트 size는 기본값 18
@@ -94,12 +94,12 @@ public class TagApi {
 
     @Data
     static class TagPageResponse{
-        List<MusicDto> musics;
-        Slice<VideoDto> videos;
+        List<MusicDto> musicList;
+        Slice<VideoDto> videoList;
 
         public TagPageResponse(List<Music> musicList, Slice<Video> videoList) {
-            this.musics = musicList.stream().map(MusicDto::new).collect(Collectors.toList());
-            this.videos = videoList.map(VideoDto::new);
+            this.musicList = musicList.stream().map(MusicDto::new).collect(Collectors.toList());
+            this.videoList = videoList.map(VideoDto::new);
         }
     }
 

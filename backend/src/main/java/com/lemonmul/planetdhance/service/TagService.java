@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,14 +24,18 @@ public class TagService {
         return tagRepo.findByNameContainingOrderByHitDesc(searchStr,pageable);
     }
 
+    /**
+     * 태그 조회
+     *
+     * 해당 아이디의 해시태그 조회 및 검색 횟수 증가
+     */
+    @Transactional
     public Tag findTagById(Long id){
         //TODO Optional 처리
         Tag tag = tagRepo.findById(id).get();
+        //해시태그 검색 횟수 증가
         tag.addHit();
         return tag;
     }
 
-    public Tag findTagByNameAndType(String name, TagType type){
-        return tagRepo.findByNameAndType(name,type);
-    }
 }
