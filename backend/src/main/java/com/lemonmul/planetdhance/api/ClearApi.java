@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,31 +22,25 @@ public class ClearApi {
     private final ClearService clearService;
 
     /*
-    * 챌린지 종료 시
-    * 챌린지 clear 했을 경우 clear 테이블 저장
-    *
-    * 요청 파라미터 예시: /clear/{userId}/save
-    * */
-    @PostMapping("/{userId}/save")
-    public void saveClear(int clearOrNot, @PathVariable long userId, long musicId){
-        if (clearOrNot == 1){
-            Clear.createClear();
-            clearService.clear(toClear(userId, musicId));
-        }
-    }
+     * 챌린지 종료 시
+     * 챌린지 clear 했을 경우 clear 테이블 저장
+     *
+     * Video 업로드에서 처리
+     * */
+
 
     /*
-    * My page 진입 시
-    * clear 곡 리스트 반환
-    * size: 5개?
-    *
-    * 요청 파라미터 예시: /clear/{userId}/musics
-    * */
-    @GetMapping("{userId}/musics")
+     * My page 진입 시
+     * clear 곡 리스트 반환(MusicList)
+     * size: 5개?
+     *
+     * 요청 파라미터 예시: /clear/{userId}/musics
+     * */
+    @GetMapping("/{userId}/musics")
     public List<ClearMusicDto> clearList(@PathVariable Long userId){
-        int size = 5;
-        List<Music> musicList = ClearService.findClearMusicList(userId, size);
-        return musicList.map(ClearMusicDto::new);
+        int size = 5; // 반환할 clear 곡 갯수
+        List<Music> musicList = clearService.findClearMusicList(userId, size);
+        return MusicToClearDto(musicList);
     }
 
 
@@ -53,5 +48,16 @@ public class ClearApi {
     static class ClearMusicDto{
         private String title;
         private String imgUrl;
+
+        public ClearMusicDto(Music music){
+            title = music.getTitle();
+            imgUrl = music.getImgUrl();
+        }
+    }
+
+    private List<ClearMusicDto> MusicToClearDto(List<Music> music){
+        return music.stream()
+                .map(ClearMusicDto::new)
+                .collect(Collectors.toList());
     }
 }
