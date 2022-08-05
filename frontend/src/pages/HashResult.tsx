@@ -1,6 +1,6 @@
 import SearchSongInfo from '../components/SearchSongInfo';
 
-export function HashResult() {
+export default function HashResult() {
   return (
     <div>
       <div className="search-bar">

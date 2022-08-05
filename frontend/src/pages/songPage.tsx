@@ -1,7 +1,7 @@
 import React, { CSSProperties, SetStateAction, useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import ActionAreaCard from '../components/Card';
-import SongPageTabs from '../components/songPageTabs';
+import SongPageTabs from '../components/SongPageTabs';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import myVideo from './videos/sparkling.mp4';
 import { IconButton, Checkbox } from '@mui/material';
@@ -9,8 +9,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
-import "./styles.css";
-
+import "../styles/styles.css";
+import NavBar from '../components/NavBar'
 interface playProps {
   url: string;
   playing: boolean;
@@ -232,6 +232,9 @@ export default function SongPage() {
       </div>
 
       <SongPageTabs />
+
+      {/* Navbar */}
+      <NavBar />
 
 
     </div>
