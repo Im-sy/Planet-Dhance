@@ -4,8 +4,8 @@ import { OrbitControls, useGLTF } from "@react-three/drei";
 import '@google/model-viewer/lib/model-viewer'
 
 function Model() {
-  const { scene } = useGLTF("/planet.glb")
-  return <primitive object={scene} />;
+  const { scene } = useGLTF("/planet_flag.glb")
+  return <primitive scale={2.5} object={scene} />;
 }
 
 const ModelViewer = () => {
