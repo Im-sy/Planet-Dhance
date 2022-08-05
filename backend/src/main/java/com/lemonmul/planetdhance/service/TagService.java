@@ -30,11 +30,13 @@ public class TagService {
      * 해당 아이디의 해시태그 조회 및 검색 횟수 증가
      */
     @Transactional
-    public Tag findTagById(Long id){
+    public Tag findTagById(Long id,int page){
         //TODO Optional 처리
         Tag tag = tagRepo.findById(id).get();
-        //해시태그 검색 횟수 증가
-        tag.addHit();
+        //검색 페이지 진입 시, 해시태그 검색 횟수 증가
+        if(page==0){
+            tag.addHit();
+        }
         return tag;
     }
 

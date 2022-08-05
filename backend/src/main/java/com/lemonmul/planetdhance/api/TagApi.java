@@ -56,9 +56,9 @@ public class TagApi {
      */
     @GetMapping("/artist/{tag_id}")
     public TagPageResponse musicsAndArtistVideos(@PathVariable Long tag_id){
-        Tag tag = tagService.findTagById(tag_id);
-        List<Music> musicList = musicService.findArtistVideoList(tag.getName());
         int page=0;
+        Tag tag = tagService.findTagById(tag_id,page);
+        List<Music> musicList = musicService.findArtistVideoList(tag.getName());
         Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
         return new TagPageResponse(musicList,videoList);
     }
@@ -71,7 +71,7 @@ public class TagApi {
      */
     @GetMapping("/artist/{tag_id}/{page}")
     public Slice<VideoDto> artistVideos(@PathVariable Long tag_id,@PathVariable int page){
-        Tag tag = tagService.findTagById(tag_id);
+        Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findArtistVideoList(tag.getName());
         Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
         return videoList.map(VideoDto::new);
@@ -86,9 +86,9 @@ public class TagApi {
      */
     @GetMapping("/music/{tag_id}")
     public TagPageResponse musicsAndMusicVideos(@PathVariable Long tag_id){
-        Tag tag = tagService.findTagById(tag_id);
-        List<Music> musicList = musicService.findTitleVideoList(tag.getName());
         int page=0;
+        Tag tag = tagService.findTagById(tag_id,page);
+        List<Music> musicList = musicService.findTitleVideoList(tag.getName());
         Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
         return new TagPageResponse(musicList,videoList);
     }
@@ -101,11 +101,13 @@ public class TagApi {
      */
     @GetMapping("/music/{tag_id}/{page}")
     public Slice<VideoDto> musicVideos(@PathVariable Long tag_id,@PathVariable int page){
-        Tag tag = tagService.findTagById(tag_id);
+        Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findTitleVideoList(tag.getName());
         Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
         return videoList.map(VideoDto::new);
     }
+
+
 
     @Data
     static class TagDto{
