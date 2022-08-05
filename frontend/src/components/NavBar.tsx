@@ -2,9 +2,9 @@ import React from 'react'
 import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import MuiBottomNavigationAction from '@mui/material/BottomNavigationAction';
-import navFav from './navbtns/navFav.png'
-import navHome2 from './navbtns/navHome2.png'
-import navSearch from './navbtns/navSearch.png'
+import navFav from '../styles/navbtns/navFav.png'
+import navHome2 from '../styles/navbtns/navHome2.png'
+import navSearch from '../styles/navbtns/navSearch.png'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { styled } from "@mui/material/styles";
 

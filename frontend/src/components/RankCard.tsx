@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CSSProperties } from '@mui/styled-engine';
-import './Card.css'
+import '../styles/Card.css'
 
 interface SearchInfo {
   img: string;

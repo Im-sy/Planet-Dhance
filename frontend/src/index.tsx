@@ -7,14 +7,15 @@ import ActionAreaCard from './components/Card';
 import GridView from './components/GridView';
 import SearchTag from './pages/SearchTag';
 import SearchSong from './pages/SearchSong';
-import { HashResult } from './components/HashResult';
+import { HashResult } from './pages/HashResult';
 import Carousel from './components/Carousel';
 import { DanceCompare } from './pages/DanceCompare';
 
-import ModelViewer from './components/ModelViewer';
+import ModelViewer from './components/Planet';
 import SearchSongInfo from './components/SearchSongInfo';
 // import RankScoreCard from './RankScoreCard';
 import ModeChallengeTimer from './pages/modeChallengeTimer';
+import Main from './pages/Main';
 
 // import ModelViewer from './3dearth/ModelViewer';
 
@@ -22,15 +23,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  // <App2 />
-  // <GridView />
-  // <SearchTag />
-  // <SearchSong />
-  // <HashResult />
-  // <DanceCompare />
-  // <RankScoreCard/>
-  // <ModelViewer />
-  <ModeChallengeTimer />
+  <Main />
 );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

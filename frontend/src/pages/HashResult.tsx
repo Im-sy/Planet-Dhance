@@ -1,4 +1,4 @@
-import SearchSongInfo from './SearchSongInfo';
+import SearchSongInfo from '../components/SearchSongInfo';
 
 export function HashResult() {
   return (
