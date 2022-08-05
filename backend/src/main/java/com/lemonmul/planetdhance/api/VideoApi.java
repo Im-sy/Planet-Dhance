@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.api;
 
+import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.service.VideoService;
@@ -20,61 +21,30 @@ public class VideoApi {
 
     private final VideoService videoService;
 
+    private static final int size=18;
+
     /**
      * 영상 리스트 - 최신
      *
-     * 요청 파라미터 예시: /video/list/latest/{마지막 video_id}
+     * 요청 파라미터 예시: /video/list/latest/{page번호}
      * size는 기본값 18
      */
-    @GetMapping("/list/latest/{lastId}")
-    public Slice<VideoDto> newestList(@PathVariable Long lastId){
-        //반환할 영상 개수
-        int size=18;
-        Slice<Video> videoList = videoService.findPublicNewestVideoList(lastId,size, VideoScope.PUBLIC);
+    @GetMapping("/list/latest/{page}")
+    public Slice<VideoDto> newestList(@PathVariable int page){
+        Slice<Video> videoList = videoService.findNewestVideoList(page,size, VideoScope.PUBLIC);
         return videoList.map(VideoDto::new);
     }
 
-
-
-//    @GetMapping("/list")
-//    public Slice<VideoDto> videoList(Pageable pageable){
-//
-//        Slice<Video> videoList = videoService.findVideoList(pageable);
-//        Slice<VideoDto> videoDtos = videoList.map(VideoDto::new);
-//
-//        return videoDtos;
-//    }
-
-    @Data
-    static class VideoDto{
-        private Long videoId;
-        private String imgUrl;
-
-        public VideoDto(Video video) {
-            videoId=video.getId();
-            imgUrl=video.getImgUrl();
-        }
+    /**
+     * 영상 리스트 - 조회수&좋아요
+     *
+     * 요청 파라미터 예시: /video/list/hitlike/{page번호}
+     * size는 기본값 18
+     */
+    @GetMapping("/list/hitlike/{page}")
+    public Slice<VideoDto> hitlikeList(@PathVariable int page){
+        Slice<Video> videoList = videoService.findHitLikeVideoList(page,size, VideoScope.PUBLIC);
+        return videoList.map(VideoDto::new);
     }
 
-//    @Data
-//    @AllArgsConstructor
-//    static class VideoTagDto {
-//        private String tagName;
-//        private TagType tagType;
-//
-//        public VideoTagDto(VideoTag videoTag) {
-//            tagName=videoTag.getTag().getName();
-//            tagType=videoTag.getTag().getType();
-//        }
-//    }
-
-//    @Data
-//    @AllArgsConstructor
-//    private static class LikeDto {
-//        private int id;
-//
-//        public LikeDto(Like like) {
-//            id=like.getId();
-//        }
-//    }
 }

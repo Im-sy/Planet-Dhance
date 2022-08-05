@@ -44,14 +44,50 @@ class VideoServiceTest {
 //    }
 
     @Test
-    public void findPublicNewestVideoList(){
+    public void findNewestVideoList(){
         //given
+//        initdb();
+
+        //when
+        int page=0;
+        int size=18;
+        Slice<Video> newestVideoList = videoService.findNewestVideoList(page,size, VideoScope.PUBLIC);
+
+        //then
+        for (Video video : newestVideoList) {
+            System.out.println("video = " + video.getId()+" "+video.getRegDate());
+        }
+
+    }
+
+    @Test
+    public void findHitLikeVideoList(){
+        //given
+//        initdb();
+
+        printHitLikeList(0, 5);
+        printHitLikeList(1, 5);
+
+    }
+
+    private void printHitLikeList(int page, int size) {
+        //when
+        Slice<Video> hitLikeVideoList = videoService.findHitLikeVideoList(page, size, VideoScope.PUBLIC);
+
+        //then
+        for (Video video : hitLikeVideoList) {
+            System.out.println("video = " + video.getVideoUrl()+" "+video.getOrderWeight());
+        }
+    }
+
+
+    private void initdb() {
         Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko");
         em.persist(nation1);
 
-        User user1=User.createUser("user1",null,null,nation1);
+        User user1=User.createUser("email1@xx.xx","user1",null,null,nation1);
         em.persist(user1);
-        User user2=User.createUser("user2",null,null,nation1);
+        User user2=User.createUser("email2@xx.xx","user2",null,null,nation1);
         em.persist(user2);
 
         Music music1=Music.createMusic("title1","artist1","album img1","model url1","guide url1","mv url1");
@@ -62,11 +98,19 @@ class VideoServiceTest {
         List<Video> videos=new ArrayList<>();
         for(int i=0;i<5;i++){
             Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user1, music1);
+            for(int j=0;j<i;j++){
+                video.addHit();
+            }
+            video.addLikeCnt();
             videos.add(video);
             em.persist(video);
         }
         for(int i=5;i<10;i++){
             Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user1, music2);
+            for(int j=4;j<i;j++){
+                video.addHit();
+            }            video.addLikeCnt();
+            video.addLikeCnt();
             videos.add(video);
             em.persist(video);
         }
@@ -75,20 +119,12 @@ class VideoServiceTest {
         em.persist(video1);
         for(int i=10;i<15;i++){
             Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user2, music2);
+            for(int j=7;j<i;j++){
+                video.addHit();
+            }
             videos.add(video);
             em.persist(video);
         }
-
-        //when
-        int size=18;
-        Slice<Video> newestVideoList = videoService.findPublicNewestVideoList(videos.get(videos.size()-1).getId(),18, VideoScope.PUBLIC);
-//        Slice<Video> newestVideoList = videoService.findPublicNewestVideoList(21,18, VideoScope.PUBLIC);
-
-        //then
-//        System.out.println("videos.get(videos.size()-1).getId() = " + videos.get(videos.size()-1).getId());
-        for (Video video : newestVideoList) {
-            System.out.println("video = " + video.getId()+" "+video.getRegDate());
-        }
-
     }
+
 }

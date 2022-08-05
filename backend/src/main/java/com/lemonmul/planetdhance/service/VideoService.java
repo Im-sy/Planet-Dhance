@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,17 +20,18 @@ public class VideoService {
     /**
      * 영상 리스트 - 최신
      */
-    public Slice<Video> findPublicNewestVideoList(Long lastId,int size,VideoScope scope){
-        Pageable pageable=PageRequest.of(0,size);
-        return videoRepo.findByIdLessThanAndScopeOrderByRegDateDesc(lastId,scope,pageable);
+    public Slice<Video> findNewestVideoList(int page, int size, VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByScopeOrderByRegDateDesc(scope,pageable);
     }
 
     /**
      * 영상 리스트 - 조회수&좋아요
+     *
+     * 조회수&좋아요 가중치 같으면 최신순
      */
-    public Slice<Video> findPublicHitAndLikeVideoList(Long lastId,int size,VideoScope scope){
-        Pageable pageable=PageRequest.of(0,size);
-        Slice<Video> hitVideoList = videoRepo.findByIdLessThanAndScopeOrderByLikeCntDescHitDesc(lastId, scope, pageable);
-        return hitVideoList;
+    public Slice<Video> findHitLikeVideoList(int page,int size,VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByScopeOrderByOrderWeightDescRegDateDesc(scope,pageable);
     }
 }

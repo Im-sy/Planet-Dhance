@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .authorizeRequests()
 //                .antMatchers("/tag/**").authenticated()
                 .antMatchers("/user/**").permitAll()
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
