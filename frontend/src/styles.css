@@ -26,6 +26,59 @@ video {
   display : none !important;
 }
 
+.center {
+  background-color: rgb(33, 10, 77);
+}
+
+.slider{
+  width: 600px;
+  height:150px;
+  margin: -15px ;
+  text-align: center;
+}
+/* .slider div{
+  margin-right: 5px;
+} */
+.slick-slide{
+  -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    transform: scale(1.1);
+    opacity: 1;
+  /* margin-top: -50px; */
+}
+/* .slick-center{
+  display: block;
+  max-width: 10% !important;
+  max-height:20% !important;
+  opacity: 1;
+}  */
+
+.slick-center {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    transform: scale(1.1);
+    /* margin-top: -8px; */
+    /* opacity : 1; */
+}
+
+.slick-list {
+  padding: 0px 0px !important;
+  /* margin-left:30px !important; */
+}
+
+.MuiPaper-root {
+  background-color: rgba(255,255,255, 0.5) !important;
+}
+
+.MuiCardMedia-root {
+  opacity: 1;
+
+}
+
+.MuiCardContent-root {
+  opacity: 1;
+
+}
 
 /* .{
   position: 'absolute',

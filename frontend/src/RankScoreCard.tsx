@@ -4,8 +4,9 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './tailwind_reset.css'
+import './styles.css'
 
-import SearchSongInfo from './SearchSongInfo';
+import RankCard from './RankCard';
 
 
 
@@ -15,43 +16,47 @@ export default class AutoPlay extends Component {
       // dots: true,
       // fade: true,
       infinite: true,
-      slidesToShow: 1.2,
+      className: "center",
+      centerMode: true,
+      centerPadding: "5%",
+      // autoplay : true,
+      slidesToShow: 1,
       slidesToScroll: 1,
-      autoplay: true,
-      speed: 500,
+      speed: 1200,
       vertical: true,
       verticalSwiping: true,
-      autoplaySpeed: 2000,
-      cssEase: 'linear',
+      autoplaySpeed: 5000,
+      cssEase: 'ease-out',
       nextArrow: <div style={{display: "none"}}></div>,
     };
     return (
       <div  className="container">
         <h2>Rank</h2>
         <Slider {...settings}>
-          <SearchSongInfo 
-          img={'여기에 이미지 url 혹은 blob'}
-          value={'Nation'}
-          type={0}
-          sx={{ display: 'flex', flexDirection: 'column', width: '5rem', padding:" 0px 1rem", margin:"0.5rem 1rem" }}
+          <RankCard
+            img={"여기에 국기 "}
+            value={"&#65039"}
+            type = {0}
           />
-          <SearchSongInfo 
-          img={'여기에 이미지 url 혹은 blob'}
-          value={'Nation'}
-          type={0}
-          sx={{ display: 'flex', flexDirection: 'column', width: '5rem', padding:" 0px 1rem", margin:"0.5rem 1rem" }}
+          <RankCard
+            img={"여기에 국기 "}
+            value={"여기엔 검색 결과 값"}
+            type = {0}
           />
-          <SearchSongInfo 
-          img={'여기에 이미지 url 혹은 blob'}
-          value={'Nation'}
-          type={0}
-          sx={{ display: 'flex', flexDirection: 'column', width: '5rem', padding:" 0px 1rem", margin:"0.5rem 1rem" }}
+          <RankCard
+            img={"여기에 국기 "}
+            value={"여기엔 검색 결과 값"}
+            type = {0}
           />
-          <SearchSongInfo 
-          img={'여기에 이미지 url 혹은 blob'}
-          value={'Nation'}
-          type={0}
-          sx={{ display: 'flex', flexDirection: 'column', width: '5rem', padding:" 0px 1rem", margin:"0.5rem 1rem" }}
+          <RankCard
+            img={"여기에 국기 "}
+            value={"여기엔 검색 결과 값"}
+            type = {0}
+          />
+          <RankCard
+            img={"여기에 국기 "}
+            value={"여기엔 검색 결과 값"}
+            type = {0}
           />
         </Slider>
       </div>
