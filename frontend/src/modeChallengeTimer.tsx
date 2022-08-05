@@ -4,6 +4,7 @@ import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import { IconButton, Checkbox } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
@@ -13,7 +14,6 @@ import './App.css';
 
 
 // webcam 부분 1----------------------------------
-
 import {
   RecordWebcam,
   useRecordWebcam,
@@ -27,15 +27,26 @@ import type {
 import "./styles.css";
 
 const OPTIONS: RecordWebcamOptions = {
+  // 위치 찾아보기
   filename: "test-filename",
   fileType: "mp4",
-  // ReactPlayer의 width, height와 일치시켜야하는듯?
   width: 360,
   height: 800,
-  aspectRatio : 1
+  aspectRatio : 1,
 };
 
+// 전체 페이지 상태 1 / 2
+const notMode : CSSProperties = {
+  display : 'none'
+};
 
+const notChallenging : CSSProperties = {
+  display : 'none'
+};
+
+const notEndChallenge : CSSProperties = {
+  display : 'none'
+};
 
 //-------------------------------------------------
 // main <-> sub 바꾸는 부분
@@ -46,17 +57,17 @@ const subcamStyle: CSSProperties = {
   left : '65vw',
   width: '35vw',
   height: '50vh',
+  transform : 'scaleX(-1)'
 };
-
 
 
 const maincamStyle: CSSProperties = {
   position: 'absolute',
   width: '100vw',
   height: '100vh',
+  transform : 'scaleX(-1)',
   // backgroundColor: 'black',
   backgroundColor: 'green'
-  
 };
 
 const subplayerStyle: CSSProperties = {
@@ -68,16 +79,12 @@ const subplayerStyle: CSSProperties = {
 };
 
 
-
 const mainplayerStyle: CSSProperties = {
   position: 'absolute',
   // left : '360px',
   // backgroundColor: 'black',
   backgroundColor: 'green'
-
-  
 };
-
 
 
 //---------------------------------------------------------
@@ -92,44 +99,41 @@ const challengeStartStyle: CSSProperties = {
   border : '0'
 };
 
-const challengeEndStyle: CSSProperties = {
-  position: 'absolute',
-  top: '600px',
-  left: '220px',
-  width: '90px',
-  height: '40px',
-  backgroundColor: 'rgba( 0, 0, 255, 0.2 )',
-  border : '0'
-};
 
-const backStyle: CSSProperties = {
+const backToSongPageStyle: CSSProperties = {
   position: 'absolute',
   top: '100px',
   left: '10px',
-  width: '90px',
-  height: '40px',
-  backgroundColor: 'rgba( 255, 255, 255, 1 )',
-  border : '0'
-};
-const saveStyle: CSSProperties = {
-  position: 'absolute',
-  top: '600px',
-  left: '310px',
-  width: '90px',
-  height: '40px',
-  backgroundColor: 'rgba( 255, 255, 255, 1 )',
-  border : '0'
+  // width: '90px',
+  // height: '40px',
+  // backgroundColor: 'rgba( 255, 255, 255, 1 )',
+  // border : '0'
 };
 
-const retakeStyle: CSSProperties = {
+const backToModeStyle: CSSProperties = {
   position: 'absolute',
-  top: '600px',
-  left: '400px',
-  width: '90px',
-  height: '40px',
-  backgroundColor: 'rgba( 255, 255, 255, 1 )',
-  border : '0'
+  top: '100px',
+  left: '10px',
+  // width: '90px',
+  // height: '40px',
+  // backgroundColor: 'rgba( 255, 255, 255, 1 )',
+  // border : '0'
 };
+
+const playPauseStyle: CSSProperties = {
+  position: 'absolute',
+  top: '50vh',
+  left: '50vw',
+  fontSize : '3rem',
+};
+
+const muteStyle: CSSProperties = {
+  position: 'absolute',
+  top: '60vh',
+  left: '50vw',
+  fontSize : '2rem',
+};
+
 
 const timerStyle: CSSProperties = {
   position: 'absolute',
@@ -137,10 +141,7 @@ const timerStyle: CSSProperties = {
   left: '200px',
   width: '90px',
   height: '40px',
-  // backgroundColor: 'rgba( 255, 255, 255, 1 )',
-  // border : '0'
 };
-
 
 
 const mode1Style: CSSProperties = {
@@ -185,6 +186,7 @@ const progressStyle: CSSProperties = {
 const videoZone: CSSProperties = {
   position: 'relative',
 };
+
 interface playProps {
   url: string;
   playing: boolean;
@@ -194,7 +196,31 @@ interface playProps {
 }
 
 export default function ModeChallengeTimer() {
-  
+  // 전체 페이지 상태 2 / 2
+  let [now, setNow] = useState('mode');
+
+
+  // 곡선택페이지로 뒤로가기
+  const backToSongPage = () => {
+    setNow('mode')
+    recordWebcam.close()
+  };
+
+  // 안무티칭 & 모드선택 페이지로 뒤로가기
+  const backToMode = () => {
+    setNow('mode');
+    console.log('현재 state는 ', {now}, '입니다.')
+    recordWebcam.stop();
+    // recordWebcam.retake();
+    setTimeout(recordWebcam.retake,500);
+    setPlayState({ ...playState, played: 0}); // 티칭영상 새로시작1
+    player.current.seekTo(0); // 티칭영상 새로시작1
+    console.log(recordWebcam.status)
+    
+    
+  };
+
+
   //--------------------------------------------------
   // 모드 변경 부분
   // 있어야 하는 데이터
@@ -202,12 +228,9 @@ export default function ModeChallengeTimer() {
   // video : maincamStyle/subcamStyle
 
   let [reactPlayer, reactPlayerChange] = useState(['main','100vw','100vh']);
-  // let [reactPlayer, reactPlayerChange] = useState([' ',' ',' ']);
   let [reactPlayerBackground, reactPlayerBackgroundChange] = useState(mainplayerStyle);
-  
   let [reactCamStyle, reactCamStyleChange] = useState(subcamStyle);
-  
-  // setInterval(()=>{console.log(reactPlayer)},10000)
+
 
   // 안무영상이 main / 내 영상이 sub
   function mode1(){
@@ -255,11 +278,9 @@ export default function ModeChallengeTimer() {
     console.log({ blob });
   };
 
+
   //-----------------------------------------------------------
   // timer 부분
-      // We need ref in this, because we are dealing
-    // with JS setInterval to keep track of it and
-    // stop it when needed
     const Ref = useRef(null);
   
     // The state for our timer
@@ -278,23 +299,21 @@ export default function ModeChallengeTimer() {
   
   
     const startTimer = (e:any) => {
+      // 타이머 시작시, 페이지 설정 변경  
+      
+
+
         let { total, hours, minutes, seconds } 
                     = getTimeRemaining(e);
-        // if (total >= 0) {
         if (seconds >= 0) {
-  
-            // update the timer
-            // check if less than 10 then we need to 
-            // add '0' at the beginning of the variable
-            // setTimer(
            console.log(seconds)
             setTimer(
                 (hours > -1 ? ' ' : ' ') + 
                 (minutes > -1 ? ' ': ' ' )+ 
                 (seconds > -1 ? seconds : ' ')
             )
-            // seconds===-1 로 안하면, 계속 실행됨
-        }else if(seconds===-1){
+            
+        }else if(seconds===-1){ // seconds===-1 로 안하면, 계속 실행됨
           console.log(total, seconds)
           
           // 0초가 되면 타이머 사라짐
@@ -307,37 +326,26 @@ export default function ModeChallengeTimer() {
             if (!(recordWebcam.status === CAMERA_STATUS.CLOSED ||
               recordWebcam.status === CAMERA_STATUS.RECORDING ||
               recordWebcam.status === CAMERA_STATUS.PREVIEW))
-            {console.log('time to start recording')
-            setPlayState({ ...playState, played: 0})
-            recordWebcam.start()}
+            {
+              console.log('time to start recording');
 
-
-          
-          
+              // 타이머 완료시, 실행
+              setPlayState({ ...playState, played: 0}); // 티칭영상 새로시작1
+              player.current.seekTo(0); // 티칭영상 새로시작1
+              recordWebcam.start();  // 내 캠 녹화 시작
+           }
         }
     }
   
   
     const clearTimer = (e:any) => {
-  
-   
         // 처음 시간 설정해 주는 부분
         setTimer('3');
-  
-        // If you try to remove this line the 
-        // updating of timer Variable will be
-        // after 1000ms or 1sec
         if (Ref.current) clearInterval(Ref.current);
         const id = setInterval(() => {
-          // console.log("남은시간",timer)
-          // console.log(Ref.current)
                 startTimer(e);
-              
-       
         }, 1000)
         Ref.current = id;
-
-
     }
   
     const getDeadTime = () => {
@@ -349,27 +357,14 @@ export default function ModeChallengeTimer() {
         return deadline;
     }
   
-    // We can use useEffect so that when the component
-    // mount the timer will start as soon as possible
-  
-    // We put empty array to act as componentDid
-    // mount only
-    // useEffect(() => {
-    //     clearTimer(getDeadTime());
-    // }, []);
-  
-    // Another way to call the clearTimer() to start
-    // the countdown is via action event from the
-    // button first we create function to be called
-    // by the button
     const onClickReset = () => {
+        setNow('challenging');
         clearTimer(getDeadTime());
     }
 
-
   //----------------------------------------------------------------------------
 
-
+  const player = useRef(null);
 
 
   const [playState, setPlayState] = useState<playProps>({
@@ -385,8 +380,6 @@ export default function ModeChallengeTimer() {
 
   const handlePlayPause = () => {
     setPlayState({ ...playState, playing: !playing });
-    // if (playing) {recordWebcam.stop()}
-    // else{recordWebcam.start()}
 
   };
 
@@ -406,14 +399,7 @@ export default function ModeChallengeTimer() {
   const handlePause = () => {
     console.log('onPause');
     setPlayState({ ...playState, playing: false });
-    // recordWebcam.stop();
-    // console.log('영상촬영종료')
-    // recordWebcam.download();
-    // console.log('영상저장중')
-    // recordWebcam.retake();
-    // console.log('다시촬영')
-    // recordWebcam.close();
-    // console.log('카메라 끄기')
+   
 
   };
 
@@ -430,40 +416,43 @@ export default function ModeChallengeTimer() {
     setPlayState(inState as SetStateAction<playProps>);
   };
 
-
   const challengeEnd = () => {
+    setNow('endChallenge')
     console.log('안무티칭영상이 끝났습니다.')
+    // asyn await promise then
     recordWebcam.stop();
-    console.log('웹캠 녹화가 종료되었습니다.')
-    // recordWebcam.stop() 이 완료된 후에 아래의 recordWebcam.download 함수가 실행되어야 함
-    setTimeout(recordWebcam.download,1000);
     // recordWebcam.download();
-    document.getElementById('webcam').style.visibility = "hidden";
+    console.log('웹캠 녹화가 종료되었습니다.');
+    setTimeout(recordWebcam.download, 1000);
+    setTimeout(getRecordingFileHooks, 1000);
+    // setTimeout(()=> {const test = recordWebcam.download()
+    
+    // console.log(test)},100);
+
+    // const test = recordWebcam.download()
+    // console.log("test", test)
+  
+    // document.getElementById('webcam').style.visibility = "hidden";
   }
 
   return (
     <div >
-
-
-      {/* <h1>ReactPlayer Demo</h1>
-      <progress max={1} value={played} /> */}
       <div style={videoZone}>
 
-        {/* subcam */}
+        {/* webCam */}
         <video id='webcam'
             ref={recordWebcam.webcamRef}
             style={reactCamStyle}
             autoPlay
             muted
           />
-          
-
-
+  
         {/* main */}
         <ReactPlayer
           className="react-player"
           // width="100vw"
           // height="100vh"
+          ref= {player}
           width={reactPlayer[1]}
           height={reactPlayer[2]}
           style={reactPlayerBackground}
@@ -485,17 +474,16 @@ export default function ModeChallengeTimer() {
         />
 
   
-
-        {/*  mode 1 */}
+        {/*  mode 1 버튼*/}
         <button  onClick={mode1} 
-              style={mode1Style}
+              style={ now==='mode' ? mode1Style : notMode}
               disabled={reactPlayer[0]==='main'}
               >
         mode1
         </button>
-        {/*  mode 2 */}
+        {/*  mode 2 버튼 */}
         <button  onClick={mode2} 
-              style={mode2Style}
+              style={ now ==='mode' ? mode2Style : notMode}
               disabled={reactPlayer[0]==='sub'}
               >
         mode2
@@ -504,7 +492,7 @@ export default function ModeChallengeTimer() {
 
         {/* 타이머 영상녹화시작 */}
         <button  onClick={onClickReset} 
-                  style={challengeStartStyle}
+                  style={ now==='mode' ? challengeStartStyle : notMode}
                   disabled={
                     recordWebcam.status === CAMERA_STATUS.CLOSED ||
                     recordWebcam.status === CAMERA_STATUS.RECORDING ||
@@ -513,39 +501,6 @@ export default function ModeChallengeTimer() {
             챌린지 시작
         </button>
 
-        {/* 영상녹화중단 -> 추후에 자동 중단으로 바꾸기*/}
-        <button  onClick={recordWebcam.stop} 
-                  style={challengeEndStyle}
-                  disabled={recordWebcam.status !== CAMERA_STATUS.RECORDING}>
-            챌린지 종료
-        </button>
-
-
-        {/* 뒤로가기 -> 챌린지 중에 작동할 기능*/}
-        <button  onClick={recordWebcam.stop} // onClick={recordWebcam.retake} 추가하기.
-                  style={backStyle}
-                 >
-            뒤로가기
-        </button>
-
-
-        {/* 영상저장 -> 챌린지 후에 저장화면 */}
-        <button
-            disabled={recordWebcam.status !== CAMERA_STATUS.PREVIEW}
-            onClick={recordWebcam.download}
-            style={saveStyle}
-          >
-            Download
-          </button>
-
-        {/* 다시찍기(녹화시작은 안함) */}
-        <button
-          disabled={recordWebcam.status !== CAMERA_STATUS.PREVIEW}
-          onClick={recordWebcam.retake}
-          style={retakeStyle}
-        >
-          Retake
-        </button>  
 
         {/* timer & reset */}
           <h2 style={timerStyle}>{timer}</h2>
@@ -554,14 +509,26 @@ export default function ModeChallengeTimer() {
       </div>
 
 
-
-
-
       <div>
-        <button onClick={handlePlayPause}>{playing ? 'pause' : 'play'}</button>
+        {/* 곡선택페이지로 뒤로가기 */}
+        <ArrowBack
+          onClick={backToSongPage}
+          aria-label={playing ? 'pause' : 'play'}
+          style = { now==='mode' ?  backToSongPageStyle : notMode  }
+        />
+
+        {/* 안무티칭 & 모드선택 페이지로 뒤로가기 */}
+        <ArrowBack
+          onClick={backToMode}
+          aria-label={playing ? 'pause' : 'play'}
+          style = { now==='challenging' ?  backToModeStyle : notChallenging  }
+        />
+    
+
         <IconButton
           onClick={handlePlayPause}
           aria-label={playing ? 'pause' : 'play'}
+          style = { now==='mode' ?  playPauseStyle : notMode  }
         >
           {playing ? <PauseIcon /> : <PlayArrowIcon />}
         </IconButton>
@@ -574,15 +541,11 @@ export default function ModeChallengeTimer() {
           checked={muted}
           onChange={handleToggleMuted}
         />
-        <Checkbox
-          checked={muted}
-          onChange={handleToggleMuted}
-          icon={<VolumeUpIcon />}
-          checkedIcon={<VolumeOffIcon />}
-        />
+
         <IconButton
           onClick={handleToggleMuted}
           aria-label={muted ? 'off' : 'on'}
+          style = { now==='mode' ? muteStyle : notMode }
         >
           {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
         </IconButton>
@@ -605,3 +568,40 @@ export default function ModeChallengeTimer() {
     </div>
   );
 }
+
+
+
+{/* 안쓰는 버튼들------------------------------------ */}
+        //   mute
+        {/* <Checkbox
+          checked={muted}
+          onChange={handleToggleMuted}
+          icon={<VolumeUpIcon />}
+          checkedIcon={<VolumeOffIcon />}
+        /> */}
+
+         {/* 영상녹화중단 -> 추후에 자동 중단으로 바꾸기*/}
+         {/* <button  onClick={recordWebcam.stop} 
+                   style={challengeEndStyle}
+                   disabled={recordWebcam.status !== CAMERA_STATUS.RECORDING}>
+             챌린지 종료
+         </button> */}
+
+        {/* 영상저장 -> 챌린지 후에 저장화면 */}
+        {/* <button
+            disabled={recordWebcam.status !== CAMERA_STATUS.PREVIEW}
+            onClick={recordWebcam.download}
+            style={saveStyle}
+          >
+            Download
+          </button> */}
+
+        {/* 다시찍기(녹화시작은 안함) */}
+        {/* <button
+          disabled={recordWebcam.status !== CAMERA_STATUS.PREVIEW}
+          onClick={recordWebcam.retake}
+          style={retakeStyle}
+        >
+          Retake
+        </button>   */}
+{/* 안쓰는 버튼들 끝------------------------------------ */}
