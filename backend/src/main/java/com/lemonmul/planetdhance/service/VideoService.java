@@ -11,6 +11,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -52,5 +54,10 @@ public class VideoService {
     public Slice<Video> findHitLikeVideoList(int page,int size,Music music,VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
         return videoRepo.findByMusicAndScopeOrderByOrderWeightDescRegDateDesc(music,scope,pageable);
+    }
+
+    public Slice<Video> findHitLikeVideoListByMusicList(int page, int size, List<Music> musicList, VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByMusicInAndScopeOrderByOrderWeightDescRegDateDesc(musicList,scope,pageable);
     }
 }

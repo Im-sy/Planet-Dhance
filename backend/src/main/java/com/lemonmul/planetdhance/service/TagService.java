@@ -23,8 +23,11 @@ public class TagService {
         return tagRepo.findByNameContainingOrderByHitDesc(searchStr,pageable);
     }
 
-    public Tag findTagById(int id){
-        return tagRepo.findById(id).get();
+    public Tag findTagById(Long id){
+        //TODO Optional 처리
+        Tag tag = tagRepo.findById(id).get();
+        tag.addHit();
+        return tag;
     }
 
     public Tag findTagByNameAndType(String name, TagType type){
