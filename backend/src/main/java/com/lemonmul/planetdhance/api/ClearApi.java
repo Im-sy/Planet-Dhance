@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.PrivateKey;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,8 +27,26 @@ public class ClearApi {
      * 챌린지 clear 했을 경우 clear 테이블 저장
      *
      * Video 업로드에서 처리
+     *
+     * 아래 맵핑은 Test용
      * */
+//    @PostMapping("/add/{userId}/{musicId}")
+//    public Result clearSave(@PathVariable Long userId, @PathVariable Long musicId){
+//        clearService.clearChallenge(userId, musicId);
+//        Result result = new Result();
+//        result.setName("DONE");
+//        return result;
+//    }
 
+//    static class Result{
+//        private String name;
+//        public String getName(){
+//            return name;
+//        }
+//        public void setName(String name){
+//            this.name = name;
+//        }
+//    }
 
     /*
      * My page 진입 시

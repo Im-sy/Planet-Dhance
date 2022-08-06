@@ -25,6 +25,7 @@ public class ClearService {
     /*
      * 클리어 테이블 저장
      * */
+    @Transactional
     public void clearChallenge(long userId, long musicId){
         Clear clear = toClear(userId, musicId);
         clearRepo.save(clear);
@@ -35,13 +36,23 @@ public class ClearService {
      * */
     public List<Music> findClearMusicList(Long userId, int size){
         User user = userRepo.findById(userId).get();
-        List<Clear> clears = clearRepo.findClearsByUserOrderByIdDesc(user).subList(0, size); // Clears list
-        List<Music> musics = new ArrayList<>(); // Music List 초기화
-        for (Clear clear:clears) {
-            Music music = musicRepo.findById(clear.getId()).get(); // Clear 곡 Id로 clear
-            musics.add(music);
+        List<Clear> clears = clearRepo.findClearsByUserOrderByIdDesc(user); // Clears list
+        if (clears.size() < size){
+            List<Music> musics = new ArrayList<>(); // Music List 초기화
+            for (Clear clear:clears) {
+                Music music = musicRepo.findById(clear.getId()).get(); // Clear 곡 Id로 clear
+                musics.add(music);
+            }
+            return musics;
+        }else {
+            clears.subList(0, size);
+            List<Music> musics = new ArrayList<>(); // Music List 초기화
+            for (Clear clear:clears) {
+                Music music = musicRepo.findById(clear.getId()).get(); // Clear 곡 Id로 clear
+                musics.add(music);
+            }
+            return musics;
         }
-        return musics;
     }
 
     private Clear toClear(Long userId, Long musicId){
