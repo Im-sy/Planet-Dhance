@@ -46,7 +46,7 @@ public class Video {
     @JoinColumn(name = "music_id")
     private Music music;
 
-    @OneToMany(mappedBy = "video")
+    @OneToMany(mappedBy = "video",cascade = CascadeType.ALL)
     private List<VideoTag> videoTags=new ArrayList<>();
 
     @OneToMany(mappedBy = "video")

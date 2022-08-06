@@ -25,14 +25,14 @@ public class MusicService {
     }
 
     /**
-     * 곡 조회 - 가수
+     * 곡 조회 - 가수 (발매일순)
      */
     public List<Music> findArtistVideoList(String artist){
         return musicRepo.findByArtistOrderByRelDateDesc(artist);
     }
 
     /**
-     * 곡 조회 - 곡 제목
+     * 곡 조회 - 곡 제목 (발매일순)
      */
     public List<Music> findTitleVideoList(String title){
         return musicRepo.findByTitleOrderByRelDate(title);

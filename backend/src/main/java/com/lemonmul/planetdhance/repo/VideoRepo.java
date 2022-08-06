@@ -17,6 +17,7 @@ public interface VideoRepo extends JpaRepository<Video,Long> {
     //해당 곡의 정렬 가중치 높은 영상 리스트 (가중치 같으면 최신순)
     Slice<Video> findByMusicAndScopeOrderByOrderWeightDescRegDateDesc(Music music,VideoScope scope, Pageable pageable);
 
+    //해당 곡들의 정렬 가중치 높은 영상 리스트 (가중치 같으면 최신순)
     Slice<Video> findByMusicInAndScopeOrderByOrderWeightDescRegDateDesc(List<Music> musicList, VideoScope scope, Pageable pageable);
 
 }

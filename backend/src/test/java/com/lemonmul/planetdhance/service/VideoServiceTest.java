@@ -111,13 +111,17 @@ class VideoServiceTest {
         em.persist(Tag.createTag(music2.getTitle(),TagType.TITLE, music2.getImgUrl()));
         em.persist(music2);
         Music music3=Music.createMusic("title3","artist2","album img3","model url3","guide url3","mv url3",LocalDateTime.now());
-        em.persist(Tag.createTag(music3.getArtist(),TagType.ARTIST,"artist img3"));
+//        em.persist(Tag.createTag(music3.getArtist(),TagType.ARTIST,"artist img3"));
         em.persist(Tag.createTag(music3.getTitle(),TagType.TITLE, music3.getImgUrl()));
         em.persist(music3);
 
         List<Video> videos=new ArrayList<>();
         for(int i=0;i<5;i++){
             Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user1, music1);
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user1.getNickname(),TagType.NICKNAME));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user1.getNation().getName(),TagType.NATION));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music1.getArtist(),TagType.ARTIST));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music1.getTitle(),TagType.TITLE));
             for(int j=0;j<i;j++){
                 video.addHit();
             }
@@ -127,6 +131,10 @@ class VideoServiceTest {
         }
         for(int i=5;i<10;i++){
             Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user1, music2);
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user1.getNickname(),TagType.NICKNAME));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user1.getNation().getName(),TagType.NATION));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music2.getArtist(),TagType.ARTIST));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music2.getTitle(),TagType.TITLE));
             for(int j=4;j<i;j++){
                 video.addHit();
             }            video.addLikeCnt();
@@ -135,10 +143,18 @@ class VideoServiceTest {
             em.persist(video);
         }
         Video video1 = Video.createVideo("video url!!", VideoScope.PRIVATE, "thumbnail url!!", user2, music1);
+        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));
+        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(user2.getNation().getName(),TagType.NATION));
+        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(music1.getArtist(),TagType.ARTIST));
+        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(music1.getTitle(),TagType.TITLE));
         videos.add(video1);
         em.persist(video1);
         for(int i=10;i<15;i++){
             Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user2, music2);
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user2.getNation().getName(),TagType.NATION));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music2.getArtist(),TagType.ARTIST));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music2.getTitle(),TagType.TITLE));
             for(int j=7;j<i;j++){
                 video.addHit();
             }
@@ -147,6 +163,10 @@ class VideoServiceTest {
         }
         for(int i=16;i<20;i++){
             Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user2, music2);
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user2.getNation().getName(),TagType.NATION));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music2.getArtist(),TagType.ARTIST));
+            VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music2.getTitle(),TagType.TITLE));
             for(int j=15;j<i;j++){
                 video.addHit();
             }
