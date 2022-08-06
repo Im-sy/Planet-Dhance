@@ -1,7 +1,9 @@
 package com.lemonmul.planetdhance.security.jwt;
 
-import com.lemonmul.planetdhance.security.ErrorCode;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
@@ -21,8 +22,7 @@ public class JwtTokenProvider {
     private String secretKey = "planetdhancetenalpecnahd";
 
 //    private long tokenValidTime = 30 * 60 * 1000L;
-    final long tokenValidTime = 60 * 1000L;
-
+    private long tokenValidTime = 60 * 1000L;
 
     private final UserDetailsService userDetailsService;
 
@@ -35,14 +35,16 @@ public class JwtTokenProvider {
     // JWT 토큰 생성
     public String createToken(String email, JwtToken jwtToken) {
         Claims claims = Jwts.claims().setSubject(email); // JWT payload 에 저장되는 정보단위, 보통 여기서 user를 식별하는 값을 넣는다.
-        claims.put("roles", jwtToken.getRoles()); // 정보는 key / value 쌍으로 저장된다.
+        claims.put("roles", jwtToken.getRoles());
         claims.put("details", jwtToken);
+//        claims.put("role", role); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + tokenValidTime)) // set Expire Time
-                .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘과 signature 에 들어갈 secret값 세팅
+                .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘과
+                // signature 에 들어갈 secret값 세팅
                 .compact();
     }
 
@@ -54,7 +56,9 @@ public class JwtTokenProvider {
 
     // 토큰에서 회원 정보 추출
     public String getUserPk(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        String temp = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        System.out.println("temp = " + temp);
+        return temp;
     }
 
     // Request의 Header에서 token 값을 가져옵니다. "Authorization" : "TOKEN값'
@@ -63,15 +67,11 @@ public class JwtTokenProvider {
     }
 
     // 토큰의 유효성 + 만료일자 확인
-    public boolean validateToken(String jwtToken, ServletRequest request) {
+    public boolean validateToken(String jwtToken) {
         try {
-            System.out.println("Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken) = " + Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken));
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            System.out.println("claims.getBody().getExpiration() = " + claims.getBody().getExpiration());
             return !claims.getBody().getExpiration().before(new Date());
-        } catch (ExpiredJwtException e) {
-            e.printStackTrace();
-            request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN.getCode());
+        } catch (Exception e) {
             return false;
         }
     }

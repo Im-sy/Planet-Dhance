@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Clear {
-    @Column(name ="clear_id")
+    @Column(columnDefinition = "INT UNSIGNED", name ="clear_id")
     @Id
     @GeneratedValue
     private Long id;

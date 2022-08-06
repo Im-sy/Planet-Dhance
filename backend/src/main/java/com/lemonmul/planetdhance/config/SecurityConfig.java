@@ -1,6 +1,5 @@
 package com.lemonmul.planetdhance.config;
 
-import com.lemonmul.planetdhance.security.jwt.JwtAuthenticationEntryPoint;
 import com.lemonmul.planetdhance.security.jwt.JwtAuthenticationFilter;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
 import com.lemonmul.planetdhance.security.oauth2.CustomOAuth2UserService;
@@ -13,7 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -49,15 +47,11 @@ public class SecurityConfig {
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/tag/**").authenticated()
-                .antMatchers("/user/**").permitAll()
 //                .anyRequest().authenticated()
+                .antMatchers("/tag/**").hasRole("USER")
+                .antMatchers("/user/**").permitAll()
                 .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -13,8 +13,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 import java.util.HashSet;
 import java.util.Set;
 
-// http://localhost:8080/swagger-ui/index.html#
-
 @Configuration
 @EnableWebMvc
 public class SwaggerConfig {

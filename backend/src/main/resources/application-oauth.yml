@@ -1,0 +1,18 @@
+spring:
+  security:
+    ignored: none
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1011692386406-kmh77kkc6qkld93qeffs4a5dqdusvhut.apps.googleusercontent.com
+            client-secret: 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
+            scope: profile,email
+          facebook:
+            client-id: 370546671926169
+            client-secret: f02f9a6f6c6800c4ef7d166626cc1cf6
+
+#app:
+#  oauth2:
+#    authorizedRedirectUris:
+#      - http://localhost:3000/oauth/redirect
