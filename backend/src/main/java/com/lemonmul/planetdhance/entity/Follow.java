@@ -2,6 +2,8 @@ package com.lemonmul.planetdhance.entity;
 
 import com.lemonmul.planetdhance.entity.user.User;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -17,10 +19,12 @@ public class Follow {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User from;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User to;
 
     //==생성 메서드==//

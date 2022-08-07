@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface TokenRepo extends JpaRepository<Validate, Long> {
+public interface ValidateRepo extends JpaRepository<Validate, Long> {
     Optional<Validate> findByEmail(String email);
-    Optional<Validate> findByToken(String token);
+    Optional<Validate> findByToken(String validate);
     @Transactional
     void deleteByEmail(String email);
 }
