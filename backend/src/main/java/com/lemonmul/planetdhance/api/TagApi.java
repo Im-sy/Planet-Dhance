@@ -2,6 +2,7 @@ package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Music;
+import com.lemonmul.planetdhance.entity.VideoTag;
 import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.video.Video;
@@ -107,10 +108,25 @@ public class TagApi {
         return videoList.map(VideoDto::new);
     }
 
-
+    /**
+     * 커스텀 태그의 영상 리스트 반환(hit&like순) -커스텀 검색 페이지 진입(0),무한 스크롤(1~)
+     *
+     * 요청 파라미터 예시: /tag/custom/{해시태그 아이디}/{page번호}
+     * 영상 리스트 size는 기본값 18
+     * (custom 태그 말고 일반 태그도 가능)
+     * TODO 전체 List 말고 Slice로 보내줘야 함
+     * TODO orderWeight Desc, regDate Desc로 정렬해야 함
+     * TODO PUBLIC만 보내줘야 함
+     */
+    @GetMapping("/custom/{tag_id}/{page}")
+    public List<VideoTagDto> customVideos(@PathVariable Long tag_id,@PathVariable int page){
+        Tag tag = tagService.findTagById(tag_id, page);
+        List<VideoTag> videoTags = tag.getVideoTags();
+        return videoTags.stream().map(VideoTagDto::new).collect(Collectors.toList());
+    }
 
     @Data
-    static class TagDto{
+    static class TagDto {
         private Long id;
         private String name;
         private TagType type;
@@ -147,6 +163,17 @@ public class TagApi {
             title=music.getTitle();
             artist=music.getArtist();
             imgUrl=music.getImgUrl();
+        }
+    }
+
+    @Data
+    static class VideoTagDto{
+        private Long videoId;
+        private String videoImgUrl;
+
+        public VideoTagDto(VideoTag videoTag) {
+            videoId=videoTag.getVideo().getId();
+            videoImgUrl=videoTag.getVideo().getImgUrl();
         }
     }
 }
