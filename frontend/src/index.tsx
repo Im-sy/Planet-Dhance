@@ -15,6 +15,9 @@ import ModelViewer from './components/ModelViewer';
 import SearchSongInfo from './components/SearchSongInfo';
 // import RankScoreCard from './RankScoreCard';
 import ModeChallengeTimer from './pages/modeChallengeTimer';
+import { WebcamStreamCapture, WebcamCapture }  from './pages/webViewCam';
+import Test from './pages/ReactWebCamPro'
+
 
 // import ModelViewer from './3dearth/ModelViewer';
 
@@ -29,8 +32,9 @@ root.render(
   // <HashResult />
   // <DanceCompare />
   // <RankScoreCard/>
-  // <ModelViewer />
-  <ModeChallengeTimer />
+  // <Test />
+  <WebcamStreamCapture />
+  // <FullScreenMobileView />
 );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
