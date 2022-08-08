@@ -1,16 +1,13 @@
 package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.entity.*;
-import com.lemonmul.planetdhance.entity.user.Basic;
-import com.lemonmul.planetdhance.entity.user.Role;
-import com.lemonmul.planetdhance.entity.user.Social;
-import com.lemonmul.planetdhance.entity.user.User;
+import com.lemonmul.planetdhance.entity.user.*;
 import com.lemonmul.planetdhance.security.jwt.CustomUserDetails;
 import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
 import com.lemonmul.planetdhance.service.NationService;
-import com.lemonmul.planetdhance.service.TokenService;
+import com.lemonmul.planetdhance.service.ValidateService;
 import com.lemonmul.planetdhance.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,42 +22,55 @@ public class UserApi {
 
     private final UserService userService;
     private final NationService nationService;
-    private final TokenService tokenService;
+    private final ValidateService validateService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/signup")
-    public boolean signup(@RequestBody SignUpDto signUpDto) {
-        return userService.signUp(toUser(signUpDto));
+    public boolean signup(@RequestBody CreateSignUpRequest createSignUpRequest) {
+        return userService.signUp(toUserForSignUp(createSignUpRequest));
     }
 
     @PostMapping("/login")
-    public JwtTokenJson login(@RequestBody LoginDto loginDto) {
-        Basic findUser = (Basic)(userService.login(loginDto.email));
+    public JwtTokenJson login(@RequestBody CreateLoginRequest createLoginRequest) {
+        User findUser = userService.login(createLoginRequest.email, createLoginRequest.pwd);
 
         if(findUser != null){
-            if(findUser.getPwd().equals(loginDto.pwd)){
-                CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
-                JwtToken jwtToken = customUserDetails.toJwtToken();
-                String tokenString = jwtTokenProvider.createToken(jwtToken.getEmail(), jwtToken);
-                Validate validate = new Validate(jwtToken.getEmail(), tokenString);
+            CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
+            JwtToken jwtToken = customUserDetails.toJwtToken();
+            String tokenString = jwtTokenProvider.createToken(jwtToken.getEmail(), jwtToken);
+            Validate validate = new Validate(jwtToken.getEmail(), tokenString);
 
-                if(tokenService.login(validate))
-                    return new JwtTokenJson("loginSuccess", tokenString);
-            }
+            if(validateService.login(validate))
+                return new JwtTokenJson("loginSuccess", tokenString);
         }
 
         return null;
     }
 
-    @PostMapping("/logout/{email}")
-    public boolean logout(@PathVariable String email) {
-        return tokenService.logout(email);
+    @PostMapping("/logout/{id}")
+    public boolean logout(@PathVariable Long id) {
+        return validateService.logout(id);
+    }
+
+    @GetMapping("/profile/{id}")
+    public User profile(@PathVariable Long id) {
+        return userService.findById(id);
+    }
+
+    @PutMapping("/update/{id}")
+    public boolean update(@PathVariable Long id, @RequestBody CreateUpdateRequest createUpdateRequest) {
+        return userService.update(id, createUpdateRequest);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public boolean delete(@PathVariable Long id) {
+        return userService.delete(id);
     }
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    static class SignUpDto {
+    static class CreateSignUpRequest {
         private String email;
         private String nickname;
         private String introduce;
@@ -74,24 +84,24 @@ public class UserApi {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    static class LoginDto {
+    static class CreateLoginRequest {
         private String email;
         private String pwd;
     }
 
-    private User toUser(SignUpDto signUpDto){
-        String email = signUpDto.email;
-        String nickname = signUpDto.nickname;
-        String introduce = signUpDto.introduce;
-        String imgUrl = signUpDto.imgUrl;
-        Nation nation = nationService.findByName(signUpDto.nationName);
+    private User toUserForSignUp(CreateSignUpRequest createSignUpRequest){
+        String email = createSignUpRequest.email;
+        String nickname = createSignUpRequest.nickname;
+        String introduce = createSignUpRequest.introduce;
+        String imgUrl = createSignUpRequest.imgUrl;
+        Nation nation = nationService.findByName(createSignUpRequest.nationName);
         Role role = Role.USER;
 
-        if(signUpDto.type.equals("social")){
-            String oAuth2Sub = signUpDto.oAuth2Sub;
+        if(createSignUpRequest.type.equals("Social")){
+            String oAuth2Sub = createSignUpRequest.oAuth2Sub;
             return Social.createSocial(email, nickname, introduce, imgUrl, nation, role, oAuth2Sub);
         }else {
-            String pwd = signUpDto.pwd;
+            String pwd = createSignUpRequest.pwd;
             return Basic.createBasic(email, nickname, introduce, imgUrl, nation, role, pwd);
         }
     }
