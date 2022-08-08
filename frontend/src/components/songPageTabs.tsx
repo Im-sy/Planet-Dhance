@@ -7,6 +7,12 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { ClassNames } from '@emotion/react';
+import { styled } from "@mui/material/styles";
+
+
+const StyledTabPanel= styled(TabPanel)(`
+padding : 0
+`);
 
 
 
@@ -91,15 +97,15 @@ export default function LabTabs() {
         </Box>
         {/* <p>fdf</p> */}
 
-        <TabPanel value="1" >
+        <StyledTabPanel value="1" >
             <SongPageGridView urls={hit}/>
         
-        </TabPanel>
+        </StyledTabPanel>
 
-        <TabPanel value="2">
+        <StyledTabPanel value="2">
             <SongPageGridView urls={Lastest}/>
         
-        </TabPanel>
+        </StyledTabPanel>
       </TabContext>
     </Box>
   );

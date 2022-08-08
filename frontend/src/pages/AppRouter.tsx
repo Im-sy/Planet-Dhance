@@ -6,7 +6,8 @@ import Songpage from './SongPage';
 import SearchSong from './SearchSong';
 import Subscribe from './Subscribe';
 import HashResult from './HashResult';
-import ModeChallengeTimer from './modeChallengeTimer';
+import MyPage from './MyPage';
+import ModeChallengeTimer from './ModeChallengeTimer';
 
 function AppRouter() {
   return (
@@ -17,6 +18,7 @@ function AppRouter() {
         <Route path='/subscribe' element={<Subscribe />} />
         <Route path='/searchsong' element={<SearchSong />} />
         <Route path='/hashresult' element={<HashResult />} />
+        <Route path='/mypage' element={<MyPage />} />
         <Route path='/challenge' element={<ModeChallengeTimer />} />
         <Route element={<NotFound />} />
       </Routes>
