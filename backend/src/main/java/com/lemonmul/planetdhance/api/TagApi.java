@@ -32,7 +32,7 @@ public class TagApi {
     private final MusicService musicService;
     private final VideoService videoService;
 
-    private static final int tagSize=5;
+    private static final int tagSize=15;
     private static final int videoSize=18;
 
     /**
@@ -40,7 +40,7 @@ public class TagApi {
      *
      * 요청 파라미터 예시: /tag/{입력한 검색어}
      * 검색 빈도가 높은 검색어 순으로 정렬
-     * size는 기본값 5
+     * size는 기본값 15
      */
     @GetMapping("/{searchStr}")
     public Slice<TagDto> searchTagList(@PathVariable String searchStr){
@@ -67,7 +67,7 @@ public class TagApi {
     /**
      * 가수 태그의 영상 리스트 반환 (hit&like순) - 가수 검색 페이지 무한 스크롤
      *
-     * 요청 파라미터 예시: /tag/artist/{해시태그 아이디}/{page번호}
+     * 요청 파라미터 예시: /tag/artist/{해시태그 아이디}/{page 번호}
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/artist/{tag_id}/{page}")
@@ -97,7 +97,7 @@ public class TagApi {
     /**
      * 곡 태그의 영상 리스트 반환 (hit&like순) - 곡 검색 페이지 무한 스크롤
      *
-     * 요청 파라미터 예시: /tag/music/{해시태그 아이디}/{page번호}
+     * 요청 파라미터 예시: /tag/music/{해시태그 아이디}/{page 번호}
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/music/{tag_id}/{page}")
@@ -111,18 +111,15 @@ public class TagApi {
     /**
      * 커스텀 태그의 영상 리스트 반환(hit&like순) -커스텀 검색 페이지 진입(0),무한 스크롤(1~)
      *
-     * 요청 파라미터 예시: /tag/custom/{해시태그 아이디}/{page번호}
+     * 요청 파라미터 예시: /tag/custom/{해시태그 아이디}/{page 번호}
      * 영상 리스트 size는 기본값 18
      * (custom 태그 말고 일반 태그도 가능)
-     * TODO 전체 List 말고 Slice로 보내줘야 함
-     * TODO orderWeight Desc, regDate Desc로 정렬해야 함
-     * TODO PUBLIC만 보내줘야 함
      */
     @GetMapping("/custom/{tag_id}/{page}")
-    public List<VideoTagDto> customVideos(@PathVariable Long tag_id,@PathVariable int page){
+    public Slice<VideoDto> customVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
-        List<VideoTag> videoTags = tag.getVideoTags();
-        return videoTags.stream().map(VideoTagDto::new).collect(Collectors.toList());
+        Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, tagSize, tag.getVideoTags(), VideoScope.PUBLIC);
+        return videoList.map(VideoDto::new);
     }
 
     @Data
