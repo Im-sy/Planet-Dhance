@@ -188,7 +188,7 @@ export default function SongPage() {
           className="react-player"
           // width="99.5vw"
           // height="25vh"
-          width="26rem"
+          width="98vw"
           height="14.4rem"
           // style={reactPlayerBackground}
           // url={myVideo}

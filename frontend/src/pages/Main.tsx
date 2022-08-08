@@ -29,13 +29,6 @@ export default function Main() {
                     height="15rem" />
             </div>
 
-            {/* ranking */}
-            <div>
-
-                <RankScore />
-                <Planet />
-
-            </div>
 
            
 
@@ -43,6 +36,16 @@ export default function Main() {
             <div>
                 <h2> Hot Clips</h2>
                 <GridView />
+            </div>
+
+
+            
+            {/* ranking */}
+            <div>
+
+                <RankScore />
+                <Planet />
+
             </div>
 
              {/* NavBar - 제일 하단에 두기!*/}

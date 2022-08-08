@@ -8,8 +8,8 @@ import ArrowBack from '@mui/icons-material/ArrowBack';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
-// import myVideo from './videos/IMG_0960.mp4';
 import myVideo from '../videos/IMG_0960.mp4';
+// import myVideo from '../videos/test.mp4';
 import '../styles/App.css';
 import "../styles/styles.css";
 
@@ -25,6 +25,7 @@ import type {
   RecordWebcamOptions,
   RecordWebcamHook
 } from "react-record-webcam";
+import { CloseFullscreenOutlined } from '@mui/icons-material';
 
 
 const OPTIONS: RecordWebcamOptions = {
@@ -51,6 +52,7 @@ const notEndChallenge : CSSProperties = {
 
 //-------------------------------------------------
 // main <-> sub 바꾸는 부분
+
 const subcamStyle: CSSProperties = {
   position: 'absolute',
   zIndex : '1',
@@ -59,6 +61,19 @@ const subcamStyle: CSSProperties = {
   width: '35vw',
   height: '50vh',
   transform : 'scaleX(-1)'
+  
+};
+
+// main <-> sub 바꾸는 부분
+const subcamStyle_tmp: CSSProperties = {
+  position: 'absolute',
+  zIndex : '1',
+  // top: '10vw',
+  // left : '65vw',
+  width: '35vw',
+  height: '50vh',
+  transform : 'scaleX(-1)'
+  
 };
 
 
@@ -197,8 +212,23 @@ interface playProps {
 }
 
 export default function ModeChallengeTimer() {
-  // 전체 페이지 상태 2 / 2
+  // webcam 부분 2-------------------------------------------
+  const recordWebcam: RecordWebcamHook = useRecordWebcam(OPTIONS);
+
+  
+
+  const getRecordingFileHooks = async () => {
+    const blob = await recordWebcam.getRecording();
+    console.log({ blob });
+    // const url = window.URL.createObjectURL(blob);
+    // console.log('url is ---',{url})
+    // document.getElementById("video-replay").src = url;
+  };
+
+  
+  // 전체 페이지 상태 2 / 2 -  mode,  challenging, endChallenge
   let [now, setNow] = useState('mode');
+  let [webOrPrev, setWebOrPrev] = useState(recordWebcam.webcamRef)
 
 
   // 곡선택페이지로 뒤로가기
@@ -271,14 +301,7 @@ export default function ModeChallengeTimer() {
 
 
 
-  // webcam 부분 2-------------------------------------------
-  const recordWebcam: RecordWebcamHook = useRecordWebcam(OPTIONS);
-
-  const getRecordingFileHooks = async () => {
-    const blob = await recordWebcam.getRecording();
-    console.log({ blob });
-  };
-
+  
 
   //-----------------------------------------------------------
   // timer 부분
@@ -333,6 +356,9 @@ export default function ModeChallengeTimer() {
               // 타이머 완료시, 실행
               setPlayState({ ...playState, played: 0}); // 티칭영상 새로시작1
               player.current.seekTo(0); // 티칭영상 새로시작1
+              console.log('debug1')
+              console.log(CAMERA_STATUS)
+              console.log(recordWebcam.status)
               recordWebcam.start();  // 내 캠 녹화 시작
            }
         }
@@ -392,8 +418,11 @@ export default function ModeChallengeTimer() {
   const handlePlay = () => {
     console.log('onPlay');
     setPlayState({ ...playState, playing: true });
-    recordWebcam.open();
-    console.log('카메라 켜기')
+    document.getElementById('prevcam').style.display = "none";
+    
+    if (recordWebcam.status !== CAMERA_STATUS.OPEN)
+      {recordWebcam.open()
+      console.log('카메라 켜기')}
  
   };
 
@@ -402,7 +431,7 @@ export default function ModeChallengeTimer() {
     setPlayState({ ...playState, playing: false });
    
 
-  };
+  };    
 
   const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlayState({ ...playState, played: parseFloat(e.target.value) });
@@ -418,35 +447,50 @@ export default function ModeChallengeTimer() {
   };
 
   const challengeEnd = () => {
+    
     setNow('endChallenge')
     console.log('안무티칭영상이 끝났습니다.')
     // asyn await promise then
+    console.log(recordWebcam.status,'before stop')
     recordWebcam.stop();
-    // recordWebcam.download();
-    console.log('웹캠 녹화가 종료되었습니다.');
-    setTimeout(recordWebcam.download, 1000);
-    setTimeout(getRecordingFileHooks, 1000);
-    // setTimeout(()=> {const test = recordWebcam.download()
     
-    // console.log(test)},100);
+    // recordWebcam.download();
+    setWebOrPrev(recordWebcam.previewRef) // webcam의 참조를 미리보기로 바꾸기
+    console.log('웹캠 녹화가 종료되었습니다.');
+    console.log(recordWebcam.status,'after stop')
+    // setTimeout(recordWebcam.download, 1000);
+    setTimeout(getRecordingFileHooks, 1000);
+    // setTimeout(recordWebcam.download, 3000);
 
-    // const test = recordWebcam.download()
-    // console.log("test", test)
+
   
-    // document.getElementById('webcam').style.visibility = "hidden";
+    // document.getElementById('webcam').style.display = "none";
   }
 
   return (
     <div >
+      <video id="video-replay" height="400" width="500" controls></video>
       <div style={videoZone}>
 
         {/* webCam */}
         <video id='webcam'
             ref={recordWebcam.webcamRef}
+            // ref={webOrPrev}
+            // ref={recordWebcam.previewRef}
             style={reactCamStyle}
             autoPlay
             muted
           />
+
+        {/* prevCam */}
+        <video id='prevcam'
+            ref={recordWebcam.previewRef}
+            style={reactCamStyle}
+            autoPlay
+            controls
+            muted
+          />
+
   
         {/* main */}
         <ReactPlayer
@@ -500,6 +544,12 @@ export default function ModeChallengeTimer() {
                     recordWebcam.status === CAMERA_STATUS.PREVIEW
                   }>
             챌린지 시작
+        </button>
+        {/* 타이머 영상녹화시작 */}
+        <button  onClick={getRecordingFileHooks} 
+                  style={ now==='endChallenge' ? challengeStartStyle : notMode}
+                  >
+             내 영상 다시보기
         </button>
 
 

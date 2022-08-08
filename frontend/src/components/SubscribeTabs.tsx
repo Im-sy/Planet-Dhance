@@ -8,12 +8,27 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { ClassNames } from '@emotion/react';
+import { styled } from "@mui/material/styles";
+import {Link} from 'react-router-dom';
 
-
+const StyledTabPanel= styled(TabPanel)(`
+padding : 0
+`);
 
 export default function SubscribeTabs() {
 // url=
   const [value, setValue] = useState('1');
+// follow
+  // profile : profile_photo, nickname, introduction, nation, follower수, following 수
+  const [profiles, setProfiles] = useState(
+    [
+
+      ["https://i.pinimg.com/736x/bb/25/56/bb255655d8846076ed5261a0ce2b7352--album-design-the-album.jpg", 'abcdefghijklmnopqrstuvwxyz', 'nice to meet you hello1 hello2 hello3 hello4 hello5 nice to meet you hello1 hello2 hello3 hello4 hello5 nice to meet you hello1 hello2 hello3 hello4 hello5 nice to meet you hello1 hello2 hello3 hello4 hello5'
+      , '🇰🇷','100','200'],
+      ["https://i.pinimg.com/736x/bb/25/56/bb255655d8846076ed5261a0ce2b7352--album-design-the-album.jpg", 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'nice to see you', 'KO','99999','200']
+    
+    ],
+  )
   const [follow, setFollow] = useState(
     
     [ ["https://cdn.pixabay.com/photo/2022/06/27/08/37/monk-7287041_960_720.jpg",
@@ -84,21 +99,21 @@ export default function SubscribeTabs() {
       <TabContext value={value} >
         <Box sx={{ }}  >
           <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
-            <Tab label="Hit" value="1" />
-            <Tab label="Lastest" value="2" />
+            <Tab label="Follow" value="1" />
+            <Tab label="Likes" value="2" />
           </TabList>
         </Box>
-        <p>fdf</p>
+  
 
-        <TabPanel value="1" >
-            <SubscribeFollowGridView urls={follow}/>
+        <StyledTabPanel value="1" >
+          <SubscribeFollowGridView urls={follow} profiles={profiles}/>
         
-        </TabPanel>
+        </StyledTabPanel>
 
-        <TabPanel value="2">
+        <StyledTabPanel value="2">
             <SongPageGridView urls={likes}/>
         
-        </TabPanel>
+        </StyledTabPanel>
       </TabContext>
     </Box>
   );

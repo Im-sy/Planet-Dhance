@@ -4,6 +4,7 @@ import SubscribeFollowCard from './SubscribeFollowCard';
 
 interface SubscribeFollowGridViewProps {
   urls : any,
+  profiles : any,
 
 }
 
@@ -13,13 +14,13 @@ export default function SubscribeFollowGridView(props:SubscribeFollowGridViewPro
 
   const cardrendering = () => {
     const cardList = []
-    for (let i=0; i<3; i++) {
+    for (let i=0; i<2; i++) {
       cardList.push(
         <Grid item sm={4}>
           <SubscribeFollowCard
-            profileImg="https://i.pinimg.com/736x/bb/25/56/bb255655d8846076ed5261a0ce2b7352--album-design-the-album.jpg"
-            nickname="멋쟁이"
-            introduction="안녕하세요. 만나서 반갑습네당"
+            profileImg={props.profiles[i][0]}
+            nickname={props.profiles[i][1]}
+            introduction={props.profiles[i][2]}
             urls={props.urls[i]}
             width="16vw"
             height="12vh" />

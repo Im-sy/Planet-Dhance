@@ -10,8 +10,8 @@ export default function GridView() {
         <Grid item sm={4}>
           <ActionAreaCard
             url="https://cdn.pixabay.com/photo/2019/06/20/09/26/underwater-4286600_960_720.jpg"
-            width="8.438rem"
-            height="15rem" />
+            width="28.2vw"
+            height="30vh" />
         </Grid>
       )
     }

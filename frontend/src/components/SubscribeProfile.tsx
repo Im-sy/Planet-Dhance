@@ -14,6 +14,15 @@ interface SearchInfo {
 }
 
 export default function SubscribeProfile(props: SearchInfo) {
+
+  const introductionStyle: CSSProperties = {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace : 'nowrap',
+    width: '60vw',
+    height: '2.5vh',
+  };
+
   const { img, nickname, introduction, type, sx } = props;
   if (typeof sx === 'undefined') {
     let sx = { display: 'flex', flexDirection: 'column', width: '7rem' }
@@ -28,7 +37,7 @@ export default function SubscribeProfile(props: SearchInfo) {
           />
           <CardContent sx={{ flex: '1 0 auto' }}>
             <Typography gutterBottom variant="h5" component="div">
-              Nickname
+              Nickname  nation
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Introduction
@@ -42,18 +51,19 @@ export default function SubscribeProfile(props: SearchInfo) {
       <div style={{ margin: '0.5rem 0.5rem 0rem 0.5rem', height:'100px' }}>
         <Card sx={{ maxWidth: '100%', display: 'flex' }}>
           <CardMedia
-            sx={sx}
+            sx={sx} 
             component="img"
             image={img}
             alt="profile img"
           />
-          <CardContent sx={{ flex: '1 0 auto' }}>
-            <Typography gutterBottom variant="body1" component="div">
-              {nickname}
+
+          <CardContent sx={{ flex: '1 0 auto' }}> 
+            <Typography gutterBottom variant="body1" component="div" sx={introductionStyle} >
+              {nickname}  <span>🇰🇷</span> <span>&#x1F1F0;&#x1F1F7;</span>
               
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-             { introduction }
+            <Typography variant="body2" color="text.secondary" sx={introductionStyle}>
+             { introduction } 
             </Typography>
           </CardContent>
         </Card>
