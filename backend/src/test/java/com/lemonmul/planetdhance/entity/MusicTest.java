@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -18,9 +20,9 @@ class MusicTest {
 
     @Test
     void createMusic() {
-        Music music1=Music.createMusic("title1","artist1","album img1","model url1","guide url1","mv url1");
+        Music music1=Music.createMusic("title1","artist1","album img1","model url1","guide url1","mv url1", LocalDateTime.now());
         em.persist(music1);
-        Music music2=Music.createMusic("title2","artist2","album img2","model url2","guide url2","mv url2");
+        Music music2=Music.createMusic("title2","artist2","album img2","model url2","guide url2","mv url2",LocalDateTime.now());
         em.persist(music2);
     }
 }
