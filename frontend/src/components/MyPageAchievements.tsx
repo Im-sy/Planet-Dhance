@@ -11,14 +11,15 @@ export default function MyPageAchievements(props : MyPageAchievementsProps) {
 		const res = []
 		for (let i=0; i<101; i++){
 			if (clear > i && i%10===0 ){
-				res.push(<span style={{marginLeft: 1, marginTop: 3}}>💯</span>)
+				// res.push(<div style={{marginLeft: 1, marginTop: 3}}>💯</div>)
+				res.push(<span style={{ margin: 3 }}>💯</span>)
 			}
 		}
 		return res
 	}
 	
   return (
-    <div>
+    <div >
 		{rendering()}
     </div>
   )

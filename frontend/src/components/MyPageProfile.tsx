@@ -5,6 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CSSProperties } from '@mui/styled-engine';
 import { styled } from "@mui/material/styles";
+import EditIcon from '@mui/icons-material/Edit';
 
 interface MyPageProfileProps {
   img: string;
@@ -68,10 +69,11 @@ export default function MyPageProfile(props: MyPageProfileProps) {
             image={img}
             alt="profile img"
           />
+          
 
           <CardContent sx={{ flex: '1 0 auto' }}>
             <Typography gutterBottom variant="body1" component="div"  >
-              {nickname}  {nation}
+              {nickname}  {nation} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <EditIcon />
               
             </Typography>
             <Typography variant="body2" component="div" color="text.secondary" sx={introductionStyle}>

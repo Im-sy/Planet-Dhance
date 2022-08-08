@@ -1,42 +1,42 @@
 import React from 'react'
-import './Emoji.css'
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
 
-interface emojiProps {
-	emoji: string
-}
+export default function MyPageClearSongs() {
+	const cardrendering = () => {
+		const cardList = []
+		for (let i=0; i<5; i++) {
+		  cardList.push(
+			<Grid item sm={4}>
+				  <CardMedia
+					style={{
+					  width: '10vw',
+					  height: '10vw',
+					}}
+					component="img"
+					// image={urls[i]}
+					image="https://i.pinimg.com/736x/bb/25/56/bb255655d8846076ed5261a0ce2b7352--album-design-the-album.jpg"
+					alt="user upload video"
+				  />
+			</Grid>
+		  )
+		}
+		return cardList
+	  }
 
-export default function Emoji({emoji}: emojiProps) {
-
-	const rendering = () => {
-		const res = []
-		for (let i=0; i<2; i++) {
-			res.push(<span className="xsmemoji low" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-			res.push(<span className="xsmemoji mid" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-			res.push(<span className="xsmemoji top" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-		}
-		for (let i=0; i<3; i++) {
-			res.push(<span className="smemoji low" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-			res.push(<span className="smemoji mid" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-			res.push(<span className="smemoji top" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-		}
-		for (let i=0; i<3; i++) {
-			res.push(<span className="lgemoji low" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-			res.push(<span className="lgemoji mid" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-			res.push(<span className="lgemoji top" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-		}
-		for (let i=0; i<2; i++) {
-			res.push(<span className="xlgemoji low" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-			res.push(<span className="xlgemoji mid" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-			res.push(<span className="xlgemoji top" style={{marginLeft: Math.floor(Math.random() * 400) + 1}}>{emoji}</span>)
-		}
-		return res
-	}
+	
 	
   return (
-    <div className="emoji">
-			<div className="fadeoutemoji">
-				{rendering()}
-			</div>
+    <div>
+		<CardContent sx={{ p : 1}}>
+            <Grid container spacing={0.4} direction='row'>
+                {cardrendering()}
+            </Grid>
+
+
+          </CardContent>
+
     </div>
   )
 }
