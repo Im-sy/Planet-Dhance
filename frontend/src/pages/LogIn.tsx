@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import Fab from '@mui/material/Fab'
 
 const CssTextField = styled(TextField)({
   '& .MuiInputBase-input': {
@@ -74,6 +75,7 @@ export default function SignIn() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -136,8 +138,18 @@ export default function SignIn() {
               </Grid>
             </Grid>
           </Box>
+          <Box>
+            <Fab sx={{mt: 8, mx: 3}}>
+              <img src="http://pngimg.com/uploads/google/google_PNG19635.png" alt="google" width="30"/>
+            </Fab>
+            <Fab sx={{mt: 8, mx: 3}}>
+              <img src="https://1000logos.net/wp-content/uploads/2016/11/meta-logo.png" alt="google" width="30"/>
+            </Fab>
+            <Fab sx={{mt: 8, mx: 3}}>
+              <img src="https://seeklogo.com/images/T/twitter-icon-circle-blue-logo-0902F48837-seeklogo.com.png" alt="google" width="30"/>
+            </Fab>
+          </Box>
         </Box>
-        {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
       </Container>
       <NavBar />
     </ThemeProvider>

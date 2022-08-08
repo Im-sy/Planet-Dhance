@@ -15,6 +15,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import CheckIcon from '@mui/icons-material/Check';
 
 const CssTextField = styled(TextField)({
   '& .MuiInputBase-input': {
@@ -60,8 +65,17 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
+      nation: data.get('nation'),
+      nickname: data.get('nickname'),
       password: data.get('password'),
+      password2: data.get('password2'),
     });
+  };
+
+  const [nation, setNation] = React.useState('');
+
+  const handleChange = (event: SelectChangeEvent<unknown>) => {
+    setNation(event.target.value as string);
   };
 
   return (
@@ -84,36 +98,79 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <CssTextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <CssTextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={9.5}>
                 <CssTextField
                   required
                   fullWidth
                   id="email"
                   label="Email Address"
                   name="email"
-                  autoComplete="email"
+                  // autoComplete="email"
+                  autoFocus
                 />
+              </Grid>
+              <Grid item xs={2.5}>
+                <Button variant="outlined" 
+                  sx={{
+                    color: '#FFE5B4',
+                    borderColor: '#FFE5B4',
+                    height: '100%'
+                  }}>
+                  <CheckIcon />
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel id="select-label" sx={{color: '#FFE5B4', '&.Mui-focused':{color: '#E8AA42'}}}>Nation</InputLabel>
+                  <Select
+                    labelId="select-label"
+                    id="select"
+                    value={nation}
+                    label="Nation"
+                    onChange={handleChange}
+                    sx={{
+                      color: "white",
+                      '.MuiSvgIcon-root': {fill:'#FFE5B4'}, 
+                      '.MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#FFE5B4',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#E8AA42',
+                      },}}
+                  >
+                    <MenuItem value={'Dhance'}>🪐Dhance</MenuItem>
+                    <MenuItem value={'Australia'}>🇦🇺 Australia</MenuItem>
+                    <MenuItem value={'Canada'}>🇨🇦 Canada</MenuItem>
+                    <MenuItem value={'China'}>🇨🇳 China</MenuItem>
+                    <MenuItem value={'Egypt'}>🇪🇬 Egypt</MenuItem>
+                    <MenuItem value={'Europe'}>🇪🇺 Europe</MenuItem>
+                    <MenuItem value={'Japan'}>🇯🇵 Japan</MenuItem>
+                    <MenuItem value={'Korea'}>🇰🇷 Korea</MenuItem>
+                    <MenuItem value={'RSA'}>🇿🇦 RSA</MenuItem>
+                    <MenuItem value={'USA'}>🇺🇸 USA</MenuItem>
+                    <MenuItem value={'Vietnam'}>🇻🇳 Vietnam</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={9.5}>
+                <CssTextField
+                  autoComplete="given-name"
+                  name="nickname"
+                  required
+                  fullWidth
+                  id="nickname"
+                  label="Nick Name"
+                />
+              </Grid>
+              <Grid item xs={2.5}>
+                <Button variant="outlined" 
+                  sx={{
+                    color: '#FFE5B4',
+                    borderColor: '#FFE5B4',
+                    height: '100%'
+                  }}>
+                  <CheckIcon />
+                </Button>
               </Grid>
               <Grid item xs={12}>
                 <CssTextField
@@ -124,6 +181,16 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <CssTextField
+                  required
+                  fullWidth
+                  name="password2"
+                  label="Confirm Password"
+                  type="password"
+                  id="password2"
                 />
               </Grid>
               <Grid item xs={12}>
