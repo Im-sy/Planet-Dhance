@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.service;
 
+import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.repo.VideoRepo;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -17,11 +20,44 @@ public class VideoService {
 
     private final VideoRepo videoRepo;
 
+//    /**
+//     * 영상 리스트 - 최신
+//     */
+//    public Slice<Video> findNewestVideoList(int page, int size, VideoScope scope){
+//        Pageable pageable=PageRequest.of(page,size);
+//        return videoRepo.findByScopeOrderByRegDateDesc(scope,pageable);
+//    }
+//
+//    /**
+//     * 영상 리스트 - 조회수&좋아요
+//     *
+//     * 조회수&좋아요 가중치 같으면 최신순
+//     */
+//    public Slice<Video> findHitLikeVideoList(int page,int size,VideoScope scope){
+//        Pageable pageable=PageRequest.of(page,size);
+//        return videoRepo.findByScopeOrderByOrderWeightDescRegDateDesc(scope,pageable);
+//    }
+
     /**
      * 영상 리스트 - 최신
      */
-    public Slice<Video> findPublicNewestVideoList(int lastId,int size,VideoScope videoScope){
-        Pageable pageable=PageRequest.of(0,size);
-        return videoRepo.findByIdLessThanAndScopeOrderByRegDateDesc(lastId,videoScope,pageable);
+    public Slice<Video> findNewestVideoList(int page, int size, Music music,VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByMusicAndScopeOrderByRegDateDesc(music,scope,pageable);
+    }
+
+    /**
+     * 영상 리스트 - 조회수&좋아요
+     *
+     * 조회수&좋아요 가중치 같으면 최신순
+     */
+    public Slice<Video> findHitLikeVideoList(int page,int size,Music music,VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByMusicAndScopeOrderByOrderWeightDescRegDateDesc(music,scope,pageable);
+    }
+
+    public Slice<Video> findHitLikeVideoListByMusicList(int page, int size, List<Music> musicList, VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByMusicInAndScopeOrderByOrderWeightDescRegDateDesc(musicList,scope,pageable);
     }
 }
