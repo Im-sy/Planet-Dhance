@@ -122,6 +122,25 @@ public class TagApi {
         return videoList.map(VideoDto::new);
     }
 
+    /**
+     * 국가 태그의 영상 리스트 반환(hit&like순) -커스텀 검색 페이지 진입(0),무한 스크롤(1~)
+     *
+     * 요청 파라미터 예시: /tag/nation/{해시태그 아이디}/{page 번호}
+     * 영상 리스트 size는 기본값 18
+     */
+    @GetMapping("/nation/{tag_id}/{page}")
+    public Slice<VideoDto> nationVideos(@PathVariable Long tag_id,@PathVariable int page){
+        Tag tag = tagService.findTagById(tag_id, page);
+        Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, tagSize, tag.getVideoTags(), VideoScope.PUBLIC);
+        return videoList.map(VideoDto::new);
+    }
+
+    /**
+     * 유저 정보, 유저의 클리어 정보, 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 진입
+     *
+     * 요청 파라미터 예시: /tag/nickname/{해시태그 아이디}/{page 번호}
+     */
+
     @Data
     static class TagDto {
         private Long id;
