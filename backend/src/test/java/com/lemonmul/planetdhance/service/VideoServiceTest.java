@@ -175,6 +175,10 @@ class VideoServiceTest {
             videos.add(video);
             em.persist(video);
         }
+        em.persist(Clear.createClear(music1,user1));
+        em.persist(Clear.createClear(music1,user2));
+        em.persist(Clear.createClear(music2,user1));
+        em.persist(Clear.createClear(music2,user2));
     }
 
 }

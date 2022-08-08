@@ -1,14 +1,19 @@
 package com.lemonmul.planetdhance.api;
 
+import com.lemonmul.planetdhance.dto.ClearDto;
+import com.lemonmul.planetdhance.dto.UserDto;
 import com.lemonmul.planetdhance.dto.VideoDto;
+import com.lemonmul.planetdhance.entity.Clear;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
 import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.tag.TagType;
+import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.service.MusicService;
 import com.lemonmul.planetdhance.service.TagService;
+import com.lemonmul.planetdhance.service.UserService;
 import com.lemonmul.planetdhance.service.VideoService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +35,11 @@ public class TagApi {
 
     private final TagService tagService;
     private final MusicService musicService;
+    private final UserService userService;
     private final VideoService videoService;
 
     private static final int tagSize=15;
-    private static final int videoSize=18;
+    private static final int videoSize=5;
 
     /**
      * 연관 검색어 리스트 반환 (검색 빈도순)
@@ -56,12 +62,12 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/artist/{tag_id}")
-    public TagPageResponse musicsAndArtistVideos(@PathVariable Long tag_id){
+    public MusicSearchResponse musicsAndArtistVideos(@PathVariable Long tag_id){
         int page=0;
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findArtistVideoList(tag.getName());
         Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
-        return new TagPageResponse(musicList,videoList);
+        return new MusicSearchResponse(musicList,videoList);
     }
 
     /**
@@ -86,12 +92,12 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/music/{tag_id}")
-    public TagPageResponse musicsAndMusicVideos(@PathVariable Long tag_id){
+    public MusicSearchResponse musicsAndMusicVideos(@PathVariable Long tag_id){
         int page=0;
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findTitleVideoList(tag.getName());
         Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
-        return new TagPageResponse(musicList,videoList);
+        return new MusicSearchResponse(musicList,videoList);
     }
 
     /**
@@ -118,7 +124,7 @@ public class TagApi {
     @GetMapping("/custom/{tag_id}/{page}")
     public Slice<VideoDto> customVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
-        Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, tagSize, tag.getVideoTags(), VideoScope.PUBLIC);
+        Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
         return videoList.map(VideoDto::new);
     }
 
@@ -131,15 +137,43 @@ public class TagApi {
     @GetMapping("/nation/{tag_id}/{page}")
     public Slice<VideoDto> nationVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
-        Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, tagSize, tag.getVideoTags(), VideoScope.PUBLIC);
+        Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
         return videoList.map(VideoDto::new);
     }
 
     /**
      * 유저 정보, 유저의 클리어 정보, 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 진입
      *
-     * 요청 파라미터 예시: /tag/nickname/{해시태그 아이디}/{page 번호}
+     * 요청 파라미터 예시: /tag/user/{해시태그 아이디}
+     * 영상 리스트 size는 기본값 18
+     * TODO ClearDto에 곡 검색 가능한 필드 추가
+     * TODO 로그인한 사용자 정보 받아서 비공개 영상 반환 여부 정하기
      */
+    @GetMapping("/user/{tag_id}")
+    public UserSearchResponse userInfoAndUserVideos(@PathVariable Long tag_id){
+        int page=0;
+        Tag tag = tagService.findTagById(tag_id,0);
+        User user = userService.findByNickname(tag.getName());
+        List<Clear> clearList = user.getClears();
+        Slice<Video> videoList = videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+        return new UserSearchResponse(user,clearList,videoList);
+    }
+
+    /**
+     * 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 무한 스크롤
+     *
+     * 요청 파라미터 예시: /tag/user/{해시태그 아이디}/{page 번호}
+     * 영상 리스트 size는 기본값 18
+     * TODO ClearDto에 곡 검색 가능한 필드 추가
+     * TODO 로그인한 사용자 정보 받아서 비공개 영상 반환 여부 정하기
+     */
+    @GetMapping("/user/{tag_id}/{page}")
+    public Slice<VideoDto> userVideos(@PathVariable Long tag_id,@PathVariable int page){
+        Tag tag = tagService.findTagById(tag_id, page);
+        User user = userService.findByNickname(tag.getName());
+        Slice<Video> videoList = videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+        return videoList.map(VideoDto::new);
+    }
 
     @Data
     static class TagDto {
@@ -157,13 +191,28 @@ public class TagApi {
     }
 
     @Data
-    static class TagPageResponse{
-        List<MusicDto> musicList;
-        Slice<VideoDto> videoList;
+    static class MusicSearchResponse {
+        private List<MusicDto> musicList;
+        private Slice<VideoDto> videoList;
 
-        public TagPageResponse(List<Music> musicList, Slice<Video> videoList) {
+        public MusicSearchResponse(List<Music> musicList, Slice<Video> videoList) {
             this.musicList = musicList.stream().map(MusicDto::new).collect(Collectors.toList());
             this.videoList = videoList.map(VideoDto::new);
+        }
+    }
+
+    @Data
+    static class UserSearchResponse{
+        private UserDto user;
+        private List<ClearDto> clearList;
+        private int clearCnt;
+        private Slice<VideoDto> videoList;
+
+        public UserSearchResponse(User user, List<Clear> clearList, Slice<Video> videoList) {
+            this.user=new UserDto(user);
+            this.clearList=clearList.stream().map(ClearDto::new).collect(Collectors.toList());
+            this.clearCnt=clearList.size();
+            this.videoList=videoList.map(VideoDto::new);
         }
     }
 

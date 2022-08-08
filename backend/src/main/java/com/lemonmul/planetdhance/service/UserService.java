@@ -52,6 +52,10 @@ public class UserService {
         return userRepo.findById(id).orElse(null);
     }
 
+    public User findByNickname(String nickname){
+        return userRepo.findByNickname(nickname).orElse(null);
+    }
+
     @Transactional
     public boolean update(Long id, CreateUpdateRequest createUpdateRequest) {
         User findUser = userRepo.findById(id).orElse(null);

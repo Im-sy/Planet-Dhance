@@ -2,6 +2,7 @@ package com.lemonmul.planetdhance.service;
 
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
+import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.repo.VideoRepo;
@@ -56,4 +57,14 @@ public class VideoService {
         Pageable pageable=PageRequest.of(page,size);
         return videoRepo.findByVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(videoTagList,scope,pageable);
     }
+
+    /**
+     * 검색 조건: 유저 한 명, 공개 여부
+     * 정렬: 최신순
+     */
+    public Slice<Video> findNewestVideoListByUser(int page, int size, User user,VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByUserAndScopeOrderByRegDate(user,scope,pageable);
+    }
+
 }
