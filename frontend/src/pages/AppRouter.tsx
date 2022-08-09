@@ -11,6 +11,7 @@ import Subscribe from './Subscribe';
 import {HashResult} from './HashResult';
 import MyPage from './MyPage';
 import ModeChallengeTimer from './Challenge';
+import Ranking from './Ranking';
 
 function AppRouter() {
   return (
@@ -25,6 +26,7 @@ function AppRouter() {
         <Route path='/challenge' element={<ModeChallengeTimer />} />
         <Route path='/login' element={<LogIn />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/ranking' element={<Ranking />} />
         <Route element={<NotFound />} />
       </Routes>
     </BrowserRouter>
