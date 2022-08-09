@@ -1,6 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
-import videoFile from './videos/IMG_0960.mp4';
-let blob = fetch(videoFile).then((r) => r.blob());
+import videoFile from '../videos/IMG_0960.mp4';
+let blob = fetch(videoFile).then((r) => {
+  r.blob();
+  return window.URL.createObjectURL(r);
+});
+const b = window.URL.createObjectURL(blob);
+console.log(b);
 const videoZone = {
   position: 'relative',
   height: '500px',
@@ -52,38 +57,55 @@ export default function App() {
     // });
     // var file = new File([blob], "name");
     // console.log(file);
-    async function makeThumbnail(){
-    let duration = 17;
-    let fractions = [];
-    for (let i = 0; i <= duration; i += duration / 10) {
-      fractions.push(Math.floor(i));
+    async function makeThumbnail() {
+      let duration = 17;
+      let fractions = [];
+      for (let i = 0; i <= duration; i += duration / 10) {
+        fractions.push(Math.floor(i));
+      }
+      console.log('function run');
+      const data = await Promise.all(
+        fractions.map(async (time) => {
+          // console.log(time);
+          await snap(time);
+        })
+      );
+      console.log(data);
+      // setThumbnail(data);
     }
-    console.log(fractions);
-    const data = await Promise.all(fractions.map( time => {
-      return snap(time)
-    }))
-    console.log(data);
-    setThumbnail(data);
-    }
+    // async function call
+
     makeThumbnail();
   }, []);
 
   async function snap(time) {
-    console.log(time);
+    // console.log(time);
     if (context && videoRef.current) {
       const video = document.querySelector('video');
+      console.log(video);
       video.currentTime = parseInt(time);
-      context.fillRect(0, 0, dimensions.w, dimensions.h);
-      context.drawImage(videoRef.current, 0, 0, dimensions.w, dimensions.h);
+      console.log(video.currentTime);
+      await context.fillRect(0, 0, dimensions.w, dimensions.h);
+      await context.drawImage(
+        videoRef.current,
+        0,
+        0,
+        dimensions.w,
+        dimensions.h
+      );
+      console.log('?');
       // save
-      const canvasHTML = document.querySelector('canvas');
-      const imgURL = canvasHTML.toDataURL('image/png');
-      // setThumbnail([...thumbnail, imgURL]);
-      return (imgURL)
+      setTimeout(async () => {
+        const canvasHTML = document.querySelector('canvas');
+        const imgURL = canvasHTML.toDataURL('image/png');
+        // setThumbnail([...thumbnail, imgURL]);
+        console.log(imgURL);
+        return imgURL;
+      }, 10);
     }
   }
 
-  function drawImage(context){
+  function drawImage(context) {
     context.fillRect(0, 0, dimensions.w, dimensions.h);
     context.drawImage(videoRef.current, 0, 0, dimensions.w, dimensions.h);
   }
@@ -94,7 +116,7 @@ export default function App() {
       <canvas crossOrigin="anonymous" ref={canvasRef} />
       <button onClick={snap}>Take screenshot</button>
       {thumbnail.map((imgBlobs, index) => {
-        console.log('hello');
+        // console.log('hello');
         return <img key={index} src={imgBlobs} />;
       })}
     </div>

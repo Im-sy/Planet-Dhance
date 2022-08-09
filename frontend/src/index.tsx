@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import App2 from './pages/App_video';
+import App2 from './pages/Thumnail';
 import ActionAreaCard from './components/Card';
 import GridView from './components/GridView';
 import SearchTag from './pages/SearchTag';
