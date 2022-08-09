@@ -94,11 +94,14 @@ class VideoServiceTest {
         Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko");
         em.persist(nation1);
         em.persist(Tag.createTag(nation1.getName(), TagType.NATION,"korea img"));
+        Nation nation2=Nation.createNation("\uD83C\uDDFA\uD83C\uDDF8","usa");
+        em.persist(nation2);
+        em.persist(Tag.createTag(nation2.getName(), TagType.NATION,"usa img"));
 
         User user1=User.createUser("email1@xx.xx","user1",null,null,nation1);
         em.persist(user1);
         em.persist(Tag.createTag(user1.getNickname(),TagType.NICKNAME, user1.getImgUrl()));
-        User user2=User.createUser("email2@xx.xx","user2",null,null,nation1);
+        User user2=User.createUser("email2@xx.xx","user2",null,null,nation2);
         em.persist(user2);
         em.persist(Tag.createTag(user2.getNickname(),TagType.NICKNAME,user2.getImgUrl()));
 
@@ -179,6 +182,8 @@ class VideoServiceTest {
         em.persist(Clear.createClear(music1,user2));
         em.persist(Clear.createClear(music2,user1));
         em.persist(Clear.createClear(music2,user2));
+
+        em.persist(Follow.createFollow(user1,user2));
     }
 
 }

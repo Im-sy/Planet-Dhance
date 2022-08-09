@@ -29,10 +29,10 @@ public class VideoApi {
     /**
      * 영상 리스트 - 최신
      *
-     * 요청 파라미터 예시: /video/list/{곡 아이디}/latest/{page번호}
+     * 요청 파라미터 예시: /video/{곡 아이디}/latest/{page번호}
      * size는 기본값 18
      */
-    @GetMapping("/list/{music_id}/latest/{page}")
+    @GetMapping("/{music_id}/latest/{page}")
     public Slice<VideoDto> newestList(@PathVariable Long music_id,@PathVariable int page){
         Music music=musicService.getMusicInfo(music_id).get();
         Slice<Video> videoList = videoService.findNewestVideoList(page,size,music, VideoScope.PUBLIC);
@@ -42,7 +42,7 @@ public class VideoApi {
     /**
      * 영상 리스트 - 조회수&좋아요
      *
-     * 요청 파라미터 예시: /video/list/{곡 아이디}/hitlike/{page번호}
+     * 요청 파라미터 예시: /video/{곡 아이디}/hitlike/{page번호}
      * size는 기본값 18
      */
     @GetMapping("/list/{music_id}/hitlike/{page}")

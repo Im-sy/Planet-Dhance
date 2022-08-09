@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/tag")
 public class TagApi {
 
+    //TODO 태그 타입 확인해서 해당 타입 아니면 에러 반환
     private final TagService tagService;
     private final MusicService musicService;
     private final UserService userService;
@@ -44,11 +45,11 @@ public class TagApi {
     /**
      * 연관 검색어 리스트 반환 (검색 빈도순)
      *
-     * 요청 파라미터 예시: /tag/{입력한 검색어}
+     * 요청 파라미터 예시: /tag/list/{입력한 검색어}
      * 검색 빈도가 높은 검색어 순으로 정렬
      * size는 기본값 15
      */
-    @GetMapping("/{searchStr}")
+    @GetMapping("/list/{searchStr}")
     public Slice<TagDto> searchTagList(@PathVariable String searchStr){
         Slice<Tag> tagList = tagService.findTagByNameContaining(searchStr,tagSize);
         return tagList.map(TagDto::new);
@@ -57,11 +58,11 @@ public class TagApi {
     /**
      * 가수 태그의 곡 리스트,영상 리스트 반환 (hit&like순) - 가수 검색 페이지 진입
      *
-     * 요청 파라미터 예시: /tag/artist/{해시태그 아이디}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/artist
      * 곡 리스트는 전체
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/artist/{tag_id}")
+    @GetMapping("/{tag_id}/artist")
     public MusicSearchResponse musicsAndArtistVideos(@PathVariable Long tag_id){
         int page=0;
         Tag tag = tagService.findTagById(tag_id,page);
@@ -73,10 +74,10 @@ public class TagApi {
     /**
      * 가수 태그의 영상 리스트 반환 (hit&like순) - 가수 검색 페이지 무한 스크롤
      *
-     * 요청 파라미터 예시: /tag/artist/{해시태그 아이디}/{page 번호}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/artist/{page 번호}
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/artist/{tag_id}/{page}")
+    @GetMapping("/{tag_id}/artist/{page}")
     public Slice<VideoDto> artistVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findArtistVideoList(tag.getName());
@@ -87,11 +88,11 @@ public class TagApi {
     /**
      * 곡 태그의 곡 리스트,영상 리스트 반환 (hit&like순) - 곡 검색 페이지 진입
      *
-     * 요청 파라미터 예시: /tag/music/{해시태그 아이디}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/music
      * 곡 리스트는 전체
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/music/{tag_id}")
+    @GetMapping("/{tag_id}/music")
     public MusicSearchResponse musicsAndMusicVideos(@PathVariable Long tag_id){
         int page=0;
         Tag tag = tagService.findTagById(tag_id,page);
@@ -103,10 +104,10 @@ public class TagApi {
     /**
      * 곡 태그의 영상 리스트 반환 (hit&like순) - 곡 검색 페이지 무한 스크롤
      *
-     * 요청 파라미터 예시: /tag/music/{해시태그 아이디}/{page 번호}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/music/{page 번호}
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/music/{tag_id}/{page}")
+    @GetMapping("/{tag_id}/music/{page}")
     public Slice<VideoDto> musicVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findTitleVideoList(tag.getName());
@@ -117,11 +118,11 @@ public class TagApi {
     /**
      * 커스텀 태그의 영상 리스트 반환(hit&like순) -커스텀 검색 페이지 진입(0),무한 스크롤(1~)
      *
-     * 요청 파라미터 예시: /tag/custom/{해시태그 아이디}/{page 번호}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/custom/{page 번호}
      * 영상 리스트 size는 기본값 18
      * (custom 태그 말고 일반 태그도 가능)
      */
-    @GetMapping("/custom/{tag_id}/{page}")
+    @GetMapping("/{tag_id}/custom/{page}")
     public Slice<VideoDto> customVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
         Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
@@ -131,10 +132,10 @@ public class TagApi {
     /**
      * 국가 태그의 영상 리스트 반환(hit&like순) -커스텀 검색 페이지 진입(0),무한 스크롤(1~)
      *
-     * 요청 파라미터 예시: /tag/nation/{해시태그 아이디}/{page 번호}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/nation/{page 번호}
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/nation/{tag_id}/{page}")
+    @GetMapping("/{tag_id}/nation/{page}")
     public Slice<VideoDto> nationVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
         Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
@@ -144,12 +145,12 @@ public class TagApi {
     /**
      * 유저 정보, 유저의 클리어 정보, 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 진입
      *
-     * 요청 파라미터 예시: /tag/user/{해시태그 아이디}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user
      * 영상 리스트 size는 기본값 18
      * TODO ClearDto에 곡 검색 가능한 필드 추가
      * TODO 로그인한 사용자 정보 받아서 비공개 영상 반환 여부 정하기
      */
-    @GetMapping("/user/{tag_id}")
+    @GetMapping("/{tag_id}/user")
     public UserSearchResponse userInfoAndUserVideos(@PathVariable Long tag_id){
         int page=0;
         Tag tag = tagService.findTagById(tag_id,0);
@@ -162,12 +163,12 @@ public class TagApi {
     /**
      * 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 무한 스크롤
      *
-     * 요청 파라미터 예시: /tag/user/{해시태그 아이디}/{page 번호}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user/{page 번호}
      * 영상 리스트 size는 기본값 18
      * TODO ClearDto에 곡 검색 가능한 필드 추가
      * TODO 로그인한 사용자 정보 받아서 비공개 영상 반환 여부 정하기
      */
-    @GetMapping("/user/{tag_id}/{page}")
+    @GetMapping("/{tag_id}/user/{page}")
     public Slice<VideoDto> userVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
         User user = userService.findByNickname(tag.getName());
