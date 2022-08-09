@@ -1,6 +1,6 @@
 import React , { CSSProperties, useState } from 'react';
 import { makeStyles } from '@mui/styles';
-import SongPageGridView from './SongPageGridView'
+import SongPageGridView from './MusicPageGridView'
 import SubscribeFollowGridView from './SubscribeFollowGridView'
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';

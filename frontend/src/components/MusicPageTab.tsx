@@ -1,6 +1,6 @@
 import React , { CSSProperties, useState } from 'react';
 import { makeStyles } from '@mui/styles';
-import SongPageGridView from './SongPageGridView'
+import SongPageGridView from './MusicPageGridView'
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -20,7 +20,7 @@ export default function SongPageTabs() {
 // url=
   const [value, setValue] = useState('1');
   const [hit, setHit] = useState(["https://cdn.pixabay.com/photo/2022/06/27/08/37/monk-7287041_960_720.jpg",
-                                 "https://cdn.pixabay.com/photo/2019/06/20/09/26/underwater-4286600_960_720.jpg",
+                                "https://cdn.pixabay.com/photo/2019/06/20/09/26/underwater-4286600_960_720.jpg",
                                 "https://cdn.pixabay.com/photo/2022/07/13/06/35/baby-7318667_960_720.jpg",
 
                                 "https://cdn.pixabay.com/photo/2022/06/27/02/22/woman-7286576__340.jpg",

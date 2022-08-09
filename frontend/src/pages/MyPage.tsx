@@ -3,7 +3,7 @@ import NavBar from '../components/NavBar'
 import MyPageProfile from '../components/MyPageProfile'
 import MyPageAchievements from '../components/MyPageAchievements'
 import MyPageClearSongs from '../components/MyPageClearSongs'
-import SongPageGridView from '../components/SongPageGridView'
+import SongPageGridView from '../components/MusicPageGridView'
 
 
 
