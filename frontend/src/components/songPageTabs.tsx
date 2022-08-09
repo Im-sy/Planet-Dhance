@@ -16,7 +16,7 @@ padding : 0
 
 
 
-export default function LabTabs() {
+export default function SongPageTabs() {
 // url=
   const [value, setValue] = useState('1');
   const [hit, setHit] = useState(["https://cdn.pixabay.com/photo/2022/06/27/08/37/monk-7287041_960_720.jpg",
