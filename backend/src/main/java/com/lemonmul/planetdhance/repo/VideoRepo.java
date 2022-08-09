@@ -26,6 +26,9 @@ public interface VideoRepo extends JpaRepository<Video,Long> {
     Slice<Video> findByVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(List<VideoTag> videoTagList,VideoScope scope,Pageable pageable);
 
     //해당 유저의 최신 영상 리스트
-    Slice<Video> findByUserAndScopeOrderByRegDate(User user,VideoScope scope,Pageable pageable);
+    Slice<Video> findByUserAndScopeOrderByRegDateDesc(User user, VideoScope scope, Pageable pageable);
+
+    //해당 유저의 최신 영상 리스트 (공개, 비공개)
+    Slice<Video> findByUserOrderByRegDateDesc(User user, Pageable pageable);
 
 }

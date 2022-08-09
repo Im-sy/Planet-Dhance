@@ -64,7 +64,17 @@ public class VideoService {
      */
     public Slice<Video> findNewestVideoListByUser(int page, int size, User user,VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByUserAndScopeOrderByRegDate(user,scope,pageable);
+        return videoRepo.findByUserAndScopeOrderByRegDateDesc(user,scope,pageable);
+    }
+
+    /**
+     * 검색 조건: 유저 한 명
+     * 정렬: 최신순
+     * TODO 공개 여부 조건 거는 부분 개선해서 함수 하나로 합치기
+     */
+    public Slice<Video> findAllNewestVideoListByUser(int page, int size, User user){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByUserOrderByRegDateDesc(user,pageable);
     }
 
 }

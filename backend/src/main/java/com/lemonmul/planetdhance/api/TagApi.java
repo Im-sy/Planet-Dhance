@@ -40,7 +40,7 @@ public class TagApi {
     private final VideoService videoService;
 
     private static final int tagSize=15;
-    private static final int videoSize=5;
+    private static final int videoSize=18;
 
     /**
      * 연관 검색어 리스트 반환 (검색 빈도순)
@@ -145,34 +145,40 @@ public class TagApi {
     /**
      * 유저 정보, 유저의 클리어 정보, 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 진입
      *
-     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user/{로그인한 유저 아이디}
      * 영상 리스트 size는 기본값 18
-     * TODO ClearDto에 곡 검색 가능한 필드 추가
-     * TODO 로그인한 사용자 정보 받아서 비공개 영상 반환 여부 정하기
      */
-    @GetMapping("/{tag_id}/user")
-    public UserSearchResponse userInfoAndUserVideos(@PathVariable Long tag_id){
+    @GetMapping("/{tag_id}/user/{user_id}")
+    public UserSearchResponse userInfoAndUserVideos(@PathVariable Long tag_id,@PathVariable Long user_id){
         int page=0;
         Tag tag = tagService.findTagById(tag_id,0);
         User user = userService.findByNickname(tag.getName());
         List<Clear> clearList = user.getClears();
-        Slice<Video> videoList = videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+        Slice<Video> videoList;
+        if(user.getId().equals(user_id)){
+            videoList=videoService.findAllNewestVideoListByUser(page,videoSize,user);
+        }else {
+            videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+        }
         return new UserSearchResponse(user,clearList,videoList);
     }
 
     /**
      * 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 무한 스크롤
      *
-     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user/{page 번호}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user/{로그인한 유저 아이디}/{page 번호}
      * 영상 리스트 size는 기본값 18
-     * TODO ClearDto에 곡 검색 가능한 필드 추가
-     * TODO 로그인한 사용자 정보 받아서 비공개 영상 반환 여부 정하기
      */
-    @GetMapping("/{tag_id}/user/{page}")
-    public Slice<VideoDto> userVideos(@PathVariable Long tag_id,@PathVariable int page){
+    @GetMapping("/{tag_id}/user/{user_id}/{page}")
+    public Slice<VideoDto> userVideos(@PathVariable Long tag_id,@PathVariable Long user_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
         User user = userService.findByNickname(tag.getName());
-        Slice<Video> videoList = videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+        Slice<Video> videoList;
+        if(user.getId().equals(user_id)){
+            videoList=videoService.findAllNewestVideoListByUser(page,videoSize,user);
+        }else {
+            videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+        }
         return videoList.map(VideoDto::new);
     }
 
