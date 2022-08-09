@@ -5,6 +5,7 @@ import com.lemonmul.planetdhance.entity.video.Video;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class User {
 
     private String introduce;
 
+    @Lob
     private String imgUrl;
 
     private LocalDateTime regDate;
