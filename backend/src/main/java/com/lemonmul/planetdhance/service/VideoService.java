@@ -56,4 +56,15 @@ public class VideoService {
         Pageable pageable=PageRequest.of(page,size);
         return videoRepo.findByVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(videoTagList,scope,pageable);
     }
+
+    /**
+     * 검색 조건: 공개 여부
+     * 정렬: 조회수&좋아요 가중치, 가중치 같으면 최신순
+     */
+    public Slice<Video> findMainPageVideoList(int page,int size,VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findMainByScopeOrderByOrderWeightDescRegDateDesc(scope,pageable);
+    }
+
+
 }
