@@ -3,7 +3,6 @@ import NavBar from '../components/NavBar';
 import {Link as RouterLink} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -15,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import Fab from '@mui/material/Fab'
 
 const CssTextField = styled(TextField)({
   '& .MuiInputBase-input': {
@@ -39,19 +37,6 @@ const CssTextField = styled(TextField)({
     },
   },
 });
-
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 
@@ -139,15 +124,15 @@ export default function SignIn() {
             </Grid>
           </Box>
           <Box>
-            <Fab sx={{mt: 8, mx: 3}}>
+            <Button variant="contained" color="inherit" sx={{mt: 8, mx: 3, py:2,  borderRadius: '50%'}}>
               <img src="http://pngimg.com/uploads/google/google_PNG19635.png" alt="google" width="30"/>
-            </Fab>
-            <Fab sx={{mt: 8, mx: 3}}>
-              <img src="https://1000logos.net/wp-content/uploads/2016/11/meta-logo.png" alt="google" width="30"/>
-            </Fab>
-            <Fab sx={{mt: 8, mx: 3}}>
+            </Button>
+            <Button variant="contained" color="inherit" sx={{mt: 8, mx: 3, py:2,  borderRadius: '50%'}}>
+              <img src="https://logostransparent.com/wp-content/uploads/2022/03/Meta-Logo-Transparent.png" alt="google" width="30"/>
+            </Button>
+            <Button variant="contained" color="inherit" sx={{mt: 8, mx: 3, py:2,  borderRadius: '50%'}}>
               <img src="https://seeklogo.com/images/T/twitter-icon-circle-blue-logo-0902F48837-seeklogo.com.png" alt="google" width="30"/>
-            </Fab>
+            </Button>
           </Box>
         </Box>
       </Container>
