@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.service;
 
+import com.lemonmul.planetdhance.entity.Follow;
 import com.lemonmul.planetdhance.entity.Nation;
 import com.lemonmul.planetdhance.entity.Validate;
 import com.lemonmul.planetdhance.entity.tag.Tag;
@@ -14,8 +15,13 @@ import com.lemonmul.planetdhance.security.jwt.CustomUserDetails;
 import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -78,5 +84,15 @@ public class UserService {
         userRepo.delete(findUser);
 
         return true;
+    }
+
+    /**
+     * 팔로우한 유저 정보
+     * 검색 조건: 해당 유저가 팔로우한 사용자
+     * 정렬: 영상 갱신일 최신순
+     */
+    public Slice<User> findFollowingUserInfo(int page,int size,List<Follow> tos){
+        Pageable pageable= PageRequest.of(page,size);
+        return userRepo.findByTosInOrderByRenewDateDesc(tos,pageable);
     }
 }
