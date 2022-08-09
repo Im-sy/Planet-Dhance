@@ -1,7 +1,7 @@
 import React, { CSSProperties, SetStateAction, useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import ActionAreaCard from '../components/Card';
-import SongPageTabs from '../components/songPageTabs';
+import SongPageTabs from '../components/SongPageTabs';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import myVideo from './videos/sparkling.mp4';
 import { IconButton, Checkbox } from '@mui/material';
@@ -34,7 +34,7 @@ export default function SongPage() {
   
   const { url, playing, muted, played, loaded } = playState;
 
- 
+
   const handlePlayPause = () => {
     setPlayState({ ...playState, playing: !playing });
     console.log({playing})
@@ -189,7 +189,7 @@ export default function SongPage() {
           className="react-player"
           // width="99.5vw"
           // height="25vh"
-          width="26rem"
+          width="98vw"
           height="14.4rem"
           // style={reactPlayerBackground}
           // url={myVideo}
@@ -234,6 +234,7 @@ export default function SongPage() {
 
       <SongPageTabs />
 
+      {/* Navbar */}
       <NavBar />
     </div>
   )
