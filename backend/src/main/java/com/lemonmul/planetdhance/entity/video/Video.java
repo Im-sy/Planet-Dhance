@@ -49,7 +49,7 @@ public class Video {
     @OneToMany(mappedBy = "video",cascade = CascadeType.ALL)
     private List<VideoTag> videoTags=new ArrayList<>();
 
-    @OneToMany(mappedBy = "video")
+    @OneToMany(mappedBy = "video",cascade = CascadeType.ALL)
     private List<Like> likes=new ArrayList<>();
 
     //==생성 메서드==//
