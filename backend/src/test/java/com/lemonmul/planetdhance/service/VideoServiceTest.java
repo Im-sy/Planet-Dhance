@@ -141,6 +141,8 @@ class VideoServiceTest {
             video.addLikeCnt();
             videos.add(video);
             em.persist(video);
+            em.persist(Like.createLike(video,user1));
+            em.persist(Like.createLike(video,user2));
         }
         Video video1 = Video.createVideo("video url!!", VideoScope.PRIVATE, "thumbnail url!!", user2, music1);
         VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));
@@ -149,6 +151,7 @@ class VideoServiceTest {
         VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(music1.getTitle(),TagType.TITLE));
         videos.add(video1);
         em.persist(video1);
+        em.persist(Like.createLike(video1,user2));
         for(int i=10;i<15;i++){
             Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user2, music2);
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));

@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.service;
 
+import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
 import com.lemonmul.planetdhance.entity.video.Video;
@@ -66,5 +67,20 @@ public class VideoService {
         return videoRepo.findMainByScopeOrderByOrderWeightDescRegDateDesc(scope,pageable);
     }
 
+    /**
+     * 검색 조건: 없음
+     * 정렬: 없음(랜덤)
+     */
+    public List<Video> findRandomVideoInfoList(int size){
+        return videoRepo.findRandom(size);
+    }
 
+    /**
+     * 검색 조건: 좋아요 한 영상
+     * 정렬: 최신순
+     */
+    public Slice<Video> findLikeVideoList(int page, int size, List<Like> likeList){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByLikesInOrderByRegDateDesc(likeList,pageable);
+    }
 }

@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.repo;
 
+import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
 import com.lemonmul.planetdhance.entity.video.Video;
@@ -28,4 +29,10 @@ public interface VideoRepo extends JpaRepository<Video,Long> {
     //메인 페이지 인기 영상 리스트
     Slice<Video> findMainByScopeOrderByOrderWeightDescRegDateDesc(VideoScope scope,Pageable pageable);
 
+    //랜덤 영상 정보 리스트
+    @Query(value = "select * from video order by rand() limit :size",nativeQuery = true)
+    List<Video> findRandom(int size);
+
+    //좋아요한 최신순 영상 리스트
+    Slice<Video> findByLikesInOrderByRegDateDesc(List<Like> likeList,Pageable pageable);
 }

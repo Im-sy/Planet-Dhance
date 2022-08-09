@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.api;
 
+import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.*;
 import com.lemonmul.planetdhance.entity.user.*;
 import com.lemonmul.planetdhance.security.jwt.CustomUserDetails;
@@ -9,11 +10,15 @@ import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
 import com.lemonmul.planetdhance.service.NationService;
 import com.lemonmul.planetdhance.service.ValidateService;
 import com.lemonmul.planetdhance.service.UserService;
+import com.lemonmul.planetdhance.service.VideoService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +29,9 @@ public class UserApi {
     private final NationService nationService;
     private final ValidateService validateService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final VideoService videoService;
+
+    private static final int size=18;
 
     @PostMapping("/signup")
     public boolean signup(@RequestBody CreateSignUpRequest createSignUpRequest) {
@@ -65,6 +73,18 @@ public class UserApi {
     @DeleteMapping("/delete/{id}")
     public boolean delete(@PathVariable Long id) {
         return userService.delete(id);
+    }
+
+    /**
+     * 사용자의 좋아요 영상 리스트(최신순) - 구독 좋아요 페이지 진입(0), 무한 스크롤(1~)
+     *
+     * 요청 파라미터 예시: /user/{로그인 사용자 아이디}/like/{page 번호}
+     * size는 기본값 18
+     */
+    @GetMapping("/{user_id}/like/{page}")
+    public Slice<VideoDto> likeVideos(@PathVariable Long user_id,@PathVariable int page){
+        User user = userService.findById(user_id);
+        return videoService.findLikeVideoList(page,size, user.getLikes()).map(VideoDto::new);
     }
 
     @Data
