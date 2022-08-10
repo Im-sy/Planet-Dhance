@@ -91,10 +91,12 @@ class VideoServiceTest {
 
 
     private void initdb() {
+        //nation
         Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko");
         em.persist(nation1);
         em.persist(Tag.createTag(nation1.getName(), TagType.NATION,"korea img"));
 
+        //user
         User user1=User.createUser("email1@xx.xx","user1",null,null,nation1);
         em.persist(user1);
         em.persist(Tag.createTag(user1.getNickname(),TagType.NICKNAME, user1.getImgUrl()));
@@ -102,6 +104,7 @@ class VideoServiceTest {
         em.persist(user2);
         em.persist(Tag.createTag(user2.getNickname(),TagType.NICKNAME,user2.getImgUrl()));
 
+        //music
         Music music1=Music.createMusic("title1","artist1","album img1","model url1","guide url1","mv url1", LocalDateTime.now());
         em.persist(music1);
         em.persist(Tag.createTag(music1.getArtist(),TagType.ARTIST,"artist img1"));
@@ -110,11 +113,12 @@ class VideoServiceTest {
         em.persist(Tag.createTag(music2.getArtist(),TagType.ARTIST,"artist img2"));
         em.persist(Tag.createTag(music2.getTitle(),TagType.TITLE, music2.getImgUrl()));
         em.persist(music2);
-        Music music3=Music.createMusic("title3","artist2","album img3","model url3","guide url3","mv url3",LocalDateTime.now());
+//        Music music3=Music.createMusic("title3","artist2","album img3","model url3","guide url3","mv url3",LocalDateTime.now());
 //        em.persist(Tag.createTag(music3.getArtist(),TagType.ARTIST,"artist img3"));
-        em.persist(Tag.createTag(music3.getTitle(),TagType.TITLE, music3.getImgUrl()));
-        em.persist(music3);
+//        em.persist(Tag.createTag(music3.getTitle(),TagType.TITLE, music3.getImgUrl()));
+//        em.persist(music3);
 
+        //video, like, tag
         List<Video> videos=new ArrayList<>();
         for(int i=0;i<5;i++){
             Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user1, music1);
@@ -125,7 +129,7 @@ class VideoServiceTest {
             for(int j=0;j<i;j++){
                 video.addHit();
             }
-            video.addLikeCnt();
+            video.addLikeWeight();
             videos.add(video);
             em.persist(video);
         }
@@ -137,10 +141,13 @@ class VideoServiceTest {
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music2.getTitle(),TagType.TITLE));
             for(int j=4;j<i;j++){
                 video.addHit();
-            }            video.addLikeCnt();
-            video.addLikeCnt();
+            }
+            video.addLikeWeight();
+            video.addLikeWeight();
             videos.add(video);
             em.persist(video);
+            em.persist(Like.createLike(video,user1));
+            em.persist(Like.createLike(video,user2));
         }
         Video video1 = Video.createVideo("video url!!", VideoScope.PRIVATE, "thumbnail url!!", user2, music1);
         VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));
@@ -149,6 +156,7 @@ class VideoServiceTest {
         VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(music1.getTitle(),TagType.TITLE));
         videos.add(video1);
         em.persist(video1);
+        em.persist(Like.createLike(video1,user2));
         for(int i=10;i<15;i++){
             Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user2, music2);
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));
@@ -170,11 +178,21 @@ class VideoServiceTest {
             for(int j=15;j<i;j++){
                 video.addHit();
             }
-            video.addLikeCnt();
-            video.addLikeCnt();
+            video.addLikeWeight();
+            video.addLikeWeight();
             videos.add(video);
             em.persist(video);
         }
+
+        //clear
+        em.persist(Clear.createClear(music1,user1));
+        em.persist(Clear.createClear(music1,user2));
+        em.persist(Clear.createClear(music2,user1));
+        em.persist(Clear.createClear(music2,user2));
+
+        //follow
+        em.persist(Follow.createFollow(user1,user2));
+        em.persist(Follow.createFollow(user2,user1));
     }
 
 }

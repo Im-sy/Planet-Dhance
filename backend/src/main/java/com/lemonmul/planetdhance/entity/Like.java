@@ -37,7 +37,7 @@ public class Like {
     private void setVideo(Video video){
         this.video=video;
         video.getLikes().add(this);
-        video.addLikeCnt();
+        video.addLikeWeight();
     }
 
     private void setUser(User user){

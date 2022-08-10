@@ -47,7 +47,7 @@ public class User {
     @OneToMany(mappedBy = "to")
     private List<Follow> tos=new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Like> likes=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

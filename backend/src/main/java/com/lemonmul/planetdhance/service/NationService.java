@@ -5,6 +5,8 @@ import com.lemonmul.planetdhance.repo.NationRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class NationService {
@@ -14,4 +16,11 @@ public class NationService {
     public Nation findByName(String nationName){
         return nationRepo.findByName(nationName).get();
     }
+
+//    public List<Nation> findAllNation(){
+//        List<Nation> nations = nationRepo.findAll();
+//        for (Nation nation : nations) {
+//
+//        }
+//    }
 }
