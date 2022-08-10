@@ -44,6 +44,16 @@ public class UserApi {
         return userService.signUp(inputFile, toUserForSignUp(createSignUpRequest));
     }
 
+    @PostMapping("/check/email")
+    public boolean emailCheck(@RequestBody String email) {
+        return userService.emailCheck(email);
+    }
+
+    @PostMapping("/check/nickname")
+    public boolean nicknameCheck(@RequestBody String nickname) {
+        return userService.nicknameCheck(nickname);
+    }
+
     @PostMapping("/login")
     public JwtTokenJson login(@RequestBody CreateLoginRequest createLoginRequest) {
         User findUser = userService.login(createLoginRequest.email, createLoginRequest.pwd);

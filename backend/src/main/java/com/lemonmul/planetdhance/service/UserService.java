@@ -2,7 +2,6 @@ package com.lemonmul.planetdhance.service;
 
 import com.lemonmul.planetdhance.entity.Follow;
 import com.lemonmul.planetdhance.entity.Nation;
-import com.lemonmul.planetdhance.entity.Validate;
 import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.Basic;
@@ -11,9 +10,6 @@ import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.repo.NationRepo;
 import com.lemonmul.planetdhance.repo.TagRepo;
 import com.lemonmul.planetdhance.repo.UserRepo;
-import com.lemonmul.planetdhance.security.jwt.CustomUserDetails;
-import com.lemonmul.planetdhance.security.jwt.JwtToken;
-import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,16 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Blob;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
-
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +31,14 @@ public class UserService {
     private final UserRepo userRepo;
     private final TagRepo tagRepo;
     private final NationRepo nationRepo;
+
+    public boolean emailCheck(String email) {
+        return userRepo.findByEmail(email).isEmpty();
+    }
+
+    public boolean nicknameCheck(String nickname) {
+        return userRepo.findByNickname(nickname).isEmpty();
+    }
 
     @Transactional
     public boolean signUp(MultipartFile inputFile, User user) throws IOException {
