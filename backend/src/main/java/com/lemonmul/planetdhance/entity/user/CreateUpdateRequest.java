@@ -11,6 +11,5 @@ public class CreateUpdateRequest {
 
     private String email;
     private String introduce;
-    private String imgUrl;
     private String nationName;
 }

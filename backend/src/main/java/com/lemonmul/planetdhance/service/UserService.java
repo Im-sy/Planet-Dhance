@@ -20,6 +20,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.persistence.EntityManager;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 import java.util.List;
 
@@ -33,7 +43,11 @@ public class UserService {
     private final NationRepo nationRepo;
 
     @Transactional
-    public boolean signUp(User user) {
+    public boolean signUp(MultipartFile inputFile, User user) throws IOException {
+        String filePath = UserService.createFile(inputFile, user.getEmail());
+
+        user.setImgUrl(filePath);
+
         if(userRepo.findByEmail(user.getEmail()).orElse(null) != null
         || userRepo.findByNickname(user.getNickname()).orElse(null) != null){
             return false;
@@ -59,15 +73,23 @@ public class UserService {
     }
 
     @Transactional
-    public boolean update(Long id, CreateUpdateRequest createUpdateRequest) {
+    public boolean update(Long id, MultipartFile inputFile, CreateUpdateRequest createUpdateRequest) throws IOException {
         User findUser = userRepo.findById(id).orElse(null);
         Nation findNation = nationRepo.findByName(createUpdateRequest.getNationName()).orElse(null);
 
-        if(findUser != null && findNation != null)
+        if(findUser == null || findNation == null)
             return false;
 
+        if(inputFile != null){
+            File beforeFile = new File(findUser.getImgUrl());
+            beforeFile.delete();
+
+            String filePath = UserService.createFile(inputFile, createUpdateRequest.getEmail());
+
+            findUser.setImgUrl(filePath);
+        }
+
         findUser.setIntroduce(createUpdateRequest.getIntroduce());
-        findUser.setImgUrl(createUpdateRequest.getImgUrl());
         findUser.setNation(findNation);
         userRepo.save(findUser);
 
@@ -80,6 +102,16 @@ public class UserService {
 
         if(findUser == null)
             return false;
+
+        String separator = File.separator;
+
+        File tempFile = new File("");
+        String rootPath = tempFile.getAbsolutePath().split("src")[0];
+
+        String savePath = rootPath + separator + "images" + separator + findUser.getEmail();
+
+        File deleteFile = new File(savePath);
+        deleteFile.delete();
 
         userRepo.delete(findUser);
 
@@ -94,5 +126,31 @@ public class UserService {
     public Slice<User> findFollowingUserInfo(int page,int size,List<Follow> tos){
         Pageable pageable= PageRequest.of(page,size);
         return userRepo.findByTosInOrderByRenewDateDesc(tos,pageable);
+    }
+
+    public static String createFile(MultipartFile inputFile, String email) throws IOException {
+        String separator = File.separator;
+
+        File tempFile = new File("");
+        String rootPath = tempFile.getAbsolutePath().split("src")[0];
+
+        String savePath = rootPath + separator + "images" + separator + email + separator + "profileImg";
+
+        if(!new File(savePath).exists()) {
+            try {
+                new File(savePath).mkdirs();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        String originFileName = inputFile.getOriginalFilename();
+        String saveFileName = UUID.randomUUID() + originFileName.substring(originFileName.lastIndexOf("."));
+
+        String filePath = savePath + separator + saveFileName;
+        System.out.println("filePath = " + filePath);
+        inputFile.transferTo(new File(filePath));
+
+        return filePath;
     }
 }

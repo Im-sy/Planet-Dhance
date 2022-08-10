@@ -28,6 +28,7 @@ public class User {
 
     private String introduce;
 
+    @Lob
     private String imgUrl;
 
     private LocalDateTime regDate;
