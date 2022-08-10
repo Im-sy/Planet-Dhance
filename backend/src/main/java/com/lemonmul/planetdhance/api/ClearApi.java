@@ -1,18 +1,12 @@
 package com.lemonmul.planetdhance.api;
 
-import com.lemonmul.planetdhance.entity.Clear;
 import com.lemonmul.planetdhance.entity.Music;
-import com.lemonmul.planetdhance.entity.user.User;
-import com.lemonmul.planetdhance.repo.MusicRepo;
-import com.lemonmul.planetdhance.repo.UserRepo;
 import com.lemonmul.planetdhance.service.ClearService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.PrivateKey;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -21,6 +15,7 @@ import java.util.stream.Collectors;
 public class ClearApi {
 
     private final ClearService clearService;
+    private static final int albumSize = 5;
 
     /*
      * 챌린지 종료 시
@@ -28,23 +23,24 @@ public class ClearApi {
      *
      * Video 업로드에서 처리
      *
-     * 아래 맵핑은 Test용
+     * 아래 맵핑은 Test 용
      * */
 //    @PostMapping("/add/{userId}/{musicId}")
 //    public Result clearSave(@PathVariable Long userId, @PathVariable Long musicId){
+//        // 여기서 userId, musicId validation 체크 하고 넘겨주기
 //        clearService.clearChallenge(userId, musicId);
 //        Result result = new Result();
 //        result.setName("DONE");
 //        return result;
 //    }
-
+//
 //    static class Result{
-//        private String name;
+//        private String result;
 //        public String getName(){
-//            return name;
+//            return result;
 //        }
 //        public void setName(String name){
-//            this.name = name;
+//            this.result = name;
 //        }
 //    }
 
@@ -57,8 +53,7 @@ public class ClearApi {
      * */
     @GetMapping("/{userId}/musics")
     public List<ClearMusicDto> clearList(@PathVariable Long userId){
-        int size = 5; // 반환할 clear 곡 갯수
-        List<Music> musicList = clearService.findClearMusicList(userId, size);
+        List<Music> musicList = clearService.findClearMusicList(userId, albumSize);
         return MusicToClearDto(musicList);
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ClearRepo extends JpaRepository<Clear, Long> {
     /*
-     * mypage -> clear 테이블에서 user_id와 일치하는 거 찾기 -> 해당하는 music 반환
+     * myPage -> clear 테이블에서 user_id와 일치하는 거 찾기 -> 해당하는 music 반환
      * */
     List<Clear> findClearsByUserOrderByIdDesc(User user);
 
