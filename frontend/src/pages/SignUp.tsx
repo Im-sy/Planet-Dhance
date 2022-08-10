@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {signup, checkEmail, checkNick} from '../components/API/AuthService';
 import NavBar from '../components/NavBar';
 import {Link as RouterLink} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
@@ -19,6 +20,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import CheckIcon from '@mui/icons-material/Check';
+import navHome2 from '../styles/navbtns/navHome2.png'
 
 const CssTextField = styled(TextField)({
   '& .MuiInputBase-input': {
@@ -56,9 +58,29 @@ export default function SignUp() {
       password: data.get('password'),
       password2: data.get('password2'),
     });
+    const email = data.get('email') as string
+    const nick = data.get('nickname') as string
+    const pwd = data.get('password') as string
+    let formData = new FormData();
+    console.log(typeof navHome2)
+    formData.append('inputFile', '')
+    let signupreq = [{
+      email: email,
+      nick: nick,
+      introduce: '',
+      nation: nation,
+      pwd: pwd,
+      oAuth2Sub: auth,
+      type: type,
+    }]
+    formData.append('createSignUpRequest', new Blob([JSON.stringify(signupreq)], {type: 'application/json'}))
+    // signup(file, email, nick, '', nation, pwd, auth, type)
+    signup(formData)
   };
-
+  const [file, setFile] = React.useState('');
   const [nation, setNation] = React.useState('');
+  const [auth, setAuth] = React.useState('');
+  const [type, setType] = React.useState('Basic')
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     setNation(event.target.value as string);
@@ -131,7 +153,7 @@ export default function SignUp() {
                     <MenuItem value={'Egypt'}>🇪🇬 Egypt</MenuItem>
                     <MenuItem value={'Europe'}>🇪🇺 Europe</MenuItem>
                     <MenuItem value={'Japan'}>🇯🇵 Japan</MenuItem>
-                    <MenuItem value={'Korea'}>🇰🇷 Korea</MenuItem>
+                    <MenuItem value={'ko'}>🇰🇷 Korea</MenuItem>
                     <MenuItem value={'RSA'}>🇿🇦 RSA</MenuItem>
                     <MenuItem value={'USA'}>🇺🇸 USA</MenuItem>
                     <MenuItem value={'Vietnam'}>🇻🇳 Vietnam</MenuItem>
