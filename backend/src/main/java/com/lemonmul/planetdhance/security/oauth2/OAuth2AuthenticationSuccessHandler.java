@@ -39,7 +39,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if(findSocial != null){
             CustomUserDetails customUserDetails = new CustomUserDetails(findSocial);
             JwtToken jwtToken = customUserDetails.toJwtToken();
-            JwtTokenJson jwtTokenJson = new JwtTokenJson("loginSuccess", jwtTokenProvider.createToken(customUserDetails.getEmail(), jwtToken));
+            JwtTokenJson jwtTokenJson = new JwtTokenJson("loginSuccess", jwtTokenProvider.createToken(customUserDetails.getUserId(), jwtToken));
 
             if (jsonConverter.canWrite(jwtTokenJson.getClass(), jsonMimeType)) {
                 jsonConverter.write(jwtTokenJson, jsonMimeType, new ServletServerHttpResponse(response));

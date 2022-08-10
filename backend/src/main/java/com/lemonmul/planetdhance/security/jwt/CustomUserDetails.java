@@ -17,21 +17,21 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
-    private String email;
+    private Long userId;
     private String nickname;
     private String nationName;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
 
     public CustomUserDetails(User user){
-        this.email = user.getEmail();
+        this.userId = user.getId();
         this.nickname = user.getNickname();
         this.nationName = user.getNation().getName();
         this.roles = Collections.singletonList(user.getRole().getKey());
     }
 
     public JwtToken toJwtToken(){
-        return new JwtToken(this.email, this.nickname, this.nationName, this.roles);
+        return new JwtToken(this.userId, this.nickname, this.nationName, this.roles);
     }
 
     @Override

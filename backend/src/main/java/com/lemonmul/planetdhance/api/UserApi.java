@@ -66,17 +66,22 @@ public class UserApi {
     }
 
     @PostMapping("/login")
-    public JwtTokenJson login(@RequestBody CreateLoginRequest createLoginRequest) {
-        User findUser = userService.login(createLoginRequest.email, createLoginRequest.pwd);
+    public ResponseEntity<?> login(@RequestBody CreateLoginRequest createLoginRequest) {
+        try {
+            User findUser = userService.login(createLoginRequest.email, createLoginRequest.pwd);
 
-        if(findUser != null){
-            CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
-            JwtToken jwtToken = customUserDetails.toJwtToken();
-            String tokenString = jwtTokenProvider.createToken(jwtToken.getEmail(), jwtToken);
-            Validate validate = new Validate(jwtToken.getEmail(), tokenString);
+            if(findUser != null){
+                CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
+                JwtToken jwtToken = customUserDetails.toJwtToken();
+                String tokenString = jwtTokenProvider.createToken(jwtToken.getUserId(), jwtToken);
+                Validate validate = new Validate(jwtToken.getUserId(), tokenString);
 
-            if(validateService.login(validate))
-                return new JwtTokenJson("loginSuccess", tokenString);
+                if(validateService.login(validate))
+                    return new ResponseEntity<>(new JwtTokenJson("Success", tokenString), HttpStatus.OK);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return null;

@@ -7,8 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 public interface ValidateRepo extends JpaRepository<Validate, Long> {
-    Optional<Validate> findByEmail(String email);
+    Optional<Validate> findByUserid(Long userId);
     Optional<Validate> findByToken(String validate);
-    @Transactional
-    void deleteByEmail(String email);
+
+    void deleteByUserid(Long userId);
+
 }

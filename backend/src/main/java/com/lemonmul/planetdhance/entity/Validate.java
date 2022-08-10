@@ -17,13 +17,13 @@ public class Validate {
     @Id @GeneratedValue
     private Long id;
 
-    private String email;
+    private Long userid;
 
     @Column(length = 500)
     private String token;
 
-    public Validate(String email, String token){
-        this.email = email;
+    public Validate(Long userId, String token){
+        this.userid = userId;
         this.token = token;
     }
 }

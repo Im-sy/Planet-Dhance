@@ -57,12 +57,13 @@ public class UserService {
     }
 
     @Transactional
-    public User login(String email, String pwd) {
-        Basic findUser = (Basic)(userRepo.findByEmail(email)).orElse(null);
+    public User login(String email, String pwd) throws Exception {
+        Basic findUser = (Basic)(userRepo.findByEmail(email)).orElseThrow(() -> new Exception("User Not Found"));
 
-        if(findUser != null && findUser.getPwd().equals(pwd))
-            return findUser;
-        return null;
+        if(!findUser.getPwd().equals(pwd))
+            throw new Exception("Password Not Correct");
+
+        return findUser;
     }
 
     public User findById(Long id) {
