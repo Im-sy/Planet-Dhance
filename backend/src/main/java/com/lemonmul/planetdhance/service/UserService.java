@@ -66,8 +66,8 @@ public class UserService {
         return findUser;
     }
 
-    public User findById(Long id) {
-        return userRepo.findById(id).orElse(null);
+    public User findById(Long id) throws Exception {
+        return userRepo.findById(id).orElseThrow(() -> new Exception("User Not Found"));
     }
 
     @Transactional

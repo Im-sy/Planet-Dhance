@@ -93,10 +93,14 @@ public class UserApi {
     }
 
     @GetMapping("/profile/{id}")
-    public CreateProfileResponse profile(@PathVariable Long id) {
-        User findUser = userService.findById(id);
-
-        return new CreateProfileResponse(findUser);
+    public ResponseEntity<?> profile(@PathVariable Long id) {
+        try {
+            User findUser = userService.findById(id);
+            return new ResponseEntity<>(new CreateProfileResponse(findUser), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/update/{id}")
@@ -116,7 +120,7 @@ public class UserApi {
      * size는 10개
      */
     @GetMapping("/{user_id}/follow/{page}")
-    public Slice<UserFollowDto> followInfoList(@PathVariable Long user_id, @PathVariable int page){
+    public Slice<UserFollowDto> followInfoList(@PathVariable Long user_id, @PathVariable int page) throws Exception {
         int size=10;
         User user=userService.findById(user_id);
         return userService.findFollowingUserInfo(page,size,user.getTos()).map(UserFollowDto::new);
@@ -129,7 +133,7 @@ public class UserApi {
      * size는 기본값 18
      */
     @GetMapping("/{user_id}/like/{page}")
-    public Slice<VideoDto> likeVideos(@PathVariable Long user_id,@PathVariable int page){
+    public Slice<VideoDto> likeVideos(@PathVariable Long user_id,@PathVariable int page) throws Exception {
         int size=18;
         User user = userService.findById(user_id);
         return videoService.findLikeVideoList(page,size, user.getLikes()).map(VideoDto::new);
