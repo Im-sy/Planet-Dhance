@@ -37,7 +37,7 @@ public class TempFileService {
         TempFile findFile = tempFileRepo.findById(id).orElse(null);
 
         if(findFile == null)
-            return "파일을 못찾겠어요...";
+            return "file not found";
 
         return findFile.getFileUrl();
     }
@@ -49,8 +49,6 @@ public class TempFileService {
         String rootPath = tempFile.getAbsolutePath().split("src")[0];
 
         String savePath = rootPath + "temp";
-
-        System.out.println("savePath = " + savePath);
         
         if(!new File(savePath).exists()) {
             try {
@@ -62,12 +60,8 @@ public class TempFileService {
 
         String originFileName = inputFile.getOriginalFilename();
         String saveFileName = UUID.randomUUID() + originFileName.substring(originFileName.lastIndexOf("."));
-
-        System.out.println("saveFileName = " + saveFileName);
         
         String filePath = savePath + separator + saveFileName;
-
-        System.out.println("filePath = " + filePath);
         
         inputFile.transferTo(new File(filePath));
 

@@ -33,7 +33,6 @@ public class UserService {
     private final NationRepo nationRepo;
 
     public boolean emailCheck(String email) {
-        boolean exist = userRepo.findByEmail(email).isEmpty();
         return userRepo.findByEmail(email).isEmpty();
     }
 
@@ -42,13 +41,9 @@ public class UserService {
     }
 
     @Transactional
-    public boolean signUp(User user) throws IOException {
-        String filePath = UserService.createFile(null, user.getEmail());
-
-        user.setImgUrl(filePath);
-
-        if(userRepo.findByEmail(user.getEmail()).orElse(null) != null
-        || userRepo.findByNickname(user.getNickname()).orElse(null) != null){
+    public boolean signUp(User user) {
+        if(userRepo.findByEmail(user.getEmail()).isPresent()
+        || userRepo.findByNickname(user.getNickname()).isPresent()){
             return false;
         }else{
             userRepo.save(user);

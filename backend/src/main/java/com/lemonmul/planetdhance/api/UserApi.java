@@ -42,7 +42,7 @@ public class UserApi {
     private final VideoService videoService;
 
     @PostMapping("/signup")
-    public boolean signup(@RequestPart CreateSignUpRequest createSignUpRequest) throws IOException {
+    public boolean signup(@RequestBody CreateSignUpRequest createSignUpRequest) {
         return userService.signUp(toUserForSignUp(createSignUpRequest));
     }
 
@@ -79,11 +79,10 @@ public class UserApi {
     }
 
     @GetMapping("/profile/{id}")
-    public CreateProfileResponse profile(@PathVariable Long id) throws IOException {
+    public CreateProfileResponse profile(@PathVariable Long id) {
         User findUser = userService.findById(id);
-        File img = new File(findUser.getImgUrl());
 
-        return new CreateProfileResponse(findUser, img);
+        return new CreateProfileResponse(findUser);
     }
 
     @PutMapping("/update/{id}")
@@ -147,14 +146,17 @@ public class UserApi {
     static class CreateProfileResponse {
         private String email;
         private String nickname;
-        private byte[] img;
+        private String imgUrl;
         private String nationName;
 
-        public CreateProfileResponse(User user, File img) throws IOException {
+        public CreateProfileResponse(User user) {
             this.email = user.getEmail();
             this.nickname = user.getNickname();
-            this.img = Files.readAllBytes(img.toPath());
+            this.imgUrl = user.getImgUrl();
             this.nationName = user.getNation().getName();
+
+            if(this.imgUrl == null)
+                imgUrl = "/images/default/default_profile.png";
         }
     }
 
@@ -190,6 +192,10 @@ public class UserApi {
             introduce=user.getIntroduce();
             imgUrl=user.getImgUrl();
             nation=user.getNation().getFlag();
+
+            if(imgUrl == null)
+                imgUrl = "/images/default/default_profile.png";
+
             //최신 영상 5개만
             videoList=user.getVideos().stream().sorted(Comparator.comparing(Video::getRegDate).reversed())
                     .limit(5).map(VideoDto::new).collect(Collectors.toList());
