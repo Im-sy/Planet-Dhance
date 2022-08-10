@@ -3,11 +3,13 @@ package com.lemonmul.planetdhance.api;
 import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
+import com.lemonmul.planetdhance.entity.Nation;
 import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.service.MusicService;
+import com.lemonmul.planetdhance.service.UserService;
 import com.lemonmul.planetdhance.service.VideoService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,6 +31,7 @@ public class VideoApi {
 
     private final VideoService videoService;
     private final MusicService musicService;
+    private final UserService userService;
 
     private static final int listSize =18;
     private static final int infoSize=10;
@@ -61,16 +63,18 @@ public class VideoApi {
     }
 
     /**
-     * 국가 랭킹, 인기 가수, 인기 영상 리스트 - 메인 페이지 진입
+     * 국가 랭킹, 인기 영상 리스트 - 메인 페이지 진입
      *
      * 요청 파라미터 예시: /video/main
      * 영상 리스트 size는 12개
      */
-//    @GetMapping("/main")
-//    public MainPageResponse mainListAndRankingAndArtistList(){
-//
-//
-//    }
+    @GetMapping("/main")
+    public MainPageResponse mainListAndRankingAndArtistList(){
+        int size=12;
+        Map<Nation, Integer> ranking = userService.ranking();
+        Slice<Video> videoList = videoService.findMainPageVideoList(0, size, VideoScope.PUBLIC);
+        return new MainPageResponse(ranking,videoList);
+    }
 
     /**
      * 인기 영상 리스트 - 메인 페이지 무한 스크롤
@@ -113,7 +117,39 @@ public class VideoApi {
 
     @Data
     static class MainPageResponse{
+        private List<RankingDto> rankingList=new ArrayList<>();
+        private Slice<VideoDto> videoList;
 
+        public MainPageResponse(Map<Nation, Integer> ranking,Slice<Video> videos) {
+            for (Map.Entry<Nation, Integer> entry : ranking.entrySet()) {
+                rankingList.add(new RankingDto(entry));
+            }
+            Collections.sort(rankingList);
+            videoList=videos.map(VideoDto::new);
+        }
+    }
+
+    @Data
+    static class RankingDto implements Comparable<RankingDto>{
+        private String nationName;
+        private String nationFlag;
+        private double x,y,z;
+        private int point;
+
+        public RankingDto(Map.Entry<Nation,Integer> entry) {
+            Nation nation=entry.getKey();
+            nationName=nation.getName();
+            nationFlag=nation.getFlag();
+            x=nation.getX();
+            y=nation.getY();
+            z= nation.getZ();
+            point=entry.getValue();
+        }
+
+        @Override
+        public int compareTo(RankingDto o) {
+            return o.point-this.point;
+        }
     }
 
     @Data

@@ -20,8 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -150,5 +151,25 @@ public class UserService {
         inputFile.transferTo(new File(filePath));
 
         return filePath;
+    }
+
+    /**
+     * 국가 랭킹
+     *
+     * TODO 그냥 db에 랭킹 집계 컬럼 추가하는거나, 일정 시간마다 랭킹 집계하는거 고려해보기
+     */
+    public Map<Nation, Integer> ranking(){
+        Map<Nation, List<User>> nationListMap = userRepo.findAll().stream().collect(Collectors.groupingBy(User::getNation));
+        Map<Nation,Integer> points=new HashMap<>();
+
+        for (Map.Entry<Nation, List<User>> entry : nationListMap.entrySet()) {
+            int point=0;
+            for (User user : entry.getValue()) {
+                point+=user.getClears().size();
+            }
+            points.put(entry.getKey(),point);
+        }
+
+        return points;
     }
 }
