@@ -4,10 +4,13 @@ import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.Nation;
+import com.lemonmul.planetdhance.entity.VideoTag;
 import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.tag.TagType;
+import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
+import com.lemonmul.planetdhance.service.LikeService;
 import com.lemonmul.planetdhance.service.MusicService;
 import com.lemonmul.planetdhance.service.UserService;
 import com.lemonmul.planetdhance.service.VideoService;
@@ -32,9 +35,9 @@ public class VideoApi {
     private final VideoService videoService;
     private final MusicService musicService;
     private final UserService userService;
+    private final LikeService likeService;
 
     private static final int listSize =18;
-    private static final int infoSize=10;
 
     /**
      * 해당 곡 최신 영상 리스트 - 곡 페이지 latest 무한 스크롤
@@ -92,26 +95,55 @@ public class VideoApi {
      *
      * 요청 파라미터 예시: /video/random/{user_id}
      * size는 기본값 10개
-     * TODO 좋아요 여부, 해시태그 리스트 해결하기
      */
-    @GetMapping("/random")
-    public List<VideoPlayDto> randomVideoInfoList(){
-        return videoService.findRandomVideoInfoList(infoSize).stream()
-                .map(VideoPlayDto::new).collect(Collectors.toList());
+    @GetMapping("/random/{user_id}")
+    public List<VideoPlayDto> randomVideoInfoList(@PathVariable Long user_id){
+        int size=10;
+        List<Video> videoList = videoService.findRandomVideoInfoList(size);
+        User user = userService.findById(user_id);
+        List<Like> likeList = likeService.findLikeByUserAndVideos(user, videoList);
+
+        List<VideoPlayDto> result=new ArrayList<>();
+        for (Video video : videoList) {
+            result.add(new VideoPlayDto(video,likeList));
+        }
+        return result;
     }
 
     @Data
     static class VideoPlayDto {
+        private Long musicId;
         private Long hit;
         private String videoUrl;
-        private List<String> tagList;
-        private boolean like;
+        private boolean like=false;
         private int likeCnt;
+        private List<TagDto> tagList;
 
-        public VideoPlayDto(Video video) {
+        public VideoPlayDto(Video video,List<Like> likeList) {
+            musicId=video.getMusic().getId();
             hit=video.getHit();
             videoUrl= video.getVideoUrl();
+            for (Like l : likeList) {
+                if(l.getVideo().getId().equals(video.getId())) {
+                    like=true;
+                    break;
+                }
+            }
             likeCnt=video.getLikes().size();
+            tagList=video.getVideoTags().stream().map(TagDto::new).collect(Collectors.toList());
+        }
+    }
+
+    @Data
+    static class TagDto{
+        private Long id;
+        private String name;
+        private TagType type;
+
+        public TagDto(VideoTag videoTag) {
+            id=videoTag.getTag().getId();
+            name= videoTag.getTag().getName();
+            type=videoTag.getTag().getType();
         }
     }
 
@@ -149,19 +181,6 @@ public class VideoApi {
         @Override
         public int compareTo(RankingDto o) {
             return o.point-this.point;
-        }
-    }
-
-    @Data
-    static class TagDto{
-        private Long id;
-        private String name;
-        private TagType type;
-
-        public TagDto(Tag tag) {
-            id=tag.getId();
-            name= tag.getName();
-            type=tag.getType();
         }
     }
 
