@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .headers().frameOptions().disable()
                 .and()
+                .cors().disable()
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService)

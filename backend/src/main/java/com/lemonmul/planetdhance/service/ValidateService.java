@@ -22,11 +22,11 @@ public class ValidateService {
     private final UserRepo userRepo;
     private final JwtTokenProvider jwtTokenProvider;
 
+
     public boolean login(Validate validate){
         Validate findValidate = validateRepo.findByEmail(validate.getEmail()).orElse(null);
 
         ServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-
 
         if(findValidate != null){
             if(!jwtTokenProvider.validateToken(findValidate.getToken(), request)){
@@ -49,6 +49,7 @@ public class ValidateService {
             return true;
         }
     }
+
 
     public boolean logout(Long id){
         if(validateRepo.findById(id).orElse(null) != null){

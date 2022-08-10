@@ -26,11 +26,13 @@ import java.nio.file.Files;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@CrossOrigin
 public class UserApi {
 
     private final UserService userService;
@@ -40,13 +42,13 @@ public class UserApi {
     private final VideoService videoService;
 
     @PostMapping("/signup")
-    public boolean signup(@RequestPart MultipartFile inputFile, @RequestPart CreateSignUpRequest createSignUpRequest) throws IOException {
-        return userService.signUp(inputFile, toUserForSignUp(createSignUpRequest));
+    public boolean signup(@RequestPart CreateSignUpRequest createSignUpRequest) throws IOException {
+        return userService.signUp(toUserForSignUp(createSignUpRequest));
     }
 
     @PostMapping("/check/email")
-    public boolean emailCheck(@RequestBody String email) {
-        return userService.emailCheck(email);
+    public boolean emailCheck(@RequestBody Map<String, String> param) {
+        return userService.emailCheck(param.get("email"));
     }
 
     @PostMapping("/check/nickname")

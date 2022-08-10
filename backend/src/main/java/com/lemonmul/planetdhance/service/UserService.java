@@ -33,6 +33,7 @@ public class UserService {
     private final NationRepo nationRepo;
 
     public boolean emailCheck(String email) {
+        boolean exist = userRepo.findByEmail(email).isEmpty();
         return userRepo.findByEmail(email).isEmpty();
     }
 
@@ -41,8 +42,8 @@ public class UserService {
     }
 
     @Transactional
-    public boolean signUp(MultipartFile inputFile, User user) throws IOException {
-        String filePath = UserService.createFile(inputFile, user.getEmail());
+    public boolean signUp(User user) throws IOException {
+        String filePath = UserService.createFile(null, user.getEmail());
 
         user.setImgUrl(filePath);
 
@@ -58,6 +59,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public User login(String email, String pwd) {
         Basic findUser = (Basic)(userRepo.findByEmail(email)).orElse(null);
 
@@ -146,7 +148,6 @@ public class UserService {
         String saveFileName = UUID.randomUUID() + originFileName.substring(originFileName.lastIndexOf("."));
 
         String filePath = savePath + separator + saveFileName;
-        System.out.println("filePath = " + filePath);
         inputFile.transferTo(new File(filePath));
 
         return filePath;
