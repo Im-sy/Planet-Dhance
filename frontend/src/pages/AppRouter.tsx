@@ -11,10 +11,11 @@ import SearchTag from './SearchTag';
 import Subscribe from './Subscribe';
 import {HashResult} from './HashResult';
 import MyPage from './MyPage';
-import ModeChallengeTimer from './Challenge';
+// import ModeChallengeTimer from './Challenge';
 import Ranking from './Ranking';
 import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
+import HashTagTextArea from '../components/HashTagTextArea';
 
 function AppRouter() {
   return (
@@ -27,13 +28,16 @@ function AppRouter() {
         <Route path='/searchtag' element={<SearchTag />} />
         <Route path='/hashresult' element={<HashResult />} />
         <Route path='/mypage' element={<MyPage />} />
-        <Route path='/challenge' element={<ModeChallengeTimer />} />
+        {/* <Route path='/challenge' element={<ModeChallengeTimer />} /> */}
         <Route path='/login' element={<LogIn />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/ranking' element={<Ranking />} />
         <Route path='/dancecompare' element={<DanceCompare />} />
         <Route path='/emoji' element={<App2 />} />
         <Route element={<NotFound404 />} />
+
+        {/* test */}
+        <Route path='/test' element={<HashTagTextArea />} />
       </Routes>
     </BrowserRouter>
   );
