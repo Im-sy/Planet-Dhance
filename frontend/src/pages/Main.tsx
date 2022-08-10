@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import {Link} from 'react-router-dom';
 import ActionAreaCard from '../components/Card';
 import Carousel from '../components/Carousel';
 import RankScore from '../components/RankScore';
@@ -11,6 +12,8 @@ import Planet from '../components/Planet';
 import GridView from '../components/GridView';
 import NavBar from '../components/NavBar';
 import TopBar from '../components/TopBar';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function Main() {
   return (
@@ -24,6 +27,13 @@ export default function Main() {
 
       {/* ranking */}
       <div>
+        
+        <div>
+          <span>Ranking</span>
+          <IconButton color="secondary" component={Link} to='/ranking'>
+            <AddIcon />
+          </IconButton>
+        </div>
         <RankScore />
         <Planet />
         <div

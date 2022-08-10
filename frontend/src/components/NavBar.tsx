@@ -56,6 +56,8 @@ export default function NavBar() {
           />
           <MuiBottomNavigationAction
             className="navbar"
+            component={Link}
+            to='/subscribe'
             label="Favorites"
             icon={<img src={navFav} alt="navFav" width="30"></img>}
           />

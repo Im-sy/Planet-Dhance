@@ -1,5 +1,5 @@
 import React from 'react'
-import './Emoji.css'
+import '../styles/Emoji.css'
 
 interface emojiProps {
 	emoji: string
