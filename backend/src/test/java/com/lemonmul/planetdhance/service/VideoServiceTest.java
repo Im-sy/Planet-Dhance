@@ -129,7 +129,7 @@ class VideoServiceTest {
             for(int j=0;j<i;j++){
                 video.addHit();
             }
-            video.addLikeCnt();
+            video.addLikeWeight();
             videos.add(video);
             em.persist(video);
         }
@@ -142,8 +142,8 @@ class VideoServiceTest {
             for(int j=4;j<i;j++){
                 video.addHit();
             }
-            video.addLikeCnt();
-            video.addLikeCnt();
+            video.addLikeWeight();
+            video.addLikeWeight();
             videos.add(video);
             em.persist(video);
             em.persist(Like.createLike(video,user1));
@@ -178,8 +178,8 @@ class VideoServiceTest {
             for(int j=15;j<i;j++){
                 video.addHit();
             }
-            video.addLikeCnt();
-            video.addLikeCnt();
+            video.addLikeWeight();
+            video.addLikeWeight();
             videos.add(video);
             em.persist(video);
         }

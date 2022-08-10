@@ -95,7 +95,7 @@ public class Video {
         this.orderWeight++;
     }
 
-    public void addLikeCnt(){
+    public void addLikeWeight(){
         this.orderWeight+=3;
     }
 
