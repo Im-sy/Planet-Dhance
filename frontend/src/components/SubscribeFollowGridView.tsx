@@ -1,6 +1,7 @@
 import React, { CSSProperties, SetStateAction, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import SubscribeFollowCard from './SubscribeFollowCard';
+import Stack from '@mui/material/Stack';
 
 interface SubscribeFollowGridViewProps {
   urls : any,
@@ -32,9 +33,9 @@ export default function SubscribeFollowGridView(props:SubscribeFollowGridViewPro
 
   return (
     <div>
-      <Grid container spacing={1} style={{justifyContent: 'center'}} direction='column'>
+      <Stack  spacing={1} style={{justifyContent: 'center'}} direction='column'>
         {cardrendering()}
-      </Grid>
+      </Stack>
     </div>
   )
 }
