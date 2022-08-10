@@ -41,17 +41,19 @@ public class UserService {
     }
 
     @Transactional
-    public boolean signUp(User user) {
-        if(userRepo.findByEmail(user.getEmail()).isPresent()
-        || userRepo.findByNickname(user.getNickname()).isPresent()){
-            return false;
-        }else{
-            userRepo.save(user);
+    public boolean signUp(User user) throws Exception {
+        if(userRepo.findByEmail(user.getEmail()).isPresent())
+            throw new Exception("Duplicated Email");
 
-            //Tag 테이블에 nickname 추가
-            tagRepo.save(Tag.createTag(user.getNickname(), TagType.NICKNAME, ""));
-            return true;
-        }
+        if(userRepo.findByNickname(user.getNickname()).isPresent())
+            throw  new Exception("Duplicated Nickname");
+
+        userRepo.save(user);
+
+        //Tag 테이블에 nickname 추가
+        tagRepo.save(Tag.createTag(user.getNickname(), TagType.NICKNAME, ""));
+
+        return true;
     }
 
     @Transactional

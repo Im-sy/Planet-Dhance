@@ -17,6 +17,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,8 +44,15 @@ public class UserApi {
     private final VideoService videoService;
 
     @PostMapping("/signup")
-    public boolean signup(@RequestBody CreateSignUpRequest createSignUpRequest) {
-        return userService.signUp(toUserForSignUp(createSignUpRequest));
+    public ResponseEntity<?> signup(@RequestBody CreateSignUpRequest createSignUpRequest) {
+
+        try {
+            boolean result = userService.signUp(toUserForSignUp(createSignUpRequest));
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/check/email")
