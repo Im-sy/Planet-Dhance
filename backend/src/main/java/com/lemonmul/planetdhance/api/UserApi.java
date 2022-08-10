@@ -87,9 +87,9 @@ public class UserApi {
         return null;
     }
 
-    @PostMapping("/logout/{id}")
-    public boolean logout(@PathVariable Long id) {
-        return validateService.logout(id);
+    @PostMapping("/logout/{userId}")
+    public boolean logout(@PathVariable Long userId) {
+        return validateService.logout(userId);
     }
 
     @GetMapping("/profile/{id}")

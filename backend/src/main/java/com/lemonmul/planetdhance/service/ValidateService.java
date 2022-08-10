@@ -53,9 +53,9 @@ public class ValidateService {
     }
 
     @Transactional
-    public boolean logout(Long id){
-        if(validateRepo.findById(id).orElse(null) != null){
-            validateRepo.deleteById(id);
+    public boolean logout(Long userId){
+        if(validateRepo.findByUserid(userId).isPresent()){
+            validateRepo.deleteByUserid(userId);
             return true;
         }
         return false;
