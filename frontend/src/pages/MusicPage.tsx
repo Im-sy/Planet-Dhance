@@ -11,7 +11,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import "../styles/styles.css";
 import NavBar from '../components/NavBar'
-
+import TopBar from '../components/TopBar';
 interface playProps {
   url: string;
   playing: boolean;
@@ -71,7 +71,7 @@ export default function SongPage() {
   const mvLetterStyle: CSSProperties = {
     marginBottom : 0,
     marginTop : 0,
-    color : 'blue',
+    color : 'white',
   };
 
 
@@ -156,33 +156,39 @@ export default function SongPage() {
     // border : '0'
   };
 
- let [timeoutStorage, setTimeoutStorage] = useState([])
 
-  const visibleInfoBox = () => {
-      console.log("visibleInfoBox")
-      document.getElementById('infoBox').style.visibility = "visible";
-      const myTimeout = setTimeout(hiddenInfoBox, 3000);
+//  유튜브 링크로 가져오면서 필요없어짐 1/3
+//  let [timeoutStorage, setTimeoutStorage] = useState([])
+
+//   const visibleInfoBox = () => {
+//       console.log("visibleInfoBox")
+//       document.getElementById('infoBox').style.visibility = "visible";
+//       const myTimeout = setTimeout(hiddenInfoBox, 3000); 
       
-      let newDate = [...timeoutStorage, myTimeout]
-      setTimeoutStorage(newDate)
+//       let newDate = [...timeoutStorage, myTimeout]
+//       setTimeoutStorage(newDate)
 
-      console.log(timeoutStorage)
-  };
+//       console.log(timeoutStorage)
+//   };
 
 
-  const hiddenInfoBox = () => {
-      timeoutStorage.forEach((item)=>clearTimeout(item))
-      console.log("hiddenInfoBox")
-      document.getElementById('infoBox').style.visibility = "hidden";
-  };
+//   const hiddenInfoBox = () => {
+//       timeoutStorage.forEach((item)=>clearTimeout(item))
+//       console.log("hiddenInfoBox")
+//       document.getElementById('infoBox').style.visibility = "hidden";
+//   };
 
-  useEffect(hiddenInfoBox,[])
+//   useEffect(hiddenInfoBox,[])
 
  
 
 
   return (
     <div>
+      <div>
+        <TopBar />
+      </div>
+
       <div>
         <h3 style={mvLetterStyle}>MV</h3>
         <ReactPlayer
@@ -202,13 +208,14 @@ export default function SongPage() {
           playing={playing}
           // loop
           muted={muted}
-          onClick={visibleInfoBox}
+          // onClick={visibleInfoBox} //유튜브 링크로 가져오게 되면서 필요없어짐 2/3
           onPlay={handlePlay}
           onPause={handlePause}
           onProgress={handleProgress}
           // onEnded={challengeEnd}
         />
         
+        {/* 유튜브 링크로 가져오게 되면서 필요 없어짐 3/3
         <div style={infoBox} id="infoBox">
 
         <IconButton style={{ color : 'white'}}
@@ -229,7 +236,8 @@ export default function SongPage() {
           {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
         </IconButton>
 
-        </div>
+        </div> */}
+        
       </div>
 
       <SongPageTabs />
