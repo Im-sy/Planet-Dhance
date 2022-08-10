@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {login, logout} from '../components/API/AuthService';
 import NavBar from '../components/NavBar';
 import {Link as RouterLink} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
@@ -48,6 +49,15 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    const email = data.get('email') as string
+    const pwd = data.get('password') as string
+    const loginRes = login(email, pwd)
+    console.log(loginRes)
+  };
+
+  const handleLogout = () => {
+    const logoutRes = logout(204)
+    console.log(logoutRes)
   };
 
   return (
@@ -76,6 +86,7 @@ export default function SignIn() {
               fullWidth
               id="email"
               label="Email Address"
+              type="email"
               name="email"
               autoComplete="email"
               autoFocus
@@ -123,6 +134,16 @@ export default function SignIn() {
               </Grid>
             </Grid>
           </Box>
+          <Button
+            onClick={handleLogout}
+            fullWidth
+            size="large"
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            color="secondary"
+          >
+            Log Out
+          </Button>
           <Box>
             <Button variant="contained" color="inherit" sx={{mt: 8, mx: 3, py:2,  borderRadius: '50%'}}>
               <img src="http://pngimg.com/uploads/google/google_PNG19635.png" alt="google" width="30"/>
