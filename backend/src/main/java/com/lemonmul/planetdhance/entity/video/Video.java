@@ -99,4 +99,7 @@ public class Video {
         this.orderWeight+=3;
     }
 
+    public void removeUser(){
+        this.user = null;
+    }
 }
