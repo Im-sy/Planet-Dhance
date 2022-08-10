@@ -4,7 +4,7 @@ import MyPageProfile from '../components/MyPageProfile'
 import MyPageAchievements from '../components/MyPageAchievements'
 import MyPageClearSongs from '../components/MyPageClearSongs'
 import SongPageGridView from '../components/MusicPageGridView'
-
+import TopBar from '../components/TopBar';
 
 
 export default function MyPage() {
@@ -45,6 +45,9 @@ export default function MyPage() {
 
   return (
     <div>
+      <div>
+        <TopBar />
+      </div>
 
       <div>
         <MyPageProfile 
@@ -62,7 +65,8 @@ export default function MyPage() {
       </div>
 
       {/* 업적 */}
-      <div style={{ marginTop : 30, marginLeft : 10, marginBottom : 10, marginRight : 10 }}>
+      {/* <div style={{ marginTop : 30, marginLeft : 10, marginBottom : 10, marginRight : 10 }}> */}
+      <div style={{ marginTop : 10, marginLeft : 10, marginBottom : 10, marginRight : 10 }}>
         <h2>Achievments</h2>
         <MyPageAchievements clear={30} />
       </div>
