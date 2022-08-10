@@ -92,15 +92,18 @@ class VideoServiceTest {
 
     private void initdb() {
         //nation
-        Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko");
+        Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko",-3,-3,-2.5);
         em.persist(nation1);
         em.persist(Tag.createTag(nation1.getName(), TagType.NATION,"korea img"));
+        Nation nation2=Nation.createNation("\uD83C\uDDFA\uD83C\uDDF8","us",-1.5,-3,3.5);
+        em.persist(nation2);
+        em.persist(Tag.createTag(nation2.getName(), TagType.NATION,"usa img"));
 
         //user
         User user1=User.createUser("email1@xx.xx","user1",null,null,nation1);
         em.persist(user1);
         em.persist(Tag.createTag(user1.getNickname(),TagType.NICKNAME, user1.getImgUrl()));
-        User user2=User.createUser("email2@xx.xx","user2",null,null,nation1);
+        User user2=User.createUser("email2@xx.xx","user2",null,null,nation2);
         em.persist(user2);
         em.persist(Tag.createTag(user2.getNickname(),TagType.NICKNAME,user2.getImgUrl()));
 
@@ -149,14 +152,14 @@ class VideoServiceTest {
             em.persist(Like.createLike(video,user1));
             em.persist(Like.createLike(video,user2));
         }
-        Video video1 = Video.createVideo("video url!!", VideoScope.PRIVATE, "thumbnail url!!", user2, music1);
-        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));
-        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(user2.getNation().getName(),TagType.NATION));
-        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(music1.getArtist(),TagType.ARTIST));
-        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(music1.getTitle(),TagType.TITLE));
-        videos.add(video1);
-        em.persist(video1);
-        em.persist(Like.createLike(video1,user2));
+//        Video video1 = Video.createVideo("video url!!", VideoScope.PRIVATE, "thumbnail url!!", user2, music1);
+//        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));
+//        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(user2.getNation().getName(),TagType.NATION));
+//        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(music1.getArtist(),TagType.ARTIST));
+//        VideoTag.createVideoTag(video1,tagRepo.findByNameAndType(music1.getTitle(),TagType.TITLE));
+//        videos.add(video1);
+//        em.persist(video1);
+//        em.persist(Like.createLike(video1,user2));
         for(int i=10;i<15;i++){
             Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user2, music2);
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));
@@ -186,7 +189,7 @@ class VideoServiceTest {
 
         //clear
         em.persist(Clear.createClear(music1,user1));
-        em.persist(Clear.createClear(music1,user2));
+//        em.persist(Clear.createClear(music1,user2));
         em.persist(Clear.createClear(music2,user1));
         em.persist(Clear.createClear(music2,user2));
 
