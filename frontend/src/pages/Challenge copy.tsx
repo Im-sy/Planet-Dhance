@@ -1,4 +1,5 @@
 
+// 챌린지 진행부분 백업
 import React, { CSSProperties, SetStateAction, useState, useEffect, useRef } from 'react';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import { IconButton, Checkbox } from '@mui/material';
@@ -58,6 +59,18 @@ const subcamStyle: CSSProperties = {
   zIndex : '1',
   // top: '10vw',
   left : '65vw',
+  width: '35vw',
+  height: '50vh',
+  transform : 'scaleX(-1)'
+  
+};
+
+// main <-> sub 바꾸는 부분
+const subcamStyle_tmp: CSSProperties = {
+  position: 'absolute',
+  zIndex : '1',
+  // top: '10vw',
+  // left : '65vw',
   width: '35vw',
   height: '50vh',
   transform : 'scaleX(-1)'
@@ -304,7 +317,7 @@ export default function ModeChallengeTimer() {
 
   
 
-  //--------------------------------------------------------------------------------------------
+  //-----------------------------------------------------------
   // timer 부분
     const Ref = useRef(null);
   
@@ -355,9 +368,7 @@ export default function ModeChallengeTimer() {
               console.log('time to start recording');
 
               // 타이머 완료시, 실행
-              setNow('challenging')
               setPlayState({ ...playState, played: 0}); // 티칭영상 새로시작1
-              handlePlay()
               player.current.seekTo(0); // 티칭영상 새로시작1
               console.log('debug1')
               console.log(CAMERA_STATUS)
@@ -421,7 +432,6 @@ export default function ModeChallengeTimer() {
   const handlePlay = () => {
     console.log('onPlay');
     setPlayState({ ...playState, playing: true });
-    document.getElementById('webcam').style.display = "block";
     document.getElementById('prevcam').style.display = "none";
     
     if (recordWebcam.status !== CAMERA_STATUS.OPEN)
@@ -451,10 +461,8 @@ export default function ModeChallengeTimer() {
   };
 
   const challengeEnd = () => {
-    console.log(recordWebcam.status)
-    // recording이 아닐 때, 그냥 영상만 다 본 경우는 작동하지 않아야 함
-    if (recordWebcam.status === CAMERA_STATUS.RECORDING)
-    {setNow('endChallenge')
+    
+    setNow('endChallenge')
     console.log('안무티칭영상이 끝났습니다.')
     // asyn await promise then
     console.log(recordWebcam.status,'before stop')
@@ -470,12 +478,11 @@ export default function ModeChallengeTimer() {
 
 
     document.getElementById('prevcam').style.display = "block";
-    document.getElementById('webcam').style.display = "none";}
+    document.getElementById('webcam').style.display = "none";
   }
-  console.log(now)
 
 
-  // 녹화한 영상 재생하기
+
   const playPrev = () => {
     let video : HTMLVideoElement = document.querySelector('#prevcam');
     video.play();
@@ -505,11 +512,11 @@ export default function ModeChallengeTimer() {
             muted
           />
 
-        {/* 내 영상 다시보기 버튼 */}
+                {/*  mode 1 버튼*/}
         <button  onClick={playPrev} 
-              style={ now ==='endChallenge' ? playPrevStyle : notEndChallenge  }
+              style={playPrevStyle}
               >
-          playPrev
+        playPrev
         </button>
 
   
@@ -566,9 +573,8 @@ export default function ModeChallengeTimer() {
                   }>
             챌린지 시작
         </button>
-
-      
-        {/* 내 영상 다시 보기*/}
+        {/* 타이머 영상녹화시작 */}
+        {/* <button  onClick={getRecordingFileHooks}  */}
         <button  onClick={playPrev} 
                   style={ now==='endChallenge' ? challengeStartStyle : notMode}
                   >
@@ -607,7 +613,6 @@ export default function ModeChallengeTimer() {
           {playing ? <PauseIcon /> : <PlayArrowIcon />}
         </IconButton>
       </div>
-
       <div>
         <label htmlFor="muted">Muted</label>
         <input

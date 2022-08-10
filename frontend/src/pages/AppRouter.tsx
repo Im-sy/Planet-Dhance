@@ -16,6 +16,7 @@ import Ranking from './Ranking';
 import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
 
+
 function AppRouter() {
   return (
     <BrowserRouter>
