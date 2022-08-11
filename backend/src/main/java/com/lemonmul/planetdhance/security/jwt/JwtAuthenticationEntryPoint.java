@@ -22,8 +22,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         int exception = (int)request.getAttribute("exception");
         ErrorCode errorCode;
 
-
-        System.out.println("exception = " + exception);
         if(exception == ErrorCode.EXPIRED_TOKEN.getCode()){
             errorCode = ErrorCode.EXPIRED_TOKEN;
             setResponse(response, errorCode);

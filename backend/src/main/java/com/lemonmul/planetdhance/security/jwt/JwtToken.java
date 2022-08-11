@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class JwtToken {
-    private String email;
+    private Long userId;
     private String nickname;
     private String nationName;
     @ElementCollection(fetch = FetchType.EAGER)

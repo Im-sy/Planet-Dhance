@@ -65,7 +65,7 @@ public class User {
         this.email = email;
         this.nickname = nickname;
         this.setIntroduce(introduce);
-        this.setImgUrl(imgUrl);
+        this.imgUrl = imgUrl;
         this.setNation(nation);
         this.role = role;
         this.regDate = LocalDateTime.now();
@@ -78,7 +78,7 @@ public class User {
         user.email = email;
         user.nickname=nickname;
         user.setIntroduce(introduce);
-        user.setImgUrl(imgUrl);
+        user.imgUrl = imgUrl;
         user.regDate=LocalDateTime.now();
         user.renewDate=LocalDateTime.of(1000, 1, 1, 0, 0, 0);
         user.role=Role.USER;

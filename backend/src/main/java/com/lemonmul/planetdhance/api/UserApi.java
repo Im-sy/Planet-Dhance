@@ -17,6 +17,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,11 +29,13 @@ import java.nio.file.Files;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@CrossOrigin
 public class UserApi {
 
     private final UserService userService;
@@ -40,13 +45,20 @@ public class UserApi {
     private final VideoService videoService;
 
     @PostMapping("/signup")
-    public boolean signup(@RequestPart MultipartFile inputFile, @RequestPart CreateSignUpRequest createSignUpRequest) throws IOException {
-        return userService.signUp(inputFile, toUserForSignUp(createSignUpRequest));
+    public ResponseEntity<?> signup(@RequestBody CreateSignUpRequest createSignUpRequest) {
+
+        try {
+            boolean result = userService.signUp(toUserForSignUp(createSignUpRequest));
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/check/email")
-    public boolean emailCheck(@RequestBody String email) {
-        return userService.emailCheck(email);
+    public boolean emailCheck(@RequestBody Map<String, String> param) {
+        return userService.emailCheck(param.get("email"));
     }
 
     @PostMapping("/check/nickname")
@@ -55,43 +67,62 @@ public class UserApi {
     }
 
     @PostMapping("/login")
-    public JwtTokenJson login(@RequestBody CreateLoginRequest createLoginRequest) {
-        User findUser = userService.login(createLoginRequest.email, createLoginRequest.pwd);
+    public ResponseEntity<?> login(@RequestBody CreateLoginRequest createLoginRequest) {
+        try {
+            User findUser = userService.login(createLoginRequest.email, createLoginRequest.pwd);
 
-        if(findUser != null){
-            CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
-            JwtToken jwtToken = customUserDetails.toJwtToken();
-            String tokenString = jwtTokenProvider.createToken(jwtToken.getEmail(), jwtToken);
-            Validate validate = new Validate(jwtToken.getEmail(), tokenString);
+            if(findUser != null){
+                CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
+                JwtToken jwtToken = customUserDetails.toJwtToken();
+                String tokenString = jwtTokenProvider.createToken(jwtToken.getUserId(), jwtToken);
+                Validate validate = new Validate(jwtToken.getUserId(), tokenString);
 
-            if(validateService.login(validate))
-                return new JwtTokenJson("loginSuccess", tokenString);
+                if(validateService.login(validate))
+                    return new ResponseEntity<>(new JwtTokenJson("Success", tokenString), HttpStatus.OK);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return null;
     }
 
-    @PostMapping("/logout/{id}")
-    public boolean logout(@PathVariable Long id) {
-        return validateService.logout(id);
+    @PostMapping("/logout/{userId}")
+    public boolean logout(@PathVariable Long userId) {
+        return validateService.logout(userId);
     }
 
     @GetMapping("/profile/{id}")
-    public CreateProfileResponse profile(@PathVariable Long id) throws IOException {
-        User findUser = userService.findById(id);
-        File img = new File(findUser.getImgUrl());
-
-        return new CreateProfileResponse(findUser, img);
+    public ResponseEntity<?> profile(@PathVariable Long id) {
+        try {
+            User findUser = userService.findById(id);
+            return new ResponseEntity<>(new CreateProfileResponse(findUser), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/update/{id}")
-    public boolean update(@PathVariable Long id, @RequestPart MultipartFile inputFile, @RequestPart CreateUpdateRequest createUpdateRequest) throws IOException {
-        return userService.update(id, inputFile, createUpdateRequest);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestPart MultipartFile inputFile, @RequestPart CreateUpdateRequest createUpdateRequest) {
+        try {
+            userService.update(id, inputFile, createUpdateRequest);
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public boolean delete(@PathVariable Long id) {
-        return userService.delete(id);
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            return new ResponseEntity<>(userService.delete(id), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -101,7 +132,7 @@ public class UserApi {
      * size는 10개
      */
     @GetMapping("/{user_id}/follow/{page}")
-    public Slice<UserFollowDto> followInfoList(@PathVariable Long user_id, @PathVariable int page){
+    public Slice<UserFollowDto> followInfoList(@PathVariable Long user_id, @PathVariable int page) throws Exception {
         int size=10;
         User user=userService.findById(user_id);
         return userService.findFollowingUserInfo(page,size,user.getTos()).map(UserFollowDto::new);
@@ -114,7 +145,7 @@ public class UserApi {
      * size는 기본값 18
      */
     @GetMapping("/{user_id}/like/{page}")
-    public Slice<VideoDto> likeVideos(@PathVariable Long user_id,@PathVariable int page){
+    public Slice<VideoDto> likeVideos(@PathVariable Long user_id,@PathVariable int page) throws Exception {
         int size=18;
         User user = userService.findById(user_id);
         return videoService.findLikeVideoList(page,size, user.getLikes()).map(VideoDto::new);
@@ -145,14 +176,17 @@ public class UserApi {
     static class CreateProfileResponse {
         private String email;
         private String nickname;
-        private byte[] img;
+        private String imgUrl;
         private String nationName;
 
-        public CreateProfileResponse(User user, File img) throws IOException {
+        public CreateProfileResponse(User user) {
             this.email = user.getEmail();
             this.nickname = user.getNickname();
-            this.img = Files.readAllBytes(img.toPath());
+            this.imgUrl = user.getImgUrl();
             this.nationName = user.getNation().getName();
+
+            if(this.imgUrl == null)
+                imgUrl = "/images/default/default_profile.png";
         }
     }
 
@@ -188,6 +222,10 @@ public class UserApi {
             introduce=user.getIntroduce();
             imgUrl=user.getImgUrl();
             nation=user.getNation().getFlag();
+
+            if(imgUrl == null)
+                imgUrl = "/images/default/default_profile.png";
+
             //최신 영상 5개만
             videoList=user.getVideos().stream().sorted(Comparator.comparing(Video::getRegDate).reversed())
                     .limit(5).map(VideoDto::new).collect(Collectors.toList());

@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,19 +12,17 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Validate {
+@AllArgsConstructor
+public class TempFile {
 
-    @Column(name ="validate_id")
-    @Id @GeneratedValue
+    @Column(name ="file_id")
+    @Id
+    @GeneratedValue
     private Long id;
 
-    private Long userid;
+    private String fileUrl;
 
-    @Column(length = 500)
-    private String token;
-
-    public Validate(Long userId, String token){
-        this.userid = userId;
-        this.token = token;
+    public TempFile(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 }

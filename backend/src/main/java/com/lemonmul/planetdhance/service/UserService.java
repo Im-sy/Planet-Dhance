@@ -7,9 +7,11 @@ import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.Basic;
 import com.lemonmul.planetdhance.entity.user.CreateUpdateRequest;
 import com.lemonmul.planetdhance.entity.user.User;
+import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.repo.NationRepo;
 import com.lemonmul.planetdhance.repo.TagRepo;
 import com.lemonmul.planetdhance.repo.UserRepo;
+import com.lemonmul.planetdhance.repo.VideoRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,49 +44,47 @@ public class UserService {
     }
 
     @Transactional
-    public boolean signUp(MultipartFile inputFile, User user) throws IOException {
-        String filePath = UserService.createFile(inputFile, user.getEmail());
+    public boolean signUp(User user) throws Exception {
+        if(userRepo.findByEmail(user.getEmail()).isPresent())
+            throw new Exception("Duplicated Email");
 
-        user.setImgUrl(filePath);
+        if(userRepo.findByNickname(user.getNickname()).isPresent())
+            throw  new Exception("Duplicated Nickname");
 
-        if(userRepo.findByEmail(user.getEmail()).orElse(null) != null
-        || userRepo.findByNickname(user.getNickname()).orElse(null) != null){
-            return false;
-        }else{
-            userRepo.save(user);
+        userRepo.save(user);
 
-            //Tag 테이블에 nickname 추가
-            tagRepo.save(Tag.createTag(user.getNickname(), TagType.NICKNAME, ""));
-            return true;
-        }
-    }
+        //Tag 테이블에 nickname 추가
+        tagRepo.save(Tag.createTag(user.getNickname(), TagType.NICKNAME, ""));
 
-    public User login(String email, String pwd) {
-        Basic findUser = (Basic)(userRepo.findByEmail(email)).orElse(null);
-
-        if(findUser != null && findUser.getPwd().equals(pwd))
-            return findUser;
-        return null;
-    }
-
-    public User findById(Long id) {
-        return userRepo.findById(id).orElse(null);
+        return true;
     }
 
     @Transactional
-    public boolean update(Long id, MultipartFile inputFile, CreateUpdateRequest createUpdateRequest) throws IOException {
-        User findUser = userRepo.findById(id).orElse(null);
-        Nation findNation = nationRepo.findByName(createUpdateRequest.getNationName()).orElse(null);
+    public User login(String email, String pwd) throws Exception {
+        Basic findUser = (Basic)(userRepo.findByEmail(email)).orElseThrow(() -> new Exception("User Not Found"));
 
-        if(findUser == null || findNation == null)
-            return false;
+        if(!findUser.getPwd().equals(pwd))
+            throw new Exception("Password Not Correct");
+
+        return findUser;
+    }
+
+    public User findById(Long id) throws Exception {
+        return userRepo.findById(id).orElseThrow(() -> new Exception("User Not Found"));
+    }
+
+    @Transactional
+    public boolean update(Long id, MultipartFile inputFile, CreateUpdateRequest createUpdateRequest) throws Exception {
+        User findUser = userRepo.findById(id).orElseThrow(() -> new Exception("User Not Found"));
+        Nation findNation = nationRepo.findByName(createUpdateRequest.getNationName()).orElseThrow(() -> new Exception("Nation Not Found"));
 
         if(inputFile != null){
-            File beforeFile = new File(findUser.getImgUrl());
-            beforeFile.delete();
+            if(findUser.getImgUrl() != null) {
+                File beforeFile = new File(findUser.getImgUrl());
+                beforeFile.delete();
+            }
 
             String filePath = UserService.createFile(inputFile, createUpdateRequest.getEmail());
-
             findUser.setImgUrl(filePath);
         }
 
@@ -96,12 +96,10 @@ public class UserService {
     }
 
     @Transactional
-    public boolean delete(Long id) {
-        User findUser = userRepo.findById(id).orElse(null);
+    public boolean delete(Long id) throws Exception {
+        User findUser = userRepo.findById(id).orElseThrow(() -> new Exception("User Not Found"));
 
-        if(findUser == null)
-            return false;
-
+        // 사용자 관련 파일 제거
         String separator = File.separator;
 
         File tempFile = new File("");
@@ -111,6 +109,14 @@ public class UserService {
 
         File deleteFile = new File(savePath);
         deleteFile.delete();
+
+        // 사용자가 올린 게시글 삭제 안되도록 video 각각에 null 처리
+        List<Video> videoList = findUser.getVideos();
+
+        for(Video video: videoList)
+            video.removeUser();
+
+        // TODO: Validate 테이블에서 제거 필요?
 
         userRepo.delete(findUser);
 
@@ -147,7 +153,6 @@ public class UserService {
         String saveFileName = UUID.randomUUID() + originFileName.substring(originFileName.lastIndexOf("."));
 
         String filePath = savePath + separator + saveFileName;
-        System.out.println("filePath = " + filePath);
         inputFile.transferTo(new File(filePath));
 
         return filePath;

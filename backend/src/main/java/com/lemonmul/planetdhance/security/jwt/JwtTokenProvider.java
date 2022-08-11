@@ -20,9 +20,7 @@ import java.util.Date;
 public class JwtTokenProvider {
     private String secretKey = "planetdhancetenalpecnahd";
 
-//    private long tokenValidTime = 30 * 60 * 1000L;
-    final long tokenValidTime = 60 * 1000L;
-
+    final long tokenValidTime = 30 * 60 * 1000L;
 
     private final UserDetailsService userDetailsService;
 
@@ -33,8 +31,8 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public String createToken(String email, JwtToken jwtToken) {
-        Claims claims = Jwts.claims().setSubject(email); // JWT payload 에 저장되는 정보단위, 보통 여기서 user를 식별하는 값을 넣는다.
+    public String createToken(Long userId, JwtToken jwtToken) {
+        Claims claims = Jwts.claims().setSubject(userId.toString()); // JWT payload 에 저장되는 정보단위, 보통 여기서 user를 식별하는 값을 넣는다.
         claims.put("roles", jwtToken.getRoles()); // 정보는 key / value 쌍으로 저장된다.
         claims.put("details", jwtToken);
         Date now = new Date();
@@ -65,9 +63,7 @@ public class JwtTokenProvider {
     // 토큰의 유효성 + 만료일자 확인
     public boolean validateToken(String jwtToken, ServletRequest request) {
         try {
-            System.out.println("Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken) = " + Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken));
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            System.out.println("claims.getBody().getExpiration() = " + claims.getBody().getExpiration());
             return !claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             e.printStackTrace();

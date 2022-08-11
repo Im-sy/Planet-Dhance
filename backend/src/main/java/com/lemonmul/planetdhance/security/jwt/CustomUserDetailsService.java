@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 
         return new CustomUserDetails(user);
     }

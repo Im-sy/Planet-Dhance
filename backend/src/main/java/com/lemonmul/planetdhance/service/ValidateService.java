@@ -9,6 +9,7 @@ import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -16,43 +17,45 @@ import javax.servlet.ServletRequest;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ValidateService {
 
     private final ValidateRepo validateRepo;
     private final UserRepo userRepo;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public boolean login(Validate validate){
-        Validate findValidate = validateRepo.findByEmail(validate.getEmail()).orElse(null);
+    @Transactional
+    public boolean login(Validate validate) throws Exception {
+        Validate findValidate = validateRepo.findByUserid(validate.getUserid()).orElse(null);
 
         ServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 
-
-        if(findValidate != null){
+        if(findValidate == null){
+            validateRepo.save(validate);
+            return true;
+        }else{
             if(!jwtTokenProvider.validateToken(findValidate.getToken(), request)){
-                User findUser = userRepo.findByEmail(validate.getEmail()).orElse(null);
+                User findUser = userRepo.findById(validate.getUserid()).orElse(null);
 
-                validateRepo.deleteByEmail(validate.getEmail());
+                validateRepo.deleteByUserid(validate.getUserid());
 
                 if(findUser != null){
                     CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
                     JwtToken jwtToken = customUserDetails.toJwtToken();
-                    String tokenString = jwtTokenProvider.createToken(jwtToken.getEmail(), jwtToken);
-                    Validate newValidate = new Validate(jwtToken.getEmail(), tokenString);
+                    String tokenString = jwtTokenProvider.createToken(jwtToken.getUserId(), jwtToken);
+                    Validate newValidate = new Validate(jwtToken.getUserId(), tokenString);
                     validateRepo.save(newValidate);
                 }
                 return true;
             }
-            return false;
-        }else{
-            validateRepo.save(validate);
-            return true;
+            throw new Exception("Duplicated Login");
         }
     }
 
-    public boolean logout(Long id){
-        if(validateRepo.findById(id).orElse(null) != null){
-            validateRepo.deleteById(id);
+    @Transactional
+    public boolean logout(Long userId){
+        if(validateRepo.findByUserid(userId).isPresent()){
+            validateRepo.deleteByUserid(userId);
             return true;
         }
         return false;
