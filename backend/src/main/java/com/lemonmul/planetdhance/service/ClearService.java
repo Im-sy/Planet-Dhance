@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class ClearService {
      * */
     @Transactional
     public void clearChallenge(long userId, long musicId){
+        // userId, musicId validation 체크하고 service 요청해주세요
         Clear clear = toClear(userId, musicId);
         clearRepo.save(clear);
     }
@@ -35,30 +37,36 @@ public class ClearService {
      * 클리어 곡 가져오기
      * */
     public List<Music> findClearMusicList(Long userId, int size){
-        User user = userRepo.findById(userId).get();
-        List<Clear> clears = clearRepo.findClearsByUserOrderByIdDesc(user); // Clears list
-        if (clears.size() < size){
+        Optional<User> user = userRepo.findById(userId);
+        if (user.isPresent()){
+
+            List<Clear> clears = clearRepo.findClearsByUserOrderByIdDesc(user.get()); // Clears list
             List<Music> musics = new ArrayList<>(); // Music List 초기화
-            for (Clear clear:clears) {
-                Music music = musicRepo.findById(clear.getId()).get(); // Clear 곡 Id로 clear
-                musics.add(music);
+
+            if (clears.size() <= size){
+                for (Clear clear:clears) {
+                    Music music = musicRepo.findById(clear.getId()).orElse(null); // Clear 곡 Id로 clear 추가
+                    musics.add(music);
+                }
+            }else {
+                clears.subList(0, size);
+                for (Clear clear:clears) {
+                    Music music = musicRepo.findById(clear.getId()).orElse(null); // Clear 곡 Id로 clear
+                    musics.add(music);
+                }
             }
+
             return musics;
-        }else {
-            clears.subList(0, size);
-            List<Music> musics = new ArrayList<>(); // Music List 초기화
-            for (Clear clear:clears) {
-                Music music = musicRepo.findById(clear.getId()).get(); // Clear 곡 Id로 clear
-                musics.add(music);
-            }
-            return musics;
+
+        }else{
+            return null;
         }
     }
 
     private Clear toClear(Long userId, Long musicId){
 
-        User user = userRepo.findById(userId).get();
-        Music music = musicRepo.findById(musicId).get();
+        User user = userRepo.findById(userId).orElse(null);
+        Music music = musicRepo.findById(musicId).orElse(null);
 
         return Clear.createClear(music, user);
     }
