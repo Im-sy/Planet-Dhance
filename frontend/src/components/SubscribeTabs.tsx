@@ -97,8 +97,10 @@ export default function SubscribeTabs() {
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={value} >
-        <Box sx={{ }}  >
-          <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
+        <Box sx={{ color : '#FFFFFF'}}  >
+           <TabList onChange={handleChange} aria-label="lab API tabs example" centered 
+                   TabIndicatorProps={{style: {display:'none', color:'#FFFFFF'}}} 
+                   textColor="inherit"  >
             <Tab label="Follow" value="1" />
             <Tab label="Likes" value="2" />
           </TabList>

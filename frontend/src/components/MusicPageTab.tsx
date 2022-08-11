@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 
 const StyledTabPanel= styled(TabPanel)(`
 padding : 0
+
 `);
 
 
@@ -89,15 +90,17 @@ export default function SongPageTabs() {
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={value} >
-        <Box sx={{ }}  >
-          <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
-            <Tab label="Hit" value="1" />
+        <Box sx={{ color : '#FFFFFF'}}  >
+          <TabList onChange={handleChange} aria-label="lab API tabs example" centered 
+                   TabIndicatorProps={{style: {display:'none', color:'#FFFFFF'}}} 
+                   textColor="inherit"  >
+            <Tab label="Hit" value="1"/>
             <Tab label="Lastest" value="2" />
           </TabList>
-        </Box>
+        </Box >
         {/* <p>fdf</p> */}
 
-        <StyledTabPanel value="1" >
+        <StyledTabPanel  value="1" >
             <SongPageGridView urls={hit}/>
         
         </StyledTabPanel>
