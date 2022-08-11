@@ -12,21 +12,15 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { styled } from "@mui/material/styles";
 import '../styles/NavBar.css'
 
-
 export default function NavBar() {
-
-
-  const StyledLink = styled(Link)`
-  filter: grayscale(1);
-  &:hover, {
-    filter: grayscale(0);
-
-    color: #060318ff;
-}
-  
-`;
-
-
+  const BottomNavigationAction = styled(MuiBottomNavigationAction)(`
+    filter: grayscale(1);
+    color: rgba(255, 255, 255, 0.5);
+    &.Mui-selected {
+      filter: grayscale(0);
+      color: #E8AA42;
+    }
+  `);
   const [value, setValue] = React.useState(0);
   return (
     <div>
@@ -56,15 +50,11 @@ export default function NavBar() {
           />
           <MuiBottomNavigationAction
             className="navbar"
-            component={Link}
-            to='/subscribe'
             label="Favorites"
             icon={<img src={navFav} alt="navFav" width="30"></img>}
           />
           <MuiBottomNavigationAction
             className="navbar"
-            component={Link}
-            to='/login'
             label="My"
             icon={<AccountCircleIcon color="secondary" sx={{ fontSize: 30 }} />}
           />

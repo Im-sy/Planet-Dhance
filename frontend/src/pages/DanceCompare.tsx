@@ -1,8 +1,8 @@
 import React, { CSSProperties, SetStateAction, useState } from 'react';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
-import '../styles/tailwind_reset.css';
-import sample1 from '../videos/sample1.mp4';
-import sample2 from '../videos/sample2.mp4';
+import './tailwind_reset.css';
+import sample1 from './videos/sample1.mp4';
+import sample2 from './videos/sample2.mp4';
 
 import { ProgressBar } from '../components/UI/ProgressBar';
 

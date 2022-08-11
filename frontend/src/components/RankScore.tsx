@@ -9,6 +9,7 @@ import '../styles/styles.css'
 import RankCard from './RankCard';
 
 
+
 export default class RankScore extends Component {
   render() {
     const settings = {
@@ -30,6 +31,7 @@ export default class RankScore extends Component {
     };
     return (
       <div  className="container">
+        <h2>Rank</h2>
         <Slider {...settings}>
           <RankCard
             img={"여기에 국기 "}

@@ -14,8 +14,8 @@ export default function SongPageGridView(props:gridViewProps) {
         <Grid item sm={4}>
           <ActionAreaCard
             url={props.urls[i]}
-            width="28.2vw"
-            height="30vh" />
+            width="7.438rem"
+            height="15rem" />
         </Grid>
       )
     }
