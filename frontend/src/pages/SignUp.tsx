@@ -20,7 +20,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import CheckIcon from '@mui/icons-material/Check';
-import navHome2 from '../styles/navbtns/navHome2.png'
 
 const CssTextField = styled(TextField)({
   '& .MuiInputBase-input': {
@@ -61,23 +60,20 @@ export default function SignUp() {
     const email = data.get('email') as string
     const nick = data.get('nickname') as string
     const pwd = data.get('password') as string
-    let formData = new FormData();
-    console.log(typeof navHome2)
-    formData.append('inputFile', '')
-    let signupreq = [{
+    // let formData = new FormData();
+    let signupreq = {
       email: email,
-      nick: nick,
+      nickname: nick,
       introduce: '',
-      nation: nation,
+      nationName: nation,
       pwd: pwd,
       oAuth2Sub: auth,
       type: type,
-    }]
-    formData.append('createSignUpRequest', new Blob([JSON.stringify(signupreq)], {type: 'application/json'}))
+    }
+    // formData.append('createSignUpRequest', new Blob([JSON.stringify(signupreq)], {type: 'application/json'}))
     // signup(file, email, nick, '', nation, pwd, auth, type)
-    signup(formData)
+    signup(signupreq)
   };
-  const [file, setFile] = React.useState('');
   const [nation, setNation] = React.useState('');
   const [auth, setAuth] = React.useState('');
   const [type, setType] = React.useState('Basic')
@@ -85,6 +81,14 @@ export default function SignUp() {
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     setNation(event.target.value as string);
   };
+
+  const handleEmail = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const email = data.get('email') as string
+    console.log(email)
+    checkEmail(email)
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -115,10 +119,11 @@ export default function SignUp() {
                   name="email"
                   // autoComplete="email"
                   autoFocus
-                />
+                  />
               </Grid>
               <Grid item xs={2.5}>
-                <Button variant="outlined" 
+                <Button type="submit"
+                  variant="outlined" 
                   sx={{
                     color: '#FFE5B4',
                     borderColor: '#FFE5B4',

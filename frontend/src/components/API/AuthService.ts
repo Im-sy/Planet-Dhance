@@ -12,24 +12,15 @@ interface signUpCreateSignUpRequest {
   oAuth2Sub: string,
   type: string,
 }
-interface signUpRes {
-  inputFile: string,
-  createSignUpRequest: signUpCreateSignUpRequest
-}
 
 export async function signup(
-  formData: FormData
+  formData: signUpCreateSignUpRequest
 ) {
   try {
-    const {data} = await axios.post<FormData>(
+    const {data} = await axios.post(
       API_URL+'signup',
       {
         formData
-      },
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }
       },
     );
     return data;
@@ -198,6 +189,28 @@ export async function checkNick(nickname: string) {
     const data = await axios.post(
       API_URL+`check/nickname`,
       {nickname: nickname}
+    ).then(
+      res => {
+        console.log(res)
+        return res.data
+      }
+    );
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message)
+      return error.message
+    } else {
+      console.log(error)
+      return 'unexpected error occurred'
+    }
+  }
+}
+
+export async function oauth2() {
+  try {
+    const data = await axios.get(
+      API_URL+`oauth2/authorization/google`,
     ).then(
       res => {
         console.log(res)
