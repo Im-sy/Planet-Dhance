@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 public interface ValidateRepo extends JpaRepository<Validate, Long> {
-    Optional<Validate> findByUserid(Long userId);
+    Optional<Validate> findByUserId(Long userId);
     Optional<Validate> findByToken(String validate);
 
-    void deleteByUserid(Long userId);
+    void deleteByUserId(Long userId);
 
 }

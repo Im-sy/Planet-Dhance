@@ -40,4 +40,7 @@ public class TagService {
         return tag;
     }
 
+    public Tag findByNameAndType(String name,TagType type){
+        return tagRepo.findByNameAndType(name, type);
+    }
 }

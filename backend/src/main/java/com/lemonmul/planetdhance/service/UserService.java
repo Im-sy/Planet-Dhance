@@ -11,7 +11,6 @@ import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.repo.NationRepo;
 import com.lemonmul.planetdhance.repo.TagRepo;
 import com.lemonmul.planetdhance.repo.UserRepo;
-import com.lemonmul.planetdhance.repo.VideoRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -78,13 +76,15 @@ public class UserService {
         User findUser = userRepo.findById(id).orElseThrow(() -> new Exception("User Not Found"));
         Nation findNation = nationRepo.findByName(createUpdateRequest.getNationName()).orElseThrow(() -> new Exception("Nation Not Found"));
 
-        if(inputFile != null){
+        // TODO: 조건 분기 수정
+
+        if(inputFile.isEmpty()){
             if(findUser.getImgUrl() != null) {
                 File beforeFile = new File(findUser.getImgUrl());
                 beforeFile.delete();
             }
 
-            String filePath = UserService.createFile(inputFile, createUpdateRequest.getEmail());
+            String filePath = UserService.createUserImg(inputFile, createUpdateRequest.getEmail());
             findUser.setImgUrl(filePath);
         }
 
@@ -133,13 +133,13 @@ public class UserService {
         return userRepo.findByTosInOrderByRenewDateDesc(tos,pageable);
     }
 
-    public static String createFile(MultipartFile inputFile, String email) throws IOException {
+    public static String createUserImg(MultipartFile inputFile, String email) throws IOException {
         String separator = File.separator;
 
         File tempFile = new File("");
-        String rootPath = tempFile.getAbsolutePath().split("src")[0];
+        String rootPath = tempFile.getAbsolutePath().split("src")[0] + separator + "static";
 
-        String savePath = rootPath + separator + "images" + separator + email + separator + "profileImg";
+        String savePath = rootPath + separator + "users" + separator + "img" + separator + email;
 
         if(!new File(savePath).exists()) {
             try {

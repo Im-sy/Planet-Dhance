@@ -26,7 +26,7 @@ public class ValidateService {
 
     @Transactional
     public boolean login(Validate validate) throws Exception {
-        Validate findValidate = validateRepo.findByUserid(validate.getUserid()).orElse(null);
+        Validate findValidate = validateRepo.findByUserId(validate.getUserId()).orElse(null);
 
         ServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 
@@ -35,9 +35,9 @@ public class ValidateService {
             return true;
         }else{
             if(!jwtTokenProvider.validateToken(findValidate.getToken(), request)){
-                User findUser = userRepo.findById(validate.getUserid()).orElse(null);
+                User findUser = userRepo.findById(validate.getUserId()).orElse(null);
 
-                validateRepo.deleteByUserid(validate.getUserid());
+                validateRepo.deleteByUserId(validate.getUserId());
 
                 if(findUser != null){
                     CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
@@ -54,8 +54,8 @@ public class ValidateService {
 
     @Transactional
     public boolean logout(Long userId){
-        if(validateRepo.findByUserid(userId).isPresent()){
-            validateRepo.deleteByUserid(userId);
+        if(validateRepo.findByUserId(userId).isPresent()){
+            validateRepo.deleteByUserId(userId);
             return true;
         }
         return false;

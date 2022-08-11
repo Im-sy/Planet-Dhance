@@ -5,7 +5,6 @@ import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.Nation;
 import com.lemonmul.planetdhance.entity.VideoTag;
-import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
@@ -137,13 +136,13 @@ public class VideoApi {
     @Data
     static class TagDto{
         private Long id;
-        private String name;
-        private TagType type;
+        private String type;
+        private TagType className;
 
         public TagDto(VideoTag videoTag) {
             id=videoTag.getTag().getId();
-            name= videoTag.getTag().getName();
-            type=videoTag.getTag().getType();
+            type = videoTag.getTag().getName();
+            className =videoTag.getTag().getType();
         }
     }
 
