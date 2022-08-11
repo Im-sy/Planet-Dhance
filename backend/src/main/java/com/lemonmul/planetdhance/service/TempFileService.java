@@ -3,6 +3,7 @@ package com.lemonmul.planetdhance.service;
 import com.lemonmul.planetdhance.entity.TempFile;
 import com.lemonmul.planetdhance.repo.TempFileRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class TempFileService {
 
     private final TempFileRepo tempFileRepo;
@@ -31,6 +33,12 @@ public class TempFileService {
         tempFileRepo.save(tempFile);
 
         return true;
+    }
+
+    @Transactional
+    public boolean uploadFileAndJson(MultipartFile inputFile,String jsonContent) throws IOException{
+        log.debug("==============jsonContent: "+jsonContent);
+        return upload(inputFile);
     }
 
     public String download(Long id) {
