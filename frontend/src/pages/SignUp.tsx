@@ -119,11 +119,10 @@ export default function SignUp() {
                   name="email"
                   // autoComplete="email"
                   autoFocus
-                  />
+                />
               </Grid>
               <Grid item xs={2.5}>
-                <Button type="submit"
-                  variant="outlined" 
+                <Button variant="outlined" 
                   sx={{
                     color: '#FFE5B4',
                     borderColor: '#FFE5B4',

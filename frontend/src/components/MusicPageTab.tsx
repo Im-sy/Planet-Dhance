@@ -12,7 +12,6 @@ import { styled } from "@mui/material/styles";
 
 const StyledTabPanel= styled(TabPanel)(`
 padding : 0
-
 `);
 
 
@@ -101,10 +100,8 @@ export default function SongPageTabs() {
         {/* <p>fdf</p> */}
 
         <StyledTabPanel  value="1" >
+        <StyledTabPanel value="1" >
             <SongPageGridView urls={hit}/>
-        
-        </StyledTabPanel>
-
         <StyledTabPanel value="2">
             <SongPageGridView urls={Lastest}/>
         
