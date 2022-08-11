@@ -1,7 +1,8 @@
 package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.dto.VideoDto;
-import com.lemonmul.planetdhance.entity.*;
+import com.lemonmul.planetdhance.entity.Nation;
+import com.lemonmul.planetdhance.entity.Validate;
 import com.lemonmul.planetdhance.entity.user.*;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.security.jwt.CustomUserDetails;
@@ -9,8 +10,8 @@ import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
 import com.lemonmul.planetdhance.service.NationService;
-import com.lemonmul.planetdhance.service.ValidateService;
 import com.lemonmul.planetdhance.service.UserService;
+import com.lemonmul.planetdhance.service.ValidateService;
 import com.lemonmul.planetdhance.service.VideoService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,13 +20,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 
 import java.util.Comparator;
 import java.util.List;
@@ -88,7 +84,7 @@ public class UserApi {
         return null;
     }
 
-    @PostMapping("/logout/{userId}")
+    @DeleteMapping("/logout/{userId}")
     public boolean logout(@PathVariable Long userId) {
         return validateService.logout(userId);
     }

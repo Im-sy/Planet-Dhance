@@ -38,6 +38,7 @@ public class TempFileService {
     @Transactional
     public boolean uploadFileAndJson(MultipartFile inputFile,String jsonContent) throws IOException{
         log.debug("==============jsonContent: "+jsonContent);
+        System.out.println("jsonContent = " + jsonContent);
         return upload(inputFile);
     }
 

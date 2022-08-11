@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @CrossOrigin
+@Slf4j
 @RestController
 @RequestMapping("/file")
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class TempFileApi {
         return tempFileService.download(id);
     }
 
-    @PostMapping(value = "/upload/file_json")
+    @PostMapping(value = "/upload/file_json",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public boolean uploadFileAndJson(@RequestPart MultipartFile inputFile,@RequestPart SampleJson sampleJson) throws IOException{
         return tempFileService.uploadFileAndJson(inputFile,sampleJson.content);
     }
