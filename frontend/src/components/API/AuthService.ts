@@ -1,7 +1,8 @@
 import React from 'react'
+import jwt_decode from 'jwt-decode';
 import axios from "axios"
 
-const API_URL = "http://i7d201.p.ssafy.io:8081/user/"
+const API_URL = "https://i7d201.p.ssafy.io/api/user/"
 
 interface signUpCreateSignUpRequest {
   email: string,
@@ -14,13 +15,25 @@ interface signUpCreateSignUpRequest {
 }
 
 export async function signup(
-  formData: signUpCreateSignUpRequest
+  email: string,
+  nickname: string,
+  introduce: string,
+  nationName: string,
+  pwd: string,
+  oAuth2Sub: string,
+  type: string,
 ) {
   try {
     const {data} = await axios.post(
       API_URL+'signup',
       {
-        formData
+        email: email,
+        nickname: nickname,
+        introduce: introduce,
+        nationName: nationName,
+        pwd: pwd,
+        oAuth2Sub: oAuth2Sub,
+        type: type
       },
     );
     return data;
@@ -49,6 +62,9 @@ export async function login(
     ).then(
       res => {
         console.log(res)
+        var token = res.data.token
+        var decoded = jwt_decode(token);
+        console.log(decoded)
         // localStorage.setItem("user", JSON.stringify(res.data))
         return res.data
       }
@@ -213,7 +229,7 @@ export async function oauth2() {
       API_URL+`oauth2/authorization/google`,
     ).then(
       res => {
-        console.log(res)
+        console.log(res.data)
         return res.data
       }
     );

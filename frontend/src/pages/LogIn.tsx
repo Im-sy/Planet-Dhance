@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {login, logout} from '../components/API/AuthService';
+import {login, logout, oauth2} from '../components/API/AuthService';
 import NavBar from '../components/NavBar';
-import {Link as RouterLink} from 'react-router-dom';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -41,8 +41,9 @@ const CssTextField = styled(TextField)({
 
 const theme = createTheme();
 
-export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+export default function SignIn() { 
+  const navigate = useNavigate()
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
@@ -51,14 +52,21 @@ export default function SignIn() {
     });
     const email = data.get('email') as string
     const pwd = data.get('password') as string
-    const loginRes = login(email, pwd)
-    console.log(loginRes)
+    const loginRes = await login(email, pwd)
+    // console.log(loginRes)
+    if (loginRes.state === "Success"){
+      navigate('/')
+    }
   };
 
   const handleLogout = () => {
-    const logoutRes = logout(204)
+    const logoutRes = logout(132)
     console.log(logoutRes)
   };
+
+  const handleAuth = () => {
+    oauth2()
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -67,19 +75,24 @@ export default function SignIn() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Log in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <CssTextField
               margin="normal"
               required
@@ -104,11 +117,17 @@ export default function SignIn() {
               // color="warning"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" sx={{
-                color: '#FFE5B4',
-                '&.Mui-checked': {
-                  color: '#E8AA42',
-                }}} />}
+              control={
+                <Checkbox
+                  value="remember"
+                  sx={{
+                    color: "#FFE5B4",
+                    "&.Mui-checked": {
+                      color: "#E8AA42",
+                    },
+                  }}
+                />
+              }
               label="Remember me"
             />
             <Button
@@ -123,12 +142,18 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link sx={{color: '#E8AA42'}} href="#" variant="body2">
+                <Link sx={{ color: "#E8AA42" }} href="#" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link sx={{color: '#E8AA42'}} href="/signup" variant="body2" component={RouterLink} to='/signup'>
+                <Link
+                  sx={{ color: "#E8AA42" }}
+                  href="/signup"
+                  variant="body2"
+                  component={RouterLink}
+                  to="/signup"
+                >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -145,14 +170,39 @@ export default function SignIn() {
             Log Out
           </Button>
           <Box>
-            <Button variant="contained" color="inherit" sx={{mt: 8, mx: 3, py:2,  borderRadius: '50%'}}>
-              <img src="http://pngimg.com/uploads/google/google_PNG19635.png" alt="google" width="30"/>
+            <Button
+              variant="contained"
+              color="inherit"
+              sx={{ mt: 8, mx: 3, py: 2, borderRadius: "50%" }}
+              onClick={handleAuth}
+            >
+              <img
+                src="http://pngimg.com/uploads/google/google_PNG19635.png"
+                alt="google"
+                width="30"
+              />
             </Button>
-            <Button variant="contained" color="inherit" sx={{mt: 8, mx: 3, py:2,  borderRadius: '50%'}}>
-              <img src="https://logostransparent.com/wp-content/uploads/2022/03/Meta-Logo-Transparent.png" alt="google" width="30"/>
+            <Button
+              variant="contained"
+              color="inherit"
+              sx={{ mt: 8, mx: 3, py: 2, borderRadius: "50%" }}
+            >
+              <img
+                src="https://logostransparent.com/wp-content/uploads/2022/03/Meta-Logo-Transparent.png"
+                alt="google"
+                width="30"
+              />
             </Button>
-            <Button variant="contained" color="inherit" sx={{mt: 8, mx: 3, py:2,  borderRadius: '50%'}}>
-              <img src="https://seeklogo.com/images/T/twitter-icon-circle-blue-logo-0902F48837-seeklogo.com.png" alt="google" width="30"/>
+            <Button
+              variant="contained"
+              color="inherit"
+              sx={{ mt: 8, mx: 3, py: 2, borderRadius: "50%" }}
+            >
+              <img
+                src="https://seeklogo.com/images/T/twitter-icon-circle-blue-logo-0902F48837-seeklogo.com.png"
+                alt="google"
+                width="30"
+              />
             </Button>
           </Box>
         </Box>

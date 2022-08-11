@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {signup, checkEmail, checkNick} from '../components/API/AuthService';
 import NavBar from '../components/NavBar';
-import {Link as RouterLink} from 'react-router-dom';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -20,6 +20,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import CheckIcon from '@mui/icons-material/Check';
+import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 
 const CssTextField = styled(TextField)({
   '& .MuiInputBase-input': {
@@ -47,7 +48,9 @@ const CssTextField = styled(TextField)({
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
@@ -71,25 +74,69 @@ export default function SignUp() {
       type: type,
     }
     // formData.append('createSignUpRequest', new Blob([JSON.stringify(signupreq)], {type: 'application/json'}))
-    // signup(file, email, nick, '', nation, pwd, auth, type)
-    signup(signupreq)
+    const signupRes = await signup(email, nick, '', nation, pwd, auth, type)
+    if (signupRes === "Success") {
+      navigate('/login')
+    }
   };
+  const [email, setEmail] = React.useState('');
+  const [nick, setNick] = React.useState('');
+  const [avEmail, setAvEmail] = React.useState(true)
+  const [avNick, setAvNick] = React.useState(true)
   const [nation, setNation] = React.useState('');
+  const [pwd, setPwd] = React.useState('');
+  const [confirmPwd, setConfirmPwd] = React.useState('');
+  const [isConfirm, setIsConfirm] = React.useState(true);
   const [auth, setAuth] = React.useState('');
   const [type, setType] = React.useState('Basic')
 
-  const handleChange = (event: SelectChangeEvent<unknown>) => {
+  const handleChangeNation = (event: SelectChangeEvent<unknown>) => {
     setNation(event.target.value as string);
   };
 
-  const handleEmail = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email') as string
+  const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value)
     console.log(email)
-    checkEmail(email)
   }
 
+  const handleEmail = async () => {
+    console.log(email)
+    const dupemail = await checkEmail(email)
+    console.log(dupemail)
+    if (dupemail === true) {
+      setAvEmail(true)
+    } else {
+      setAvEmail(false)
+    }
+  }
+
+  const handleChangeNick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNick(event.target.value)
+  }
+
+  const handleNick = async () => {
+    const dupnick = await checkNick(nick)
+    console.log(dupnick)
+    if (dupnick === true) {
+      setAvNick(true)
+    } else {
+      setAvNick(false)
+    }
+  }
+
+  const handleChangePwd = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const currentPwd = event.target.value
+    setPwd(currentPwd)
+  },[])
+
+  const handleChangeConfirmPwd = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value)
+    if (pwd === event.target.value) {
+      setIsConfirm(false)
+    } else {
+      setIsConfirm(true)
+    }
+  }
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -110,37 +157,41 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={9.5}>
-                <CssTextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  // autoComplete="email"
-                  autoFocus
-                  />
+              <Grid item xs={9.5}><CssTextField
+                error = {!avEmail}
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                // autoComplete="email"
+                autoFocus
+                onChange={handleChangeEmail}
+                helperText={avEmail? "":"Email Already Exist"}
+                />
               </Grid>
               <Grid item xs={2.5}>
-                <Button type="submit"
+                <Button
                   variant="outlined" 
                   sx={{
                     color: '#FFE5B4',
                     borderColor: '#FFE5B4',
-                    height: '100%'
-                  }}>
-                  <CheckIcon />
+                    height: '56px'
+                  }}
+                  onClick={handleEmail}>
+                  {avEmail ? <CheckIcon /> :  <DoNotDisturbIcon />}
                 </Button>
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel id="select-label" sx={{color: '#FFE5B4', '&.Mui-focused':{color: '#E8AA42'}}}>Nation</InputLabel>
                   <Select
+                    required
                     labelId="select-label"
                     id="select"
                     value={nation}
                     label="Nation"
-                    onChange={handleChange}
+                    onChange={handleChangeNation}
                     sx={{
                       color: "white",
                       '.MuiSvgIcon-root': {fill:'#FFE5B4'}, 
@@ -160,29 +211,45 @@ export default function SignUp() {
                     <MenuItem value={'Japan'}>🇯🇵 Japan</MenuItem>
                     <MenuItem value={'ko'}>🇰🇷 Korea</MenuItem>
                     <MenuItem value={'RSA'}>🇿🇦 RSA</MenuItem>
-                    <MenuItem value={'USA'}>🇺🇸 USA</MenuItem>
+                    <MenuItem value={'us'}>🇺🇸 USA</MenuItem>
                     <MenuItem value={'Vietnam'}>🇻🇳 Vietnam</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={9.5}>
-                <CssTextField
+                {avNick
+                  ? <CssTextField
                   autoComplete="given-name"
                   name="nickname"
                   required
                   fullWidth
                   id="nickname"
                   label="Nick Name"
+                  onChange={handleChangeNick}
+                  />
+                  : <CssTextField
+                  error={!avNick}
+                  autoComplete="given-name"
+                  name="nickname"
+                  required
+                  fullWidth
+                  id="nickname"
+                  label="Nick Name"
+                  onChange={handleChangeNick}
+                  helperText={avNick? "":"NickName Already Exist"}
                 />
+                }
+                
               </Grid>
               <Grid item xs={2.5}>
                 <Button variant="outlined" 
                   sx={{
                     color: '#FFE5B4',
                     borderColor: '#FFE5B4',
-                    height: '100%'
-                  }}>
-                  <CheckIcon />
+                    height: '56px'
+                  }}
+                  onClick={handleNick}>
+                  {avNick ? <CheckIcon /> : <DoNotDisturbIcon />}
                 </Button>
               </Grid>
               <Grid item xs={12}>
@@ -194,16 +261,20 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={handleChangePwd}
                 />
               </Grid>
               <Grid item xs={12}>
                 <CssTextField
+                  error={isConfirm}
                   required
                   fullWidth
                   name="password2"
                   label="Confirm Password"
                   type="password"
                   id="password2"
+                  onChange={handleChangeConfirmPwd}
+                  helperText={isConfirm? "Password Doesn't Match": '' }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -224,6 +295,7 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               color="secondary"
+              disabled={!(avEmail&&avNick&&!isConfirm&&nation)}
             >
               Sign Up
             </Button>
