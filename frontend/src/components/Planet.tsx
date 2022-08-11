@@ -10,8 +10,8 @@ function Model() {
 
 const Planet = () => {
   return (
-    <div style = {{height:"100vh", backgroundColor:"#231955"}}>
-      <Canvas>
+    <div style = {{height:"80vh", backgroundColor:"#231955"}}>
+      <Canvas camera={{position: [-3, -3, -2.5]}}>
         <ambientLight intensity={0.3} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -10, -10]}/>
