@@ -46,7 +46,7 @@ public class VideoApi {
      * size는 기본값 18
      */
     @GetMapping("/list/{music_id}/latest/{page}")
-    public Slice<VideoDto> newestList(@PathVariable Long music_id,@PathVariable int page){
+    public Slice<VideoDto> newestList(@PathVariable Long music_id,@PathVariable int page) throws Exception {
         Music music=musicService.getMusicInfo(music_id).get();
         Slice<Video> videoList = videoService.findNewestVideoList(page, listSize,music, VideoScope.PUBLIC);
         return videoList.map(VideoDto::new);
@@ -59,7 +59,7 @@ public class VideoApi {
      * size는 기본값 18
      */
     @GetMapping("/list/{music_id}/hitlike/{page}")
-    public Slice<VideoDto> hitlikeList(@PathVariable Long music_id,@PathVariable int page){
+    public Slice<VideoDto> hitlikeList(@PathVariable Long music_id,@PathVariable int page) throws Exception{
         Music music=musicService.getMusicInfo(music_id).get();
         Slice<Video> videoList = videoService.findHitLikeVideoList(page, listSize,music, VideoScope.PUBLIC);
         return videoList.map(VideoDto::new);
@@ -97,7 +97,7 @@ public class VideoApi {
      * size는 기본값 10개
      */
     @GetMapping("/random/{user_id}")
-    public List<VideoPlayDto> randomVideoInfoList(@PathVariable Long user_id){
+    public List<VideoPlayDto> randomVideoInfoList(@PathVariable Long user_id) throws Exception{
         int size=10;
         List<Video> videoList = videoService.findRandomVideoInfoList(size);
         User user = userService.findById(user_id);

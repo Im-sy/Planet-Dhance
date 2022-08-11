@@ -10,6 +10,8 @@ import com.lemonmul.planetdhance.service.VideoService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,9 +36,16 @@ public class MusicApi {
     *
     * */
     @GetMapping("/challenge/{music_id}")
-    public Optional<MusicDto> musicForChallenge(@PathVariable Long music_id) {
-        Optional<Music> music = musicService.getMusicInfo(music_id);
-        return music.map(MusicDto::new);
+    public ResponseEntity<?> musicForChallenge(@PathVariable Long music_id) {
+
+        try {
+            Optional<Music> music = musicService.getMusicInfo(music_id);
+            return new ResponseEntity<>(music.map(MusicDto::new), HttpStatus.OK);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     /**
@@ -46,12 +55,19 @@ public class MusicApi {
      * size 는 기본값 18
      */
     @GetMapping("/list/{music_id}")
-    public MusicPageResponse mvAndVideoLists(@PathVariable Long music_id){
-        Music music=musicService.getMusicInfo(music_id).get();
-        int page=0;
-        Slice<Video> newestVideoList = videoService.findNewestVideoList(page,size, music,VideoScope.PUBLIC);
-        Slice<Video> hitLikeVideoList = videoService.findHitLikeVideoList(page, size, music, VideoScope.PUBLIC);
-        return new MusicPageResponse(music,newestVideoList,hitLikeVideoList);
+    public ResponseEntity<?> mvAndVideoLists(@PathVariable Long music_id){
+        try {
+            Music music=musicService.getMusicInfo(music_id).get();
+            int page=0;
+            Slice<Video> newestVideoList = videoService.findNewestVideoList(page,size, music,VideoScope.PUBLIC);
+            Slice<Video> hitLikeVideoList = videoService.findHitLikeVideoList(page, size, music, VideoScope.PUBLIC);
+
+            return new ResponseEntity<>(new MusicPageResponse(music,newestVideoList,hitLikeVideoList), HttpStatus.OK);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @Data
