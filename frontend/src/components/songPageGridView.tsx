@@ -25,7 +25,7 @@ export default function SongPageGridView(props:gridViewProps) {
   return (
     <div>
       <Grid container spacing={0.4} style={{justifyContent: 'center'}}>
-        {cardrendering()}
+          {cardrendering()}
       </Grid>
     </div>
   )

@@ -14,7 +14,7 @@ import { DanceCompare } from './pages/DanceCompare';
 import ModelViewer from './components/Planet';
 import SearchSongInfo from './components/SearchSongInfo';
 // import RankScoreCard from './RankScoreCard';
-import ModeChallengeTimer from './pages/modeChallengeTimer';
+// import ModeChallengeTimer from './pages/Challenge';
 import Main from './pages/Main';
 import AppRouter from './pages/AppRouter';
 
