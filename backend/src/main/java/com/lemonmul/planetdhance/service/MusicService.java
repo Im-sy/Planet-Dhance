@@ -19,7 +19,10 @@ public class MusicService {
     /**
     * 전체 음악 데이터 반환
     */
-    public Optional<Music> getMusicInfo(Long id){
+    public Optional<Music> getMusicInfo(Long id) throws Exception{
+
+        if (musicRepo.findById(id).isEmpty())
+            throw new Exception("Music Not Found");
 
         return musicRepo.findById(id);
     }
