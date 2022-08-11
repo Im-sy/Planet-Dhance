@@ -15,11 +15,16 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class LikeService {
 
     private final LikeRepo likeRepo;
     private final UserRepo userRepo;
     private final VideoRepo videoRepo;
+
+    public List<Like> findLikeByUserAndVideos(User user, List<Video> videos){
+        return likeRepo.findByUserAndVideoIn(user,videos);
+    }
 
     @Transactional
     public boolean addLike(Long userId,Long videoId){
