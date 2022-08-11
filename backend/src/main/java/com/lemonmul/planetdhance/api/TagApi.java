@@ -144,14 +144,14 @@ public class TagApi {
     @Data
     static class TagDto {
         private Long id;
-        private String name;
-        private TagType type;
+        private String type;
+        private TagType className;
         private String imgUrl;
 
         public TagDto(Tag tag) {
             id=tag.getId();
-            name=tag.getName();
-            type=tag.getType();
+            type =tag.getName();
+            className =tag.getType();
             imgUrl=tag.getImgUrl();
         }
     }
