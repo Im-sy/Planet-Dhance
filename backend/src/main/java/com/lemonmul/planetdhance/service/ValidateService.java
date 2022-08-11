@@ -24,6 +24,18 @@ public class ValidateService {
     private final UserRepo userRepo;
     private final JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * 토큰 테이블에 로그인 정보 추가
+     *
+     * 파라미터
+     *      validate: 토큰 테이블에 저장할 사용자 정보 객체
+     *
+     * 반환값
+     *      TODO: 성공 시 반환값 "Success"? true?
+     *      팔로우 성공: "Success"? true?
+     *      중복 로그인: "Duplicated Login" 예외 발생
+     */
+    // TODO: 함수명 변경 고민해보기, 테이블 한글명 변경 고민해보기
     @Transactional
     public boolean login(Validate validate) throws Exception {
         Validate findValidate = validateRepo.findByUserId(validate.getUserId()).orElse(null);
@@ -52,6 +64,19 @@ public class ValidateService {
         }
     }
 
+    /**
+     * 토큰 테이블에서 로그인 정보 삭제
+     *
+     * 파라미터
+     *      userId: 토큰 테이블에서 삭제할 사용자 아이디
+     *
+     * 반환값
+     *      TODO: 성공 시 반환값 "Success"? true?
+     *      팔로우 성공: "Success"? true?
+     *      TODO: 예외 처리, 예외 메세지 고민해보기
+     *      토큰 조회 실패: "Already Logout" 예외 발생
+     */
+    // TODO: 함수명 변경 고민해보기, 테이블 한글명 변경 고민해보기
     @Transactional
     public boolean logout(Long userId){
         if(validateRepo.findByUserId(userId).isPresent()){

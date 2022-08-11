@@ -40,6 +40,28 @@ public class UserApi {
     private final JwtTokenProvider jwtTokenProvider;
     private final VideoService videoService;
 
+    /**
+     * 회원가입
+     *
+     * 요청 파라미터 예시:
+     * - url
+     *      /user/signup
+     *
+     * - body (json)
+     *      {
+     *          "email": "{이메일}",
+     *          "nickname": "{닉네임}",
+     *          "introduce": "{자기소개글}",
+     *          "nationName": "{언어 코드}",
+     *          "pwd": "{비밀번호}",
+     *          "oAuth2Sub": "{oAuth2 고유키}",
+     *          "type": "{Basic 또는 Social}"
+     *      }
+     *
+     * - 참고사항
+     *      pwd와 oAuth2Sub는 type에 따라 둘 중에서 하나만 채우면 됨
+     *      (Basic일 때는 pwd, Social일 때는 oAuth2Sub)
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody CreateSignUpRequest createSignUpRequest) {
 
@@ -52,16 +74,53 @@ public class UserApi {
         }
     }
 
+    /**
+     * 이메일 중복 체크
+     *
+     * 요청 파라미터 예시:
+     * - url
+     *      /user/check/email
+     *
+     * - body (json)
+     *      {
+     *          "email": "{이메일}"
+     *      }
+     */
     @PostMapping("/check/email")
     public boolean emailCheck(@RequestBody Map<String, String> param) {
         return userService.emailCheck(param.get("email"));
     }
 
+    /**
+     * 닉네임 중복 체크
+     *
+     * 요청 파라미터 예시:
+     * - url
+     *      /user/check/nickname
+     *
+     * - body (json)
+     *      {
+     *          "nickname": "{닉네임}"
+     *      }
+     */
     @PostMapping("/check/nickname")
-    public boolean nicknameCheck(@RequestBody String nickname) {
-        return userService.nicknameCheck(nickname);
+    public boolean nicknameCheck(@RequestBody Map<String, String> param) {
+        return userService.nicknameCheck(param.get("nickname"));
     }
 
+    /**
+     * 로그인
+     *
+     * 요청 파라미터 예시:
+     * - url
+     *      /user/login
+     *
+     * - body (json)
+     *      {
+     *          "email": "{이메일}",
+     *          "pwd": "{비밀번호}"
+     *      }
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody CreateLoginRequest createLoginRequest) {
         try {
@@ -84,11 +143,26 @@ public class UserApi {
         return null;
     }
 
+    /**
+     * 로그아웃
+     *
+     * 요청 파라미터 예시:
+     * - url
+     *      /user/logout/{사용자 아이디}
+     *
+     * - body
+     *      없음
+     */
     @DeleteMapping("/logout/{userId}")
     public boolean logout(@PathVariable Long userId) {
         return validateService.logout(userId);
     }
 
+    /**
+     * 사용자 정보 조회
+     *
+     * 요청 파라미터 예시: /user/profile/{사용자 아이디}
+     */
     @GetMapping("/profile/{id}")
     public ResponseEntity<?> profile(@PathVariable Long id) {
         try {
@@ -100,6 +174,24 @@ public class UserApi {
         }
     }
 
+    /**
+     * 사용자 정보 수정
+     *
+     * 요청 파라미터 예시:
+     * - url
+     *      /user/update/{사용자 아이디}
+     *
+     * - body (form-data)
+     *      - inputFile (?)
+     *          value: 프로필 사진
+     *
+     *      - createUpdateRequest (json)
+     *          value: {
+     *                      "email": "1217jdk@gmail.com",
+     *                      "introduce": "asdf",
+     *                      "nationName": "usa"
+     *                  }
+     */
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestPart MultipartFile inputFile, @RequestPart CreateUpdateRequest createUpdateRequest) {
         try {
@@ -111,6 +203,16 @@ public class UserApi {
         }
     }
 
+    /**
+     * 사용자 정보 수정
+     *
+     * 요청 파라미터 예시:
+     * - url
+     *      /user/delete/{사용자 아이디}
+     *
+     * - body
+     *      없음
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {

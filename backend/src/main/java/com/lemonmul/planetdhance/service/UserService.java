@@ -33,14 +33,50 @@ public class UserService {
     private final TagRepo tagRepo;
     private final NationRepo nationRepo;
 
+    /**
+     * 이메일 중복 검사
+     *
+     * 파라미터
+     *      email: 검사할 이메일
+     *
+     * 반환값
+     *      TODO: 성공 시 반환값 "Success"? true?
+     *      이메일 중복 X: "Success"? true?
+     *      TODO: 예외 처리
+     *      이메일 중복 O: "Duplicated Email" 예외 발생
+     */
     public boolean emailCheck(String email) {
         return userRepo.findByEmail(email).isEmpty();
     }
 
+    /**
+     * 닉네임 중복 검사
+     *
+     * 파라미터
+     *      nickname: 검사할 닉네임
+     *
+     * 반환값
+     *      TODO: 성공 시 반환값 "Success"? true?
+     *      닉네임 중복 X: "Success"? true?
+     *      TODO: 예외 처리
+     *      닉네임 중복 O: "Duplicated Nickname" 예외 발생
+     */
     public boolean nicknameCheck(String nickname) {
         return userRepo.findByNickname(nickname).isEmpty();
     }
 
+    /**
+     * 회원가입
+     *
+     * 파라미터
+     *      user: 회원가입할 사용자 객체
+     *
+     * 반환값
+     *      TODO: 성공 시 반환값 "Success"? true?
+     *      회원가입 성공: "Success"? true?
+     *      이메일 중복: "Duplicated Email" 예외 발생
+     *      닉네임 중복: "Duplicated Nickname" 예외 발생
+     */
     @Transactional
     public boolean signUp(User user) throws Exception {
         if(userRepo.findByEmail(user.getEmail()).isPresent())
@@ -57,6 +93,19 @@ public class UserService {
         return true;
     }
 
+    /**
+     * 로그인
+     *
+     * 파라미터
+     *      email: 로그인할 사용자 이메일
+     *      pwd: 로그인할 사용자 비밀번호
+     *
+     * 반환값
+     *      TODO: 성공 시 반환값 "Success"? true?
+     *      로그인 성공: "Success"? true?
+     *      사용자 조회 실패: "User Not Found" 예외 발생
+     *      비밀번호 불일치: "Password Not Correct" 예외 발생
+     */
     @Transactional
     public User login(String email, String pwd) throws Exception {
         Basic findUser = (Basic)(userRepo.findByEmail(email)).orElseThrow(() -> new Exception("User Not Found"));
@@ -67,14 +116,50 @@ public class UserService {
         return findUser;
     }
 
+    /**
+     * 사용자 정보 조회 - 아이디
+     *
+     * 파라미터
+     *      id: 조회할 사용자 아이디
+     *
+     * 반환값
+     *      조회 성공: 조회된 사용자 객체
+     *      조회 실패: "User Not Found" 예외 발생
+     */
     public User findById(Long id) throws Exception {
         return userRepo.findById(id).orElseThrow(() -> new Exception("User Not Found"));
     }
 
+    /**
+     * 사용자 정보 조회 - 닉네임
+     *
+     * 파라미터
+     *      nickname: 조회할 사용자 닉네임
+     *
+     * 반환값
+     *      조회 성공: 조회된 사용자 객체
+     *
+     *      TODO: 예외 처리
+     *      조회 실패: "User Not Found" 예외 발생???
+     */
     public User findByNickname(String nickname){
         return userRepo.findByNickname(nickname).orElse(null);
     }
 
+    /**
+     * 사용자 정보 수정
+     *
+     * 파라미터
+     *      id: 수정할 사용자 아이디
+     *      inputFile: 프로필 사진
+     *      createUpdateRequest: 업데이트할 사용자 정보가 담긴 객체
+     *
+     * 반환값
+     *      TODO: 성공 시 반환값 "Success"? true?
+     *      수정 성공: "Success"? true?
+     *      사용자 조회 실패: "User Not Found" 예외 발생
+     *      국가 조회 실패: "Nation Not Found" 예외 발생
+     */
     @Transactional
     public boolean update(Long id, MultipartFile inputFile, CreateUpdateRequest createUpdateRequest) throws Exception {
         User findUser = userRepo.findById(id).orElseThrow(() -> new Exception("User Not Found"));
@@ -99,6 +184,17 @@ public class UserService {
         return true;
     }
 
+    /**
+     * 회원탈퇴
+     *
+     * 파라미터
+     *      id: 탈퇴할 사용자 아이디
+     *
+     * 반환값
+     *      TODO: 성공 시 반환값 "Success"? true?
+     *      탈퇴 성공: "Success"? true?
+     *      사용자 조회 실패: "User Not Found" 예외 발생
+     */
     @Transactional
     public boolean delete(Long id) throws Exception {
         User findUser = userRepo.findById(id).orElseThrow(() -> new Exception("User Not Found"));
