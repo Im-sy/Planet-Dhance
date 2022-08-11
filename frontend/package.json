@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
+    "@fullpage/react-fullpage": "^0.1.27",
     "@google/model-viewer": "^1.12.0",
     "@material-ui/core": "^4.12.4",
     "@mui/icons-material": "^5.8.4",
@@ -29,6 +30,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-media-recorder": "^1.6.6",
+    "react-page-scroller": "^2.2.1",
     "react-player": "^2.10.1",
     "react-record-webcam": "^0.0.14",
     "react-router-dom": "^6.3.0",
@@ -36,6 +38,7 @@
     "react-slick": "^0.29.0",
     "react-tag-input": "^6.8.0",
     "slick-carousel": "^1.8.1",
+    "styled-components": "^5.3.5",
     "three": "^0.143.0",
     "typescript": "^4.7.4",
     "v6": "^0.0.0",
@@ -72,6 +75,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-tag-input": "^6.4.0",
+    "@types/styled-components": "^5.1.26",
     "@types/three": "^0.143.0",
     "file-loader": "^6.2.0",
     "react-router-dom": "^6.3.0"
