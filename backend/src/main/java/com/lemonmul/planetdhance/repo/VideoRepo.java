@@ -3,6 +3,7 @@ package com.lemonmul.planetdhance.repo;
 import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
+import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
 import org.springframework.data.domain.Pageable;
@@ -36,4 +37,10 @@ public interface VideoRepo extends JpaRepository<Video,Long> {
 
     //좋아요한 최신순 영상 리스트
     Slice<Video> findByLikesInOrderByRegDateDesc(List<Like> likeList,Pageable pageable);
+    //해당 유저의 최신 영상 리스트
+    Slice<Video> findByUserAndScopeOrderByRegDateDesc(User user, VideoScope scope, Pageable pageable);
+
+    //해당 유저의 최신 영상 리스트 (공개, 비공개)
+    Slice<Video> findByUserOrderByRegDateDesc(User user, Pageable pageable);
+
 }

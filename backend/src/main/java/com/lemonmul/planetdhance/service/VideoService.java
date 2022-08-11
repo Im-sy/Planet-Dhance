@@ -3,6 +3,7 @@ package com.lemonmul.planetdhance.service;
 import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
+import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.repo.VideoRepo;
@@ -83,4 +84,24 @@ public class VideoService {
         Pageable pageable=PageRequest.of(page,size);
         return videoRepo.findByLikesInOrderByRegDateDesc(likeList,pageable);
     }
+
+    /**
+     * 검색 조건: 유저 한 명, 공개 여부
+     * 정렬: 최신순
+     */
+    public Slice<Video> findNewestVideoListByUser(int page, int size, User user,VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByUserAndScopeOrderByRegDateDesc(user,scope,pageable);
+    }
+
+    /**
+     * 검색 조건: 유저 한 명
+     * 정렬: 최신순
+     * TODO 공개 여부 조건 거는 부분 개선해서 함수 하나로 합치기
+     */
+    public Slice<Video> findAllNewestVideoListByUser(int page, int size, User user){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByUserOrderByRegDateDesc(user,pageable);
+    }
+
 }

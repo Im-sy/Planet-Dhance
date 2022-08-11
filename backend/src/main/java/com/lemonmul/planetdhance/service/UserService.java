@@ -71,6 +71,10 @@ public class UserService {
         return userRepo.findById(id).orElseThrow(() -> new Exception("User Not Found"));
     }
 
+    public User findByNickname(String nickname){
+        return userRepo.findByNickname(nickname).orElse(null);
+    }
+
     @Transactional
     public boolean update(Long id, MultipartFile inputFile, CreateUpdateRequest createUpdateRequest) throws Exception {
         User findUser = userRepo.findById(id).orElseThrow(() -> new Exception("User Not Found"));
