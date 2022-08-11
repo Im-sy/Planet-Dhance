@@ -223,7 +223,7 @@ const endChallengeNext : CSSProperties = {
 const progressStyle: CSSProperties = {
   position: 'absolute',
   top: '10px',
-  width: '360px',
+  width: '100vw',
   height: '10px',
   backgroundColor: 'gray',
 };
@@ -257,14 +257,17 @@ export default function ModeChallengeTimer() {
     });
     console.log(file);
     
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append("inputFile", file, "ftfykfgh.webm");
     const jsonData = JSON.stringify({
-      content: 'my test!',
+      content: 'my test!'
     })
-    formData.append("sampleJson", jsonData);
+    const blob2 = new Blob([jsonData], {type : "application/json"});
 
     // formData.append("inputFile", mediaBlobUrl);
+    console.log('jsonData ----',jsonData)
+    formData.append("sampleJson", blob2);
+
     console.log(file);
 
     setRecordingVideo(formData)
@@ -321,7 +324,7 @@ export default function ModeChallengeTimer() {
   const goToThumnail = () => {
 
     axios
-    .post("https://i7d201.p.ssafy.io:8081/file/upload/file_json", recordingVideo)
+    .post("http://i7d201.p.ssafy.io:8081/file/upload/file_json", recordingVideo)
     .then((res) => {
       console.log(res);
     })
@@ -391,6 +394,7 @@ export default function ModeChallengeTimer() {
 
   
     const getTimeRemaining = (e:any) => {
+        console.log('getTimeRemaining and e : ', e)
         const total = Date.parse(e) - Date.parse(new Date().toString());
         const seconds = Math.floor((total / 1000) % 60);
         const minutes = Math.floor((total / 1000 / 60) % 60);
@@ -403,13 +407,14 @@ export default function ModeChallengeTimer() {
   
     const startTimer = (e:any) => {
       // 타이머 시작시, 페이지 설정 변경  
+      console.log('startTimer')
       
-
-
-        let { total, hours, minutes, seconds } 
-                    = getTimeRemaining(e);
+      
+      let { total, hours, minutes, seconds } 
+      = getTimeRemaining(e);
+      console.log('debug 1 : total & second is', total, seconds)
         if (seconds >= 0) {
-           console.log(seconds)
+           console.log('debug 2 : total & seconds is ', total, seconds)
             setTimer(
                 (hours > -1 ? ' ' : ' ') + 
                 (minutes > -1 ? ' ': ' ' )+ 
@@ -417,7 +422,7 @@ export default function ModeChallengeTimer() {
             )
             
         }else if(seconds===-1){ // seconds===-1 로 안하면, 계속 실행됨
-          console.log(total, seconds)
+          console.log('debug 3 : total & seconds is ',total, seconds)
           
           // 0초가 되면 타이머 사라짐
           setTimer(
@@ -434,9 +439,9 @@ export default function ModeChallengeTimer() {
 
               // 타이머 완료시, 실행
               setPlayState({ ...playState, played: 0}); // 티칭영상 새로시작1
+              console.log('debug1')
               handlePlay()
               player.current.seekTo(0); // 티칭영상 새로시작1
-              console.log('debug1')
               console.log(CAMERA_STATUS)
               console.log(recordWebcam.status)
               recordWebcam.start();  // 내 캠 녹화 시작
@@ -447,6 +452,7 @@ export default function ModeChallengeTimer() {
   
     const clearTimer = (e:any) => {
         // 처음 시간 설정해 주는 부분
+        console.log('clearTimer')
         setTimer('3');
         if (Ref.current) clearInterval(Ref.current);
         const id = setInterval(() => {
@@ -454,6 +460,7 @@ export default function ModeChallengeTimer() {
         }, 1000)
         Ref.current = id;
     }
+
   
     const getDeadTime = () => {
         let deadline = new Date();
@@ -461,12 +468,14 @@ export default function ModeChallengeTimer() {
         // This is where you need to adjust if 
         // you entend to add more time
         deadline.setSeconds(deadline.getSeconds() + 3);
+        console.log('getDeadTime')
         return deadline;
     }
   
     const onClickReset = () => {
         setNow('challenging');
         clearTimer(getDeadTime());
+        console.log('onClickReset')
     }
 
   //----------------------------------------------------------------------------
@@ -496,7 +505,7 @@ export default function ModeChallengeTimer() {
   };
 
   const handlePlay = () => {
-    console.log('onPlay');
+    console.log('handlePlay2');
     setPlayState({ ...playState, playing: true });
 
     // endChallenge에서는 실행되면 안됨
@@ -534,6 +543,7 @@ export default function ModeChallengeTimer() {
   };
 
   const challengeEnd =  () => {
+    clearInterval(Ref.current)
     console.log('안무티칭 영상이 끝났습니다. 웹캠의 현재상태 : ',recordWebcam.status)
     // recording이 아닐 때, 그냥 영상만 다 본 경우는 작동하지 않아야 함
     if (recordWebcam.status === CAMERA_STATUS.RECORDING)
@@ -570,6 +580,7 @@ export default function ModeChallengeTimer() {
   // 녹화한 영상 재생하기
   // 해야할 것 : 1. 영상 위치 바뀌어 있음 / 2. Reactplayer 다시 재생시키기 /  3.내 영상 재생 /4. 뒤로가기 버튼(setNow('mode'), previewRef->webcamRef)
   const playPrev = () => {
+    console.log('playPrev')
     let video : HTMLVideoElement = document.querySelector('#prevcam');
     
     // 2. Reactplayer 다시 재생시키기
