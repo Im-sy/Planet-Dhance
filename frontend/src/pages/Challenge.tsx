@@ -8,12 +8,27 @@ import ArrowBack from '@mui/icons-material/ArrowBack';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import axios from 'axios';
-import myVideo from '../videos/IMG_0960.mp4';
-// import myVideo from '../videos/test.mp4';
+
+import myVideo from '../videos/Patissiere_guide.mp4';
+import myVideo2 from '../videos/anysong_guide.mp4';
+import myVideo3 from '../videos/Forever1_guide.mp4';
+import myVideo4 from '../videos/hot_guide.mp4';
+import myVideo5 from '../videos/LoveDive_guide.mp4';
+import myVideo6 from '../videos/pop_guide.mp4';
+import myVideo7 from '../videos/PtoD_guide.mp4';
+import myVideo8 from '../videos/SorrySorry_guide2.mp4';
+import myVideo9 from '../videos/sparkling_guide.mp4';
+import myVideo10 from '../videos/Tomboy_guide.mp4';
+import myVideo11 from '../videos/TT_guide.mp4';
+
 import '../styles/App.css';
 import "../styles/styles.css";
 import Emoji from '../components/Emoji';
-
+import Thumnail from './Thumnail';
+import NavBar from '../components/NavBar'
+import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
 
 // webcam 부분 1----------------------------------
 import {
@@ -35,7 +50,7 @@ const OPTIONS: RecordWebcamOptions = {
   fileType: "mp4",
   width: 360,
   height: 800,
-  aspectRatio : 1,
+  aspectRatio : 2,
 };
 
 // 전체 페이지 상태 1 / 2
@@ -57,95 +72,107 @@ const notEndChallenge : CSSProperties = {
 const subcamStyle: CSSProperties = {
   position: 'absolute',
   zIndex : '1',
-  // top: '10vw',
+  top: '5.5vh',
   left : '65vw',
   width: '35vw',
-  height: '50vh',
-  transform : 'scaleX(-1)'
+  height: '30vh',
+  transform : 'scaleX(-1)',
+
   
 };
 
 
 const maincamStyle: CSSProperties = {
   position: 'absolute',
+  top : '15vh',
   width: '100vw',
-  height: '100vh',
+  height: '65vh',
   transform : 'scaleX(-1)',
-  // backgroundColor: 'black',
-  backgroundColor: 'green'
+  backgroundColor: 'rgba( 6, 3, 24, 1 )',
 };
 
 const subplayerStyle: CSSProperties = {
   position: 'absolute',
-  zIndex : '1',
+  // zIndex : '1',
+  top : '9vh',
   left : '65vw',
   width: '35vw',
-  height: '50vh',
+  height: '5vh',
+  backgroundColor: 'rgba( 6, 3, 24, 1 )',
 };
 
 
 const mainplayerStyle: CSSProperties = {
   position: 'absolute',
-  // left : '360px',
-  // backgroundColor: 'black',
-  backgroundColor: 'green'
+  backgroundColor: 'rgba( 6, 3, 24, 1 )',
+
 };
 
 
 //---------------------------------------------------------
 // 버튼들 css
+
+
+const backToModeStyle: CSSProperties = {
+  position: 'absolute',
+  top: '5vh',
+  left: '10px',
+  width : '8vw',
+  height : '8vw',
+  // backgroundColor: 'rgba( 255, 255, 255, 1 )',
+  // border : '0'
+};
+
+
+
+
+// mode 선택하는 부분-----------------------------------------------------
 const challengeStartStyle: CSSProperties = {
   position: 'absolute',
-  top: '600px',
-  left: '130px',
-  width: '90px',
-  height: '40px',
-  backgroundColor: 'rgba( 0, 0, 255, 0.2 )',
-  border : '0'
+  top: '85vh',
+  left: '35vw',
+  width: '30vw',
+  height: '5vh',
+  // backgroundColor: 'rgba( 255, 255, 255, 0.5 )',
+  border : '0',
+  color : 'red'
 };
 
 
 const backToSongPageStyle: CSSProperties = {
   position: 'absolute',
-  top: '100px',
+  top: '5vh',
   left: '10px',
-  // width: '90px',
-  // height: '40px',
-  // backgroundColor: 'rgba( 255, 255, 255, 1 )',
-  // border : '0'
-};
-
-const backToModeStyle: CSSProperties = {
-  position: 'absolute',
-  top: '100px',
-  left: '10px',
-  // width: '90px',
-  // height: '40px',
-  // backgroundColor: 'rgba( 255, 255, 255, 1 )',
-  // border : '0'
-};
-
-const playPauseStyle: CSSProperties = {
-  position: 'absolute',
-  top: '50vh',
-  left: '50vw',
-  fontSize : '3rem',
+  width : '8vw',
+  height : '8vw',
 };
 
 const muteStyle: CSSProperties = {
   position: 'absolute',
-  top: '60vh',
-  left: '50vw',
-  fontSize : '2rem',
+  top: '26vh',
+  left: '5vw',
+  width: '10vw',
+  height: '10vw',
+  border : '0',
+  color : 'white'
 };
 
+const playPauseStyle: CSSProperties = {
+  position: 'absolute',
+  top: '45vh',
+  left: '45vw',
+  width: '10vw',
+  height: '10vw',
+  color : 'white'
+
+};
 
 const timerStyle: CSSProperties = {
   position: 'absolute',
   top: '400px',
   left: '200px',
-  width: '90px',
-  height: '40px',
+  width: '10vw',
+  height: '10vw',
 };
 
 
@@ -157,9 +184,9 @@ const mode1Style: CSSProperties = {
   // height: '10px',
   top: '20vh',
   left: '5vw',
-  width: '20vw',
-  height: '10vh',
-  backgroundColor: 'rgba( 0, 0, 255, 0.5 )',
+  width: '10vw',
+  height: '10vw',
+  // backgroundColor: 'rgba( 0, 0, 255, 0.5 )',
   border : '0'
 };
 
@@ -189,10 +216,6 @@ const endChallengePlayHidden : CSSProperties = {
 
 const endChallengePrev : CSSProperties = {
   position: 'absolute',
-  // top: '10px',
-  // left: '10px',
-  // width: '20px',
-  // height: '10px',
   top: '70vh',
   left: '30vw',
   width: '20vw',
@@ -202,10 +225,6 @@ const endChallengePrev : CSSProperties = {
 }
 const endChallengeNext : CSSProperties = {
   position: 'absolute',
-  // top: '10px',
-  // left: '10px',
-  // width: '20px',
-  // height: '10px',
   top: '70vh',
   left: '50vw',
   width: '20vw',
@@ -222,10 +241,11 @@ const endChallengeNext : CSSProperties = {
 ---------------------------------------------------*/
 const progressStyle: CSSProperties = {
   position: 'absolute',
-  top: '10px',
+  // top: '10px',
   width: '100vw',
-  height: '10px',
+  height: '7px',
   backgroundColor: 'gray',
+  
 };
 
 const videoZone: CSSProperties = {
@@ -255,7 +275,7 @@ export default function ModeChallengeTimer() {
     const file = new File([blob], 'video.webm', {
       type : "video/webm"
     });
-    console.log(file);
+    // console.log(file);
     
     const formData = new FormData();
     formData.append("inputFile", file, "ftfykfgh.webm");
@@ -371,7 +391,7 @@ export default function ModeChallengeTimer() {
       let newData = [...reactPlayer]
       newData[0]='sub'
       newData[1]='35vw'
-      newData[2]='50vh'
+      newData[2]='30vh'
       reactPlayerChange(newData);
       reactPlayerBackgroundChange(subplayerStyle);
 
@@ -394,7 +414,7 @@ export default function ModeChallengeTimer() {
 
   
     const getTimeRemaining = (e:any) => {
-        console.log('getTimeRemaining and e : ', e)
+        // console.log('getTimeRemaining and e : ', e)
         const total = Date.parse(e) - Date.parse(new Date().toString());
         const seconds = Math.floor((total / 1000) % 60);
         const minutes = Math.floor((total / 1000 / 60) % 60);
@@ -407,14 +427,14 @@ export default function ModeChallengeTimer() {
   
     const startTimer = (e:any) => {
       // 타이머 시작시, 페이지 설정 변경  
-      console.log('startTimer')
+      // console.log('startTimer')
       
       
       let { total, hours, minutes, seconds } 
       = getTimeRemaining(e);
-      console.log('debug 1 : total & second is', total, seconds)
+      // console.log('debug 1 : total & second is', total, seconds)
         if (seconds >= 0) {
-           console.log('debug 2 : total & seconds is ', total, seconds)
+          //  console.log('debug 2 : total & seconds is ', total, seconds)
             setTimer(
                 (hours > -1 ? ' ' : ' ') + 
                 (minutes > -1 ? ' ': ' ' )+ 
@@ -422,7 +442,7 @@ export default function ModeChallengeTimer() {
             )
             
         }else if(seconds===-1){ // seconds===-1 로 안하면, 계속 실행됨
-          console.log('debug 3 : total & seconds is ',total, seconds)
+          // console.log('debug 3 : total & seconds is ',total, seconds)
           
           // 0초가 되면 타이머 사라짐
           setTimer(
@@ -435,11 +455,11 @@ export default function ModeChallengeTimer() {
               recordWebcam.status === CAMERA_STATUS.RECORDING ||
               recordWebcam.status === CAMERA_STATUS.PREVIEW))
             {
-              console.log('time to start recording');
+              // console.log('time to start recording');
 
               // 타이머 완료시, 실행
               setPlayState({ ...playState, played: 0}); // 티칭영상 새로시작1
-              console.log('debug1')
+              // console.log('debug1')
               handlePlay()
               player.current.seekTo(0); // 티칭영상 새로시작1
               console.log(CAMERA_STATUS)
@@ -540,6 +560,11 @@ export default function ModeChallengeTimer() {
     console.log('웹캠상태 :', recordWebcam.status);
     console.log('화면상태 :', now);
     setPlayState(inState as SetStateAction<playProps>);
+  
+    if (recordWebcam.status === CAMERA_STATUS.RECORDING){
+
+      snap()
+    }
   };
 
   const challengeEnd =  () => {
@@ -560,6 +585,7 @@ export default function ModeChallengeTimer() {
 
       // endChallenge page 관련
       setTimeout(()=>{
+        console.log('debug')
         setNow('endChallenge')
         mode2()   // 1. 영상 위치 바꾸기
         document.getElementById('prevcam').style.display = "block";
@@ -569,8 +595,8 @@ export default function ModeChallengeTimer() {
       // mode2()  
       // document.getElementById('prevcam').style.display = "block";
       // document.getElementById('webcam').style.display = "none";
-     }
-      console.log(now,'현재 상태')  
+    }
+    console.log(now,'현재 상태')  
   }
 
  
@@ -592,14 +618,103 @@ export default function ModeChallengeTimer() {
     video.play();  //  
   }
 
+  //----------------------------------------------------------------------------------------------썸네일 관련
+  let videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>();  // context = canvasRef.current.getContext('2d'); error 제거
+  const [dimensions, setDimensions] = useState<any>({});
+  const [thumbnail, setThumbnail] = useState([]);
+
+  let context : any;
+  if (canvasRef.current) {
+    context = canvasRef.current.getContext('2d');
+  }
+ 
+  function getVideoSizeData(videoRef: React.MutableRefObject<any> ) {
+    const ratio = videoRef.current.videoWidth / videoRef.current.videoHeight;
+    // const w = 500;
+    // const h = 800;
+    const w = videoRef.current.videoWidth;
+    const h = videoRef.current.videoHeight;
+    return {
+      ratio,
+      w,
+      h,
+    };
+  }
+
+  useEffect(() => {
+    
+    console.log('--------------------정상작동-----------')
+    const video = document.querySelector('video')  // 추가
+    videoRef.current = video                       //추가
+    // videoRef.current.onloadedmetadata=alert("Meta data for video loaded");
+    // Add listener when the video is actually available for
+    // the browser to be able to check the dimensions of the video.
+    if (videoRef.current) {
+      // console.log('if (videoRef.current) 통과')
+      videoRef.current.addEventListener('loadedmetadata', function () {
+        const { w, h } = getVideoSizeData(videoRef);
+        canvasRef.current.width = w;
+        canvasRef.current.height = h;
+        // console.log('w,h : ', w, h)
+        setDimensions({
+          w: w,
+          h: h,
+        });
+      });
+      
+      snap()
+    }
+
+  }, []);
+
+  // snap으로 canvas에 그린 것을 blob으로 가져오는 것
+  async function snap() {
+    // console.log('snap run');
+    // console.log('snap input time is : ',);
+    // console.log('context  : ', context);
+    // console.log('videoRef: ', videoRef);
+
+
+      await context.fillRect(0, 0, dimensions.w, dimensions.h);
+      await context.drawImage(
+        videoRef.current,
+        0,
+        0,
+        dimensions.w,
+        dimensions.h
+      );
+      // console.log('context2 : ', context);
+      const canvasHTML = document.querySelector('canvas');
+      const imgURL = canvasHTML.toDataURL('image/png');
+      // console.log([...thumbnail])
+      setThumbnail([...thumbnail, imgURL]);
+   
+  }
+// 썸네일 관련 끝----------------------------------------------------------------------------------------------------------
+
+
+
   return (
     <div >
+      {/* 썸네일 관련 */}
+      <div >
+        {/* <video id='thumnail_video'  ref={recordWebcam.webcamRef} muted autoplay /> */}
+        {/* 썸네일 그려줌 */}
+        <canvas id='canvas' hidden ref={canvasRef} />   
+        {/* <button onClick={snap}>Take screenshot</button> */}
+        {/* {thumbnail.map((imgBlobs, index) => {
+          return <img key={index} src={imgBlobs} />;
+        })} */}
+    </div>
+
+
       {/* 이모지 관련 */}
-      <div>
+      <div> {/* recordWebcam.record() 가 완료된 후 , played=0 되도록? */} 
         {recordWebcam.status === CAMERA_STATUS.RECORDING  && played>=0.3 ? <Emoji emoji='💘'/> : ''}
         {recordWebcam.status === CAMERA_STATUS.RECORDING && played>=0.6 ? <Emoji emoji='😍'/> : ''}
         {recordWebcam.status === CAMERA_STATUS.RECORDING && played>=0.9 ? <Emoji emoji='🎉'/> : ''}
-        {recordWebcam.status === CAMERA_STATUS.RECORDING && played >= 0.99 ? <Emoji emoji='💯'/> : ''}
+        {recordWebcam.status === CAMERA_STATUS.RECORDING && played >= 0.97 ? <Emoji emoji='💯'/> : ''}
         
       </div>
 
@@ -614,6 +729,7 @@ export default function ModeChallengeTimer() {
             autoPlay
             muted
           />
+
 
         {/* prevCam */}
         <video id='prevcam'
@@ -636,7 +752,8 @@ export default function ModeChallengeTimer() {
           width={reactPlayer[1]}
           height={reactPlayer[2]}
           style={reactPlayerBackground}
-          url={myVideo}
+          // 2, 8 바꾸기
+          url={myVideo10} 
           playing={playing}
           muted={muted}
           onPlay={handlePlay}
@@ -654,32 +771,52 @@ export default function ModeChallengeTimer() {
         />
 
   
-        {/*  mode 1 버튼*/}
-        <button  onClick={mode1} 
+        {/*  mode 1 & 2 토글 버튼*/}
+        {reactPlayer[0]==='main' ?
+        <ChangeCircleOutlinedIcon  onClick={mode2} 
+          style={ now ==='mode' ? mode1Style : notMode}
+          > </ChangeCircleOutlinedIcon>
+          : <ChangeCircleOutlinedIcon  onClick={mode1} 
+          style={ now==='mode' ? mode1Style : notMode}
+          >  </ChangeCircleOutlinedIcon>  }
+        {/* {reactPlayer[0]==='main' ?
+        <button  onClick={mode2} 
+          style={ now ==='mode' ? mode1Style : notMode}
+          > mode2</button>
+          : <button  onClick={mode1} 
+          style={ now==='mode' ? mode1Style : notMode}
+          > mode1 </button>  } */}
+
+
+
+
+         {/* mode 1 버튼 */}
+        {/* <button  onClick={mode1} 
               style={ now==='mode' ? mode1Style : notMode}
               disabled={reactPlayer[0]==='main'}
               >
         mode1
-        </button>
+        </button> */}
         {/*  mode 2 버튼 */}
-        <button  onClick={mode2} 
+        {/* <button  onClick={mode2} 
               style={ now ==='mode' ? mode2Style : notMode}
               disabled={reactPlayer[0]==='sub'}
               >
         mode2
-        </button>
+        </button> */}
 
 
         {/* 타이머 영상녹화시작 */}
-        <button  onClick={onClickReset} 
+        <RadioButtonCheckedOutlinedIcon  onClick={onClickReset} 
                   style={ now==='mode' ? challengeStartStyle : notMode}
-                  disabled={
-                    recordWebcam.status === CAMERA_STATUS.CLOSED ||
-                    recordWebcam.status === CAMERA_STATUS.RECORDING ||
-                    recordWebcam.status === CAMERA_STATUS.PREVIEW
-                  }>
-            챌린지 시작
-        </button>
+                  // disabled={
+                  //   recordWebcam.status === CAMERA_STATUS.CLOSED ||
+                  //   recordWebcam.status === CAMERA_STATUS.RECORDING ||
+                  //   recordWebcam.status === CAMERA_STATUS.PREVIEW
+                  // }
+                  >
+        
+        </RadioButtonCheckedOutlinedIcon>
         
         {/*  endChallenge  */}
       
@@ -733,13 +870,12 @@ export default function ModeChallengeTimer() {
         <IconButton
           onClick={handlePlayPause}
           aria-label={playing ? 'pause' : 'play'}
-          style = { now==='mode' ?  playPauseStyle : notMode  }
         >
-          {playing ? <PauseIcon /> : <PlayArrowIcon />}
+          {playing ? <PauseIcon style = { now==='mode' ?  playPauseStyle : notMode  }/> : <PlayArrowIcon style = { now==='mode' ?  playPauseStyle : notMode  }/>}
         </IconButton>
       </div>
 
-      <div>
+      {/* <div>
         <label htmlFor="muted">Muted</label>
         <input
           id="muted"
@@ -755,9 +891,9 @@ export default function ModeChallengeTimer() {
         >
           {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
         </IconButton>
-      </div>
+      </div> */}
 
-      <div>
+      {/* <div>
         <input
           type="range"
           min={0}
@@ -770,6 +906,11 @@ export default function ModeChallengeTimer() {
       </div>
       <div>
         <progress max={1} value={played} />
+      </div>
+       */}
+      {/* 챌린지용 navbar */}
+      <div>
+        {/* <NavBar/> */}
       </div>
     </div>
   );
