@@ -1,20 +1,33 @@
 package com.lemonmul.planetdhance.service;
 
+import com.lemonmul.planetdhance.dto.ChallengeRequest;
+import com.lemonmul.planetdhance.dto.TagRequestDto;
 import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
+import com.lemonmul.planetdhance.entity.tag.Tag;
+import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
+import com.lemonmul.planetdhance.repo.MusicRepo;
+import com.lemonmul.planetdhance.repo.TagRepo;
+import com.lemonmul.planetdhance.repo.UserRepo;
 import com.lemonmul.planetdhance.repo.VideoRepo;
+import com.lemonmul.planetdhance.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +35,9 @@ import java.util.List;
 public class VideoService {
 
     private final VideoRepo videoRepo;
+    private final UserRepo userRepo;
+    private final MusicRepo musicRepo;
+    private final TagRepo tagRepo;
 
     /**
      * 검색 조건: 곡 1건, 공개 여부
@@ -104,4 +120,54 @@ public class VideoService {
         return videoRepo.findByUserOrderByRegDateDesc(user,pageable);
     }
 
+    /**
+     *
+     */
+    @Transactional
+    public boolean uploadChallengeVideo(MultipartFile videoFile, MultipartFile imgFile,
+                                        ChallengeRequest challengeRequest) throws IOException {
+        if(videoFile.isEmpty() || imgFile.isEmpty()){
+            //TODO 예외처리
+            return false;
+        }
+
+        String videoUrl = FileUtil.createFile(videoFile, "video" + File.separator + "article");
+        String imgUrl=FileUtil.createFile(imgFile,"video"+File.separator+"img");
+        VideoScope scope=challengeRequest.getScope();
+        Optional<User> optionalUser=userRepo.findById(challengeRequest.getUserId());
+        Optional<Music> optionalMusic = musicRepo.findById(challengeRequest.getMusicId());
+        if(optionalUser.isEmpty() || optionalMusic.isEmpty()){
+            //TODO 예외처리
+            return false;
+        }
+        User user=optionalUser.get();
+        Music music=optionalMusic.get();
+
+        List<Tag> tagList = new ArrayList<>();
+        //고정 태그들 추가
+        tagList.add(tagRepo.findByNameAndType(user.getNickname(), TagType.NICKNAME));
+        tagList.add(tagRepo.findByNameAndType(user.getNation().getName(), TagType.NATION));
+        tagList.add(tagRepo.findByNameAndType(music.getTitle(), TagType.TITLE));
+        tagList.add(tagRepo.findByNameAndType(music.getArtist(), TagType.ARTIST));
+        //커스텀 태그들 추가
+        for (TagRequestDto tagRequestDto : challengeRequest.getTagList()) {
+            Tag tag=null;
+            //이미 등록된 커스텀 태그인지 확인
+            if(tagRepo.findCustomByNameAndType(tagRequestDto.getType(),TagType.CUSTOM).isEmpty()){
+                tag=Tag.createCustomTag(tagRequestDto);
+                tagRepo.save(tag);
+            }
+            tagList.add(tag);
+        }
+
+        Video video = Video.createVideo(videoUrl, imgUrl, scope, user, music);
+        //video_tag 테이블에 태그들 추가
+        for (Tag tag : tagList) {
+            VideoTag.createVideoTag(video,tag);
+        }
+
+        videoRepo.save(video);
+
+        return true;
+    }
 }

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -193,7 +194,17 @@ public class TagApi {
             id=tag.getId();
             type =tag.getName();
             className =tag.getType();
-            imgUrl=tag.getImgUrl();
+            if(tag.getImgUrl()==null){
+                if(tag.getType().equals(TagType.CUSTOM)) {
+                    //TODO 커스텀 태그 이미지 경로 넣기
+                    imgUrl = "default custom tag img";
+                }else if(tag.getType().equals(TagType.NICKNAME)){
+                    //TODO 가수 태그 이미지 경로 넣기
+                    imgUrl="default user tag img";
+                }
+            }else {
+                imgUrl = tag.getImgUrl();
+            }
         }
     }
 
@@ -217,7 +228,10 @@ public class TagApi {
 
         public UserSearchResponse(User user, List<Clear> clearList, Slice<Video> videoList) {
             this.user=new UserDto(user);
-            this.clearList=clearList.stream().map(ClearDto::new).collect(Collectors.toList());
+            //최신 클리어 정보 5개
+            this.clearList=clearList.stream()
+                    .sorted(Comparator.comparing(Clear::getId).reversed()).limit(5)
+                    .map(ClearDto::new).collect(Collectors.toList());
             this.clearCnt=clearList.size();
             this.videoList=videoList.map(VideoDto::new);
         }

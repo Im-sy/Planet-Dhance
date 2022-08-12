@@ -40,17 +40,17 @@ class VideoTest {
 
         List<Video> videos=new ArrayList<>();
         for(int i=0;i<10;i++){
-            Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user1, music1);
+            Video video = Video.createVideo("video url" + i,"thumbnail url" + i, VideoScope.PUBLIC,  user1, music1);
             videos.add(video);
             em.persist(video);
         }
         for(int i=10;i<20;i++){
-            Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user1, music2);
+            Video video = Video.createVideo("video url" + i,"thumbnail url" + i, VideoScope.PUBLIC,  user1, music2);
             videos.add(video);
             em.persist(video);
         }
         for(int i=20;i<30;i++){
-            Video video = Video.createVideo("video url" + i, VideoScope.PUBLIC, "thumbnail url" + i, user2, music2);
+            Video video = Video.createVideo("video url" + i,  "thumbnail url" + i,VideoScope.PUBLIC, user2, music2);
             videos.add(video);
             em.persist(video);
         }
