@@ -67,7 +67,7 @@ public class UserApi {
 
         try {
             boolean result = userService.signUp(toUserForSignUp(createSignUpRequest));
-            return new ResponseEntity<>("Success", HttpStatus.OK);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -87,8 +87,13 @@ public class UserApi {
      *      }
      */
     @PostMapping("/check/email")
-    public boolean emailCheck(@RequestBody Map<String, String> param) {
-        return userService.emailCheck(param.get("email"));
+    public ResponseEntity<?> emailCheck(@RequestBody Map<String, String> param) {
+        try {
+            return new ResponseEntity<>(userService.emailCheck(param.get("email")), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -104,8 +109,13 @@ public class UserApi {
      *      }
      */
     @PostMapping("/check/nickname")
-    public boolean nicknameCheck(@RequestBody Map<String, String> param) {
-        return userService.nicknameCheck(param.get("nickname"));
+    public ResponseEntity<?> nicknameCheck(@RequestBody Map<String, String> param) {
+        try {
+            return new ResponseEntity<>(userService.nicknameCheck(param.get("nickname")), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -126,21 +136,18 @@ public class UserApi {
         try {
             User findUser = userService.login(createLoginRequest.email, createLoginRequest.pwd);
 
-            if(findUser != null){
-                CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
-                JwtToken jwtToken = customUserDetails.toJwtToken();
-                String tokenString = jwtTokenProvider.createToken(jwtToken.getUserId(), jwtToken);
-                Validate validate = new Validate(jwtToken.getUserId(), tokenString);
+            CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
+            JwtToken jwtToken = customUserDetails.toJwtToken();
+            String tokenString = jwtTokenProvider.createToken(jwtToken.getUserId(), jwtToken);
+            Validate validate = new Validate(findUser, tokenString);
 
-                if(validateService.login(validate))
-                    return new ResponseEntity<>(new JwtTokenJson("Success", tokenString), HttpStatus.OK);
-            }
+            validateService.login(validate);
+
+            return new ResponseEntity<>(new JwtTokenJson("Success", tokenString), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return null;
     }
 
     /**
@@ -154,8 +161,13 @@ public class UserApi {
      *      없음
      */
     @DeleteMapping("/logout/{userId}")
-    public boolean logout(@PathVariable Long userId) {
-        return validateService.logout(userId);
+    public ResponseEntity<?> logout(@PathVariable Long userId) {
+        try {
+            return new ResponseEntity<>(validateService.logout(userId), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -189,7 +201,7 @@ public class UserApi {
      *          value: {
      *                      "email": "1217jdk@gmail.com",
      *                      "introduce": "asdf",
-     *                      "nationName": "usa"
+     *                      "nationName": "ko"
      *                  }
      */
     @PutMapping("/update/{id}")

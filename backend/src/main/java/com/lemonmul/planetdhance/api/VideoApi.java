@@ -1,18 +1,12 @@
 package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.dto.VideoDto;
-import com.lemonmul.planetdhance.entity.Like;
-import com.lemonmul.planetdhance.entity.Music;
-import com.lemonmul.planetdhance.entity.Nation;
-import com.lemonmul.planetdhance.entity.VideoTag;
+import com.lemonmul.planetdhance.entity.*;
 import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
-import com.lemonmul.planetdhance.service.LikeService;
-import com.lemonmul.planetdhance.service.MusicService;
-import com.lemonmul.planetdhance.service.UserService;
-import com.lemonmul.planetdhance.service.VideoService;
+import com.lemonmul.planetdhance.service.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +29,7 @@ public class VideoApi {
     private final MusicService musicService;
     private final UserService userService;
     private final LikeService likeService;
+    private final RankingService rankingService;
 
     private static final int listSize =18;
 
@@ -73,7 +68,7 @@ public class VideoApi {
     @GetMapping("/main")
     public MainPageResponse mainListAndRankingAndArtistList(){
         int size=12;
-        Map<Nation, Integer> ranking = userService.ranking();
+        Slice<Ranking> ranking = rankingService.getRanking();
         Slice<Video> videoList = videoService.findMainPageVideoList(0, size, VideoScope.PUBLIC);
         return new MainPageResponse(ranking,videoList);
     }
@@ -148,38 +143,29 @@ public class VideoApi {
 
     @Data
     static class MainPageResponse{
-        private List<RankingDto> rankingList=new ArrayList<>();
+        private List<RankingDto> rankingList;
         private Slice<VideoDto> videoList;
 
-        public MainPageResponse(Map<Nation, Integer> ranking,Slice<Video> videos) {
-            for (Map.Entry<Nation, Integer> entry : ranking.entrySet()) {
-                rankingList.add(new RankingDto(entry));
-            }
-            Collections.sort(rankingList);
+        public MainPageResponse(Slice<Ranking> ranking,Slice<Video> videos) {
+            rankingList = ranking.map(RankingDto::new).stream().collect(Collectors.toList());
             videoList=videos.map(VideoDto::new);
         }
     }
 
     @Data
-    static class RankingDto implements Comparable<RankingDto>{
+    static class RankingDto {
         private String nationName;
         private String nationFlag;
         private double x,y,z;
-        private int point;
+        private int clearCnt;
 
-        public RankingDto(Map.Entry<Nation,Integer> entry) {
-            Nation nation=entry.getKey();
-            nationName=nation.getName();
-            nationFlag=nation.getFlag();
-            x=nation.getX();
-            y=nation.getY();
-            z= nation.getZ();
-            point=entry.getValue();
-        }
-
-        @Override
-        public int compareTo(RankingDto o) {
-            return o.point-this.point;
+        public RankingDto(Ranking ranking) {
+            this.nationName = ranking.getNation().getName();
+            this.nationFlag = ranking.getNation().getFlag();
+            this.x = ranking.getNation().getX();
+            this.y = ranking.getNation().getY();
+            this.z = ranking.getNation().getZ();
+            this.clearCnt = ranking.getClearCnt();
         }
     }
 

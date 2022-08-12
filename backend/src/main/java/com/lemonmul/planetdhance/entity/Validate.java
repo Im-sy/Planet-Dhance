@@ -1,12 +1,12 @@
 package com.lemonmul.planetdhance.entity;
 
+import com.lemonmul.planetdhance.entity.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -17,13 +17,16 @@ public class Validate {
     @Id @GeneratedValue
     private Long id;
 
-    private Long userId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
 
     @Column(length = 500)
     private String token;
 
-    public Validate(Long userId, String token){
-        this.userId = userId;
+    public Validate(User user, String token){
+        this.user = user;
         this.token = token;
     }
 }

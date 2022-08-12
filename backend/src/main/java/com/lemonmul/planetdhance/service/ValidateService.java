@@ -14,6 +14,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.ServletRequest;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,34 +32,30 @@ public class ValidateService {
      *      validate: 토큰 테이블에 저장할 사용자 정보 객체
      *
      * 반환값
-     *      TODO: 성공 시 반환값 "Success"? true?
-     *      팔로우 성공: "Success"? true?
+     *      팔로우 성공: true
      *      중복 로그인: "Duplicated Login" 예외 발생
      */
-    // TODO: 함수명 변경 고민해보기, 테이블 한글명 변경 고민해보기
     @Transactional
-    public boolean login(Validate validate) throws Exception {
-        Validate findValidate = validateRepo.findByUserId(validate.getUserId()).orElse(null);
+    public void login(Validate validate) throws Exception {
+        Validate findValidate = validateRepo.findByUserId(validate.getUser().getId()).orElse(null);
 
         ServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 
         if(findValidate == null){
             validateRepo.save(validate);
-            return true;
         }else{
             if(!jwtTokenProvider.validateToken(findValidate.getToken(), request)){
-                User findUser = userRepo.findById(validate.getUserId()).orElse(null);
+                User findUser = userRepo.findById(validate.getUser().getId()).orElse(null);
 
-                validateRepo.deleteByUserId(validate.getUserId());
+                validateRepo.deleteByUserId(validate.getUser().getId());
 
                 if(findUser != null){
                     CustomUserDetails customUserDetails = new CustomUserDetails(findUser);
                     JwtToken jwtToken = customUserDetails.toJwtToken();
                     String tokenString = jwtTokenProvider.createToken(jwtToken.getUserId(), jwtToken);
-                    Validate newValidate = new Validate(jwtToken.getUserId(), tokenString);
+                    Validate newValidate = new Validate(findUser, tokenString);
                     validateRepo.save(newValidate);
                 }
-                return true;
             }
             throw new Exception("Duplicated Login");
         }
@@ -71,18 +68,15 @@ public class ValidateService {
      *      userId: 토큰 테이블에서 삭제할 사용자 아이디
      *
      * 반환값
-     *      TODO: 성공 시 반환값 "Success"? true?
-     *      팔로우 성공: "Success"? true?
-     *      TODO: 예외 처리, 예외 메세지 고민해보기
+     *      팔로우 성공: true
      *      토큰 조회 실패: "Already Logout" 예외 발생
      */
-    // TODO: 함수명 변경 고민해보기, 테이블 한글명 변경 고민해보기
     @Transactional
-    public boolean logout(Long userId){
-        if(validateRepo.findByUserId(userId).isPresent()){
-            validateRepo.deleteByUserId(userId);
-            return true;
-        }
-        return false;
+    public boolean logout(Long userId) throws Exception {
+        validateRepo.findByUserId(userId).orElseThrow(() -> new Exception("Already Logout"));
+
+        validateRepo.deleteByUserId(userId);
+
+        return true;
     }
 }
