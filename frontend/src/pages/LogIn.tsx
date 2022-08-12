@@ -15,6 +15,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import '../styles/styles.css';
+
 
 const CssTextField = styled(TextField)({
   '& .MuiInputBase-input': {

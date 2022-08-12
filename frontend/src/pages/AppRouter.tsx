@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from './Main';
 
@@ -17,10 +17,17 @@ import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
 import HashTagTextArea from '../components/HashTagTextArea';
 
+
+
+
+
+
+
 function AppRouter() {
   return (
+ 
     <BrowserRouter>
-      <Routes>
+      <Routes >
         <Route path='/' element={<Main />} />
         <Route path='/songpage' element={<SongPage />} />
         <Route path='/subscribe' element={<Subscribe />} />
@@ -35,11 +42,11 @@ function AppRouter() {
         <Route path='/dancecompare' element={<DanceCompare />} />
         <Route path='/emoji' element={<App2 />} />
         <Route element={<NotFound404 />} />
-
         {/* test */}
         <Route path='/test' element={<HashTagTextArea />} />
       </Routes>
     </BrowserRouter>
+
   );
 }
 

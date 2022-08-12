@@ -87,3 +87,13 @@ video {
   height: '10px',
   backgroundColor: 'gray',
 }; */
+
+.padding-style {
+  margin: 0;
+  padding : 5vh 1vh 0 1vh; 
+}
+
+.nopadding-style {
+  margin: 0;
+  padding : 0.1vh 0 0 0; 
+}

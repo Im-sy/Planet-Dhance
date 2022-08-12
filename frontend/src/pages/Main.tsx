@@ -14,6 +14,15 @@ import NavBar from '../components/NavBar';
 import TopBar from '../components/TopBar';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
+import '../styles/styles.css';
+
+// 전체 페이지의 패딩 유무 스타일
+// const paddingStyle : CSSProperties = {
+//   margin: '0',
+//   // padding : '0.1vh 0 0 0',
+//   padding : '5vh 1vh 0 1vh',
+  
+// };
 
 export default function Main() {
   return (
