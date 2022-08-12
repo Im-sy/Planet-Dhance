@@ -108,6 +108,12 @@ public class VideoApi {
         return result;
     }
 
+    /**
+     * 챌린지 영상 업로드
+     *
+     * 요청 파라미터 예시: /video/upload
+     * form-data로 영상, 썸네일, 공개 여부, 로그인 유저 아이디, 곡 아이디, 클리어 여부, 커스텀 태그 리스트 받기
+     */
     @PostMapping(value = "/upload",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE,
                     MediaType.APPLICATION_JSON_VALUE})
@@ -143,7 +149,9 @@ public class VideoApi {
     @Data
     static class TagDto{
         private Long id;
+        /** 태그명 */
         private String type;
+        /** 태그타입 */
         private TagType className;
 
         public TagDto(VideoTag videoTag) {

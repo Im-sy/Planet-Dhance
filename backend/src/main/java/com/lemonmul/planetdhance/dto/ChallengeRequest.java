@@ -14,5 +14,6 @@ public class ChallengeRequest{
     private VideoScope scope;
     private Long userId;
     private Long musicId;
+    private boolean clear;
     private List<TagRequestDto> tagList;
 }

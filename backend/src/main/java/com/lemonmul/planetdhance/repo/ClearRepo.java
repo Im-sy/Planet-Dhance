@@ -1,10 +1,12 @@
 package com.lemonmul.planetdhance.repo;
 
 import com.lemonmul.planetdhance.entity.Clear;
+import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ClearRepo extends JpaRepository<Clear, Long> {
     /*
@@ -12,4 +14,5 @@ public interface ClearRepo extends JpaRepository<Clear, Long> {
      * */
     List<Clear> findClearsByUserOrderByIdDesc(User user);
 
+    Optional<Clear> findByMusicAndUser(Music music,User user);
 }

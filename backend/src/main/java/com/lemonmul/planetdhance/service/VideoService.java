@@ -2,6 +2,7 @@ package com.lemonmul.planetdhance.service;
 
 import com.lemonmul.planetdhance.dto.ChallengeRequest;
 import com.lemonmul.planetdhance.dto.TagRequestDto;
+import com.lemonmul.planetdhance.entity.Clear;
 import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
@@ -10,10 +11,7 @@ import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
-import com.lemonmul.planetdhance.repo.MusicRepo;
-import com.lemonmul.planetdhance.repo.TagRepo;
-import com.lemonmul.planetdhance.repo.UserRepo;
-import com.lemonmul.planetdhance.repo.VideoRepo;
+import com.lemonmul.planetdhance.repo.*;
 import com.lemonmul.planetdhance.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +36,7 @@ public class VideoService {
     private final UserRepo userRepo;
     private final MusicRepo musicRepo;
     private final TagRepo tagRepo;
+    private final ClearRepo clearRepo;
 
     /**
      * 검색 조건: 곡 1건, 공개 여부
@@ -121,7 +120,16 @@ public class VideoService {
     }
 
     /**
+     * 챌린지 영상 업로드
      *
+     * 영상, 썸네일 없을 시 예외처리
+     * 해당 유저, 곡 없을 시 예외처리
+     *
+     * 영상, 썸네일 파일 서버에 저장하고, 경로 받아두기
+     * 새 커스텀 태그들(request에서 받기) tag 테이블에 추가
+     * 고정 태그들(tag 테이블에서 불러오기), 커스텀 태그들(request에서 받기) video_tag 테이블에 추가
+     * 처음 클리어한 경우 clear 테이블에 추가
+     * 영상을 video 테이블에 추가
      */
     @Transactional
     public boolean uploadChallengeVideo(MultipartFile videoFile, MultipartFile imgFile,
@@ -131,9 +139,12 @@ public class VideoService {
             return false;
         }
 
+        //영상 경로, 썸네일 경로
         String videoUrl = FileUtil.createFile(videoFile, "video" + File.separator + "article");
         String imgUrl=FileUtil.createFile(imgFile,"video"+File.separator+"img");
+
         VideoScope scope=challengeRequest.getScope();
+
         Optional<User> optionalUser=userRepo.findById(challengeRequest.getUserId());
         Optional<Music> optionalMusic = musicRepo.findById(challengeRequest.getMusicId());
         if(optionalUser.isEmpty() || optionalMusic.isEmpty()){
@@ -151,11 +162,16 @@ public class VideoService {
         tagList.add(tagRepo.findByNameAndType(music.getArtist(), TagType.ARTIST));
         //커스텀 태그들 추가
         for (TagRequestDto tagRequestDto : challengeRequest.getTagList()) {
-            Tag tag=null;
+            String tagName=tagRequestDto.getType();
+            Optional<Tag> optionalTag=tagRepo.findCustomByNameAndType(tagName,TagType.CUSTOM);
+            Tag tag;
             //이미 등록된 커스텀 태그인지 확인
-            if(tagRepo.findCustomByNameAndType(tagRequestDto.getType(),TagType.CUSTOM).isEmpty()){
+            if(optionalTag.isEmpty()){
+                //등록 안된 태그는 tag 테이블에 추가
                 tag=Tag.createCustomTag(tagRequestDto);
                 tagRepo.save(tag);
+            }else{
+                tag=tagRepo.findByNameAndType(tagName,TagType.CUSTOM);
             }
             tagList.add(tag);
         }
@@ -164,6 +180,14 @@ public class VideoService {
         //video_tag 테이블에 태그들 추가
         for (Tag tag : tagList) {
             VideoTag.createVideoTag(video,tag);
+        }
+
+        //클리어 여부 확인
+        if(challengeRequest.isClear()){
+            Optional<Clear> clear = clearRepo.findByMusicAndUser(music, user);
+            //clear 테이블에 없는 경우 추가
+            if(clear.isEmpty())
+                clearRepo.save(Clear.createClear(music,user));
         }
 
         videoRepo.save(video);
