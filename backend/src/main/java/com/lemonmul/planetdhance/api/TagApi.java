@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -217,7 +218,10 @@ public class TagApi {
 
         public UserSearchResponse(User user, List<Clear> clearList, Slice<Video> videoList) {
             this.user=new UserDto(user);
-            this.clearList=clearList.stream().map(ClearDto::new).collect(Collectors.toList());
+            //최신 클리어 정보 5개
+            this.clearList=clearList.stream()
+                    .sorted(Comparator.comparing(Clear::getId).reversed()).limit(5)
+                    .map(ClearDto::new).collect(Collectors.toList());
             this.clearCnt=clearList.size();
             this.videoList=videoList.map(VideoDto::new);
         }
