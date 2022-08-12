@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -68,10 +67,10 @@ public class MusicApi {
         try {
             Music music=musicService.getMusicInfo(music_id).get();
             int page=0;
-            Slice<Video> newestVideoList = videoService.findNewestVideoList(page,size, music,VideoScope.PUBLIC);
+            Slice<Video> latestVideoList = videoService.findLatestVideoList(page,size, music,VideoScope.PUBLIC);
             Slice<Video> hitLikeVideoList = videoService.findHitLikeVideoList(page, size, music, VideoScope.PUBLIC);
 
-            return new ResponseEntity<>(new MusicPageResponse(music,newestVideoList,hitLikeVideoList), HttpStatus.OK);
+            return new ResponseEntity<>(new MusicPageResponse(music,latestVideoList,hitLikeVideoList), HttpStatus.OK);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -95,12 +94,12 @@ public class MusicApi {
     @Data
     static class MusicPageResponse{
         String mvUrl;
-        Slice<VideoDto> newestList;
+        Slice<VideoDto> latestList;
         Slice<VideoDto> hitlikeList;
 
-        public MusicPageResponse(Music music,Slice<Video> newest,Slice<Video> hitlike) {
+        public MusicPageResponse(Music music,Slice<Video> latest,Slice<Video> hitlike) {
             mvUrl=music.getMvUrl();
-            newestList=newest.map(VideoDto::new);
+            latestList =latest.map(VideoDto::new);
             hitlikeList=hitlike.map(VideoDto::new);
         }
     }

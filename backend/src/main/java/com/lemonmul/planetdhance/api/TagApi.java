@@ -1,6 +1,7 @@
 package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.dto.ClearDto;
+import com.lemonmul.planetdhance.dto.GridResponse;
 import com.lemonmul.planetdhance.dto.UserDto;
 import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Clear;
@@ -69,7 +70,7 @@ public class TagApi {
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findArtistVideoList(tag.getName());
         Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
-        return new MusicSearchResponse(musicList,videoList);
+        return new MusicSearchResponse(musicList,"artist",videoList);
     }
 
     /**
@@ -79,11 +80,11 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/artist/{page}")
-    public Slice<VideoDto> artistVideos(@PathVariable Long tag_id,@PathVariable int page){
+    public GridResponse artistVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findArtistVideoList(tag.getName());
         Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
-        return videoList.map(VideoDto::new);
+        return new GridResponse("artist",videoList);
     }
 
     /**
@@ -99,7 +100,7 @@ public class TagApi {
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findTitleVideoList(tag.getName());
         Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
-        return new MusicSearchResponse(musicList,videoList);
+        return new MusicSearchResponse(musicList,"music",videoList);
     }
 
     /**
@@ -109,11 +110,11 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/music/{page}")
-    public Slice<VideoDto> musicVideos(@PathVariable Long tag_id,@PathVariable int page){
+    public GridResponse musicVideos(@PathVariable Long tag_id, @PathVariable int page){
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findTitleVideoList(tag.getName());
         Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
-        return videoList.map(VideoDto::new);
+        return new GridResponse("music",videoList);
     }
 
     /**
@@ -124,10 +125,10 @@ public class TagApi {
      * (custom 태그 말고 일반 태그도 가능)
      */
     @GetMapping("/{tag_id}/custom/{page}")
-    public Slice<VideoDto> customVideos(@PathVariable Long tag_id,@PathVariable int page){
+    public GridResponse customVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
         Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
-        return videoList.map(VideoDto::new);
+        return new GridResponse("custom",videoList);
     }
 
     /**
@@ -137,10 +138,10 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/nation/{page}")
-    public Slice<VideoDto> nationVideos(@PathVariable Long tag_id,@PathVariable int page){
+    public GridResponse nationVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
         Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
-        return videoList.map(VideoDto::new);
+        return new GridResponse("nation",videoList);
     }
 
     /**
@@ -171,7 +172,7 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/user/{user_id}/{page}")
-    public Slice<VideoDto> userVideos(@PathVariable Long tag_id,@PathVariable Long user_id,@PathVariable int page){
+    public GridResponse userVideos(@PathVariable Long tag_id,@PathVariable Long user_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
         User user = userService.findByNickname(tag.getName());
         Slice<Video> videoList;
@@ -180,7 +181,7 @@ public class TagApi {
         }else {
             videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
         }
-        return videoList.map(VideoDto::new);
+        return new GridResponse("user",videoList);
     }
 
     @Data
@@ -211,10 +212,12 @@ public class TagApi {
     @Data
     static class MusicSearchResponse {
         private List<MusicDto> musicList;
+        private String prevPage;
         private Slice<VideoDto> videoList;
 
-        public MusicSearchResponse(List<Music> musicList, Slice<Video> videoList) {
+        public MusicSearchResponse(List<Music> musicList, String prevPage,Slice<Video> videoList) {
             this.musicList = musicList.stream().map(MusicDto::new).collect(Collectors.toList());
+            this.prevPage=prevPage;
             this.videoList = videoList.map(VideoDto::new);
         }
     }
@@ -224,6 +227,7 @@ public class TagApi {
         private UserDto user;
         private List<ClearDto> clearList;
         private int clearCnt;
+        private String prevPage="user";
         private Slice<VideoDto> videoList;
 
         public UserSearchResponse(User user, List<Clear> clearList, Slice<Video> videoList) {

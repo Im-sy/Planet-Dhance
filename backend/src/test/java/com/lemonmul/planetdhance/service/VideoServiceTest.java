@@ -58,10 +58,10 @@ class VideoServiceTest {
         int page=0;
         int size=18;
         Music music=musicRepo.findById(4L).get();
-        Slice<Video> newestVideoList = videoService.findNewestVideoList(page,size,music, VideoScope.PUBLIC);
+        Slice<Video> latestVideoList = videoService.findLatestVideoList(page,size,music, VideoScope.PUBLIC);
 
         //then
-        for (Video video : newestVideoList) {
+        for (Video video : latestVideoList) {
             System.out.println("video = " + video.getId()+" "+video.getRegDate());
         }
 

@@ -42,7 +42,7 @@ public class VideoService {
      * 검색 조건: 곡 1건, 공개 여부
      * 정렬: 최신순
      */
-    public Slice<Video> findNewestVideoList(int page, int size, Music music,VideoScope scope){
+    public Slice<Video> findLatestVideoList(int page, int size, Music music, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
         return videoRepo.findByMusicAndScopeOrderByRegDateDesc(music,scope,pageable);
     }
@@ -140,8 +140,8 @@ public class VideoService {
         }
 
         //영상 경로, 썸네일 경로
-        String videoUrl = FileUtil.createFile(videoFile, "video" + File.separator + "article");
-        String imgUrl=FileUtil.createFile(imgFile,"video"+File.separator+"img");
+        String videoUrl = FileUtil.createFilePath(videoFile, "video" + File.separator + "article");
+        String imgUrl=FileUtil.createFilePath(imgFile,"video"+File.separator+"img");
 
         VideoScope scope=challengeRequest.getScope();
 
