@@ -52,8 +52,8 @@ const OPTIONS: RecordWebcamOptions = {
   // 위치 찾아보기
   filename: "test-filename",
   fileType: "mp4",
-  width: 360,
-  height: 800,
+  width: 260,
+  height: 400,
   aspectRatio : 2,
 };
 
@@ -396,22 +396,33 @@ const handlePlayPause = () => {
 const handlePlay = () => {
   console.log('handlePlay 함수 호출');
 
+  // 현재 OPEN이 아닌 경우, 카메라 켜기
   if (recordWebcam.status !== CAMERA_STATUS.OPEN  )
   {recordWebcam.open()
-    console.log('카메라 켜기')}
+    console.log('카메라 켜기')
+    
+    // endChallenge에서 다시보기 하는 경우 endChallenge에서는 실행되면 안됨
+    if (now!=='endChallenge') { 
+      document.getElementById('webcam').style.display = "block";
+      document.getElementById('prevcam').style.display = "none";
+      
+    }
+  }
 
-
+  // 정지 상태에서 다시 재생되는 경우
   if (playing===false){
     console.log('handlePlay 함수 실행');
 
     setPlayState({ ...playState, playing: true });
     
-    // endChallenge에서는 실행되면 안됨
+    // endChallenge에서 다시보기 하는 경우 endChallenge에서는 실행되면 안됨
     if (now!=='endChallenge') {
       document.getElementById('webcam').style.display = "block";
       document.getElementById('prevcam').style.display = "none";
     }
     console.log('debug ' ,recordWebcam.status)
+
+    // OPEN이 아닌 경우에만 OPEN
     if (recordWebcam.status !== CAMERA_STATUS.OPEN  )
     {recordWebcam.open()
       console.log('카메라 켜기')}
