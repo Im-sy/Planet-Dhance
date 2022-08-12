@@ -86,7 +86,7 @@ public class User {
         return user;
     }
 
-
+    // TODO: Setter 제거했을 때 사용할 수 있도록 코드 수정(ex. 이미지 경로가 null일 때 기본 이미지 경로를 반환할 수 있도록?)
     public void setImgUrl(String imgUrl){
         if(imgUrl==null){
             //TODO 기본 이미지 설정

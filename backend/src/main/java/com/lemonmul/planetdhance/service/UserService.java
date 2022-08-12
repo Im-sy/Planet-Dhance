@@ -11,6 +11,7 @@ import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.repo.NationRepo;
 import com.lemonmul.planetdhance.repo.TagRepo;
 import com.lemonmul.planetdhance.repo.UserRepo;
+import com.lemonmul.planetdhance.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -165,15 +166,18 @@ public class UserService {
         User findUser = userRepo.findById(id).orElseThrow(() -> new Exception("User Not Found"));
         Nation findNation = nationRepo.findByName(createUpdateRequest.getNationName()).orElseThrow(() -> new Exception("Nation Not Found"));
 
-        // TODO: 조건 분기 수정
-
         if(inputFile.isEmpty()){
+            findUser.setImgUrl(null);
+        }else{
             if(findUser.getImgUrl() != null) {
                 File beforeFile = new File(findUser.getImgUrl());
                 beforeFile.delete();
             }
 
-            String filePath = UserService.createUserImg(inputFile, createUpdateRequest.getEmail());
+            String separator = File.separator;
+            String path = "user" + separator + "img" + separator + createUpdateRequest.getEmail();
+            String filePath = FileUtil.createFile(inputFile, path);
+
             findUser.setImgUrl(filePath);
         }
 
@@ -231,31 +235,6 @@ public class UserService {
     public Slice<User> findFollowingUserInfo(int page,int size,List<Follow> tos){
         Pageable pageable= PageRequest.of(page,size);
         return userRepo.findByTosInOrderByRenewDateDesc(tos,pageable);
-    }
-
-    public static String createUserImg(MultipartFile inputFile, String email) throws IOException {
-        String separator = File.separator;
-
-        File tempFile = new File("");
-        String rootPath = tempFile.getAbsolutePath().split("src")[0] + separator + "static";
-
-        String savePath = rootPath + separator + "users" + separator + "img" + separator + email;
-
-        if(!new File(savePath).exists()) {
-            try {
-                new File(savePath).mkdirs();
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        String originFileName = inputFile.getOriginalFilename();
-        String saveFileName = UUID.randomUUID() + originFileName.substring(originFileName.lastIndexOf("."));
-
-        String filePath = savePath + separator + saveFileName;
-        inputFile.transferTo(new File(filePath));
-
-        return filePath;
     }
 
     /**
