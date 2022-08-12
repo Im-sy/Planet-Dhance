@@ -10,7 +10,6 @@ import { ProgressBar } from '../components/UI/ProgressBar';
 
 import myVideo from '../videos/IMG_0960.mp4';
 import sample1 from '../videos/Patissiere_guide.mp4';
-
 import '../styles/App.css';
 import Emoji from '../components/Emoji';
 

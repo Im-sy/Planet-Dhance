@@ -30,7 +30,11 @@ import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
 
-// webcam 부분 1----------------------------------
+//---------------------------------------------------------------------------------
+//
+//      webcam 부분 1/2
+//
+//---------------------------------------------------------------------------------
 import {
   RecordWebcam,
   useRecordWebcam,
@@ -53,6 +57,25 @@ const OPTIONS: RecordWebcamOptions = {
   aspectRatio : 2,
 };
 
+//---------------------------------------------------------------------------------
+//
+//      1. 전체 CSS
+//
+//---------------------------------------------------------------------------------
+const progressStyle: CSSProperties = {
+  position: 'absolute',
+  // top: '10px',
+  width: '100vw',
+  height: '7px',
+  backgroundColor: 'gray',
+};
+
+
+const videoZone: CSSProperties = {
+  position: 'relative',
+};
+
+
 // 전체 페이지 상태 1 / 2
 const notMode : CSSProperties = {
   display : 'none'
@@ -66,8 +89,13 @@ const notEndChallenge : CSSProperties = {
   display : 'none'
 };
 
-//-------------------------------------------------
-// main <-> sub 바꾸는 부분
+
+
+//---------------------------------------------------------------------------------
+//
+//      2. 모드 선택 부분 CSS : main <-> sub 바꾸는 부분  : mode
+//
+//---------------------------------------------------------------------------------
 
 const subcamStyle: CSSProperties = {
   position: 'absolute',
@@ -77,8 +105,6 @@ const subcamStyle: CSSProperties = {
   width: '35vw',
   height: '30vh',
   transform : 'scaleX(-1)',
-
-  
 };
 
 
@@ -93,7 +119,6 @@ const maincamStyle: CSSProperties = {
 
 const subplayerStyle: CSSProperties = {
   position: 'absolute',
-  // zIndex : '1',
   top : '9vh',
   left : '65vw',
   width: '35vw',
@@ -108,32 +133,12 @@ const mainplayerStyle: CSSProperties = {
 
 };
 
-
-//---------------------------------------------------------
-// 버튼들 css
-
-
-const backToModeStyle: CSSProperties = {
-  position: 'absolute',
-  top: '5vh',
-  left: '10px',
-  width : '8vw',
-  height : '8vw',
-  // backgroundColor: 'rgba( 255, 255, 255, 1 )',
-  // border : '0'
-};
-
-
-
-
-// mode 선택하는 부분-----------------------------------------------------
 const challengeStartStyle: CSSProperties = {
   position: 'absolute',
   top: '85vh',
   left: '35vw',
   width: '30vw',
   height: '5vh',
-  // backgroundColor: 'rgba( 255, 255, 255, 0.5 )',
   border : '0',
   color : 'red'
 };
@@ -176,26 +181,17 @@ const timerStyle: CSSProperties = {
 };
 
 
-const mode1Style: CSSProperties = {
+const modeStyle: CSSProperties = {
   position: 'absolute',
-  // top: '10px',
-  // left: '10px',
-  // width: '20px',
-  // height: '10px',
   top: '20vh',
   left: '5vw',
   width: '10vw',
   height: '10vw',
-  // backgroundColor: 'rgba( 0, 0, 255, 0.5 )',
   border : '0'
 };
 
 const mode2Style: CSSProperties = {
   position: 'absolute',
-  // top: '10px',
-  // left: '10px',
-  // width: '20px',
-  // height: '10px',
   top: '30vh',
   left: '5vw',
   width: '20vw',
@@ -205,7 +201,30 @@ const mode2Style: CSSProperties = {
 };
 
 
-// endChallenge -------------------------------------
+//---------------------------------------------------------------------------------
+//
+//      3. 챌린지 진행 부분 CSS : challenging
+//
+//---------------------------------------------------------------------------------
+
+
+const backToModeStyle: CSSProperties = {
+  position: 'absolute',
+  top: '5vh',
+  left: '10px',
+  width : '8vw',
+  height : '8vw',
+  // backgroundColor: 'rgba( 255, 255, 255, 1 )',
+  // border : '0'
+};
+
+
+//---------------------------------------------------------------------------------
+//
+//      3. 챌린지 끝난 부분 CSS : endChallenge 
+//
+//---------------------------------------------------------------------------------
+
 const endChallengePlay : CSSProperties = {
   top : '40vh',
   left : '43vw'
@@ -234,23 +253,13 @@ const endChallengeNext : CSSProperties = {
 }
    
 
-/*------------------------------------------------------
-  
 
 
----------------------------------------------------*/
-const progressStyle: CSSProperties = {
-  position: 'absolute',
-  // top: '10px',
-  width: '100vw',
-  height: '7px',
-  backgroundColor: 'gray',
-  
-};
-
-const videoZone: CSSProperties = {
-  position: 'relative',
-};
+//---------------------------------------------------------------------------------
+//
+//      4. Interface
+//
+//---------------------------------------------------------------------------------
 
 interface playProps {
   url: string;
@@ -260,18 +269,37 @@ interface playProps {
   loaded: number;
 }
 
+
+
+
+
 export default function ModeChallengeTimer() {
-  // webcam 부분 2-------------------------------------------
+
+//---------------------------------------------------------------------------------
+//
+//      5. 전체 페이지 상태 2 / 2 -  mode,  challenging, endChallenge 3가지 존재
+//
+//---------------------------------------------------------------------------------
+let [now, setNow] = useState('mode');
+
+
+//---------------------------------------------------------------------------------
+//
+//      6. webcam 부분 2/2 - webcam 생성 및 custom hook & 녹화 영상 Blob
+//
+//---------------------------------------------------------------------------------
+  
   const recordWebcam: RecordWebcamHook = useRecordWebcam(OPTIONS);
 
-  
   const [recordingVideo, setRecordingVideo] = useState<FormData>()
 
+
+  // 웹캠 데이터 저장
   const getRecordingFileHooks = async () => {
     const blob = await recordWebcam.getRecording();
     console.log({ blob });
 
-    // 서버에 전송
+    // 데이터 서버에 전송하는 부분
     const file = new File([blob], 'video.webm', {
       type : "video/webm"
     });
@@ -306,56 +334,152 @@ export default function ModeChallengeTimer() {
 
   };
 
-  
-  // 전체 페이지 상태 2 / 2 -  mode,  challenging, endChallenge
-  let [now, setNow] = useState('mode');
 
+//---------------------------------------------------------------------------------
+//
+//      7. 여러 곳에서 쓰이는 hook
+//
+//---------------------------------------------------------------------------------
 
-  // 곡선택페이지로 뒤로가기
-  const backToSongPage = () => {
-    setNow('mode')
-    recordWebcam.close()
-  };
-
-  // 안무티칭 & 모드선택 페이지로 뒤로가기
-  const backToMode = () => {
+// 안무티칭 & 모드선택 페이지로 뒤로가기
+const backToMode = () => {
  
-    // 1. challenging에서 가는 경우
-    if (now==='challenging'){
-      recordWebcam.stop();
-      
-    }
+  // 1. challenging에서 가는 경우
+  if (now==='challenging'){
+    recordWebcam.stop();
+    console.log('debug 1 == recording stop')
     
-    // 2. endChallenge에서 가는 경우
-    else if (now==='endChallenge'){
-      document.getElementById('webcam').style.display = "block";
-      document.getElementById('prevcam').style.display = "none"
-    }
-
-    setTimeout(recordWebcam.retake,500);
-    setPlayState({ ...playState, played: 0}); // 티칭영상 새로시작1
-    player.current.seekTo(0); // 티칭영상 새로시작1
-    console.log(recordWebcam.status)
-    setNow('mode');
-    console.log('현재 state는 ', {now}, '입니다.')
-    
-  };
+  }
   
-  const goToThumnail = () => {
-
-    axios
-    .post("http://i7d201.p.ssafy.io:8081/file/upload/file_json", recordingVideo)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      alert("실패");
-      console.log(err)
-    });
+  // 2. endChallenge에서 가는 경우
+  else if (now==='endChallenge'){
+    document.getElementById('webcam').style.display = "block";
+    document.getElementById('prevcam').style.display = "none"
   }
 
-  //--------------------------------------------------
-  // 모드 변경 부분
+  setTimeout(recordWebcam.retake,500);
+  setPlayState({ ...playState, played: 0}); // 티handlePlayPausepla칭영상 새로시작1
+  player.current.seekTo(0); // 티칭영상 새로시작1
+  console.log(recordWebcam.status)
+  setNow('mode');
+  console.log('현재 state는 ', {now}, '입니다.')
+  
+};
+
+
+//---------------------------------------------------------------------------------
+//
+//     8. ReactPlayer 관련 hook & data
+//
+//---------------------------------------------------------------------------------
+
+const player = useRef(null);
+
+
+const [playState, setPlayState] = useState<playProps>({
+  url: '',
+  playing: true,
+  muted: true,
+  played: 0,
+  loaded: 0,
+});
+
+const { url, playing, muted, played, loaded } = playState;
+
+
+const handlePlayPause = () => {
+  setPlayState({ ...playState, playing: !playing });
+
+};
+
+
+const handlePlay = () => {
+  console.log('handlePlay 함수 호출');
+
+  if (recordWebcam.status !== CAMERA_STATUS.OPEN  )
+  {recordWebcam.open()
+    console.log('카메라 켜기')}
+
+
+  if (playing===false){
+    console.log('handlePlay 함수 실행');
+
+    setPlayState({ ...playState, playing: true });
+    
+    // endChallenge에서는 실행되면 안됨
+    if (now!=='endChallenge') {
+      document.getElementById('webcam').style.display = "block";
+      document.getElementById('prevcam').style.display = "none";
+    }
+    console.log('debug ' ,recordWebcam.status)
+    if (recordWebcam.status !== CAMERA_STATUS.OPEN  )
+    {recordWebcam.open()
+      console.log('카메라 켜기')}
+      
+    };
+  }
+
+const handlePause = () => {
+  console.log('onPause');
+  setPlayState({ ...playState, playing: false });
+};    
+
+
+const handleProgress = (state: ReactPlayerProps) => {
+  const inState = {
+    ...playState,
+    ...state,
+  };
+  console.log('onProgress', inState);
+  console.log('웹캠상태 :', recordWebcam.status);
+  console.log('화면상태 :', now);
+  setPlayState(inState as SetStateAction<playProps>);
+
+  if (recordWebcam.status === CAMERA_STATUS.RECORDING){
+    snap()
+  }
+};
+
+
+const challengeEnd =  () => {
+  clearInterval(Ref.current) // 타이머에 쌓인 것들 초기화
+  console.log('안무티칭 영상이 끝났습니다. 웹캠의 현재상태 : ',recordWebcam.status)
+  // recording이 아닐 때, 그냥 영상만 다 본 경우는 작동하지 않아야 함
+  if (recordWebcam.status === CAMERA_STATUS.RECORDING)
+  { 
+    setNow('endChallenge')
+    recordWebcam.stop();
+    console.log('debug 2 == recording stop')
+    console.log('안무티칭영상이 끝났습니다.')
+    console.log(recordWebcam.status,'before stop')
+    console.log('웹캠 녹화가 종료되었습니다.');
+    console.log(recordWebcam.status,'after stop')
+
+
+
+    // endChallenge page 관련
+    setTimeout(()=>{
+      // setNow('endChallenge')
+      mode2()   // 1. 영상 위치 바꾸기
+      document.getElementById('prevcam').style.display = "block";
+      document.getElementById('webcam').style.display = "none";
+    },1000)
+  }
+
+    
+    // Blob 생성
+    setTimeout(getRecordingFileHooks, 1000);
+
+    console.log(now,'현재 상태')
+
+}
+
+
+//---------------------------------------------------------------------------------
+//
+//      9. mode에서 쓰이는 hook & data
+//
+//---------------------------------------------------------------------------------
   // 있어야 하는 데이터
   // ReactPalyer : width "35vw"/"100vh", height "50vw"/"100vh", style subplayerStyle/mainplayerStyle
   // video : maincamStyle/subcamStyle
@@ -364,6 +488,13 @@ export default function ModeChallengeTimer() {
   let [reactPlayerBackground, reactPlayerBackgroundChange] = useState(mainplayerStyle);
   let [reactCamStyle, reactCamStyleChange] = useState(subcamStyle);
 
+  // 곡 선택페이지로 뒤로가기
+  const backToSongPage = () => {
+      setNow('mode')
+      recordWebcam.close()
+      
+    };
+  
 
   // 안무영상이 main / 내 영상이 sub
   function mode1(){
@@ -401,12 +532,11 @@ export default function ModeChallengeTimer() {
 
   }
 
-
-
-  
-
-  //--------------------------------------------------------------------------------------------
-  // timer 부분
+//---------------------------------------------------------------------------------
+//
+//      10. mode에서 쓰이는 hook & data 2 - timer 만
+//
+//---------------------------------------------------------------------------------
     const Ref = useRef(null);
   
     // The state for our timer
@@ -427,12 +557,10 @@ export default function ModeChallengeTimer() {
   
     const startTimer = (e:any) => {
       // 타이머 시작시, 페이지 설정 변경  
-      // console.log('startTimer')
-      
-      
+      // console.log(Ref.current)
       let { total, hours, minutes, seconds } 
       = getTimeRemaining(e);
-      // console.log('debug 1 : total & second is', total, seconds)
+      console.log('debug 1 : total & second is', total, seconds)
         if (seconds >= 0) {
           //  console.log('debug 2 : total & seconds is ', total, seconds)
             setTimer(
@@ -458,6 +586,8 @@ export default function ModeChallengeTimer() {
               // console.log('time to start recording');
 
               // 타이머 완료시, 실행
+              clearInterval(Ref.current)
+              setNow('challenging');
               setPlayState({ ...playState, played: 0}); // 티칭영상 새로시작1
               // console.log('debug1')
               handlePlay()
@@ -465,6 +595,7 @@ export default function ModeChallengeTimer() {
               console.log(CAMERA_STATUS)
               console.log(recordWebcam.status)
               recordWebcam.start();  // 내 캠 녹화 시작
+              clearInterval(Ref.current) // 타이머에 쌓인 것들 초기화
            }
         }
     }
@@ -479,6 +610,7 @@ export default function ModeChallengeTimer() {
                 startTimer(e);
         }, 1000)
         Ref.current = id;
+        
     }
 
   
@@ -493,116 +625,37 @@ export default function ModeChallengeTimer() {
     }
   
     const onClickReset = () => {
-        setNow('challenging');
+        
+        
         clearTimer(getDeadTime());
         console.log('onClickReset')
     }
 
-  //----------------------------------------------------------------------------
-
-  const player = useRef(null);
 
 
-  const [playState, setPlayState] = useState<playProps>({
-    url: '',
-    playing: true,
-    muted: true,
-    played: 0,
-    loaded: 0,
-  });
-
-  const { url, playing, muted, played, loaded } = playState;
-
-
-  const handlePlayPause = () => {
-    setPlayState({ ...playState, playing: !playing });
-
-  };
-
-  const handleToggleMuted = () => {
-    console.log('muted', muted);
-    setPlayState({ ...playState, muted: !muted });
-  };
-
-  const handlePlay = () => {
-    console.log('handlePlay2');
-    setPlayState({ ...playState, playing: true });
-
-    // endChallenge에서는 실행되면 안됨
-    if (now!=='endChallenge') {
-      document.getElementById('webcam').style.display = "block";
-      document.getElementById('prevcam').style.display = "none";
-    }
-    
-    if (recordWebcam.status !== CAMERA_STATUS.OPEN )
-      {recordWebcam.open()
-      console.log('카메라 켜기')}
  
-  };
+//---------------------------------------------------------------------------------
+//
+//      11. endChallenge에서 쓰이는 hook 1 - 영상 재생 및 페이지 이동 관련
+//
+//---------------------------------------------------------------------------------
 
-  const handlePause = () => {
-    console.log('onPause');
-    setPlayState({ ...playState, playing: false });
-   
 
-  };    
-
-  const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPlayState({ ...playState, played: parseFloat(e.target.value) });
-  };
-
-  const handleProgress = (state: ReactPlayerProps) => {
-    const inState = {
-      ...playState,
-      ...state,
-    };
-    console.log('onProgress', inState);
-    console.log('웹캠상태 :', recordWebcam.status);
-    console.log('화면상태 :', now);
-    setPlayState(inState as SetStateAction<playProps>);
   
-    if (recordWebcam.status === CAMERA_STATUS.RECORDING){
+  
+  const goToThumnail = () => {
 
-      snap()
-    }
-  };
-
-  const challengeEnd =  () => {
-    clearInterval(Ref.current)
-    console.log('안무티칭 영상이 끝났습니다. 웹캠의 현재상태 : ',recordWebcam.status)
-    // recording이 아닐 때, 그냥 영상만 다 본 경우는 작동하지 않아야 함
-    if (recordWebcam.status === CAMERA_STATUS.RECORDING)
-      { 
-      recordWebcam.stop();
-      console.log('안무티칭영상이 끝났습니다.')
-      console.log(recordWebcam.status,'before stop')
-
-      // recordWebcam.download();
-      console.log('웹캠 녹화가 종료되었습니다.');
-      console.log(recordWebcam.status,'after stop')
-      setTimeout(getRecordingFileHooks, 1000);
-
-
-      // endChallenge page 관련
-      setTimeout(()=>{
-        console.log('debug')
-        setNow('endChallenge')
-        mode2()   // 1. 영상 위치 바꾸기
-        document.getElementById('prevcam').style.display = "block";
-        document.getElementById('webcam').style.display = "none";
-      },1000)
-      // setNow('endChallenge')
-      // mode2()  
-      // document.getElementById('prevcam').style.display = "block";
-      // document.getElementById('webcam').style.display = "none";
-    }
-    console.log(now,'현재 상태')  
+    axios
+    .post("http://i7d201.p.ssafy.io:8081/file/upload/file_json", recordingVideo)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      alert("실패");
+      console.log(err)
+    });
   }
 
- 
-
-
-  // endChallenge
   // 녹화한 영상 재생하기
   // 해야할 것 : 1. 영상 위치 바뀌어 있음 / 2. Reactplayer 다시 재생시키기 /  3.내 영상 재생 /4. 뒤로가기 버튼(setNow('mode'), previewRef->webcamRef)
   const playPrev = () => {
@@ -614,11 +667,15 @@ export default function ModeChallengeTimer() {
     handlePlay()
     player.current.seekTo(0); // 티칭영상 새로시작1
     
-    //  3.내 영상 재생
+    //  3. 내 녹화 영상 재생
     video.play();  //  
   }
 
-  //----------------------------------------------------------------------------------------------썸네일 관련
+//---------------------------------------------------------------------------------
+//
+//      12. endChallenge에서 쓰이는 hook & data 2 - 썸네일 관련
+//
+//---------------------------------------------------------------------------------
   let videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>();  // context = canvasRef.current.getContext('2d'); error 제거
   const [dimensions, setDimensions] = useState<any>({});
@@ -631,8 +688,6 @@ export default function ModeChallengeTimer() {
  
   function getVideoSizeData(videoRef: React.MutableRefObject<any> ) {
     const ratio = videoRef.current.videoWidth / videoRef.current.videoHeight;
-    // const w = 500;
-    // const h = 800;
     const w = videoRef.current.videoWidth;
     const h = videoRef.current.videoHeight;
     return {
@@ -641,6 +696,7 @@ export default function ModeChallengeTimer() {
       h,
     };
   }
+
 
   useEffect(() => {
     
@@ -656,14 +712,11 @@ export default function ModeChallengeTimer() {
         const { w, h } = getVideoSizeData(videoRef);
         canvasRef.current.width = w;
         canvasRef.current.height = h;
-        // console.log('w,h : ', w, h)
         setDimensions({
           w: w,
           h: h,
         });
       });
-      
-      snap()
     }
 
   }, []);
@@ -690,14 +743,18 @@ export default function ModeChallengeTimer() {
       // console.log([...thumbnail])
       setThumbnail([...thumbnail, imgURL]);
    
-  }
+  };
 // 썸네일 관련 끝----------------------------------------------------------------------------------------------------------
 
 
 
   return (
     <div >
-      {/* 썸네일 관련 */}
+       {/* ----------------------------------------------------------------------------------------
+      //
+      //            1. 썸네일 관련 
+      //
+      -----------------------------------------------------------------------------------------*/}
       <div >
         {/* <video id='thumnail_video'  ref={recordWebcam.webcamRef} muted autoplay /> */}
         {/* 썸네일 그려줌 */}
@@ -709,22 +766,29 @@ export default function ModeChallengeTimer() {
     </div>
 
 
-      {/* 이모지 관련 */}
+      {/* ----------------------------------------------------------------------------------------
+      //
+      //            2. 이모지 관련 
+      //
+      -----------------------------------------------------------------------------------------*/}
       <div> {/* recordWebcam.record() 가 완료된 후 , played=0 되도록? */} 
         {recordWebcam.status === CAMERA_STATUS.RECORDING  && played>=0.3 ? <Emoji emoji='💘'/> : ''}
         {recordWebcam.status === CAMERA_STATUS.RECORDING && played>=0.6 ? <Emoji emoji='😍'/> : ''}
         {recordWebcam.status === CAMERA_STATUS.RECORDING && played>=0.9 ? <Emoji emoji='🎉'/> : ''}
         {recordWebcam.status === CAMERA_STATUS.RECORDING && played >= 0.97 ? <Emoji emoji='💯'/> : ''}
-        
       </div>
 
+
+      {/* ----------------------------------------------------------------------------------------
+      //
+      //            3. ReactPlayer & webcam 관련 
+      //
+      -----------------------------------------------------------------------------------------*/}
       <div style={videoZone}>
 
         {/* webCam */}
         <video id='webcam'
             ref={recordWebcam.webcamRef}
-            // ref={webOrPrev}
-            // ref={recordWebcam.previewRef}
             style={reactCamStyle}
             autoPlay
             muted
@@ -735,8 +799,6 @@ export default function ModeChallengeTimer() {
         <video id='prevcam'
             ref={recordWebcam.previewRef}
             style={reactCamStyle}
-            // autoPlay
-            // controls
             muted
           />
 
@@ -746,13 +808,10 @@ export default function ModeChallengeTimer() {
         {/* main */}
         <ReactPlayer
           className="react-player"
-          // width="100vw"
-          // height="100vh"
           ref= {player}
           width={reactPlayer[1]}
           height={reactPlayer[2]}
           style={reactPlayerBackground}
-          // 2, 8 바꾸기
           url={myVideo10} 
           playing={playing}
           muted={muted}
@@ -762,7 +821,6 @@ export default function ModeChallengeTimer() {
           onEnded={challengeEnd}
         />
 
-      
         <progress
           style={progressStyle}
           className="progressbar"
@@ -770,62 +828,87 @@ export default function ModeChallengeTimer() {
           value={played}
         />
 
-  
-        {/*  mode 1 & 2 토글 버튼*/}
-        {reactPlayer[0]==='main' ?
+      </div>
+
+
+ 
+
+      <div>
+      {/* ----------------------------------------------------------------------------------------
+      //
+      //            4. mode 부분 컴포넌트
+      //
+      -----------------------------------------------------------------------------------------*/}
+         {/*  mode 1 & 2 토글 버튼*/}
+         {reactPlayer[0]==='main' ?
         <ChangeCircleOutlinedIcon  onClick={mode2} 
-          style={ now ==='mode' ? mode1Style : notMode}
+          style={ now ==='mode' ? modeStyle : notMode}
           > </ChangeCircleOutlinedIcon>
           : <ChangeCircleOutlinedIcon  onClick={mode1} 
-          style={ now==='mode' ? mode1Style : notMode}
+          style={ now==='mode' ? modeStyle : notMode}
           >  </ChangeCircleOutlinedIcon>  }
-        {/* {reactPlayer[0]==='main' ?
-        <button  onClick={mode2} 
-          style={ now ==='mode' ? mode1Style : notMode}
-          > mode2</button>
-          : <button  onClick={mode1} 
-          style={ now==='mode' ? mode1Style : notMode}
-          > mode1 </button>  } */}
-
-
-
-
-         {/* mode 1 버튼 */}
-        {/* <button  onClick={mode1} 
-              style={ now==='mode' ? mode1Style : notMode}
-              disabled={reactPlayer[0]==='main'}
-              >
-        mode1
-        </button> */}
-        {/*  mode 2 버튼 */}
-        {/* <button  onClick={mode2} 
-              style={ now ==='mode' ? mode2Style : notMode}
-              disabled={reactPlayer[0]==='sub'}
-              >
-        mode2
-        </button> */}
-
+       
 
         {/* 타이머 영상녹화시작 */}
+        {/* <button disabled={recordWebcam.status !== CAMERA_STATUS.OPEN}> */}
+
         <RadioButtonCheckedOutlinedIcon  onClick={onClickReset} 
-                  style={ now==='mode' ? challengeStartStyle : notMode}
-                  // disabled={
-                  //   recordWebcam.status === CAMERA_STATUS.CLOSED ||
-                  //   recordWebcam.status === CAMERA_STATUS.RECORDING ||
-                  //   recordWebcam.status === CAMERA_STATUS.PREVIEW
-                  // }
-                  >
-        
+                  style={ now==='mode' && recordWebcam.status === CAMERA_STATUS.OPEN ? challengeStartStyle : notMode}
+                  // disabled={ 
+                    //   recordWebcam.status === CAMERA_STATUS.CLOSED ||
+                    //   recordWebcam.status === CAMERA_STATUS.RECORDING ||
+                    //   recordWebcam.status === CAMERA_STATUS.PREVIEW
+                    // }
+                    >
         </RadioButtonCheckedOutlinedIcon>
+        {/* </button> */}
         
-        {/*  endChallenge  */}
+
+      {/* timer & reset */}
+        <h2 style={timerStyle}>{timer}</h2>
+
+
+      {/* 곡선택페이지로 뒤로가기 */}
+        <ArrowBack
+          onClick={backToSongPage}
+          aria-label={playing ? 'pause' : 'play'}
+          style = { now==='mode' ?  backToSongPageStyle : notMode  }
+        />
+
+      {/* 티칭 영상 재생/정지 */}
+      <IconButton
+          onClick={handlePlayPause}
+          aria-label={playing ? 'pause' : 'play'}
+        >
+          {playing ? <PauseIcon style = { now==='mode' ?  playPauseStyle : notMode  }/> : <PlayArrowIcon style = { now==='mode' ?  playPauseStyle : notMode  }/>}
+        </IconButton>
+
+
+     {/* ----------------------------------------------------------------------------------------
+      //
+      //            5. challenging 부분 컴포넌트
+      //
+      -----------------------------------------------------------------------------------------*/}
+
+      {/* 안무티칭 & 모드선택 페이지로 뒤로가기 */}
+        <ArrowBack
+          onClick={backToMode}
+          aria-label={playing ? 'pause' : 'play'}
+          style = { now==='challenging' ?  backToModeStyle : notChallenging  }
+        />
+
+
+     {/* ----------------------------------------------------------------------------------------
+      //
+      //            6. endChallenge 부분 컴포넌트
+      //
+      -----------------------------------------------------------------------------------------*/}
       
         {/* 내 영상 다시 보기*/}
         <IconButton
           onClick={playPrev} 
-          style={ now==='endChallenge' && !playing ? endChallengePlay : notMode}>
+          style={ now==='endChallenge' && !playing ? endChallengePlay : notEndChallenge}>
           <PlayArrowIcon />
-
         </IconButton>
 
         {/* Prev : 모드 선택하는 곳으로 이동 */}
@@ -840,42 +923,30 @@ export default function ModeChallengeTimer() {
               style={ now ==='endChallenge' ? endChallengeNext : notEndChallenge  }
               >
           Next
-         </button>     
-
-
-
-        {/* timer & reset */}
-          <h2 style={timerStyle}>{timer}</h2>
-  
-
+        </button>     
       </div>
 
-
+      
+      
+      
+    {/* ----------------------------------------------------------------------------------------
+      //
+      // 7. navbar 부분 컴포넌트  - 아래 쪽이 너무 허전하면, NavBar 형식으로 무언가 넣을까 생각중..
+      //
+      -----------------------------------------------------------------------------------------*/}     
+   
+      {/* 챌린지용 navbar */}
       <div>
-        {/* 곡선택페이지로 뒤로가기 */}
-        <ArrowBack
-          onClick={backToSongPage}
-          aria-label={playing ? 'pause' : 'play'}
-          style = { now==='mode' ?  backToSongPageStyle : notMode  }
-        />
-
-        {/* 안무티칭 & 모드선택 페이지로 뒤로가기 */}
-        <ArrowBack
-          onClick={backToMode}
-          aria-label={playing ? 'pause' : 'play'}
-          style = { now==='challenging' ?  backToModeStyle : notChallenging  }
-        />
-    
-
-        <IconButton
-          onClick={handlePlayPause}
-          aria-label={playing ? 'pause' : 'play'}
-        >
-          {playing ? <PauseIcon style = { now==='mode' ?  playPauseStyle : notMode  }/> : <PlayArrowIcon style = { now==='mode' ?  playPauseStyle : notMode  }/>}
-        </IconButton>
+        {/* <NavBar/> */}
       </div>
+    </div>
+  );
+}
 
-      {/* <div>
+
+
+ {/* 안쓰는 것
+ <div>
         <label htmlFor="muted">Muted</label>
         <input
           id="muted"
@@ -907,12 +978,20 @@ export default function ModeChallengeTimer() {
       <div>
         <progress max={1} value={played} />
       </div>
-       */}
-      {/* 챌린지용 navbar */}
-      <div>
-        {/* <NavBar/> */}
-      </div>
-    </div>
-  );
-}
-
+       
+       
+       
+         {/* mode 1 버튼 */}
+        {/* <button  onClick={mode1} 
+              style={ now==='mode' ? mode1Style : notMode}
+              disabled={reactPlayer[0]==='main'}
+              >
+        mode1
+        </button> */}
+        {/*  mode 2 버튼 */}
+        {/* <button  onClick={mode2} 
+              style={ now ==='mode' ? mode2Style : notMode}
+              disabled={reactPlayer[0]==='sub'}
+              >
+        mode2
+        </button> */}

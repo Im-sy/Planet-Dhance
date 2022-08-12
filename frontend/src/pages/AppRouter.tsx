@@ -19,40 +19,34 @@ import HashTagTextArea from '../components/HashTagTextArea';
 
 
 
-const wholeStyle : CSSProperties = {
-  margin: '0',
-  padding : '0.1vh 0 0 0',
-  // padding : '5vh 1vh 0 1vh',
-  
-}
+
 
 
 
 function AppRouter() {
   return (
-    <div style={wholeStyle}>
-      <BrowserRouter>
-        <Routes >
-          <Route path='/' element={<Main />} />
-          <Route path='/songpage' element={<SongPage />} />
-          <Route path='/subscribe' element={<Subscribe />} />
-          <Route path='/searchsong' element={<SearchSong />} />
-          <Route path='/searchtag' element={<SearchTag />} />
-          <Route path='/hashresult' element={<HashResult />} />
-          <Route path='/mypage' element={<MyPage />} />
-          <Route path='/challenge' element={<ModeChallengeTimer />} />
-          <Route path='/login' element={<LogIn />} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/ranking' element={<Ranking />} />
-          <Route path='/dancecompare' element={<DanceCompare />} />
-          <Route path='/emoji' element={<App2 />} />
-          <Route element={<NotFound404 />} />
+ 
+    <BrowserRouter>
+      <Routes >
+        <Route path='/' element={<Main />} />
+        <Route path='/songpage' element={<SongPage />} />
+        <Route path='/subscribe' element={<Subscribe />} />
+        <Route path='/searchsong' element={<SearchSong />} />
+        <Route path='/searchtag' element={<SearchTag />} />
+        <Route path='/hashresult' element={<HashResult />} />
+        <Route path='/mypage' element={<MyPage />} />
+        <Route path='/challenge' element={<ModeChallengeTimer />} />
+        <Route path='/login' element={<LogIn />} />
+        <Route path='/signup' element={<SignUp />} />
+        <Route path='/ranking' element={<Ranking />} />
+        <Route path='/dancecompare' element={<DanceCompare />} />
+        <Route path='/emoji' element={<App2 />} />
+        <Route element={<NotFound404 />} />
+        {/* test */}
+        <Route path='/test' element={<HashTagTextArea />} />
+      </Routes>
+    </BrowserRouter>
 
-          {/* test */}
-          <Route path='/test' element={<HashTagTextArea />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
   );
 }
 
