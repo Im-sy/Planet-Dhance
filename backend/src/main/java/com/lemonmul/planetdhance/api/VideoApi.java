@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.api;
 
+import com.lemonmul.planetdhance.dto.ChallengeRequest;
 import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
@@ -13,14 +14,12 @@ import com.lemonmul.planetdhance.service.LikeService;
 import com.lemonmul.planetdhance.service.MusicService;
 import com.lemonmul.planetdhance.service.UserService;
 import com.lemonmul.planetdhance.service.VideoService;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -109,6 +108,14 @@ public class VideoApi {
         return result;
     }
 
+    @PostMapping(value = "/upload",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE})
+    public boolean uploadChallengeVideo(@RequestPart MultipartFile videoFile,@RequestPart MultipartFile imgFile,
+                                        @RequestPart ChallengeRequest challengeRequest) throws Exception{
+        return videoService.uploadChallengeVideo(videoFile,imgFile,challengeRequest);
+    }
+
     @Data
     static class VideoPlayDto {
         private Long musicId;
@@ -182,5 +189,4 @@ public class VideoApi {
             return o.point-this.point;
         }
     }
-
 }

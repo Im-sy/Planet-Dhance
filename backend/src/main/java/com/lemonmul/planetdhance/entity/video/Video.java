@@ -3,6 +3,7 @@ package com.lemonmul.planetdhance.entity.video;
 import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
+import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,10 +27,10 @@ public class Video {
 
     private String videoUrl;
 
+    private String imgUrl;
+
     @Enumerated(EnumType.STRING)
     private VideoScope scope;
-
-    private String imgUrl;
 
     private Long hit;
 
@@ -53,18 +54,16 @@ public class Video {
     private List<Like> likes=new ArrayList<>();
 
     //==생성 메서드==//
-    public static Video createVideo(String videoUrl,VideoScope scope,String imgUrl,User user,Music music){
+    public static Video createVideo(String videoUrl, String imgUrl, VideoScope scope, User user, Music music){
         Video video=new Video();
         video.videoUrl=videoUrl;
-        video.scope=scope;
         video.imgUrl=imgUrl;
+        video.scope=scope;
         video.hit=0L;
         video.orderWeight =0L;
         video.regDate=LocalDateTime.now();
         video.setUser(user);
         video.setMusic(music);
-        //TODO 인자로 받아온 custom tag들 Tag 테이블에 추가 여기서?
-//        Tag.createTag("",TagType.CUSTOM,"");
         return video;
     }
 

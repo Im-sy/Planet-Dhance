@@ -194,7 +194,17 @@ public class TagApi {
             id=tag.getId();
             type =tag.getName();
             className =tag.getType();
-            imgUrl=tag.getImgUrl();
+            if(tag.getImgUrl()==null){
+                if(tag.getType().equals(TagType.CUSTOM)) {
+                    //TODO 커스텀 태그 이미지 경로 넣기
+                    imgUrl = "default custom tag img";
+                }else if(tag.getType().equals(TagType.NICKNAME)){
+                    //TODO 가수 태그 이미지 경로 넣기
+                    imgUrl="default user tag img";
+                }
+            }else {
+                imgUrl = tag.getImgUrl();
+            }
         }
     }
 
