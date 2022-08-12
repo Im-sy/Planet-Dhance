@@ -1,11 +1,9 @@
-export default function AuthHeader() {
-  const userStr = localStorage.getItem("user");
-  let user = null;
-  if (userStr)
-    user = JSON.parse(userStr);
-  if (user && user.accessToken) {
-    return { Authorization: 'Bearer ' + user.accessToken };
+import axios from 'axios';
+
+export default function AuthHeader(token: string) {
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `${token}`;
   } else {
-    return { Authorization: '' };
+    delete axios.defaults.headers.common['Authorization'];
   }
 }

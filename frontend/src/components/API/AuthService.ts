@@ -1,8 +1,11 @@
 import React from 'react'
 import jwt_decode from 'jwt-decode';
 import axios from "axios"
+import AuthHeader from './AuthHeader';
+import { setCurrentUserAction } from '../../reducer/authAction';
+import { useDispatch } from 'react-redux';
 
-const API_URL = "https://i7d201.p.ssafy.io/api/user/"
+const API_URL = "http://i7d201.p.ssafy.io/api/user/"
 
 interface signUpCreateSignUpRequest {
   email: string,
@@ -12,6 +15,20 @@ interface signUpCreateSignUpRequest {
   pwd: string,
   oAuth2Sub: string,
   type: string,
+}
+
+export interface userProps {
+  userId: number,
+  nickname: string,
+  nationName: string,
+  roles: string[]
+}
+export interface jwtToken {
+  sub: string,
+  roles: string[],
+  details: userProps,
+  iat: number,
+  exp: number,
 }
 
 export async function signup(
@@ -63,9 +80,8 @@ export async function login(
       res => {
         console.log(res)
         var token = res.data.token
-        var decoded = jwt_decode(token);
-        console.log(decoded)
-        // localStorage.setItem("user", JSON.stringify(res.data))
+        localStorage.setItem("jwtToken", token)
+        AuthHeader(token)
         return res.data
       }
     );
@@ -84,15 +100,12 @@ export async function login(
 
 export async function logout(userId: number) {
   try {
-    const data = await axios.post(
+    const data = await axios.delete(
       API_URL+`logout/${userId}`,
-      {
-        userId: userId
-      },
     ).then(
       res => {
         console.log(res)
-        // localStorage.removeItem("user");
+        localStorage.removeItem("jwtToken");
         return res.data
       }
     );
