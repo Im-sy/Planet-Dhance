@@ -7,6 +7,7 @@ import com.lemonmul.planetdhance.entity.Clear;
 import com.lemonmul.planetdhance.entity.Nation;
 import com.lemonmul.planetdhance.entity.Validate;
 import com.lemonmul.planetdhance.entity.tag.Tag;
+import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.*;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;

@@ -16,7 +16,7 @@ public class UserSearchResponse{
     private List<ClearDto> clearList;
     private int clearCnt;
     private String prevPage="user";
-    private Slice<VideoDto> videoList;
+    private Slice<VideoProfileDto> videoList;
 
     public UserSearchResponse(User user, List<Clear> clearList, Slice<Video> videoList) {
         this.user=new UserDto(user);
@@ -25,6 +25,6 @@ public class UserSearchResponse{
                 .sorted(Comparator.comparing(Clear::getId).reversed()).limit(5)
                 .map(ClearDto::new).collect(Collectors.toList());
         this.clearCnt=clearList.size();
-        this.videoList=videoList.map(VideoDto::new);
+        this.videoList=videoList.map(VideoProfileDto::new);
     }
 }
