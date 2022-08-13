@@ -224,7 +224,6 @@ export default function SignIn() {
           </Box>
         </Box>
       </Container>
-      <NavBar />
     </ThemeProvider>
   );
 }

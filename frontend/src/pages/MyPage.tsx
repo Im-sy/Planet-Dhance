@@ -98,7 +98,7 @@ export default function MyPage() {
         <SongPageGridView urls={myVideo}/>
       </div>
 
-      <NavBar />
+      <NavBar current={"myPage"} />
     </div>
   )
 }

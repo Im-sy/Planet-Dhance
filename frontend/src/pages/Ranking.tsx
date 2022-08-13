@@ -10,7 +10,7 @@ export default function Ranking() {
       <TopBar />
       <RankScore />
       <Planet />
-      <NavBar />
+      <NavBar current={"main"} />
     </div>
   )
 }

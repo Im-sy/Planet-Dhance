@@ -32,7 +32,7 @@ function AppRouter() {
         <Route path='/' element={<Main />} />
         {/* <Route path='/songpage' element={<SongPage />} /> */}
         <Route path='/subscribe' element={<Subscribe />} />
-        <Route path='/searchsong' element={<SearchSong />} />
+        <Route path='/searchsong/:valueType/:id' element={<SearchSong />} />
         <Route path='/searchtag' element={<SearchTag />} />
         <Route path='/hashresult' element={<HashResult />} />
         <Route path='/mypage' element={<MyPage />} />
