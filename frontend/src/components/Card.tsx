@@ -7,10 +7,12 @@ interface cardProps {
   url: string,
   width: string,
   height: string,
+  prevPage: string,
+  videoId: number,
 }
 
 export default function ActionAreaCard(props: cardProps) {
-  const {url, width, height} = props
+  const {url, width, height, prevPage, videoId} = props
   return (
     <div>
       <Card sx={{ maxWidth: width}} component={Link} to='/playing'>
@@ -21,7 +23,7 @@ export default function ActionAreaCard(props: cardProps) {
               height: height,
             }}
             component="img"
-            image={url}
+            image={"https://i7d201.p.ssafy.io/"+url}
             alt="sea"
           />
         </CardActionArea>

@@ -17,6 +17,7 @@ import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
 import HashTagTextArea from '../components/HashTagTextArea';
 import ExplorePage from './ExplorePageList'
+import SongPage from './MusicPage';
 
 
 
@@ -42,6 +43,7 @@ function AppRouter() {
         <Route path='/ranking' element={<Ranking />} />
         <Route path='/dancecompare' element={<DanceCompare />} />
         <Route path='/emoji' element={<App2 />} />
+        <Route path='/songpage/:songId' element={<SongPage />} />
         <Route element={<NotFound404 />} />
         {/* test */}
         <Route path='/test' element={<HashTagTextArea />} />

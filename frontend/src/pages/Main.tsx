@@ -5,6 +5,8 @@ import React, {
   useState,
 } from 'react';
 import {Link} from 'react-router-dom';
+import { videoListProps } from './MyPage';
+import { mainVideo } from '../components/API/MusicService';
 import ActionAreaCard from '../components/Card';
 import Carousel from '../components/Carousel';
 import RankScore from '../components/RankScore';
@@ -24,7 +26,32 @@ import '../styles/styles.css';
   
 // };
 
+interface mainProps {
+  rankingList: rankingItem[],
+  prevPage: string,
+  videoList: videoListProps,
+}
+interface rankingItem {
+  nationName: string,
+  nationFlag: string,
+  x: number,
+  y: number,
+  z: number,
+  point: number
+}
+
 export default function Main() {
+  const getMainVideo = async () => {
+    const getmain = await mainVideo()
+    setMainVideoInfo(getmain)
+  }
+
+  useEffect(() => {
+    getMainVideo();
+  }, []);
+
+  const [mainVideoInfo, setMainVideoInfo] = useState<mainProps>()
+
   return (
     <div>
       <div>
@@ -57,7 +84,7 @@ export default function Main() {
           {/* 가로카드 */}
           <div>
             <p>#BTS</p>
-            <ActionAreaCard
+            <ActionAreaCard prevPage={'main'} videoId={1}
               url="https://cdn.pixabay.com/photo/2019/06/20/09/26/underwater-4286600_960_720.jpg"
               width="8.438rem"
               height="15rem"
@@ -66,7 +93,7 @@ export default function Main() {
           {/* GridView */}
           <div>
             <h2> Hot Clips</h2>
-            <GridView />
+            <GridView prevPage={mainVideoInfo?.prevPage} videoList={mainVideoInfo?.videoList} />
           </div>
         </div>
       </div>
