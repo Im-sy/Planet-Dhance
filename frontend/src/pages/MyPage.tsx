@@ -122,7 +122,7 @@ export default function MyPage() {
         <SongPageGridView videoList={profileInfo.videoList} />
       </div>
 
-      <NavBar />
+      <NavBar current={"myPage"} />
     </div>
   )
 }

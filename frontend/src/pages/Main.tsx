@@ -72,7 +72,8 @@ export default function Main() {
       </div>
 
       {/* NavBar - 제일 하단에 두기!*/}
-      <NavBar />
+      <NavBar
+      current={"main"} />
     </div>
   );
 }

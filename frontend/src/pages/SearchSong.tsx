@@ -14,18 +14,17 @@ export default function SearchSong() {
       </div>
       <div>
         <SearchSongInfo
+        id={12}
           img={"여기에 이미지 url 혹은 blob"}
           value={"여기엔 검색 결과 값"}
-          type = {0}
+          type = {"0"}
         />
-        {/* <SearchSongInfo />
-        <SearchSongInfo /> */}
       </div>
       <br />
       <div>
         <GridView />
       </div>
-      <NavBar />
+      <NavBar current={"main"} />
     </div>
   )
 }
