@@ -16,6 +16,7 @@ import Ranking from './Ranking';
 import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
 import HashTagTextArea from '../components/HashTagTextArea';
+import Thumnail from './Thumanil2';
 
 function AppRouter() {
   return (
@@ -37,7 +38,7 @@ function AppRouter() {
         <Route element={<NotFound404 />} />
 
         {/* test */}
-        <Route path='/test' element={<HashTagTextArea />} />
+        <Route path='/test' element={<Thumnail />} />
       </Routes>
     </BrowserRouter>
   );
