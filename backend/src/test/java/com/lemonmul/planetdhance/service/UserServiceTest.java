@@ -23,6 +23,9 @@ class UserServiceTest {
     UserService userService;
 
     @Autowired
+    RankingService rankingService;
+
+    @Autowired
     EntityManager em;
 
     @Test
@@ -53,6 +56,6 @@ class UserServiceTest {
 //        for (Map.Entry<Nation, Integer> entry : collect) {
 //            System.out.println("--------------entry = " + entry.getKey().getName()+" "+entry.getValue());
 //        }
-        Map<Nation, Integer> ranking = userService.ranking();
+//        Map<Nation, Integer> ranking = rankingService.ranking();
     }
 }

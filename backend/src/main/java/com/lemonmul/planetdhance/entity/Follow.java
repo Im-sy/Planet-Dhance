@@ -1,7 +1,10 @@
 package com.lemonmul.planetdhance.entity;
 
 import com.lemonmul.planetdhance.entity.user.User;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 

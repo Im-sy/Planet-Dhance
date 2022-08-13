@@ -40,13 +40,14 @@ public class UserService {
      *      email: 검사할 이메일
      *
      * 반환값
-     *      TODO: 성공 시 반환값 "Success"? true?
-     *      이메일 중복 X: "Success"? true?
-     *      TODO: 예외 처리
+     *      이메일 중복 X: true
      *      이메일 중복 O: "Duplicated Email" 예외 발생
      */
-    public boolean emailCheck(String email) {
-        return userRepo.findByEmail(email).isEmpty();
+    public boolean emailCheck(String email) throws Exception {
+        if(userRepo.findByEmail(email).isPresent())
+            throw new Exception("Duplicated Email");
+
+        return true;
     }
 
     /**
@@ -56,13 +57,14 @@ public class UserService {
      *      nickname: 검사할 닉네임
      *
      * 반환값
-     *      TODO: 성공 시 반환값 "Success"? true?
-     *      닉네임 중복 X: "Success"? true?
-     *      TODO: 예외 처리
+     *      닉네임 중복 X: true
      *      닉네임 중복 O: "Duplicated Nickname" 예외 발생
      */
-    public boolean nicknameCheck(String nickname) {
-        return userRepo.findByNickname(nickname).isEmpty();
+    public boolean nicknameCheck(String nickname) throws Exception {
+        if(userRepo.findByNickname(nickname).isPresent())
+            throw new Exception("Duplicated Nickname");
+
+        return true;
     }
 
     /**
@@ -72,8 +74,7 @@ public class UserService {
      *      user: 회원가입할 사용자 객체
      *
      * 반환값
-     *      TODO: 성공 시 반환값 "Success"? true?
-     *      회원가입 성공: "Success"? true?
+     *      회원가입 성공: true
      *      이메일 중복: "Duplicated Email" 예외 발생
      *      닉네임 중복: "Duplicated Nickname" 예외 발생
      */
@@ -101,8 +102,7 @@ public class UserService {
      *      pwd: 로그인할 사용자 비밀번호
      *
      * 반환값
-     *      TODO: 성공 시 반환값 "Success"? true?
-     *      로그인 성공: "Success"? true?
+     *      로그인 성공: 로그인한 사용자 정보
      *      사용자 조회 실패: "User Not Found" 예외 발생
      *      비밀번호 불일치: "Password Not Correct" 예외 발생
      */
@@ -155,8 +155,7 @@ public class UserService {
      *      createUpdateRequest: 업데이트할 사용자 정보가 담긴 객체
      *
      * 반환값
-     *      TODO: 성공 시 반환값 "Success"? true?
-     *      수정 성공: "Success"? true?
+     *      수정 성공: true
      *      사용자 조회 실패: "User Not Found" 예외 발생
      *      국가 조회 실패: "Nation Not Found" 예외 발생
      */
@@ -194,8 +193,7 @@ public class UserService {
      *      id: 탈퇴할 사용자 아이디
      *
      * 반환값
-     *      TODO: 성공 시 반환값 "Success"? true?
-     *      탈퇴 성공: "Success"? true?
+     *      탈퇴 성공: true
      *      사용자 조회 실패: "User Not Found" 예외 발생
      */
     @Transactional
@@ -219,8 +217,6 @@ public class UserService {
         for(Video video: videoList)
             video.removeUser();
 
-        // TODO: Validate 테이블에서 제거 필요?
-
         userRepo.delete(findUser);
 
         return true;
@@ -234,25 +230,5 @@ public class UserService {
     public Slice<User> findFollowingUserInfo(int page,int size,List<Follow> tos){
         Pageable pageable= PageRequest.of(page,size);
         return userRepo.findByTosInOrderByRenewDateDesc(tos,pageable);
-    }
-
-    /**
-     * 국가 랭킹
-     *
-     * TODO 그냥 db에 랭킹 집계 컬럼 추가하는거나, 일정 시간마다 랭킹 집계하는거 고려해보기
-     */
-    public Map<Nation, Integer> ranking(){
-        Map<Nation, List<User>> nationListMap = userRepo.findAll().stream().collect(Collectors.groupingBy(User::getNation));
-        Map<Nation,Integer> points=new HashMap<>();
-
-        for (Map.Entry<Nation, List<User>> entry : nationListMap.entrySet()) {
-            int point=0;
-            for (User user : entry.getValue()) {
-                point+=user.getClears().size();
-            }
-            points.put(entry.getKey(),point);
-        }
-
-        return points;
     }
 }

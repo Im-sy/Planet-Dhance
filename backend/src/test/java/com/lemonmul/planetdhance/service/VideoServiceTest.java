@@ -27,6 +27,9 @@ class VideoServiceTest {
 
     @Autowired
     VideoService videoService;
+
+    @Autowired
+    RankingService rankingService;
     @Autowired
     MusicRepo musicRepo;
     @Autowired
@@ -68,9 +71,10 @@ class VideoServiceTest {
     }
 
     @Test
-    public void findHitLikeVideoList(){
+    public void findHitLikeVideoList() {
         //given
-        initdb();
+//        initdb();
+        rankingService.ranking();
 
 //        Music music=musicRepo.findById(4L).get();
 //        printHitLikeList(0, 5,music);

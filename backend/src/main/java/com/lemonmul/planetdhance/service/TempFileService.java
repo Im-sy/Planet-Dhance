@@ -22,8 +22,6 @@ public class TempFileService {
 
     @Transactional
     public boolean upload(MultipartFile inputFile) throws IOException {
-        System.out.println("inputFile = " + inputFile);
-        
         if(inputFile == null)
             return false;
 
