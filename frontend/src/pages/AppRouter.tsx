@@ -5,7 +5,7 @@ import Main from './Main';
 import LogIn from './LogIn'
 import SignUp from './SignUp';
 import NotFound404 from './NotFound404';
-import SongPage from './MusicPage';
+// import SongPage from './MusicPage';
 import SearchSong from './SearchSong';
 import SearchTag from './SearchTag';
 import Subscribe from './Subscribe';
@@ -16,6 +16,7 @@ import Ranking from './Ranking';
 import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
 import HashTagTextArea from '../components/HashTagTextArea';
+import ExplorePage from './ExplorePageList'
 
 
 
@@ -29,7 +30,7 @@ function AppRouter() {
     <BrowserRouter>
       <Routes >
         <Route path='/' element={<Main />} />
-        <Route path='/songpage' element={<SongPage />} />
+        {/* <Route path='/songpage' element={<SongPage />} /> */}
         <Route path='/subscribe' element={<Subscribe />} />
         <Route path='/searchsong' element={<SearchSong />} />
         <Route path='/searchtag' element={<SearchTag />} />
@@ -44,6 +45,7 @@ function AppRouter() {
         <Route element={<NotFound404 />} />
         {/* test */}
         <Route path='/test' element={<HashTagTextArea />} />
+        <Route path='/playing' element={<ExplorePage />} />
       </Routes>
     </BrowserRouter>
 
