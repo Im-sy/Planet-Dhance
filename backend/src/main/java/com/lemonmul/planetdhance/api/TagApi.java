@@ -189,13 +189,20 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/user")
-    public UserSearchResponse userInfoAndUserVideos(@PathVariable Long tag_id){
+    public ResponseEntity<?> userInfoAndUserVideos(@PathVariable Long tag_id){
         int page=0;
-        Tag tag = tagService.findTagById(tag_id,0);
-        User user = userService.findByNickname(tag.getName());
-        List<Clear> clearList = user.getClears();
-        Slice<Video> videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
-        return new UserSearchResponse(user,clearList,videoList);
+
+        try {
+            Tag tag = tagService.findTagById(tag_id,0);
+            User user = userService.findByNickname(tag.getName());
+            List<Clear> clearList = user.getClears();
+            Slice<Video> videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+
+            return new ResponseEntity<>(new UserSearchResponse(user,clearList,videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -205,11 +212,18 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/user/{page}")
-    public GridResponse userVideos(@PathVariable Long tag_id,@PathVariable int page){
-        Tag tag = tagService.findTagById(tag_id, page);
-        User user = userService.findByNickname(tag.getName());
-        Slice<Video> videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
-        return new GridResponse("user",videoList);
+    public ResponseEntity<?> userVideos(@PathVariable Long tag_id,@PathVariable int page){
+        try {
+            Tag tag = tagService.findTagById(tag_id, page);
+            User user = userService.findByNickname(tag.getName());
+            Slice<Video> videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+
+            return new ResponseEntity<>(new GridResponse("user",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @Data
