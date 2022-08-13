@@ -1,31 +1,40 @@
 import React, { CSSProperties, SetStateAction, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import ActionAreaCard from './Card';
+import { videoListProps, contentItem } from '../pages/MyPage';
 
 interface gridViewProps {
-  urls : any
+  videoList: videoListProps
 }
 
-export default function SongPageGridView(props:gridViewProps) {
-  const cardrendering = () => {
-    const cardList = []
-    for (let i=0; i<18; i++) {
-      cardList.push(
-        <Grid item sm={4}>
-          <ActionAreaCard
-            url={props.urls[i]}
-            width="28.2vw"
-            height="30vh" />
-        </Grid>
-      )
-    }
-    return cardList
-  }
+export default function SongPageGridView({videoList}: gridViewProps) {
+  // const cardrendering = () => {
+  //   const cardList = []
+  //   for (let i=0; i<18; i++) {
+  //     cardList.push(
+  //       <Grid item sm={4}>
+  //         <ActionAreaCard
+  //           url={props.urls[i]}
+  //           width="28.2vw"
+  //           height="30vh" />
+  //       </Grid>
+  //     )
+  //   }
+  //   return cardList
+  // }
 
   return (
     <div>
       <Grid container spacing={0.4} style={{justifyContent: 'center'}}>
-          {cardrendering()}
+          {/* {cardrendering()} */}
+          {videoList.content.map((contentItem: contentItem) => (
+          <Grid item sm={4} key={contentItem.videoId}>
+            <ActionAreaCard
+              url={contentItem.imgUrl}
+              width="28.2vw"
+              height="30vh" />
+          </Grid>
+          ))}
       </Grid>
     </div>
   )

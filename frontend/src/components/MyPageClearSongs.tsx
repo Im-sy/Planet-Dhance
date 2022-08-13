@@ -2,8 +2,14 @@ import React from 'react'
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
+import { clearListItem } from '../pages/MyPage';
+import ActionAreaCard from './Card';
 
-export default function MyPageClearSongs() {
+interface clearListProps {
+	clearList: clearListItem[]
+}
+
+export default function MyPageClearSongs({clearList}: clearListProps) {
 	const cardrendering = () => {
 		const cardList = []
 		for (let i=0; i<5; i++) {
@@ -30,12 +36,18 @@ export default function MyPageClearSongs() {
   return (
     <div>
 		<CardContent sx={{ p : 1}}>
-            <Grid container spacing={0.4} direction='row'>
-                {cardrendering()}
-            </Grid>
-
-
-          </CardContent>
+			<Grid container spacing={0.4} direction='row'>
+				{/* {cardrendering()} */}
+				{clearList.map((clearItem: clearListItem) => (
+				<Grid item sm={4} key={clearItem.title}>
+					<ActionAreaCard
+						url={clearItem.imgUrl}
+						width="28.2vw"
+						height="30vh" />
+				</Grid>
+        ))}
+			</Grid>
+		</CardContent>
 
     </div>
   )

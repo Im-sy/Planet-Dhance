@@ -68,7 +68,7 @@ export default function NavBar() {
           <MuiBottomNavigationAction
             className="navbar"
             component={Link}
-            to={isAuthenticated ? '/login' : '/mypage'}
+            to={'/login'}
             label="My"
             icon={<AccountCircleIcon color="secondary" sx={{ fontSize: 30 }} />}
           />
