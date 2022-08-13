@@ -1,6 +1,8 @@
 import React from 'react'
 import Paper from '@mui/material/Paper';
 import {Link} from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { rootState } from '../reducer';
 // import BottomNavigation from '@mui/material/BottomNavigation';
 // import MuiBottomNavigationAction from '@mui/material/BottomNavigationAction';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -14,7 +16,9 @@ import '../styles/NavBar.css'
 
 
 export default function NavBar() {
-
+  const {isAuthenticated, user} = useSelector(
+    (state: rootState) => state.authReducer
+  );
 
   const StyledLink = styled(Link)`
   filter: grayscale(1);
@@ -64,7 +68,7 @@ export default function NavBar() {
           <MuiBottomNavigationAction
             className="navbar"
             component={Link}
-            to='/login'
+            to={isAuthenticated ? '/login' : '/mypage'}
             label="My"
             icon={<AccountCircleIcon color="secondary" sx={{ fontSize: 30 }} />}
           />

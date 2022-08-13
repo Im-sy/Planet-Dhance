@@ -1,5 +1,9 @@
 import * as React from 'react';
-import {login, logout, oauth2} from '../components/API/AuthService';
+import {login, logout, oauth2, jwtToken} from '../components/API/AuthService';
+import jwt_decode from 'jwt-decode';
+import { setCurrentUserAction, deleteCurrentUserAction } from '../reducer/authAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { rootState } from '../reducer';
 import NavBar from '../components/NavBar';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
@@ -15,6 +19,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import '../styles/styles.css';
+
 
 const CssTextField = styled(TextField)({
   '& .MuiInputBase-input': {
@@ -43,6 +49,11 @@ const theme = createTheme();
 
 export default function SignIn() { 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const {isAuthenticated, user} = useSelector(
+    (state: rootState) => state.authReducer
+  );
+  console.log(user.userId)
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -55,13 +66,19 @@ export default function SignIn() {
     const loginRes = await login(email, pwd)
     // console.log(loginRes)
     if (loginRes.state === "Success"){
+      const decoded = jwt_decode<jwtToken>(loginRes.token);
+      console.log(decoded)
+      dispatch(setCurrentUserAction(decoded.details))
       navigate('/')
     }
   };
 
-  const handleLogout = () => {
-    const logoutRes = logout(132)
-    console.log(logoutRes)
+  const handleLogout = async () => {
+    const logoutRes = await logout(user.userId)
+    if (logoutRes) {
+      dispatch(deleteCurrentUserAction())
+      navigate('/login')
+    }
   };
 
   const handleAuth = () => {
