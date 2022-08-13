@@ -5,6 +5,9 @@ import React, {
   useEffect,
 } from 'react';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
+import { useLocation } from 'react-router-dom';
+import { videoListProps } from './MyPage';
+import { playVideo } from '../components/API/MusicService';
 import axios from 'axios';
 import myVideo from '../videos/Patissiere_guide.mp4';
 import '../styles/tailwind_reset.css'
@@ -41,9 +44,11 @@ interface playProps {
 }
 
 
-
 export default function PlayingPage( props : playProps ){
-
+  const {prevPage, videoId} = useLocation() as unknown as {
+    prevPage: string;
+    videoId: number;
+  }
 
   const [playState, setPlayState] = useState<playProps>({
     url: '',
@@ -54,7 +59,10 @@ export default function PlayingPage( props : playProps ){
   const {played} = playState;
   const { url, playing,muted } = props;
   useEffect(() =>{
-    // axios here
+    const getPlayList = async () => {
+      const getplaylist = await playVideo(, prevPage, videoId)
+    }
+    getPlayList()
   },[])
 
   const handlePlay = () => {

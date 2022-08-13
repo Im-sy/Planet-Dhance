@@ -46,10 +46,10 @@ export async function musicList(songId: number) {
   }
 }
 
-export async function tagMusic(tagId: number) {
+export async function tagSearch(tagId: number, searchType: string) {
   try {
     const data = await axios.get(
-      API_URL+`tag/${tagId}/music`,
+      API_URL+`tag/${tagId}/${searchType}`,
     ).then(
       res => {
         console.log(res)
