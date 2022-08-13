@@ -99,12 +99,10 @@ export default function SongPageTabs() {
         </Box >
         {/* <p>fdf</p> */}
 
-      
         <StyledTabPanel  value="1" >
             <SongPageGridView urls={hit}/>
         
         </StyledTabPanel>
-
         <StyledTabPanel value="2">
             <SongPageGridView urls={Lastest}/>
         
