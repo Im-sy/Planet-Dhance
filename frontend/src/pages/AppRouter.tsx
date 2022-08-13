@@ -7,7 +7,6 @@ import SignUp from './SignUp';
 import NotFound404 from './NotFound404';
 // import SongPage from './MusicPage';
 import SearchSong from './SearchSong';
-import SearchTag from './SearchTag';
 import Subscribe from './Subscribe';
 import {HashResult} from './HashResult';
 import MyPage from './MyPage';
@@ -34,7 +33,6 @@ function AppRouter() {
         {/* <Route path='/songpage' element={<SongPage />} /> */}
         <Route path='/subscribe' element={<Subscribe />} />
         <Route path='/searchsong/:valueType/:id' element={<SearchSong />} />
-        <Route path='/searchtag' element={<SearchTag />} />
         <Route path='/hashresult' element={<HashResult />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/challenge' element={<ModeChallengeTimer />} />

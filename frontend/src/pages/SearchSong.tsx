@@ -22,7 +22,7 @@ export default function SearchSong() {
       </div>
       <br />
       <div>
-        <GridView />
+        <GridView prevPage={'prevPage'} videoList={undefined}  />
       </div>
       <NavBar current={"main"} />
     </div>
