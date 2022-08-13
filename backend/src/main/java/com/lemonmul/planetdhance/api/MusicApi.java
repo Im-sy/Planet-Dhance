@@ -2,7 +2,6 @@ package com.lemonmul.planetdhance.api;
 
 
 import com.lemonmul.planetdhance.dto.GridResponse;
-import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.tag.TagType;
@@ -67,7 +66,7 @@ public class MusicApi {
             Music music=musicService.getMusicInfo(music_id).get();
             int page=0;
             Slice<Video> latestVideoList = videoService.findLatestVideoList(page,size, music,VideoScope.PUBLIC);
-            Slice<Video> hitLikeVideoList = videoService.findHitLikeVideoList(page, size, music, VideoScope.PUBLIC);
+            Slice<Video> hitLikeVideoList = videoService.findMusicVideoList(page, size, music, VideoScope.PUBLIC);
 
             return new ResponseEntity<>(new MusicPageResponse(music,latestVideoList,hitLikeVideoList), HttpStatus.OK);
 

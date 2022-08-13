@@ -51,27 +51,42 @@ public class VideoService {
      * 검색 조건: 곡 1건, 공개 여부
      * 정렬: 조회수&좋아요 가중치, 가중치 같으면 최신순
      */
-    public Slice<Video> findHitLikeVideoList(int page,int size,Music music,VideoScope scope){
+    public Slice<Video> findMusicVideoList(int page, int size, Music music, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
         return videoRepo.findByMusicAndScopeOrderByOrderWeightDescRegDateDesc(music,scope,pageable);
+    }
+
+    public Slice<Video> findNextMusicVideoList(int page, int size, Long orderWeight, List<Music> musicList, VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByOrderWeightLessThanAndMusicInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,musicList,scope,pageable);
     }
 
     /**
      * 검색 조건: 곡 여러 건, 공개 여부
      * 정렬: 조회수&좋아요 가중치, 가중치 같으면 최신순
      */
-    public Slice<Video> findHitLikeVideoListByMusicList(int page, int size, List<Music> musicList, VideoScope scope){
+    public Slice<Video> findArtistVideoList(int page, int size, List<Music> musicList, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
         return videoRepo.findByMusicInAndScopeOrderByOrderWeightDescRegDateDesc(musicList,scope,pageable);
+    }
+
+    public Slice<Video> findNextArtistVideoList(int page, int size, Long orderWeight, List<Music> musicList, VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByOrderWeightLessThanAndMusicInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,musicList,scope,pageable);
     }
 
     /**
      * 검색 조건: videoTag 여러 건, 공개 여부
      * 정렬: 조회수&좋아요 가중치, 가중치 같으면 최신순
      */
-    public Slice<Video> findHitLikeVideoListByVideoTagList(int page, int size, List<VideoTag> videoTagList,VideoScope scope){
+    public Slice<Video> findCustomVideoList(int page, int size, List<VideoTag> videoTagList, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
         return videoRepo.findByVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(videoTagList,scope,pageable);
+    }
+
+    public Slice<Video> findNextCustomVideoList(int page, int size, Long orderWeight,List<VideoTag> videoTagList, VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByOrderWeightLessThanAndVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,videoTagList,scope,pageable);
     }
 
     /**
@@ -104,9 +119,14 @@ public class VideoService {
      * 검색 조건: 유저 한 명, 공개 여부
      * 정렬: 최신순
      */
-    public Slice<Video> findNewestVideoListByUser(int page, int size, User user,VideoScope scope){
+    public Slice<Video> findUserVideoList(int page, int size, User user, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
         return videoRepo.findByUserAndScopeOrderByRegDateDesc(user,scope,pageable);
+    }
+
+    public Slice<Video> findNextUserVideoList(int page, int size, Long orderWeight,User user, VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByOrderWeightLessThanAndUserAndScopeOrderByRegDateDesc(orderWeight,user,scope,pageable);
     }
 
     /**
@@ -117,6 +137,22 @@ public class VideoService {
     public Slice<Video> findAllNewestVideoListByUser(int page, int size, User user){
         Pageable pageable=PageRequest.of(page,size);
         return videoRepo.findByUserOrderByRegDateDesc(user,pageable);
+    }
+
+    public Video findById(Long videoId){
+        return videoRepo.findById(videoId).get();
+    }
+
+    @Transactional
+    public boolean addHitCount(Long videoId){
+        Optional<Video> optionalVideo = videoRepo.findById(videoId);
+        Video video;
+        if(optionalVideo.isEmpty()) return false;
+        else video=optionalVideo.get();
+
+        video.addHit();
+        videoRepo.save(video);
+        return true;
     }
 
     /**

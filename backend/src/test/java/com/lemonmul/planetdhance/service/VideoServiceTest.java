@@ -85,7 +85,7 @@ class VideoServiceTest {
     private void printHitLikeList(int page, int size,Music music) {
         //when
 
-        Slice<Video> hitLikeVideoList = videoService.findHitLikeVideoList(page, size, music,VideoScope.PUBLIC);
+        Slice<Video> hitLikeVideoList = videoService.findMusicVideoList(page, size, music,VideoScope.PUBLIC);
 
         //then
         for (Video video : hitLikeVideoList) {
@@ -104,19 +104,19 @@ class VideoServiceTest {
         em.persist(Tag.createTag(nation2.getName(), TagType.NATION,"usa img"));
 
         //user
-        User user1=User.createUser("email1@xx.xx","user1",null,null,nation1);
+        User user1=User.createUser("email1@xx.xx","user1",null,"/temp/0641e470-94f8-4347-a67f-40814645c890.png",nation1);
         em.persist(user1);
         em.persist(Tag.createTag(user1.getNickname(),TagType.NICKNAME, user1.getImgUrl()));
-        User user2=User.createUser("email2@xx.xx","user2",null,null,nation2);
+        User user2=User.createUser("email2@xx.xx","user2",null,"/temp/0641e470-94f8-4347-a67f-40814645c890.png",nation2);
         em.persist(user2);
         em.persist(Tag.createTag(user2.getNickname(),TagType.NICKNAME,user2.getImgUrl()));
 
         //music
-        Music music1=Music.createMusic("title1","artist1","album img1","model url1","guide url1","mv url1", LocalDateTime.now());
+        Music music1=Music.createMusic("title1","artist1","/temp/55167a30-7e09-4633-b25f-d7770936aee8.png","model url1","/temp/f4e6396b-be12-47ab-b9ee-0ee657c913a0.webm","https://youtu.be/f6YDKF0LVWw", LocalDateTime.now());
         em.persist(music1);
         em.persist(Tag.createTag(music1.getArtist(),TagType.ARTIST,"artist img1"));
         em.persist(Tag.createTag(music1.getTitle(),TagType.TITLE, music1.getImgUrl()));
-        Music music2=Music.createMusic("title2","artist2","album img2","model url2","guide url2","mv url2",LocalDateTime.now());
+        Music music2=Music.createMusic("title2","artist2","/temp/55167a30-7e09-4633-b25f-d7770936aee8.png","model url2","/temp/f4e6396b-be12-47ab-b9ee-0ee657c913a0.webm","https://youtu.be/f6YDKF0LVWw",LocalDateTime.now());
         em.persist(Tag.createTag(music2.getArtist(),TagType.ARTIST,"artist img2"));
         em.persist(Tag.createTag(music2.getTitle(),TagType.TITLE, music2.getImgUrl()));
         em.persist(music2);
@@ -128,7 +128,7 @@ class VideoServiceTest {
         //video, like, tag
         List<Video> videos=new ArrayList<>();
         for(int i=0;i<5;i++){
-            Video video = Video.createVideo("video url" + i, "thumbnail url" + i, VideoScope.PUBLIC, user1, music1);
+            Video video = Video.createVideo("/temp/c2d6f99a-8e0c-4413-a8ab-6e809b6b7d1b.webm", "/temp/9e7de94f-a832-4af3-9125-fbdd90277b18.png", VideoScope.PUBLIC, user1, music1);
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user1.getNickname(),TagType.NICKNAME));
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user1.getNation().getName(),TagType.NATION));
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music1.getArtist(),TagType.ARTIST));
@@ -141,7 +141,7 @@ class VideoServiceTest {
             em.persist(video);
         }
         for(int i=5;i<10;i++){
-            Video video = Video.createVideo("video url" + i,  "thumbnail url" + i, VideoScope.PUBLIC,user1, music2);
+            Video video = Video.createVideo("/temp/c2d6f99a-8e0c-4413-a8ab-6e809b6b7d1b.webm",  "/temp/9e7de94f-a832-4af3-9125-fbdd90277b18.png", VideoScope.PUBLIC,user1, music2);
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user1.getNickname(),TagType.NICKNAME));
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user1.getNation().getName(),TagType.NATION));
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music2.getArtist(),TagType.ARTIST));
@@ -165,7 +165,7 @@ class VideoServiceTest {
 //        em.persist(video1);
 //        em.persist(Like.createLike(video1,user2));
         for(int i=10;i<15;i++){
-            Video video = Video.createVideo("video url" + i, "thumbnail url" + i,VideoScope.PUBLIC,  user2, music2);
+            Video video = Video.createVideo("/temp/c2d6f99a-8e0c-4413-a8ab-6e809b6b7d1b.webm",  "/temp/9e7de94f-a832-4af3-9125-fbdd90277b18.png",VideoScope.PUBLIC,  user2, music2);
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user2.getNation().getName(),TagType.NATION));
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music2.getArtist(),TagType.ARTIST));
@@ -177,7 +177,7 @@ class VideoServiceTest {
             em.persist(video);
         }
         for(int i=16;i<20;i++){
-            Video video = Video.createVideo("video url" + i,"thumbnail url" + i, VideoScope.PUBLIC,  user2, music2);
+            Video video = Video.createVideo("/temp/c2d6f99a-8e0c-4413-a8ab-6e809b6b7d1b.webm",  "/temp/9e7de94f-a832-4af3-9125-fbdd90277b18.png", VideoScope.PUBLIC,  user2, music2);
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user2.getNickname(),TagType.NICKNAME));
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(user2.getNation().getName(),TagType.NATION));
             VideoTag.createVideoTag(video,tagRepo.findByNameAndType(music2.getArtist(),TagType.ARTIST));

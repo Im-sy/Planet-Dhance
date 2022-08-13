@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,7 +63,7 @@ public class TagApi {
         int page=0;
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findArtistVideoList(tag.getName());
-        Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+        Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
         return new MusicSearchResponse(musicList,"artist",videoList);
     }
 
@@ -78,7 +77,7 @@ public class TagApi {
     public GridResponse artistVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findArtistVideoList(tag.getName());
-        Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+        Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
         return new GridResponse("artist",videoList);
     }
 
@@ -94,7 +93,7 @@ public class TagApi {
         int page=0;
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findTitleVideoList(tag.getName());
-        Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+        Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
         return new MusicSearchResponse(musicList,"music",videoList);
     }
 
@@ -108,7 +107,7 @@ public class TagApi {
     public GridResponse musicVideos(@PathVariable Long tag_id, @PathVariable int page){
         Tag tag = tagService.findTagById(tag_id,page);
         List<Music> musicList = musicService.findTitleVideoList(tag.getName());
-        Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+        Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
         return new GridResponse("music",videoList);
     }
 
@@ -122,7 +121,7 @@ public class TagApi {
     @GetMapping("/{tag_id}/custom/{page}")
     public GridResponse customVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
-        Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
+        Slice<Video> videoList = videoService.findCustomVideoList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
         return new GridResponse("custom",videoList);
     }
 
@@ -135,7 +134,7 @@ public class TagApi {
     @GetMapping("/{tag_id}/nation/{page}")
     public GridResponse nationVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
-        Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
+        Slice<Video> videoList = videoService.findCustomVideoList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
         return new GridResponse("nation",videoList);
     }
 
@@ -151,7 +150,7 @@ public class TagApi {
         Tag tag = tagService.findTagById(tag_id,0);
         User user = userService.findByNickname(tag.getName());
         List<Clear> clearList = user.getClears();
-        Slice<Video> videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+        Slice<Video> videoList=videoService.findUserVideoList(page, videoSize, user, VideoScope.PUBLIC);
         return new UserSearchResponse(user,clearList,videoList);
     }
 
@@ -165,7 +164,7 @@ public class TagApi {
     public GridResponse userVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
         User user = userService.findByNickname(tag.getName());
-        Slice<Video> videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+        Slice<Video> videoList=videoService.findUserVideoList(page, videoSize, user, VideoScope.PUBLIC);
         return new GridResponse("user",videoList);
     }
 
