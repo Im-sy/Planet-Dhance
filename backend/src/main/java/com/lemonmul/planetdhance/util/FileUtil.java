@@ -21,12 +21,12 @@ public class FileUtil {
      * String filePath = createFile(inputFile, path)
      */
 
-    public static String createFile(MultipartFile inputFile, String path) throws IOException {
+    public static String createFilePath(MultipartFile inputFile, String path) throws IOException {
         String separator = File.separator;
 
         File tempFile = new File("");
         //TODO separator 빼기
-        String rootPath = tempFile.getAbsolutePath().split("src")[0] + separator + "static";
+        String rootPath = tempFile.getAbsolutePath().split("src")[0] + separator + "resource";
 
         String savePath = rootPath + separator + path;
 

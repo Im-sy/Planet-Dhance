@@ -1,6 +1,7 @@
 package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.dto.ChallengeRequest;
+import com.lemonmul.planetdhance.dto.GridResponse;
 import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
@@ -44,10 +45,10 @@ public class VideoApi {
      * size는 기본값 18
      */
     @GetMapping("/{music_id}/latest/{page}")
-    public Slice<VideoDto> newestList(@PathVariable Long music_id,@PathVariable int page) throws Exception {
+    public GridResponse latestList(@PathVariable Long music_id,@PathVariable int page) throws Exception {
         Music music=musicService.getMusicInfo(music_id).get();
-        Slice<Video> videoList = videoService.findNewestVideoList(page, listSize,music, VideoScope.PUBLIC);
-        return videoList.map(VideoDto::new);
+        Slice<Video> videoList = videoService.findLatestVideoList(page, listSize,music, VideoScope.PUBLIC);
+        return new GridResponse("latest",videoList);
     }
 
     /**
@@ -56,11 +57,11 @@ public class VideoApi {
      * 요청 파라미터 예시: /video/{곡 아이디}/hitlike/{page번호}
      * size는 기본값 18
      */
-    @GetMapping("/list/{music_id}/hitlike/{page}")
-    public Slice<VideoDto> hitlikeList(@PathVariable Long music_id,@PathVariable int page) throws Exception{
+    @GetMapping("/{music_id}/hitlike/{page}")
+    public GridResponse hitlikeList(@PathVariable Long music_id,@PathVariable int page) throws Exception{
         Music music=musicService.getMusicInfo(music_id).get();
         Slice<Video> videoList = videoService.findHitLikeVideoList(page, listSize,music, VideoScope.PUBLIC);
-        return videoList.map(VideoDto::new);
+        return new GridResponse("hitlike",videoList);
     }
 
     /**
@@ -84,8 +85,8 @@ public class VideoApi {
      * size는 기본값 18
      */
     @GetMapping("/main/{page}")
-    public Slice<VideoDto> mainList(@PathVariable int page){
-        return videoService.findMainPageVideoList(page,listSize,VideoScope.PUBLIC).map(VideoDto::new);
+    public GridResponse mainList(@PathVariable int page){
+        return new GridResponse("main",videoService.findMainPageVideoList(page,listSize,VideoScope.PUBLIC));
     }
 
     /**
@@ -161,9 +162,13 @@ public class VideoApi {
         }
     }
 
+    /**
+     * 메인 페이지 진입 시 반환 객체
+     */
     @Data
     static class MainPageResponse{
         private List<RankingDto> rankingList=new ArrayList<>();
+        private String prevPage="main";
         private Slice<VideoDto> videoList;
 
         public MainPageResponse(Map<Nation, Integer> ranking,Slice<Video> videos) {

@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.api;
 
+import com.lemonmul.planetdhance.dto.GridResponse;
 import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Nation;
 import com.lemonmul.planetdhance.entity.Validate;
@@ -243,10 +244,11 @@ public class UserApi {
      * size는 기본값 18
      */
     @GetMapping("/{user_id}/like/{page}")
-    public Slice<VideoDto> likeVideos(@PathVariable Long user_id,@PathVariable int page) throws Exception {
+    public GridResponse likeVideos(@PathVariable Long user_id, @PathVariable int page) throws Exception {
         int size=18;
         User user = userService.findById(user_id);
-        return videoService.findLikeVideoList(page,size, user.getLikes()).map(VideoDto::new);
+        Slice<Video> videoList = videoService.findLikeVideoList(page, size, user.getLikes());
+        return new GridResponse("like",videoList);
     }
 
     @Data
@@ -312,6 +314,7 @@ public class UserApi {
         private String introduce;
         private String imgUrl;
         private String nation;
+        private String prevPage="user";
         private List<VideoDto> videoList;
 
         public UserFollowDto(User user) {
@@ -322,6 +325,7 @@ public class UserApi {
             nation=user.getNation().getFlag();
 
             if(imgUrl == null)
+                //TODO 프로필 이미지 경로 수정
                 imgUrl = "/images/default/default_profile.png";
 
             //최신 영상 5개만

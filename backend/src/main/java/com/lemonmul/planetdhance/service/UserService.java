@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -176,7 +175,7 @@ public class UserService {
 
             String separator = File.separator;
             String path = "user" + separator + "img" + separator + createUpdateRequest.getEmail();
-            String filePath = FileUtil.createFile(inputFile, path);
+            String filePath = FileUtil.createFilePath(inputFile, path);
 
             findUser.setImgUrl(filePath);
         }
