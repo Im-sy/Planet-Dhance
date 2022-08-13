@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/video")
+@CrossOrigin
 public class VideoApi {
 
     private final VideoService videoService;
@@ -109,6 +110,11 @@ public class VideoApi {
         }
         return result;
     }
+
+    /**
+     *
+     */
+//    @GetMapping("/")
 
     /**
      * 챌린지 영상 업로드

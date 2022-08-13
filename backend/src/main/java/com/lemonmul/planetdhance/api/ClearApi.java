@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/clear")
+@CrossOrigin
 public class ClearApi {
 
     private final ClearService clearService;
@@ -52,7 +53,7 @@ public class ClearApi {
      * 요청 파라미터 예시: /clear/{userId}/musics
      * */
     @GetMapping("/{userId}/musics")
-    public List<ClearMusicDto> clearList(@PathVariable Long userId){
+    public List<ClearMusicDto> clearList(@PathVariable Long userId) throws Exception{
         List<Music> musicList = clearService.findClearMusicList(userId, albumSize);
         return MusicToClearDto(musicList);
     }

@@ -73,7 +73,7 @@ class VideoServiceTest {
     @Test
     public void findHitLikeVideoList() {
         //given
-//        initdb();
+        initdb();
         rankingService.ranking();
 
 //        Music music=musicRepo.findById(4L).get();
@@ -96,10 +96,10 @@ class VideoServiceTest {
 
     private void initdb() {
         //nation
-        Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko",-3,-3,-2.5);
+        Nation nation1=Nation.createNation("korea emoji","ko",-3,-3,-2.5);
         em.persist(nation1);
         em.persist(Tag.createTag(nation1.getName(), TagType.NATION,"korea img"));
-        Nation nation2=Nation.createNation("\uD83C\uDDFA\uD83C\uDDF8","us",-1.5,-3,3.5);
+        Nation nation2=Nation.createNation("usa emoji","us",-1.5,-3,3.5);
         em.persist(nation2);
         em.persist(Tag.createTag(nation2.getName(), TagType.NATION,"usa img"));
 
