@@ -22,12 +22,26 @@ import java.util.stream.Collectors;
 public class RankingService {
     private final UserRepo userRepo;
     private final RankingRepo rankingRepo;
-    
+
+    /**
+     * 랭킹 테이블 조회
+     *
+     * 상위 n개의 팀을 조회해서 반환
+     * n의 기본값은 10
+     */
     public Slice<Ranking> getRanking() {
         Pageable pageable= PageRequest.of(0,10);
         return rankingRepo.findByOrderByClearCntDesc(pageable);
     }
 
+    /**
+     * 랭킹 테이블 갱신
+     *
+     * 일정 시간마다 랭킹 점수를 계산해서 테이블 갱신
+     *
+     * 갱신 시간은 매일 4시로 설정
+     * -> 관련 설정은 util 패키지의 ScheduledTasks에서 가능
+     */
     @Transactional
     public void ranking() {
         Map<Nation, List<User>> nationListMap = userRepo.findAll().stream().collect(Collectors.groupingBy(User::getNation));

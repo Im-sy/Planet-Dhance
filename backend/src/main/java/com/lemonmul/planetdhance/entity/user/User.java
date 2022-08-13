@@ -1,6 +1,9 @@
 package com.lemonmul.planetdhance.entity.user;
 
-import com.lemonmul.planetdhance.entity.*;
+import com.lemonmul.planetdhance.entity.Clear;
+import com.lemonmul.planetdhance.entity.Follow;
+import com.lemonmul.planetdhance.entity.Like;
+import com.lemonmul.planetdhance.entity.Nation;
 import com.lemonmul.planetdhance.entity.video.Video;
 import lombok.*;
 
@@ -86,12 +89,11 @@ public class User {
         return user;
     }
 
-    // TODO: Setter 제거했을 때 사용할 수 있도록 코드 수정(ex. 이미지 경로가 null일 때 기본 이미지 경로를 반환할 수 있도록?)
+    // TODO: null처리에 관한 부분은 반환할 때 dto에서 이루어지므로 여기서는 처리 안해도 괜찮을지도...?
     public void setImgUrl(String imgUrl){
-        if(imgUrl==null){
-            //TODO 기본 이미지 설정
-            imgUrl="default img path";
-        }
+//        if(imgUrl==null){
+//            imgUrl="/resource/user/img/default/default_profile.png";
+//        }
         this.imgUrl=imgUrl;
     }
 

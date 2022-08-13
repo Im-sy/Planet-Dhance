@@ -2,8 +2,8 @@ package com.lemonmul.planetdhance.service;
 
 import com.lemonmul.planetdhance.entity.Validate;
 import com.lemonmul.planetdhance.entity.user.User;
-import com.lemonmul.planetdhance.repo.ValidateRepo;
 import com.lemonmul.planetdhance.repo.UserRepo;
+import com.lemonmul.planetdhance.repo.ValidateRepo;
 import com.lemonmul.planetdhance.security.jwt.CustomUserDetails;
 import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
@@ -14,7 +14,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.ServletRequest;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -295,13 +295,13 @@ public class UserApi {
             this.imgUrl = user.getImgUrl();
             this.nationName = user.getNation().getName();
 
+            // TODO: imgUrl이 null일 때의 반환값 처리 통합?
             if(this.imgUrl == null)
-                imgUrl = "/images/default/default_profile.png";
+                imgUrl = "/resource/user/img/default/default_profile.png";
         }
     }
 
     private User toUserForSignUp(CreateSignUpRequest createSignUpRequest) {
-        System.out.println("createSignUpRequest = " + createSignUpRequest.nationName);
         String email = createSignUpRequest.email;
         String nickname = createSignUpRequest.nickname;
         String introduce = createSignUpRequest.introduce;
@@ -333,8 +333,9 @@ public class UserApi {
             imgUrl=user.getImgUrl();
             nation=user.getNation().getFlag();
 
+            // TODO: imgUrl이 null일 때의 반환값 처리 통합?
             if(imgUrl == null)
-                imgUrl = "/images/default/default_profile.png";
+                imgUrl = "/resource/user/img/default/default_profile.png";
 
             //최신 영상 5개만
             videoList=user.getVideos().stream().sorted(Comparator.comparing(Video::getRegDate).reversed())
