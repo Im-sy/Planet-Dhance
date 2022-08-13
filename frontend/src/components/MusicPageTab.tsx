@@ -96,8 +96,12 @@ export default function SongPageTabs() {
           </TabList>
         </Box>
 
-        <StyledTabPanel  value="1" >
+        {/* <StyledTabPanel  value="1" > */}
+        <StyledTabPanel value="1" >
             <SongPageGridView urls={hit}/>
+            </StyledTabPanel>
+        <StyledTabPanel value="2">
+            <SongPageGridView urls={Lastest}/>
         
         </StyledTabPanel>
         <StyledTabPanel value="2">
