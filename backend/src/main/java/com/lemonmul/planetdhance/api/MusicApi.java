@@ -45,15 +45,23 @@ public class MusicApi {
     *
     */
     @GetMapping("/{music_id}/challenge/{user_id}")
-    public MusicChallengeResponse musicForChallenge(@PathVariable Long music_id,@PathVariable Long user_id) throws Exception{
-        Music music = musicService.getMusicInfo(music_id).get();
-        User user = userService.findById(user_id);
-        List<Tag> tagList=new ArrayList<>();
-        tagList.add(tagService.findByNameAndType(music.getTitle(), TagType.TITLE));
-        tagList.add(tagService.findByNameAndType(music.getArtist(),TagType.ARTIST));
-        tagList.add(tagService.findByNameAndType(user.getNickname(),TagType.NICKNAME));
-        tagList.add(tagService.findByNameAndType(user.getNation().getName(),TagType.NATION));
-        return new MusicChallengeResponse(music,tagList);
+    public ResponseEntity<?> musicForChallenge(@PathVariable Long music_id,@PathVariable Long user_id) {
+        try {
+            Music music = musicService.getMusicInfo(music_id);
+            User user = userService.findById(user_id);
+
+            List<Tag> tagList=new ArrayList<>();
+            tagList.add(tagService.findByNameAndType(music.getTitle(), TagType.TITLE));
+            tagList.add(tagService.findByNameAndType(music.getArtist(),TagType.ARTIST));
+            tagList.add(tagService.findByNameAndType(user.getNickname(),TagType.NICKNAME));
+            tagList.add(tagService.findByNameAndType(user.getNation().getName(),TagType.NATION));
+
+            return new ResponseEntity<>(new MusicChallengeResponse(music,tagList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     /**
@@ -65,7 +73,7 @@ public class MusicApi {
     @GetMapping("/list/{music_id}")
     public ResponseEntity<?> mvAndVideoLists(@PathVariable Long music_id){
         try {
-            Music music=musicService.getMusicInfo(music_id).get();
+            Music music=musicService.getMusicInfo(music_id);
             int page=0;
             Slice<Video> latestVideoList = videoService.findLatestVideoList(page,size, music,VideoScope.PUBLIC);
             Slice<Video> hitLikeVideoList = videoService.findHitLikeVideoList(page, size, music, VideoScope.PUBLIC);

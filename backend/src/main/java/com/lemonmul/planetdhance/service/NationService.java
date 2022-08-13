@@ -19,11 +19,10 @@ public class NationService {
      *
      * 반환값
      *      조회 성공: 조회된 국가 객체
-     *      TODO: 예외 처리
      *      조회 실패: "Nation Not Found" 예외 발생
      */
-    public Nation findByName(String nationName){
-        return nationRepo.findByName(nationName).get();
+    public Nation findByName(String nationName) throws Exception {
+        return nationRepo.findByName(nationName).orElseThrow(() -> new Exception("Nation Not Found"));
     }
 
 //    public List<Nation> findAllNation(){

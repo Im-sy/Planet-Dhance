@@ -27,33 +27,28 @@ public class LikeService {
     }
 
     @Transactional
-    public boolean addLike(Long userId,Long videoId){
-        //TODO Optional 처리
-        User user = userRepo.findById(userId).get();
-        Video video = videoRepo.findById(videoId).get();
+    public boolean addLike(Long userId,Long videoId) throws Exception {
+        User user = userRepo.findById(userId).orElseThrow(() -> new Exception("User Not Found"));
+        Video video = videoRepo.findById(videoId).orElseThrow(() -> new Exception("Video Not Found"));
 
-        if (likeRepo.findByUserAndVideo(user,video).isEmpty()){
-            likeRepo.save(Like.createLike(video,user));
-            return true;
-        }
-        else{
-            return false;
-        }
+        if(likeRepo.findByUserAndVideo(user,video).isPresent())
+            throw new Exception("Already Like");
+
+        likeRepo.save(Like.createLike(video, user));
+        return true;
     }
 
     @Transactional
-    public boolean removeLike(Long userId,Long videoId){
-        //TODO Optional 처리
-        User user = userRepo.findById(userId).get();
-        Video video = videoRepo.findById(videoId).get();
+    public boolean removeLike(Long userId,Long videoId) throws Exception {
+        User user = userRepo.findById(userId).orElseThrow(() -> new Exception("User Not Found"));
+        Video video = videoRepo.findById(videoId).orElseThrow(() -> new Exception("Video Not Found"));
 
         Optional<Like> like = likeRepo.findByUserAndVideo(user, video);
-        if (like.isPresent()){
-            likeRepo.delete(like.get());
-            return true;
-        }
-        else{
-            return false;
-        }
+
+        if(like.isEmpty())
+            throw new Exception("Not Yet Like");
+
+        likeRepo.delete(like.get());
+        return true;
     }
 }

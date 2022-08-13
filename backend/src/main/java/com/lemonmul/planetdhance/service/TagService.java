@@ -30,9 +30,8 @@ public class TagService {
      * 해당 아이디의 해시태그 조회 및 검색 횟수 증가
      */
     @Transactional
-    public Tag findTagById(Long id,int page){
-        //TODO Optional 처리
-        Tag tag = tagRepo.findById(id).get();
+    public Tag findTagById(Long id,int page) throws Exception {
+        Tag tag = tagRepo.findById(id).orElseThrow(() -> new Exception("Tag Not Found"));
         //검색 페이지 진입 시, 해시태그 검색 횟수 증가
         if(page==0){
             tag.addHit();
@@ -46,9 +45,8 @@ public class TagService {
      * 해당 아이디의 해시태그를 태그명으로 조회 및 검색 횟수 증가
      */
     @Transactional
-    public Tag findTagByName(String name,int page){
-        //TODO Optional 처리
-        Tag tag = tagRepo.findByName(name).get();
+    public Tag findTagByName(String name,int page) throws Exception {
+        Tag tag = tagRepo.findByName(name).orElseThrow(() -> new Exception("Tag Not Found"));
         //검색 페이지 진입 시, 해시태그 검색 횟수 증가
         if(page==0){
             tag.addHit();
@@ -56,6 +54,6 @@ public class TagService {
         return tag;
     }
     public Tag findByNameAndType(String name,TagType type){
-        return tagRepo.findByNameAndType(name, type);
+        return tagRepo.findTestByNameAndType(name, type);
     }
 }
