@@ -1,6 +1,7 @@
 package com.lemonmul.planetdhance.api;
 
 
+import com.lemonmul.planetdhance.dto.GridResponse;
 import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.tag.Tag;
@@ -92,13 +93,13 @@ public class MusicApi {
     @Data
     static class MusicPageResponse{
         String mvUrl;
-        Slice<VideoDto> latestList;
-        Slice<VideoDto> hitlikeList;
+        GridResponse latestList;
+        GridResponse hitlikeList;
 
         public MusicPageResponse(Music music,Slice<Video> latest,Slice<Video> hitlike) {
             mvUrl=music.getMvUrl();
-            latestList =latest.map(VideoDto::new);
-            hitlikeList=hitlike.map(VideoDto::new);
+            latestList=new GridResponse("latest",latest);
+            hitlikeList=new GridResponse("hitlike",hitlike);
         }
     }
 
