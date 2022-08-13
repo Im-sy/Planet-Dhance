@@ -143,7 +143,7 @@ export async function profile(userId: number) {
   }
 }
 
-export async function update(userId: number) {
+export async function profileUpdate(userId: number) {
   try {
     const data = await axios.put(
       API_URL+`update/${userId}`,
