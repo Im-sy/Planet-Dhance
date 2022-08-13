@@ -243,7 +243,7 @@ export default function SongPage() {
       <SongPageTabs />
 
       {/* Navbar */}
-      <NavBar />
+      <NavBar current={"search"}/>
     </div>
   )
 }

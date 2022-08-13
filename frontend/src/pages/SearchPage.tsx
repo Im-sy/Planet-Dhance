@@ -18,9 +18,10 @@ export default function SearchSong() {
       </div>
       <div>
         <SearchSongInfo
+          id={132}
           img={"여기에 이미지 url 혹은 blob"}
           value={"여기엔 검색 결과 값"}
-          type = {0}
+          type = {"0"}
         />
         {/* <SearchSongInfo />
         <SearchSongInfo /> */}
@@ -29,7 +30,7 @@ export default function SearchSong() {
       <div>
         <HashResult />
       </div>
-      <NavBar />
+      <NavBar current={"main"} />
     </div>
   )
 }

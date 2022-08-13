@@ -3,23 +3,12 @@ import React, {
   SetStateAction,
   useState,
   useEffect,
-  useRef,
 } from 'react';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import axios from 'axios';
-import styled from 'styled-components';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import myVideo from '../videos/IMG_0960.mp4';
+import myVideo from '../videos/Patissiere_guide.mp4';
 import '../styles/tailwind_reset.css'
 
-const Text = styled.button`
-  background: palevioletred;
-  border-radius: 3px;
-  border: none;
-  color: white;
-`;
 
 const playerStyle: CSSProperties = {
   position: 'absolute',
