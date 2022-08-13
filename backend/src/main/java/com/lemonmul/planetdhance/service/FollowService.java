@@ -6,12 +6,15 @@ import com.lemonmul.planetdhance.repo.FollowRepo;
 import com.lemonmul.planetdhance.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class FollowService {
 
     private final FollowRepo followRepo;
@@ -25,23 +28,18 @@ public class FollowService {
      *      toId: 팔로우 당하는 사용자 아이디
      *
      * 반환값
-     *      TODO: 성공 시 반환값 "Success"? true?
-     *      팔로우 성공: "Success"? true?
-     *      TODO: 예외 처리
+     *      팔로우 성공: true
      *      from 유저 조회 실패: "From User Not Found" 예외 발생
      *      To 유저 조회 실패: "To User Not Found" 예외 발생
-     *      TODO: 예외 메세지 고민해보기
      *      이미 팔로우 중: "Already Following" 예외 발생
      */
-    public boolean follow(Long fromId, Long toId) {
-        User fromUser = userRepo.findById(fromId).orElse(null);
-        User toUser = userRepo.findById(toId).orElse(null);
+    @Transactional
+    public boolean follow(Long fromId, Long toId) throws Exception {
+        User fromUser = userRepo.findById(fromId).orElseThrow(() -> new Exception("From User Not Found"));
+        User toUser = userRepo.findById(toId).orElseThrow(() -> new Exception("To User Not Found"));
 
-        if(fromUser == null || toUser == null)
-            return false;
-
-        if(followRepo.findByFromAndTo(fromUser, toUser).orElse(null) != null)
-            return false;
+        if(followRepo.findByFromAndTo(fromUser, toUser).isPresent())
+            throw new Exception("Already Following");
 
         Follow follow = Follow.createFollow(fromUser, toUser);
         followRepo.save(follow);
@@ -57,27 +55,22 @@ public class FollowService {
      *      toId: 팔로우 당하는 사용자 아이디
      *
      * 반환값
-     *      TODO: 성공 시 반환값 "Success"? true?
-     *      팔로우 해제 성공: "Success"? true?
-     *      TODO: 예외 처리
+     *      팔로우 해제 성공: true
      *      from 유저 조회 실패: "From User Not Found" 예외 발생
      *      To 유저 조회 실패: "To User Not Found" 예외 발생
-     *      TODO: 예외 메세지 고민해보기
-     *      팔로우 관계 X: "Already Not Following" 예외 발생
+     *      팔로우 관계 X: "Not Following" 예외 발생
      */
-    public boolean unfollow(Long fromId, Long toId) {
-        User fromUser = userRepo.findById(fromId).orElse(null);
-        User toUser = userRepo.findById(toId).orElse(null);
+    @Transactional
+    public boolean unfollow(Long fromId, Long toId) throws Exception {
+        User fromUser = userRepo.findById(fromId).orElseThrow(() -> new Exception("From User Not Found"));
+        User toUser = userRepo.findById(toId).orElseThrow(() -> new Exception("To User Not Found"));
 
-        if(fromUser == null || toUser == null)
-            return false;
+        Optional<Follow> findFollow = followRepo.findByFromAndTo(fromUser, toUser);
 
-        Follow findFollow = followRepo.findByFromAndTo(fromUser, toUser).orElse(null);
+        if(findFollow.isEmpty())
+            throw new Exception("Not Following");
 
-        if(findFollow == null)
-            return false;
-
-        followRepo.delete(findFollow);
+        followRepo.delete(findFollow.get());
 
         return true;
     }
@@ -89,16 +82,11 @@ public class FollowService {
      *      fromId: 팔로우하는 사용자 아이디
      *
      * 반환값
-     *      TODO: List를 반환할지 List의 size를 반환할지 고민하기
      *      팔로우 리스트 조회 성공: List? List의 size?
-     *      TODO: 예외 처리
      *      유저 조회 실패: "User Not Found" 예외 발생
      */
-    public List<Follow> countTo(Long fromId) {
-        User fromUser = userRepo.findById(fromId).orElse(null);
-
-        if(fromUser == null)
-            return new ArrayList<>();
+    public List<Follow> countTo(Long fromId) throws Exception {
+        User fromUser = userRepo.findById(fromId).orElseThrow(() -> new Exception("User Not Found"));
 
         return followRepo.findAllByFrom(fromUser);
     }
@@ -110,16 +98,11 @@ public class FollowService {
      *      toId: 팔로우하는 사용자 아이디
      *
      * 반환값
-     *      TODO: List를 반환할지 List의 size를 반환할지 고민하기
      *      팔로우 리스트 조회 성공: List? List의 size?
-     *      TODO: 예외 처리
      *      유저 조회 실패: "User Not Found" 예외 발생
      */
-    public List<Follow> countFrom(Long toId) {
-        User toUser = userRepo.findById(toId).orElse(null);
-
-        if(toUser == null)
-            return new ArrayList<>();
+    public List<Follow> countFrom(Long toId) throws Exception {
+        User toUser = userRepo.findById(toId).orElseThrow(() -> new Exception("User Not Found"));
 
         return followRepo.findAllByTo(toUser);
     }

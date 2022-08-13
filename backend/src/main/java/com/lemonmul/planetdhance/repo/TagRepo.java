@@ -14,9 +14,9 @@ public interface TagRepo extends JpaRepository<Tag,Long> {
     Slice<Tag> findByNameContainingOrderByHitDesc(String searchStr, Pageable pageable);
 
     //TODO 여러 값 반환 가능한 점 수정
-    Tag findByNameAndType(String name, TagType type);
+    Tag findTestByNameAndType(String name, TagType type);
 
     Optional<Tag> findByName(String name);
 
-    Optional<Tag> findCustomByNameAndType(String name,TagType type);
+    Optional<Tag> findByNameAndType(String name, TagType type);
 }

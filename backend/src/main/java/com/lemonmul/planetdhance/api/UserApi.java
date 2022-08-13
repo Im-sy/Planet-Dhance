@@ -72,7 +72,6 @@ public class UserApi {
      */
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody CreateSignUpRequest createSignUpRequest) {
-
         try {
             boolean result = userService.signUp(toUserForSignUp(createSignUpRequest));
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -248,10 +247,16 @@ public class UserApi {
      * size는 10개
      */
     @GetMapping("/{user_id}/follow/{page}")
-    public Slice<UserFollowDto> followInfoList(@PathVariable Long user_id, @PathVariable int page) throws Exception {
+    public ResponseEntity<?> followInfoList(@PathVariable Long user_id, @PathVariable int page) {
         int size=10;
-        User user=userService.findById(user_id);
-        return userService.findFollowingUserInfo(page,size,user.getTos()).map(UserFollowDto::new);
+
+        try {
+            User user=userService.findById(user_id);
+            return new ResponseEntity<>(userService.findFollowingUserInfo(page,size,user.getTos()).map(UserFollowDto::new), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -261,11 +266,17 @@ public class UserApi {
      * size는 기본값 18
      */
     @GetMapping("/{user_id}/like/{page}")
-    public GridResponse likeVideos(@PathVariable Long user_id, @PathVariable int page) throws Exception {
+    public ResponseEntity<?> likeVideos(@PathVariable Long user_id, @PathVariable int page) {
         int size=18;
-        User user = userService.findById(user_id);
-        Slice<Video> videoList = videoService.findLikeVideoList(page, size, user.getLikes());
-        return new GridResponse("like",videoList);
+
+        try {
+            User user = userService.findById(user_id);
+            Slice<Video> videoList = videoService.findLikeVideoList(page, size, user.getLikes());
+            return new ResponseEntity<>(new GridResponse("like",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Data
@@ -293,12 +304,14 @@ public class UserApi {
     static class CreateProfileResponse {
         private String email;
         private String nickname;
+        private String introduce;
         private String imgUrl;
         private String nationName;
 
         public CreateProfileResponse(User user) {
             this.email = user.getEmail();
             this.nickname = user.getNickname();
+            this.introduce = user.getIntroduce();
             this.imgUrl = user.getImgUrl();
             this.nationName = user.getNation().getName();
 
@@ -308,10 +321,11 @@ public class UserApi {
         }
     }
 
-    private User toUserForSignUp(CreateSignUpRequest createSignUpRequest) {
+    private User toUserForSignUp(CreateSignUpRequest createSignUpRequest) throws Exception {
         String email = createSignUpRequest.email;
         String nickname = createSignUpRequest.nickname;
         String introduce = createSignUpRequest.introduce;
+
         Nation nation = nationService.findByName(createSignUpRequest.nationName);
         Role role = Role.USER;
 

@@ -18,7 +18,9 @@ import com.lemonmul.planetdhance.service.VideoService;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,10 +48,15 @@ public class VideoApi {
      * size는 기본값 18
      */
     @GetMapping("/{music_id}/latest/{page}")
-    public GridResponse latestList(@PathVariable Long music_id,@PathVariable int page) throws Exception {
-        Music music=musicService.getMusicInfo(music_id).get();
-        Slice<Video> videoList = videoService.findLatestVideoList(page, listSize,music, VideoScope.PUBLIC);
-        return new GridResponse("latest",videoList);
+    public ResponseEntity<?> latestList(@PathVariable Long music_id, @PathVariable int page) {
+        try {
+            Music music=musicService.getMusicInfo(music_id);
+            Slice<Video> videoList = videoService.findLatestVideoList(page, listSize,music, VideoScope.PUBLIC);
+            return new ResponseEntity<>(new GridResponse("latest",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -59,10 +66,15 @@ public class VideoApi {
      * size는 기본값 18
      */
     @GetMapping("/{music_id}/hitlike/{page}")
-    public GridResponse hitlikeList(@PathVariable Long music_id,@PathVariable int page) throws Exception{
-        Music music=musicService.getMusicInfo(music_id).get();
-        Slice<Video> videoList = videoService.findHitLikeVideoList(page, listSize,music, VideoScope.PUBLIC);
-        return new GridResponse("hitlike",videoList);
+    public ResponseEntity<?> hitlikeList(@PathVariable Long music_id,@PathVariable int page) {
+        try {
+            Music music=musicService.getMusicInfo(music_id);
+            Slice<Video> videoList = videoService.findHitLikeVideoList(page, listSize,music, VideoScope.PUBLIC);
+            return new ResponseEntity<>(new GridResponse("hitlike",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -72,7 +84,7 @@ public class VideoApi {
      * 영상 리스트 size는 12개
      */
     @GetMapping("/main")
-    public MainPageResponse mainListAndRankingAndArtistList(){
+    public MainPageResponse mainListAndRankingAndArtistList() {
         int size=12;
         Slice<Ranking> ranking = rankingService.getRanking();
         Slice<Video> videoList = videoService.findMainPageVideoList(0, size, VideoScope.PUBLIC);
@@ -97,17 +109,23 @@ public class VideoApi {
      * size는 기본값 10개
      */
     @GetMapping("/random/{user_id}")
-    public List<VideoPlayDto> randomVideoInfoList(@PathVariable Long user_id) throws Exception{
+    public ResponseEntity<?> randomVideoInfoList(@PathVariable Long user_id) {
         int size=10;
-        List<Video> videoList = videoService.findRandomVideoInfoList(size);
-        User user = userService.findById(user_id);
-        List<Like> likeList = likeService.findLikeByUserAndVideos(user, videoList);
 
-        List<VideoPlayDto> result=new ArrayList<>();
-        for (Video video : videoList) {
-            result.add(new VideoPlayDto(video,likeList));
+        try {
+            List<Video> videoList = videoService.findRandomVideoInfoList(size);
+            User user = userService.findById(user_id);
+            List<Like> likeList = likeService.findLikeByUserAndVideos(user, videoList);
+
+            List<VideoPlayDto> result=new ArrayList<>();
+            for (Video video : videoList) {
+                result.add(new VideoPlayDto(video,likeList));
+            }
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return result;
     }
 
     /**
@@ -119,9 +137,15 @@ public class VideoApi {
     @PostMapping(value = "/upload",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE,
                     MediaType.APPLICATION_JSON_VALUE})
-    public boolean uploadChallengeVideo(@RequestPart MultipartFile videoFile,@RequestPart MultipartFile imgFile,
-                                        @RequestPart ChallengeRequest challengeRequest) throws Exception{
-        return videoService.uploadChallengeVideo(videoFile,imgFile,challengeRequest);
+    public ResponseEntity<?> uploadChallengeVideo(@RequestPart MultipartFile videoFile,@RequestPart MultipartFile imgFile,
+                                        @RequestPart ChallengeRequest challengeRequest) {
+        try {
+            return new ResponseEntity<>(videoService.uploadChallengeVideo(videoFile, imgFile, challengeRequest), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @Data

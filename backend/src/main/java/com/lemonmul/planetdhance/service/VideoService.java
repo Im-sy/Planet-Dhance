@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -133,11 +132,13 @@ public class VideoService {
      */
     @Transactional
     public boolean uploadChallengeVideo(MultipartFile videoFile, MultipartFile imgFile,
-                                        ChallengeRequest challengeRequest) throws IOException {
-        if(videoFile.isEmpty() || imgFile.isEmpty()){
-            //TODO 예외처리
-            return false;
-        }
+                                        ChallengeRequest challengeRequest) throws Exception {
+
+        if(videoFile.isEmpty())
+            throw new Exception("Video Not Found");
+
+        if(imgFile.isEmpty())
+            throw new Exception("Img Not Found");
 
         //영상 경로, 썸네일 경로
         String videoUrl = FileUtil.createFilePath(videoFile, "video" + File.separator + "article");
@@ -145,25 +146,20 @@ public class VideoService {
 
         VideoScope scope=challengeRequest.getScope();
 
-        Optional<User> optionalUser=userRepo.findById(challengeRequest.getUserId());
-        Optional<Music> optionalMusic = musicRepo.findById(challengeRequest.getMusicId());
-        if(optionalUser.isEmpty() || optionalMusic.isEmpty()){
-            //TODO 예외처리
-            return false;
-        }
-        User user=optionalUser.get();
-        Music music=optionalMusic.get();
+        User user = userRepo.findById(challengeRequest.getUserId()).orElseThrow(() -> new Exception("User Not Found"));
+        Music music = musicRepo.findById(challengeRequest.getMusicId()).orElseThrow(() -> new Exception("Music Not Found"));
 
         List<Tag> tagList = new ArrayList<>();
         //고정 태그들 추가
-        tagList.add(tagRepo.findByNameAndType(user.getNickname(), TagType.NICKNAME));
-        tagList.add(tagRepo.findByNameAndType(user.getNation().getName(), TagType.NATION));
-        tagList.add(tagRepo.findByNameAndType(music.getTitle(), TagType.TITLE));
-        tagList.add(tagRepo.findByNameAndType(music.getArtist(), TagType.ARTIST));
+        tagList.add(tagRepo.findByNameAndType(user.getNickname(), TagType.NICKNAME).orElseThrow(() -> new Exception("Nickname Tag Not Found")));
+        tagList.add(tagRepo.findByNameAndType(user.getNation().getName(), TagType.NATION).orElseThrow(() -> new Exception("Nation Tag Not Found")));
+        tagList.add(tagRepo.findByNameAndType(music.getTitle(), TagType.TITLE).orElseThrow(() -> new Exception("Title Tag Not Found")));
+        tagList.add(tagRepo.findByNameAndType(music.getArtist(), TagType.ARTIST).orElseThrow(() -> new Exception("Artist Tag Not Found")));
+
         //커스텀 태그들 추가
         for (TagRequestDto tagRequestDto : challengeRequest.getTagList()) {
             String tagName=tagRequestDto.getType();
-            Optional<Tag> optionalTag=tagRepo.findCustomByNameAndType(tagName,TagType.CUSTOM);
+            Optional<Tag> optionalTag=tagRepo.findByNameAndType(tagName,TagType.CUSTOM);
             Tag tag;
             //이미 등록된 커스텀 태그인지 확인
             if(optionalTag.isEmpty()){
@@ -171,7 +167,7 @@ public class VideoService {
                 tag=Tag.createCustomTag(tagRequestDto);
                 tagRepo.save(tag);
             }else{
-                tag=tagRepo.findByNameAndType(tagName,TagType.CUSTOM);
+                tag = optionalTag.get();
             }
             tagList.add(tag);
         }

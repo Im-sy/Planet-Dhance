@@ -17,6 +17,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,12 +64,19 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/artist")
-    public MusicSearchResponse musicsAndArtistVideos(@PathVariable Long tag_id){
+    public ResponseEntity<?> musicsAndArtistVideos(@PathVariable Long tag_id){
         int page=0;
-        Tag tag = tagService.findTagById(tag_id,page);
-        List<Music> musicList = musicService.findArtistVideoList(tag.getName());
-        Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
-        return new MusicSearchResponse(musicList,"artist",videoList);
+
+        try {
+            Tag tag = tagService.findTagById(tag_id,page);
+            List<Music> musicList = musicService.findArtistVideoList(tag.getName());
+            Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+
+            return new ResponseEntity<>(new MusicSearchResponse(musicList,"artist",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -77,11 +86,17 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/artist/{page}")
-    public GridResponse artistVideos(@PathVariable Long tag_id,@PathVariable int page){
-        Tag tag = tagService.findTagById(tag_id,page);
-        List<Music> musicList = musicService.findArtistVideoList(tag.getName());
-        Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
-        return new GridResponse("artist",videoList);
+    public ResponseEntity<?> artistVideos(@PathVariable Long tag_id,@PathVariable int page){
+        try {
+            Tag tag = tagService.findTagById(tag_id,page);
+            List<Music> musicList = musicService.findArtistVideoList(tag.getName());
+            Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+
+            return new ResponseEntity<>(new GridResponse("artist",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -92,12 +107,19 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/music")
-    public MusicSearchResponse musicsAndMusicVideos(@PathVariable Long tag_id){
+    public ResponseEntity<?> musicsAndMusicVideos(@PathVariable Long tag_id){
         int page=0;
-        Tag tag = tagService.findTagById(tag_id,page);
-        List<Music> musicList = musicService.findTitleVideoList(tag.getName());
-        Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
-        return new MusicSearchResponse(musicList,"music",videoList);
+
+        try {
+            Tag tag = tagService.findTagById(tag_id,page);
+            List<Music> musicList = musicService.findTitleVideoList(tag.getName());
+            Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+
+            return new ResponseEntity<>(new MusicSearchResponse(musicList,"music",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -107,11 +129,18 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/music/{page}")
-    public GridResponse musicVideos(@PathVariable Long tag_id, @PathVariable int page){
-        Tag tag = tagService.findTagById(tag_id,page);
-        List<Music> musicList = musicService.findTitleVideoList(tag.getName());
-        Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
-        return new GridResponse("music",videoList);
+    public ResponseEntity<?> musicVideos(@PathVariable Long tag_id, @PathVariable int page){
+
+        try {
+            Tag tag = tagService.findTagById(tag_id,page);
+            List<Music> musicList = musicService.findTitleVideoList(tag.getName());
+            Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+
+            return new ResponseEntity<>(new GridResponse("music",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -122,10 +151,16 @@ public class TagApi {
      * (custom 태그 말고 일반 태그도 가능)
      */
     @GetMapping("/{tag_id}/custom/{page}")
-    public GridResponse customVideos(@PathVariable Long tag_id,@PathVariable int page){
-        Tag tag = tagService.findTagById(tag_id, page);
-        Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
-        return new GridResponse("custom",videoList);
+    public ResponseEntity<?> customVideos(@PathVariable Long tag_id,@PathVariable int page){
+        try {
+            Tag tag = tagService.findTagById(tag_id, page);
+            Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
+
+            return new ResponseEntity<>(new GridResponse("custom",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -135,10 +170,16 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/nation/{page}")
-    public GridResponse nationVideos(@PathVariable Long tag_id,@PathVariable int page){
-        Tag tag = tagService.findTagById(tag_id, page);
-        Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
-        return new GridResponse("nation",videoList);
+    public ResponseEntity<?> nationVideos(@PathVariable Long tag_id,@PathVariable int page){
+        try {
+            Tag tag = tagService.findTagById(tag_id, page);
+            Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
+
+            return new ResponseEntity<>(new GridResponse("nation",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
