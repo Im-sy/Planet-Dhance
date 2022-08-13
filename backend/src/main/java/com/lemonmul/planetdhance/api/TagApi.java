@@ -1,9 +1,6 @@
 package com.lemonmul.planetdhance.api;
 
-import com.lemonmul.planetdhance.dto.ClearDto;
-import com.lemonmul.planetdhance.dto.GridResponse;
-import com.lemonmul.planetdhance.dto.UserDto;
-import com.lemonmul.planetdhance.dto.VideoDto;
+import com.lemonmul.planetdhance.dto.*;
 import com.lemonmul.planetdhance.entity.Clear;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
@@ -147,40 +144,30 @@ public class TagApi {
     /**
      * 유저 정보, 유저의 클리어 정보, 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 진입
      *
-     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user/{로그인한 유저 아이디}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/{tag_id}/user/{user_id}")
-    public UserSearchResponse userInfoAndUserVideos(@PathVariable Long tag_id,@PathVariable Long user_id){
+    @GetMapping("/{tag_id}/user")
+    public UserSearchResponse userInfoAndUserVideos(@PathVariable Long tag_id){
         int page=0;
         Tag tag = tagService.findTagById(tag_id,0);
         User user = userService.findByNickname(tag.getName());
         List<Clear> clearList = user.getClears();
-        Slice<Video> videoList;
-        if(user.getId().equals(user_id)){
-            videoList=videoService.findAllNewestVideoListByUser(page,videoSize,user);
-        }else {
-            videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
-        }
+        Slice<Video> videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
         return new UserSearchResponse(user,clearList,videoList);
     }
 
     /**
      * 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 무한 스크롤
      *
-     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user/{로그인한 유저 아이디}/{page 번호}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user/{page 번호}
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/{tag_id}/user/{user_id}/{page}")
-    public GridResponse userVideos(@PathVariable Long tag_id,@PathVariable Long user_id,@PathVariable int page){
+    @GetMapping("/{tag_id}/user/{page}")
+    public GridResponse userVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id, page);
         User user = userService.findByNickname(tag.getName());
-        Slice<Video> videoList;
-        if(user.getId().equals(user_id)){
-            videoList=videoService.findAllNewestVideoListByUser(page,videoSize,user);
-        }else {
-            videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
-        }
+        Slice<Video> videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
         return new GridResponse("user",videoList);
     }
 
@@ -219,25 +206,6 @@ public class TagApi {
             this.musicList = musicList.stream().map(MusicDto::new).collect(Collectors.toList());
             this.prevPage=prevPage;
             this.videoList = videoList.map(VideoDto::new);
-        }
-    }
-
-    @Data
-    static class UserSearchResponse{
-        private UserDto user;
-        private List<ClearDto> clearList;
-        private int clearCnt;
-        private String prevPage="user";
-        private Slice<VideoDto> videoList;
-
-        public UserSearchResponse(User user, List<Clear> clearList, Slice<Video> videoList) {
-            this.user=new UserDto(user);
-            //최신 클리어 정보 5개
-            this.clearList=clearList.stream()
-                    .sorted(Comparator.comparing(Clear::getId).reversed()).limit(5)
-                    .map(ClearDto::new).collect(Collectors.toList());
-            this.clearCnt=clearList.size();
-            this.videoList=videoList.map(VideoDto::new);
         }
     }
 

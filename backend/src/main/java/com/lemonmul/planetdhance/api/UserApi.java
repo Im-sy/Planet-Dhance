@@ -1,11 +1,15 @@
 package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.dto.GridResponse;
+import com.lemonmul.planetdhance.dto.UserSearchResponse;
 import com.lemonmul.planetdhance.dto.VideoDto;
+import com.lemonmul.planetdhance.entity.Clear;
 import com.lemonmul.planetdhance.entity.Nation;
 import com.lemonmul.planetdhance.entity.Validate;
+import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.user.*;
 import com.lemonmul.planetdhance.entity.video.Video;
+import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.security.jwt.CustomUserDetails;
 import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;
@@ -40,6 +44,8 @@ public class UserApi {
     private final ValidateService validateService;
     private final JwtTokenProvider jwtTokenProvider;
     private final VideoService videoService;
+
+    private final static int videoSize=18;
 
     /**
      * 회원가입
@@ -176,15 +182,13 @@ public class UserApi {
      *
      * 요청 파라미터 예시: /user/profile/{사용자 아이디}
      */
-    @GetMapping("/profile/{id}")
-    public ResponseEntity<?> profile(@PathVariable Long id) {
-        try {
-            User findUser = userService.findById(id);
-            return new ResponseEntity<>(new CreateProfileResponse(findUser), HttpStatus.OK);
-        }catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @GetMapping("/profile/{user_id}")
+    public UserSearchResponse profile(@PathVariable Long user_id) throws Exception{
+        int page=0;
+        User user = userService.findById(user_id);
+        List<Clear> clearList = user.getClears();
+        Slice<Video> videoList=videoService.findAllNewestVideoListByUser(page,videoSize,user);
+        return new UserSearchResponse(user,clearList,videoList);
     }
 
     /**
