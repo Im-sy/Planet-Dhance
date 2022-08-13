@@ -1,4 +1,7 @@
 import React, { CSSProperties, SetStateAction, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { videoListProps } from "./MyPage";
+import { musicList } from '../components/API/MusicService';
 import Grid from '@mui/material/Grid';
 import ActionAreaCard from '../components/Card';
 import SongPageTabs from '../components/MusicPageTab';
@@ -20,10 +23,31 @@ interface playProps {
   loaded: number;
 }
 
+export interface musicListProps {
+  mvUrl: string,
+  latestList: listProps,
+  hitlikeList: listProps,
+}
+
+export interface listProps {
+  prevPage: string,
+  videoList: videoListProps,
+}
+
 export default function SongPage() {
-
+  const { songId } = useParams()
+  const [musicInfo, setMusicInfo] = useState<musicListProps>();
   
-
+  useEffect( () => {
+    const getMusicInfo = async () => {
+      console.log('getmusicinfo')
+      const getmusic = await musicList(parseInt(songId))
+      console.log(getmusic)
+      setMusicInfo(getmusic)
+    }
+    getMusicInfo();
+  }, []); 
+  console.log(musicInfo?.mvUrl)
   const [playState, setPlayState] = useState<playProps>({
     url: '',
     playing: true,
@@ -199,7 +223,8 @@ export default function SongPage() {
           height="14.4rem"
           // style={reactPlayerBackground}
           // url={myVideo}
-          url="https://www.youtube.com/watch?v=lDV5cM9YE4g"
+          // "https://youtu.be/f6YDKF0LVWw"
+          url={musicInfo?.mvUrl}
           config={{
             youtube: {
                 playerVars: {fs: 0, modestbranding:1}
@@ -240,7 +265,7 @@ export default function SongPage() {
         
       </div>
 
-      <SongPageTabs />
+      <SongPageTabs latestList={musicInfo?.latestList} hitlikeList={musicInfo?.hitlikeList} />
 
       {/* Navbar */}
       <NavBar current={"search"}/>

@@ -5,9 +5,10 @@ import { videoListProps, contentItem } from '../pages/MyPage';
 
 interface gridViewProps {
   videoList: videoListProps
+  prevPage: string
 }
 
-export default function SongPageGridView({videoList}: gridViewProps) {
+export default function SongPageGridView({videoList, prevPage}: gridViewProps) {
   // const cardrendering = () => {
   //   const cardList = []
   //   for (let i=0; i<18; i++) {
@@ -27,10 +28,10 @@ export default function SongPageGridView({videoList}: gridViewProps) {
     <div>
       <Grid container spacing={0.4} style={{justifyContent: 'center'}}>
           {/* {cardrendering()} */}
-          {videoList.content.map((contentItem: contentItem) => (
+          {videoList?.content.map((contentItem: contentItem) => (
           <Grid item sm={4} key={contentItem.videoId}>
-            <ActionAreaCard
-              url={contentItem.imgUrl}
+            <ActionAreaCard prevPage={prevPage} videoId={contentItem.videoId}
+              url={"https://i7d201.p.ssafy.io/"+contentItem.imgUrl}
               width="28.2vw"
               height="30vh" />
           </Grid>
