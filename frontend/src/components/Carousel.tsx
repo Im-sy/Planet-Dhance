@@ -31,20 +31,16 @@ export default class Carousel extends Component {
               width="100%"
               height="200px"
             />
-          <div>
             <ActionAreaCard prevPage={'main'} videoId={2}
               url="https://picsum.photos/1300/500"
               width="100%"
               height="200px"
             />
-          </div>
-          <div>
             <ActionAreaCard prevPage={'main'} videoId={3}
               url="https://picsum.photos/1310/500"
               width="100%"
               height="200px"
             />
-          </div>
         </Slider>
       </div>
     );
