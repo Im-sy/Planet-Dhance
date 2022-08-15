@@ -843,7 +843,6 @@ const URL = "./static/song1/";
 
   // 곡의 모션 정보들
   let duration : number;
-  let
 
 async function init() {
   const modelURL = URL + "model.json"; 
