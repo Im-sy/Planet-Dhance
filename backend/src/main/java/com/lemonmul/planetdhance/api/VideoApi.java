@@ -2,6 +2,7 @@ package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.dto.*;
 import com.lemonmul.planetdhance.entity.*;
+import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
@@ -37,7 +38,6 @@ public class VideoApi {
     private final LikeService likeService;
     private final ArtistService artistService;
     private final RankingService rankingService;
-    private final TagService tagService;
 
     private static final int listSize =18;
     private static final int infoSize=10;
@@ -172,53 +172,70 @@ public class VideoApi {
         }
     }
 
-//    /**
-//     * 커스텀 태그의 재생할 영상 정보 리스트
-//     *
-//     * 요청 파라미터 예시: /video/{video_id}/custom/{user_id}
-//     */
-//    @GetMapping("/{video_id}/custom/{user_id}")
-//    public VideoInfoResponse customVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) throws Exception{
-//        Video video = videoService.findById(video_id);
-//        List<VideoTag> videoTags = video.getVideoTags();
-//        List<VideoTag> tags=new ArrayList<>();
-//        for (VideoTag videoTag : videoTags) {
-//            if(videoTag.getTag().getType().equals(TagType.NATION)){
-//                tags.add(videoTag);
-//            }
-//        }
-//        Slice<Video> videoList=videoService.findNextCustomVideoList(0,infoSize,video.getOrderWeight(),tags,VideoScope.PUBLIC);
-//
-//        User user = userService.findById(user_id);
-//        List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
-//
-//        return new VideoInfoResponse(videoList,likeList);
-//    }
-//
-//    /**
-//     * 국가 태그의 재생할 영상 정보 리스트
-//     *
-//     * 요청 파라미터 예시: /video/{video_id}/nation/{user_id}
-//     */
-//    @GetMapping("/{video_id}/nation/{user_id}")
-//    public VideoInfoResponse nationVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) throws Exception{
-//        Video video = videoService.findById(video_id);
-//        List<VideoTag> videoTags = video.getVideoTags();
-//        List<VideoTag> tags=new ArrayList<>();
-//        for (VideoTag videoTag : videoTags) {
-//            if(videoTag.getTag().getType().equals(TagType.NATION)){
-//                tags.add(videoTag);
-//                break;
-//            }
-//        }
-//
-//        Slice<Video> videoList=videoService.findNextCustomVideoList(0,infoSize,video.getOrderWeight(),tags,VideoScope.PUBLIC);
-//
-//        User user = userService.findById(user_id);
-//        List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
-//
-//        return new VideoInfoResponse(videoList,likeList);
-//    }
+    /**
+     * 커스텀 태그의 재생할 영상 정보 리스트
+     *
+     * 요청 파라미터 예시: /video/{video_id}/custom/{user_id}
+     * TODO 커스텀 태그 만들면 테스트해보기
+     */
+    @GetMapping("/{video_id}/custom/{user_id}")
+    public ResponseEntity<?> customVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
+        try {
+            Video video = videoService.findById(video_id);
+            List<VideoTag> videoTags = video.getVideoTags();
+            List<Tag> tags=new ArrayList<>();
+            for (VideoTag videoTag : videoTags) {
+                if(videoTag.getTag().getType().equals(TagType.CUSTOM)){
+                    tags.add(videoTag.getTag());
+                }
+            }
+            List<VideoTag> findVideoTags=new ArrayList<>();
+            for (Tag tag : tags) {
+                findVideoTags.addAll(tag.getVideoTags());
+            }
+
+            Slice<Video> videoList=videoService.findNextCustomVideoList(0,infoSize,video.getOrderWeight(),findVideoTags,VideoScope.PUBLIC);
+
+            User user = userService.findById(user_id);
+            List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+
+            return new ResponseEntity<>(new VideoInfoResponse(videoList,likeList),HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 국가 태그의 재생할 영상 정보 리스트
+     *
+     * 요청 파라미터 예시: /video/{video_id}/nation/{user_id}
+     */
+    @GetMapping("/{video_id}/nation/{user_id}")
+    public ResponseEntity<?> nationVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
+        try {
+            Video video = videoService.findById(video_id);
+            List<VideoTag> videoTags = video.getVideoTags();
+            Tag tag=null;
+            for (VideoTag videoTag : videoTags) {
+                if(videoTag.getTag().getType().equals(TagType.NATION)){
+                    tag=videoTag.getTag();
+                    break;
+                }
+            }
+            List<VideoTag> findVideoTags=tag.getVideoTags();
+
+            Slice<Video> videoList=videoService.findNextCustomVideoList(0,infoSize,video.getOrderWeight(),findVideoTags,VideoScope.PUBLIC);
+
+            User user = userService.findById(user_id);
+            List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+
+            return new ResponseEntity<>(new VideoInfoResponse(videoList,likeList),HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     /**
      * 닉네임 태그의 재생할 영상 정보 리스트
