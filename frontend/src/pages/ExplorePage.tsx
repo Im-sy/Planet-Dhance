@@ -6,7 +6,15 @@ import React, {
 } from 'react';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import axios from 'axios';
+
+import styled from 'styled-components';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import myVideo from '../videos/pop_guide.mp4';
+
 import myVideo from '../videos/Patissiere_guide.mp4';
+
 import '../styles/tailwind_reset.css'
 
 

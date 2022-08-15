@@ -1,0 +1,10 @@
+{
+  "duration": 150,
+  "next": 0,
+  "notes": [
+    { "duration": 10, "delay": 30, "type": "오른손" },
+    { "duration": 10, "delay": 60, "type": "왼손" },
+    { "duration": 10, "delay": 90, "type": "오른손" },
+    { "duration": 10, "delay": 120, "type": "왼손" }
+  ]
+}

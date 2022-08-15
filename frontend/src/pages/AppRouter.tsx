@@ -1,5 +1,6 @@
 import React, { CSSProperties } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+// import { BrowserRouter, Route } from 'react-router-dom';
 import Main from './Main';
 
 import LogIn from './LogIn'
@@ -16,7 +17,11 @@ import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
 import HashTagTextArea from '../components/HashTagTextArea';
 import ExplorePage from './ExplorePageList'
+
+import Teachable from './TeachableScript'
+
 import SongPage from './MusicPage';
+
 
 
 
@@ -41,7 +46,11 @@ function AppRouter() {
         <Route path='/ranking' element={<Ranking />} />
         <Route path='/dancecompare' element={<DanceCompare />} />
         <Route path='/emoji' element={<App2 />} />
+
+        <Route path='/teachable' element={<Teachable />} />
+
         <Route path='/songpage/:songId' element={<SongPage />} />
+
         <Route element={<NotFound404 />} />
         {/* test */}
         <Route path='/test' element={<HashTagTextArea />} />

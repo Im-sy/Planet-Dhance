@@ -5,7 +5,7 @@ export default function SearchBar() {
   const [value, setValue] = useState<string>("");
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		// console.log('e', event.target.value)
-		axios.get
+		// axios.get
 		setValue(event.target.value)
 	};
 
