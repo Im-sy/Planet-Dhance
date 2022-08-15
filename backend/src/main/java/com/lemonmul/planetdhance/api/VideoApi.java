@@ -134,15 +134,20 @@ public class VideoApi {
      * 요청 파라미터 예시: /video/{video_id}/artist/{user_id}
      */
     @GetMapping("/{video_id}/artist/{user_id}")
-    public VideoInfoResponse artistVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) throws Exception{
-        Video video = videoService.findById(video_id);
-        List<Music> musicList=musicService.findArtistVideoList(video.getMusic().getArtist());
-        Slice<Video> videoList=videoService.findNextArtistVideoList(0,infoSize,video.getOrderWeight(),musicList,VideoScope.PUBLIC);
+    public ResponseEntity<?> artistVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
+        try {
+            Video video = videoService.findById(video_id);
+            List<Music> musicList=musicService.findArtistVideoList(video.getMusic().getArtist());
+            Slice<Video> videoList=videoService.findNextArtistVideoList(0,infoSize,video.getOrderWeight(),musicList,VideoScope.PUBLIC);
 
-        User user = userService.findById(user_id);
-        List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+            User user = userService.findById(user_id);
+            List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
 
-        return new VideoInfoResponse(videoList,likeList);
+            return new ResponseEntity<>(new VideoInfoResponse(videoList,likeList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -151,15 +156,20 @@ public class VideoApi {
      * 요청 파라미터 예시: /video/{video_id}/music/{user_id}
      */
     @GetMapping("/{video_id}/music/{user_id}")
-    public VideoInfoResponse musicVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) throws Exception{
-        Video video = videoService.findById(video_id);
-        List<Music> musicList=musicService.findTitleVideoList(video.getMusic().getTitle());
-        Slice<Video> videoList=videoService.findNextMusicVideoList(0,infoSize,video.getOrderWeight(),musicList,VideoScope.PUBLIC);
+    public ResponseEntity<?> musicVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
+        try {
+            Video video = videoService.findById(video_id);
+            List<Music> musicList=musicService.findTitleVideoList(video.getMusic().getTitle());
+            Slice<Video> videoList=videoService.findNextMusicVideoList(0,infoSize,video.getOrderWeight(),musicList,VideoScope.PUBLIC);
 
-        User user = userService.findById(user_id);
-        List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+            User user = userService.findById(user_id);
+            List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
 
-        return new VideoInfoResponse(videoList,likeList);
+            return new ResponseEntity<>(new VideoInfoResponse(videoList,likeList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 //    /**
@@ -216,15 +226,20 @@ public class VideoApi {
      * 요청 파라미터 예시: /video/{video_id}/user/{user_id}
      */
     @GetMapping("/{video_id}/user/{user_id}")
-    public VideoInfoResponse userVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) throws Exception{
-        Video video = videoService.findById(video_id);
-        User videoUser = userService.findById(video.getUser().getId());
-        Slice<Video> videoList=videoService.findNextUserVideoList(0,infoSize,video.getOrderWeight(),videoUser,VideoScope.PUBLIC);
+    public ResponseEntity<?> userVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
+        try {
+            Video video = videoService.findById(video_id);
+            User videoUser = userService.findById(video.getUser().getId());
+            Slice<Video> videoList=videoService.findNextUserVideoList(0,infoSize,video.getOrderWeight(),videoUser,VideoScope.PUBLIC);
 
-        User user = userService.findById(user_id);
-        List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+            User user = userService.findById(user_id);
+            List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
 
-        return new VideoInfoResponse(videoList,likeList);
+            return new ResponseEntity<>(new VideoInfoResponse(videoList,likeList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
