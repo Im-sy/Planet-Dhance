@@ -2,7 +2,7 @@ import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import {tagItemProps} from '../pages/ExplorePage'
+import {tagItemProps} from '../pages/ExplorePageList'
 
 interface hashTagListProps {
   tagList: tagItemProps[]

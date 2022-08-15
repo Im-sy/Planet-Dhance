@@ -5,33 +5,12 @@ import React, {
   useEffect,
 } from 'react';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
-import { useLocation } from 'react-router-dom';
-import { videoListProps } from './MyPage';
-import { playVideo } from '../components/API/MusicService';
-import { useSelector } from 'react-redux';
-import { rootState } from '../reducer';
+import {videoItemProps} from './ExplorePageList'
 import HashTagList from '../components/HashTagList';
-import axios from 'axios';
+import BtnLike from '../components/UI/btnLike';
 import myVideo from '../videos/Patissiere_guide.mp4';
 import '../styles/tailwind_reset.css'
 
-export interface tagItemProps {
-  id: number,
-  type: string,
-  className: string
-}
-interface videoItemProps {
-  videoId: number,
-  musicId: number,
-  hit: number,
-  videoUrl: string,
-  like: boolean,
-  likeCnt: number,
-  tagList: tagItemProps[],
-}
-interface playListProps {
-  videoList: videoItemProps[]
-}
 
 const playerStyle: CSSProperties = {
   position: 'absolute',
@@ -57,40 +36,25 @@ const videoZone: CSSProperties = {
 
 
 interface playProps {
-  url: string;
   playing: boolean;
-  played: number;
   muted: boolean;
+  videoItem: videoItemProps;
+}
+interface playStateProps {
+  playing: boolean,
+  muted: boolean,
+  played: number
 }
 
 
-export default function PlayingPage( props : playProps ){
-  const location = useLocation();
-  const state = location.state as {prevPage: string; videoId: number;}
-  const prevPage = state.prevPage
-  const videoId = state.videoId
+export default function PlayingPage( {playing, muted, videoItem } : playProps ){
 
-  const [playState, setPlayState] = useState<playProps>({
-    url: '',
+  const [playState, setPlayState] = useState<playStateProps>({
     playing: true,
     muted: true,
     played: 0,
   });
   const {played} = playState;
-  const { url, playing,muted } = props;
-
-  const {isAuthenticated, user} = useSelector(
-    (state: rootState) => state.authReducer
-  );
-
-  useEffect(() =>{
-    const getPlayList = async () => {
-      const getplaylist = await playVideo(0, prevPage, user.userId)
-      setPlayListInfo(getplaylist)
-    }
-    getPlayList()
-  },[])
-  const [playListInfo, setPlayListInfo] = useState<playListProps>()
 
   const handlePlay = () => {
     console.log('handlePlay');
@@ -106,7 +70,7 @@ export default function PlayingPage( props : playProps ){
       ...state,
     };
     // console.log('onProgress', inState);
-    setPlayState(inState as SetStateAction<playProps>);
+    setPlayState(inState as SetStateAction<playStateProps>);
   };
 
   const playEnd = () =>{
@@ -127,7 +91,7 @@ export default function PlayingPage( props : playProps ){
         height="94vh"
         loop
         style={playerStyle}
-        url={myVideo}
+        url={videoItem.videoUrl}
         playing={playing}
         muted={muted}
         onPlay={handlePlay}
@@ -135,7 +99,8 @@ export default function PlayingPage( props : playProps ){
         onProgress={handleProgress}
         onEnded={playEnd}
       />
-      {/* <HashTagList tagList={playListInfo.tagList} /> */}
+      {/* <HashTagList tagList={videoItem.tagList} /> */}
+      {/* <BtnLike like={videoItem.like} /> */}
     </div>
   )
 }
