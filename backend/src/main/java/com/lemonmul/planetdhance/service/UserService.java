@@ -32,6 +32,7 @@ public class UserService {
     private final UserRepo userRepo;
     private final TagRepo tagRepo;
     private final NationRepo nationRepo;
+    private static final String defaultImgPath = "/user/default/default_profile_img.png";
 
     /**
      * 이메일 중복 검사
@@ -138,12 +139,10 @@ public class UserService {
      *
      * 반환값
      *      조회 성공: 조회된 사용자 객체
-     *
-     *      TODO: 예외 처리
      *      조회 실패: "User Not Found" 예외 발생???
      */
-    public User findByNickname(String nickname){
-        return userRepo.findByNickname(nickname).orElse(null);
+    public User findByNickname(String nickname) throws Exception {
+        return userRepo.findByNickname(nickname).orElseThrow(() -> new Exception("User Not Found"));
     }
 
     /**
@@ -165,15 +164,15 @@ public class UserService {
         Nation findNation = nationRepo.findByName(createUpdateRequest.getNationName()).orElseThrow(() -> new Exception("Nation Not Found"));
 
         if(inputFile.isEmpty()){
-            findUser.setImgUrl(null);
+            findUser.setImgUrl(defaultImgPath);
         }else{
-            if(findUser.getImgUrl() != null) {
+            if(!findUser.getImgUrl().equals(defaultImgPath)) {
                 File beforeFile = new File(findUser.getImgUrl());
                 beforeFile.delete();
             }
 
             String separator = File.separator;
-            String path = "user" + separator + "img" + separator + createUpdateRequest.getEmail();
+            String path = "users" + separator + "img" + separator + createUpdateRequest.getEmail();
             String filePath = FileUtil.createFilePath(inputFile, path);
 
             findUser.setImgUrl(filePath);
@@ -206,7 +205,8 @@ public class UserService {
         File tempFile = new File("");
         String rootPath = tempFile.getAbsolutePath().split("src")[0];
 
-        String savePath = rootPath + separator + "images" + separator + findUser.getEmail();
+        //TODO: separator 빼기
+        String savePath = rootPath + separator + "users" + separator + findUser.getEmail();
 
         File deleteFile = new File(savePath);
         deleteFile.delete();

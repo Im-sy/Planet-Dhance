@@ -68,7 +68,7 @@ public class User {
         this.email = email;
         this.nickname = nickname;
         this.setIntroduce(introduce);
-        this.imgUrl = imgUrl;
+        this.setImgUrl(imgUrl);
         this.setNation(nation);
         this.role = role;
         this.regDate = LocalDateTime.now();
@@ -81,7 +81,7 @@ public class User {
         user.email = email;
         user.nickname=nickname;
         user.setIntroduce(introduce);
-        user.imgUrl = imgUrl;
+        user.setImgUrl(imgUrl);
         user.regDate=LocalDateTime.now();
         user.renewDate=LocalDateTime.of(1000, 1, 1, 0, 0, 0);
         user.role=Role.USER;
@@ -89,11 +89,10 @@ public class User {
         return user;
     }
 
-    // TODO: null처리에 관한 부분은 반환할 때 dto에서 이루어지므로 여기서는 처리 안해도 괜찮을지도...?
     public void setImgUrl(String imgUrl){
-//        if(imgUrl==null){
-//            imgUrl="/resource/user/img/default/default_profile.png";
-//        }
+        if(imgUrl==null){
+            imgUrl="/user/default/default_profile_img.png";
+        }
         this.imgUrl=imgUrl;
     }
 
