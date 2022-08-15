@@ -57,7 +57,7 @@ public class VideoService {
 
     public Slice<Video> findNextMusicVideoList(int page, int size, Long orderWeight, List<Music> musicList, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByOrderWeightLessThanAndMusicInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,musicList,scope,pageable);
+        return videoRepo.findByOrderWeightLessThanEqualAndMusicInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,musicList,scope,pageable);
     }
 
     /**
@@ -71,7 +71,7 @@ public class VideoService {
 
     public Slice<Video> findNextArtistVideoList(int page, int size, Long orderWeight, List<Music> musicList, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByOrderWeightLessThanAndMusicInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,musicList,scope,pageable);
+        return videoRepo.findByOrderWeightLessThanEqualAndMusicInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,musicList,scope,pageable);
     }
 
     /**
@@ -85,7 +85,7 @@ public class VideoService {
 
     public Slice<Video> findNextCustomVideoList(int page, int size, Long orderWeight,List<VideoTag> videoTagList, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByOrderWeightLessThanAndVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,videoTagList,scope,pageable);
+        return videoRepo.findByOrderWeightLessThanEqualAndVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,videoTagList,scope,pageable);
     }
 
     /**
@@ -125,7 +125,7 @@ public class VideoService {
 
     public Slice<Video> findNextUserVideoList(int page, int size, Long orderWeight,User user, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByOrderWeightLessThanAndUserAndScopeOrderByRegDateDesc(orderWeight,user,scope,pageable);
+        return videoRepo.findByOrderWeightLessThanEqualAndUserAndScopeOrderByRegDateDesc(orderWeight,user,scope,pageable);
     }
 
     /**

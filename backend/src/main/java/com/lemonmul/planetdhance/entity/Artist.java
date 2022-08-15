@@ -35,6 +35,10 @@ public class Artist {
         return artist;
     }
 
+    public void setOrderWeight(Long orderWeight){
+        this.orderWeight=orderWeight;
+    }
+
     //==비즈니스 로직==//
     public void addOrderWeight(){
         orderWeight++;

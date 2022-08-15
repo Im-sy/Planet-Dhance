@@ -155,6 +155,7 @@ class VideoServiceTest {
     //TODO 곡 모델 경로
     private void createArtistAndMusicTable(){
         Artist artist=Artist.createArtist("NAYEON","/resource/artist/img/nayeon.jpg");
+        artist.setOrderWeight(5L);
         em.persist(artist);
         Music music=Music.createMusic("POP!",artist,"/resource/music/img/pop_img.jpg","model url1","/resource/artist/video/pop_guide.mp4","https://youtu.be/f6YDKF0LVWw", LocalDateTime.of(2022,6,24,0,0));
         em.persist(music);
@@ -162,6 +163,7 @@ class VideoServiceTest {
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
 
         artist=Artist.createArtist("BTS","/resource/artist/img/bts.JPG");
+        artist.setOrderWeight(20L);
         em.persist(artist);
         music=Music.createMusic("Permission to Dance",artist,"/resource/artist/img/PtoD_img.jpg","model url1","/resource/artist/video/PtoD_guide.mp4","https://youtu.be/CuklIb9d3fI", LocalDateTime.of(2022,6,24,0,0));
         em.persist(music);
@@ -197,6 +199,7 @@ class VideoServiceTest {
 //        em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
 
         artist=Artist.createArtist("IVE","/resource/artist/img/ive.jpg");
+        artist.setOrderWeight(2L);
         em.persist(artist);
         music=Music.createMusic("LOVE DIVE",artist,"/resource/artist/img/lovedive_img.jpg","model url1","/resource/artist/video/LoveDive_guide.mp4","https://youtu.be/Y8JFxS1HlDo", LocalDateTime.of(2022,6,24,0,0));
         em.persist(music);
@@ -204,6 +207,7 @@ class VideoServiceTest {
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
 
         artist=Artist.createArtist("IU","/resource/artist/img/iu.jpg");
+        artist.setOrderWeight(4L);
         em.persist(artist);
         music=Music.createMusic("my dream patissiere",artist,"/resource/artist/img/Patissiere_img.png","model url1","/resource/artist/video/Patissiere_guide.mp4","https://youtu.be/bgQIzPnPI88", LocalDateTime.of(2022,6,24,0,0));
         em.persist(music);
@@ -217,7 +221,8 @@ class VideoServiceTest {
         em.persist(Tag.createTag(music.getArtist().getName(),TagType.ARTIST,music.getArtist().getImgUrl()));
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
 
-        artist=Artist.createArtist("SEPER JUNIOR","/resource/artist/img/superjunior.jpg");
+        artist=Artist.createArtist("SUPER JUNIOR","/resource/artist/img/superjunior.jpg");
+        artist.setOrderWeight(3L);
         em.persist(artist);
         music=Music.createMusic("Sorry, Sorry",artist,"/resource/artist/img/SorrySorry_img.jpg","model url1","/resource/artist/video/SorrySorry_guide.mp4","https://youtu.be/x6QA3m58DQw", LocalDateTime.of(2022,6,24,0,0));
         em.persist(music);

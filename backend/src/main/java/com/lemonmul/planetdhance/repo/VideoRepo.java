@@ -24,12 +24,12 @@ public interface VideoRepo extends JpaRepository<Video,Long> {
 
     //해당 곡들의 정렬 가중치 높은 영상 리스트 (가중치 같으면 최신순)
     Slice<Video> findByMusicInAndScopeOrderByOrderWeightDescRegDateDesc(List<Music> musicList, VideoScope scope, Pageable pageable);
-    Slice<Video> findByOrderWeightLessThanAndMusicInAndScopeOrderByOrderWeightDescRegDateDesc(Long orderWeight,List<Music> musicList, VideoScope scope,Pageable pageable);
+    Slice<Video> findByOrderWeightLessThanEqualAndMusicInAndScopeOrderByOrderWeightDescRegDateDesc(Long orderWeight, List<Music> musicList, VideoScope scope, Pageable pageable);
 
 
     //해당 태그들의 정렬 가중치 높은 영상 리스트 (가중치 같으면 최신순)
     Slice<Video> findByVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(List<VideoTag> videoTagList,VideoScope scope,Pageable pageable);
-    Slice<Video> findByOrderWeightLessThanAndVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(Long orderWeight, List<VideoTag> videoTagList, VideoScope scope, Pageable pageable);
+    Slice<Video> findByOrderWeightLessThanEqualAndVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(Long orderWeight, List<VideoTag> videoTagList, VideoScope scope, Pageable pageable);
 
     //메인 페이지 인기 영상 리스트
     Slice<Video> findMainByScopeOrderByOrderWeightDescRegDateDesc(VideoScope scope,Pageable pageable);
@@ -43,7 +43,7 @@ public interface VideoRepo extends JpaRepository<Video,Long> {
 
     //해당 유저의 최신 영상 리스트
     Slice<Video> findByUserAndScopeOrderByRegDateDesc(User user, VideoScope scope, Pageable pageable);
-    Slice<Video> findByOrderWeightLessThanAndUserAndScopeOrderByRegDateDesc(Long orderWeight, User user, VideoScope scope, Pageable pageable);
+    Slice<Video> findByOrderWeightLessThanEqualAndUserAndScopeOrderByRegDateDesc(Long orderWeight, User user, VideoScope scope, Pageable pageable);
 
     //해당 유저의 최신 영상 리스트 (공개, 비공개)
     Slice<Video> findByUserOrderByRegDateDesc(User user, Pageable pageable);
