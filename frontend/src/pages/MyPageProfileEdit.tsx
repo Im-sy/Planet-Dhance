@@ -13,7 +13,7 @@ export default function MyPage() {
       <div>
         <SubscribeTabs />
       </div>
-      <NavBar />
+      <NavBar current={"myPage"} />
     </div>
   )
 }

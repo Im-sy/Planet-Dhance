@@ -2,20 +2,33 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
-import {Link} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 interface cardProps {
   url: string,
   width: string,
   height: string,
-  prevPage: string,
-  videoId: number,
+  type: string,
+  id: number
 }
 
+
+
 export default function ActionAreaCard(props: cardProps) {
-  const {url, width, height, prevPage, videoId} = props
+  const navigate = useNavigate();
+  const { type, id } = props;
+  const toSearch = () =>{
+    if (type === 'ARTIST'){
+      navigate(`/searchsong/ARTIST/${id}`);
+    }else{
+      navigate(`/searchsong/TITTLE/${id}`);
+    }
+
+  }
+
+  const { url, width, height } = props
   return (
-    <div>
-      <Card sx={{ maxWidth: width}} component={Link} to='/playing'>
+    <div onClick={toSearch}>
+      <Card sx={{ maxWidth: width }}>
         <CardActionArea >
           <CardMedia
             style={{
@@ -23,7 +36,7 @@ export default function ActionAreaCard(props: cardProps) {
               height: height,
             }}
             component="img"
-            image={"https://i7d201.p.ssafy.io/"+url}
+            image={url}
             alt="sea"
           />
         </CardActionArea>

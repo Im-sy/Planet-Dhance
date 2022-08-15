@@ -8,7 +8,6 @@ import SignUp from './SignUp';
 import NotFound404 from './NotFound404';
 // import SongPage from './MusicPage';
 import SearchSong from './SearchSong';
-import SearchTag from './SearchTag';
 import Subscribe from './Subscribe';
 import {HashResult} from './HashResult';
 import MyPage from './MyPage';
@@ -18,7 +17,11 @@ import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
 import HashTagTextArea from '../components/HashTagTextArea';
 import ExplorePage from './ExplorePageList'
+
 import Teachable from './TeachableScript'
+
+import SongPage from './MusicPage';
+
 
 
 
@@ -34,8 +37,7 @@ function AppRouter() {
         <Route path='/' element={<Main />} />
         {/* <Route path='/songpage' element={<SongPage />} /> */}
         <Route path='/subscribe' element={<Subscribe />} />
-        <Route path='/searchsong' element={<SearchSong />} />
-        <Route path='/searchtag' element={<SearchTag />} />
+        <Route path='/searchsong/:valueType/:id' element={<SearchSong />} />
         <Route path='/hashresult' element={<HashResult />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/challenge' element={<ModeChallengeTimer />} />
@@ -44,7 +46,11 @@ function AppRouter() {
         <Route path='/ranking' element={<Ranking />} />
         <Route path='/dancecompare' element={<DanceCompare />} />
         <Route path='/emoji' element={<App2 />} />
+
         <Route path='/teachable' element={<Teachable />} />
+
+        <Route path='/songpage/:songId' element={<SongPage />} />
+
         <Route element={<NotFound404 />} />
         {/* test */}
         <Route path='/test' element={<HashTagTextArea />} />

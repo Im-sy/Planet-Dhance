@@ -19,7 +19,7 @@ export default function Subscribe() {
       <div>
         <SubscribeTabs />
       </div>
-      <NavBar />
+      <NavBar current={"subscribe"}/>
     </div>
   )
 }

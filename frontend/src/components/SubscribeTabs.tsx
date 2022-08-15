@@ -113,7 +113,7 @@ export default function SubscribeTabs() {
         </StyledTabPanel>
 
         <StyledTabPanel value="2">
-            <SongPageGridView urls={likes}/>
+            {/* <SongPageGridView urls={likes}/> */}
         
         </StyledTabPanel>
       </TabContext>

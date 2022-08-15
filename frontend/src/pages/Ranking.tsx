@@ -8,9 +8,9 @@ export default function Ranking() {
   return (
     <div>
       <TopBar />
-      <RankScore />
+      {/* <RankScore /> */}
       <Planet />
-      <NavBar />
+      <NavBar current={"main"} />
     </div>
   )
 }
