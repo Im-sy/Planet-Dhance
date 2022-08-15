@@ -1,6 +1,7 @@
 package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.dto.*;
+import com.lemonmul.planetdhance.entity.Artist;
 import com.lemonmul.planetdhance.entity.Clear;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
@@ -9,10 +10,7 @@ import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
-import com.lemonmul.planetdhance.service.MusicService;
-import com.lemonmul.planetdhance.service.TagService;
-import com.lemonmul.planetdhance.service.UserService;
-import com.lemonmul.planetdhance.service.VideoService;
+import com.lemonmul.planetdhance.service.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +21,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +30,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/tag")
+@CrossOrigin
 public class TagApi {
 
     //TODO 태그 타입 확인해서 해당 타입 아니면 에러 반환
@@ -39,6 +38,7 @@ public class TagApi {
     private final MusicService musicService;
     private final UserService userService;
     private final VideoService videoService;
+    private final ArtistService artistService;
 
     private static final int tagSize=15;
     private static final int videoSize=18;
@@ -69,8 +69,9 @@ public class TagApi {
 
         try {
             Tag tag = tagService.findTagById(tag_id,page);
-            List<Music> musicList = musicService.findArtistVideoList(tag.getName());
-            Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+            Artist artist=artistService.findByName(tag.getName());
+            List<Music> musicList = musicService.findArtistVideoList(artist);
+            Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
 
             return new ResponseEntity<>(new MusicSearchResponse(musicList,"artist",videoList), HttpStatus.OK);
         }catch (Exception e) {
@@ -89,8 +90,9 @@ public class TagApi {
     public ResponseEntity<?> artistVideos(@PathVariable Long tag_id,@PathVariable int page){
         try {
             Tag tag = tagService.findTagById(tag_id,page);
-            List<Music> musicList = musicService.findArtistVideoList(tag.getName());
-            Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+            Artist artist=artistService.findByName(tag.getName());
+            List<Music> musicList = musicService.findArtistVideoList(artist);
+            Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
 
             return new ResponseEntity<>(new GridResponse("artist",videoList), HttpStatus.OK);
         }catch (Exception e) {
@@ -113,7 +115,7 @@ public class TagApi {
         try {
             Tag tag = tagService.findTagById(tag_id,page);
             List<Music> musicList = musicService.findTitleVideoList(tag.getName());
-            Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+            Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
 
             return new ResponseEntity<>(new MusicSearchResponse(musicList,"music",videoList), HttpStatus.OK);
         }catch (Exception e) {
@@ -134,7 +136,7 @@ public class TagApi {
         try {
             Tag tag = tagService.findTagById(tag_id,page);
             List<Music> musicList = musicService.findTitleVideoList(tag.getName());
-            Slice<Video> videoList = videoService.findHitLikeVideoListByMusicList(page, videoSize, musicList, VideoScope.PUBLIC);
+            Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
 
             return new ResponseEntity<>(new GridResponse("music",videoList), HttpStatus.OK);
         }catch (Exception e) {
@@ -154,7 +156,7 @@ public class TagApi {
     public ResponseEntity<?> customVideos(@PathVariable Long tag_id,@PathVariable int page){
         try {
             Tag tag = tagService.findTagById(tag_id, page);
-            Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
+            Slice<Video> videoList = videoService.findCustomVideoList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
 
             return new ResponseEntity<>(new GridResponse("custom",videoList), HttpStatus.OK);
         }catch (Exception e) {
@@ -173,7 +175,7 @@ public class TagApi {
     public ResponseEntity<?> nationVideos(@PathVariable Long tag_id,@PathVariable int page){
         try {
             Tag tag = tagService.findTagById(tag_id, page);
-            Slice<Video> videoList = videoService.findHitLikeVideoListByVideoTagList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
+            Slice<Video> videoList = videoService.findCustomVideoList(page, videoSize, tag.getVideoTags(), VideoScope.PUBLIC);
 
             return new ResponseEntity<>(new GridResponse("nation",videoList), HttpStatus.OK);
         }catch (Exception e) {
@@ -196,7 +198,7 @@ public class TagApi {
             Tag tag = tagService.findTagById(tag_id,0);
             User user = userService.findByNickname(tag.getName());
             List<Clear> clearList = user.getClears();
-            Slice<Video> videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+            Slice<Video> videoList=videoService.findUserVideoList(page, videoSize, user, VideoScope.PUBLIC);
 
             return new ResponseEntity<>(new UserSearchResponse(user,clearList,videoList), HttpStatus.OK);
         }catch (Exception e) {
@@ -216,7 +218,7 @@ public class TagApi {
         try {
             Tag tag = tagService.findTagById(tag_id, page);
             User user = userService.findByNickname(tag.getName());
-            Slice<Video> videoList=videoService.findNewestVideoListByUser(page, videoSize, user, VideoScope.PUBLIC);
+            Slice<Video> videoList=videoService.findUserVideoList(page, videoSize, user, VideoScope.PUBLIC);
 
             return new ResponseEntity<>(new GridResponse("user",videoList), HttpStatus.OK);
         }catch (Exception e) {
@@ -274,7 +276,7 @@ public class TagApi {
         public MusicDto(Music music) {
             id=music.getId();
             title=music.getTitle();
-            artist=music.getArtist();
+            artist=music.getArtist().getName();
             imgUrl=music.getImgUrl();
         }
     }

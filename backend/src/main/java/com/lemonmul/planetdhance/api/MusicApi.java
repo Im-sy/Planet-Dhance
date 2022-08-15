@@ -2,7 +2,6 @@ package com.lemonmul.planetdhance.api;
 
 
 import com.lemonmul.planetdhance.dto.GridResponse;
-import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.tag.TagType;
@@ -18,10 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/music")
+@CrossOrigin
 public class MusicApi {
 
     private final MusicService musicService;
@@ -53,7 +50,7 @@ public class MusicApi {
 
             List<Tag> tagList=new ArrayList<>();
             tagList.add(tagService.findByNameAndType(music.getTitle(), TagType.TITLE));
-            tagList.add(tagService.findByNameAndType(music.getArtist(),TagType.ARTIST));
+            tagList.add(tagService.findByNameAndType(music.getArtist().getName(),TagType.ARTIST));
             tagList.add(tagService.findByNameAndType(user.getNickname(),TagType.NICKNAME));
             tagList.add(tagService.findByNameAndType(user.getNation().getName(),TagType.NATION));
 
@@ -77,7 +74,7 @@ public class MusicApi {
             Music music=musicService.getMusicInfo(music_id);
             int page=0;
             Slice<Video> latestVideoList = videoService.findLatestVideoList(page,size, music,VideoScope.PUBLIC);
-            Slice<Video> hitLikeVideoList = videoService.findHitLikeVideoList(page, size, music, VideoScope.PUBLIC);
+            Slice<Video> hitLikeVideoList = videoService.findMusicVideoList(page, size, music, VideoScope.PUBLIC);
 
             return new ResponseEntity<>(new MusicPageResponse(music,latestVideoList,hitLikeVideoList), HttpStatus.OK);
 

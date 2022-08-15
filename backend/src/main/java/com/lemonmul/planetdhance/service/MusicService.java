@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.service;
 
+import com.lemonmul.planetdhance.entity.Artist;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.repo.MusicRepo;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class MusicService {
     /**
      * 곡 조회 - 가수 (발매일순)
      */
-    public List<Music> findArtistVideoList(String artist){
+    public List<Music> findArtistVideoList(Artist artist){
         return musicRepo.findByArtistOrderByRelDateDesc(artist);
     }
 

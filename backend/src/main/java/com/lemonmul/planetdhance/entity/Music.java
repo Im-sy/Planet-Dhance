@@ -20,7 +20,8 @@ public class Music {
 
     private String title;
 
-    private String artist;
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Artist artist;
 
     private String imgUrl;
 
@@ -40,7 +41,7 @@ public class Music {
 
     //==생성 메서드==//
 
-    public static Music createMusic(String title,String artist,String imgUrl,String modelUrl,String guideUrl,String mvUrl, LocalDateTime relDate){
+    public static Music createMusic(String title,Artist artist,String imgUrl,String modelUrl,String guideUrl,String mvUrl, LocalDateTime relDate){
         Music music=new Music();
         music.setTitle(title);
         music.setArtist(artist);
@@ -52,12 +53,14 @@ public class Music {
         return music;
     }
 
-    private void setTitle(String title){
-        this.title=title;
+    //==연관관계 메서드==//
+    public void setArtist(Artist artist){
+        this.artist=artist;
+        artist.getMusics().add(this);
     }
 
-    private void setArtist(String artist){
-        this.artist=artist;
+    private void setTitle(String title){
+        this.title=title;
     }
 
     public void setRelDate(LocalDateTime relDate) {

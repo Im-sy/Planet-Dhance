@@ -1,8 +1,6 @@
 package com.lemonmul.planetdhance.api;
 
-import com.lemonmul.planetdhance.dto.ChallengeRequest;
-import com.lemonmul.planetdhance.dto.GridResponse;
-import com.lemonmul.planetdhance.dto.VideoDto;
+import com.lemonmul.planetdhance.dto.*;
 import com.lemonmul.planetdhance.entity.*;
 import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.User;
@@ -15,7 +13,6 @@ import com.lemonmul.planetdhance.service.LikeService;
 import com.lemonmul.planetdhance.service.MusicService;
 import com.lemonmul.planetdhance.service.UserService;
 import com.lemonmul.planetdhance.service.VideoService;
-import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
@@ -31,15 +28,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/video")
+@CrossOrigin
 public class VideoApi {
 
     private final VideoService videoService;
     private final MusicService musicService;
     private final UserService userService;
     private final LikeService likeService;
+    private final ArtistService artistService;
     private final RankingService rankingService;
+    private final TagService tagService;
 
     private static final int listSize =18;
+    private static final int infoSize=10;
 
     /**
      * 해당 곡 최신 영상 리스트 - 곡 페이지 latest 무한 스크롤
@@ -69,7 +70,7 @@ public class VideoApi {
     public ResponseEntity<?> hitlikeList(@PathVariable Long music_id,@PathVariable int page) {
         try {
             Music music=musicService.getMusicInfo(music_id);
-            Slice<Video> videoList = videoService.findHitLikeVideoList(page, listSize,music, VideoScope.PUBLIC);
+            Slice<Video> videoList = videoService.findMusicVideoList(page, listSize,music, VideoScope.PUBLIC);
             return new ResponseEntity<>(new GridResponse("hitlike",videoList), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
@@ -86,9 +87,10 @@ public class VideoApi {
     @GetMapping("/main")
     public MainPageResponse mainListAndRankingAndArtistList() {
         int size=12;
+        List<Artist> artistList = artistService.findTop5();
         Slice<Ranking> ranking = rankingService.getRanking();
         Slice<Video> videoList = videoService.findMainPageVideoList(0, size, VideoScope.PUBLIC);
-        return new MainPageResponse(ranking,videoList);
+        return new MainPageResponse(artistList,ranking,videoList);
     }
 
     /**
@@ -110,10 +112,8 @@ public class VideoApi {
      */
     @GetMapping("/random/{user_id}")
     public ResponseEntity<?> randomVideoInfoList(@PathVariable Long user_id) {
-        int size=10;
-
         try {
-            List<Video> videoList = videoService.findRandomVideoInfoList(size);
+            List<Video> videoList = videoService.findRandomVideoInfoList(infoSize);
             User user = userService.findById(user_id);
             List<Like> likeList = likeService.findLikeByUserAndVideos(user, videoList);
 
@@ -126,6 +126,105 @@ public class VideoApi {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * 가수 태그의 재생할 영상 정보 리스트
+     *
+     * 요청 파라미터 예시: /video/{video_id}/artist/{user_id}
+     */
+    @GetMapping("/{video_id}/artist/{user_id}")
+    public VideoInfoResponse artistVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) throws Exception{
+        Video video = videoService.findById(video_id);
+        List<Music> musicList=musicService.findArtistVideoList(video.getMusic().getArtist());
+        Slice<Video> videoList=videoService.findNextArtistVideoList(0,infoSize,video.getOrderWeight(),musicList,VideoScope.PUBLIC);
+
+        User user = userService.findById(user_id);
+        List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+
+        return new VideoInfoResponse(videoList,likeList);
+    }
+
+    /**
+     * 곡 태그의 재생할 영상 정보 리스트
+     *
+     * 요청 파라미터 예시: /video/{video_id}/music/{user_id}
+     */
+    @GetMapping("/{video_id}/music/{user_id}")
+    public VideoInfoResponse musicVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) throws Exception{
+        Video video = videoService.findById(video_id);
+        List<Music> musicList=musicService.findTitleVideoList(video.getMusic().getTitle());
+        Slice<Video> videoList=videoService.findNextMusicVideoList(0,infoSize,video.getOrderWeight(),musicList,VideoScope.PUBLIC);
+
+        User user = userService.findById(user_id);
+        List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+
+        return new VideoInfoResponse(videoList,likeList);
+    }
+
+//    /**
+//     * 커스텀 태그의 재생할 영상 정보 리스트
+//     *
+//     * 요청 파라미터 예시: /video/{video_id}/custom/{user_id}
+//     */
+//    @GetMapping("/{video_id}/custom/{user_id}")
+//    public VideoInfoResponse customVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) throws Exception{
+//        Video video = videoService.findById(video_id);
+//        List<VideoTag> videoTags = video.getVideoTags();
+//        List<VideoTag> tags=new ArrayList<>();
+//        for (VideoTag videoTag : videoTags) {
+//            if(videoTag.getTag().getType().equals(TagType.NATION)){
+//                tags.add(videoTag);
+//            }
+//        }
+//        Slice<Video> videoList=videoService.findNextCustomVideoList(0,infoSize,video.getOrderWeight(),tags,VideoScope.PUBLIC);
+//
+//        User user = userService.findById(user_id);
+//        List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+//
+//        return new VideoInfoResponse(videoList,likeList);
+//    }
+//
+//    /**
+//     * 국가 태그의 재생할 영상 정보 리스트
+//     *
+//     * 요청 파라미터 예시: /video/{video_id}/nation/{user_id}
+//     */
+//    @GetMapping("/{video_id}/nation/{user_id}")
+//    public VideoInfoResponse nationVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) throws Exception{
+//        Video video = videoService.findById(video_id);
+//        List<VideoTag> videoTags = video.getVideoTags();
+//        List<VideoTag> tags=new ArrayList<>();
+//        for (VideoTag videoTag : videoTags) {
+//            if(videoTag.getTag().getType().equals(TagType.NATION)){
+//                tags.add(videoTag);
+//                break;
+//            }
+//        }
+//
+//        Slice<Video> videoList=videoService.findNextCustomVideoList(0,infoSize,video.getOrderWeight(),tags,VideoScope.PUBLIC);
+//
+//        User user = userService.findById(user_id);
+//        List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+//
+//        return new VideoInfoResponse(videoList,likeList);
+//    }
+
+    /**
+     * 닉네임 태그의 재생할 영상 정보 리스트
+     *
+     * 요청 파라미터 예시: /video/{video_id}/user/{user_id}
+     */
+    @GetMapping("/{video_id}/user/{user_id}")
+    public VideoInfoResponse userVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) throws Exception{
+        Video video = videoService.findById(video_id);
+        User videoUser = userService.findById(video.getUser().getId());
+        Slice<Video> videoList=videoService.findNextUserVideoList(0,infoSize,video.getOrderWeight(),videoUser,VideoScope.PUBLIC);
+
+        User user = userService.findById(user_id);
+        List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+
+        return new VideoInfoResponse(videoList,likeList);
     }
 
     /**
@@ -148,32 +247,18 @@ public class VideoApi {
 
     }
 
-    @Data
-    static class VideoPlayDto {
-        private Long musicId;
-        private Long hit;
-        private String videoUrl;
-        private boolean like=false;
-        private int likeCnt;
-        private List<TagDto> tagList;
-
-        public VideoPlayDto(Video video,List<Like> likeList) {
-            musicId=video.getMusic().getId();
-            hit=video.getHit();
-            videoUrl= video.getVideoUrl();
-            for (Like l : likeList) {
-                if(l.getVideo().getId().equals(video.getId())) {
-                    like=true;
-                    break;
-                }
-            }
-            likeCnt=video.getLikes().size();
-            tagList=video.getVideoTags().stream().map(TagDto::new).collect(Collectors.toList());
-        }
+    /**
+     * 조회수 올리기
+     *
+     * 요청 파라미터 예시: /video/hit/{video_id}
+     */
+    @PostMapping("/hit/{video_id}")
+    public boolean addHitCount(@PathVariable Long video_id){
+        return videoService.addHitCount(video_id);
     }
 
     @Data
-    static class TagDto{
+    public static class TagDto{
         private Long id;
         /** 태그명 */
         private String type;
@@ -192,13 +277,26 @@ public class VideoApi {
      */
     @Data
     static class MainPageResponse{
+        private List<ArtistDto> artistList;
         private List<RankingDto> rankingList;
         private String prevPage="main";
         private Slice<VideoDto> videoList;
 
-        public MainPageResponse(Slice<Ranking> ranking,Slice<Video> videos) {
+        public MainPageResponse(List<Artist> artists,Slice<Ranking> ranking,Slice<Video> videos) {
+            artistList=artists.stream().map(ArtistDto::new).collect(Collectors.toList());
             rankingList = ranking.map(RankingDto::new).stream().collect(Collectors.toList());
             videoList=videos.map(VideoDto::new);
+        }
+    }
+
+    @Data
+    static class ArtistDto{
+        private String name;
+        private String imgUrl;
+
+        public ArtistDto(Artist artist) {
+            name=artist.getName();
+            imgUrl=artist.getImgUrl();
         }
     }
 

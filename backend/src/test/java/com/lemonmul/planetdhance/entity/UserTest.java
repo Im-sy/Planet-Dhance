@@ -17,7 +17,7 @@ class UserTest {
 
     @Test
     void createUser() {
-        Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko",-3,-3,-2.5);
+        Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko","img",-3,-3,-2.5);
         em.persist(nation1);
 
         User user1= User.createUser("email1@xx.xx","user1",null,null,nation1);

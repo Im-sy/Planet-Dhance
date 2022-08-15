@@ -1,5 +1,6 @@
 package com.lemonmul.planetdhance.repo;
 
+import com.lemonmul.planetdhance.entity.Artist;
 import com.lemonmul.planetdhance.entity.Music;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,7 +13,7 @@ public interface MusicRepo extends JpaRepository<Music, Long> {
 //    Optional<Music> findById(Integer id);
 
     //해당 가수의 곡 리스트 반환 (최신순)
-    List<Music> findByArtistOrderByRelDateDesc(String artist);
+    List<Music> findByArtistOrderByRelDateDesc(Artist artist);
 
     //해당 제목의 곡 리스트 반환 (최신순)
     List<Music> findByTitleOrderByRelDate(String title);
