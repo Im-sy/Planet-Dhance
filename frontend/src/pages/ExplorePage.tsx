@@ -5,14 +5,9 @@ import React, {
   useEffect,
 } from 'react';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
-import axios from 'axios';
-
-import styled from 'styled-components';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import myVideo from '../videos/pop_guide.mp4';
-
+import {videoItemProps} from './ExplorePageList'
+import HashTagList from '../components/HashTagList';
+import BtnLike from '../components/UI/btnLike';
 import myVideo from '../videos/Patissiere_guide.mp4';
 
 import '../styles/tailwind_reset.css'
@@ -42,28 +37,25 @@ const videoZone: CSSProperties = {
 
 
 interface playProps {
-  url: string;
   playing: boolean;
-  played: number;
   muted: boolean;
+  videoItem: videoItemProps;
+}
+interface playStateProps {
+  playing: boolean,
+  muted: boolean,
+  played: number
 }
 
 
+export default function PlayingPage( {playing, muted, videoItem } : playProps ){
 
-export default function PlayingPage( props : playProps ){
-
-
-  const [playState, setPlayState] = useState<playProps>({
-    url: '',
+  const [playState, setPlayState] = useState<playStateProps>({
     playing: true,
     muted: true,
     played: 0,
   });
   const {played} = playState;
-  const { url, playing,muted } = props;
-  useEffect(() =>{
-    // axios here
-  },[])
 
   const handlePlay = () => {
     console.log('handlePlay');
@@ -79,7 +71,7 @@ export default function PlayingPage( props : playProps ){
       ...state,
     };
     // console.log('onProgress', inState);
-    setPlayState(inState as SetStateAction<playProps>);
+    setPlayState(inState as SetStateAction<playStateProps>);
   };
 
   const playEnd = () =>{
@@ -89,26 +81,27 @@ export default function PlayingPage( props : playProps ){
   return (
     <div style={videoZone}>
       <progress
-          style={progressStyle}
-          className="progressbar"
-          max={1}
-          value={played}
-        />
-    <ReactPlayer
-          className="react-player"
-          width="98vw"
-          height="94vh"
-          loop
-          style={playerStyle}
-          url={myVideo}
-          playing={playing}
-          muted={muted}
-          onPlay={handlePlay}
-          onPause={handlePause}
-          onProgress={handleProgress}
-          onEnded={playEnd}
-        />
-
-      </div>
+        style={progressStyle}
+        className="progressbar"
+        max={1}
+        value={played}
+      />
+      <ReactPlayer
+        className="react-player"
+        width="98vw"
+        height="94vh"
+        loop
+        style={playerStyle}
+        url={videoItem.videoUrl}
+        playing={playing}
+        muted={muted}
+        onPlay={handlePlay}
+        onPause={handlePause}
+        onProgress={handleProgress}
+        onEnded={playEnd}
+      />
+      {/* <HashTagList tagList={videoItem.tagList} /> */}
+      {/* <BtnLike like={videoItem.like} /> */}
+    </div>
   )
 }

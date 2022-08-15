@@ -7,20 +7,21 @@ interface MyPageAchievementsProps {
 export default function MyPageAchievements(props : MyPageAchievementsProps) {
 	const { clear } = props ;
 	
-	const rendering = () => {
-		const res = []
-		for (let i=0; i<101; i++){
-			if (clear > i && i%10===0 ){
-				// res.push(<div style={{marginLeft: 1, marginTop: 3}}>💯</div>)
-				res.push(<span style={{ margin: 3 }}>💯</span>)
-			}
-		}
-		return res
+	if (clear <= 3) {
+		return (
+			<div>🌱</div>
+		)
+	} else if (clear > 3 && clear <= 5) {
+		return (
+			<div>🍀</div>
+		)
+	} else if (clear > 5 && clear <= 10) {
+		return (
+			<div>🌷</div>
+		)	
+	} else {
+		return (
+			<div>💐</div>
+		)	
 	}
-	
-  return (
-    <div >
-		{rendering()}
-    </div>
-  )
 }

@@ -2,161 +2,146 @@ import axios from "axios"
 
 const API_URL = "https://i7d201.p.ssafy.io/api/"
 
-export async function mainVideo() {
-  try {
-    const data = await axios.get(
-      API_URL+`video/main`,
-    ).then(
-      res => {
-        console.log(res)
-        return res.data
-      }
-    );
-    return data
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log(error.message)
-      return error.message
-    } else {
-      console.log(error)
-      return 'unexpected error occurred'
-    }
-  }
-}
-
-export async function musicList(songId: number) {
-  try {
-    const data = await axios.get(
-      API_URL+`music/list/${songId}`,
-    ).then(
-      res => {
-        console.log(res)
-        return res.data
-      }
-    );
-    return data
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log(error.message)
-      return error.message
-    } else {
-      console.log(error)
-      return 'unexpected error occurred'
-    }
-  }
-}
-
-export async function tagSearch(tagId: number, searchType: string) {
-  try {
-    const data = await axios.get(
-      API_URL+`tag/${tagId}/${searchType}`,
-    ).then(
-      res => {
-        console.log(res)
-        return res.data
-      }
-    );
-    return data
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log(error.message)
-      return error.message
-    } else {
-      console.log(error)
-      return 'unexpected error occurred'
-    }
-  }
-}
-
-export async function playVideo(
-  videoId: number,
-  prevPage: string,
-  userId: number,
+export async function follow(
+  fromId: number,
+  toId: number,
 ) {
   try {
-    const data = await axios.get(
-      API_URL+`video/${videoId}/${prevPage}/${userId}`,
-    ).then(
-      res => {
-        console.log(res)
-        return res.data
-      }
-    );
-    return data
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log(error.message)
-      return error.message
-    } else {
-      console.log(error)
-      return 'unexpected error occurred'
-    }
-  }
-}
-
-export async function randomPlayVideo(
-  userId: number,
-) {
-  try {
-    const data = await axios.get(
-      API_URL+`video/random/${userId}`,
-    ).then(
-      res => {
-        console.log(res)
-        return res.data
-      }
-    );
-    return data
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log(error.message)
-      return error.message
-    } else {
-      console.log(error)
-      return 'unexpected error occurred'
-    }
-  }
-}
-
-export async function challenge(
-  musicId: number,
-  userId: number,
-) {
-  try {
-    const data = await axios.get(
-      API_URL+`music/${musicId}/challenge/${userId}`,
-    ).then(
-      res => {
-        console.log(res)
-        return res.data
-      }
-    );
-    return data
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log(error.message)
-      return error.message
-    } else {
-      console.log(error)
-      return 'unexpected error occurred'
-    }
-  }
-}
-
-export async function upload(
-  formData: FormData
-) {
-  try {
-    const data = await axios.post(
-      API_URL+`video/upload`,
+    const {data} = await axios.post(
+      API_URL+`follow/${fromId}/${toId}`,
       {
-        formData: formData
+        fromId: fromId,
+        toId: toId,
       },
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+    ).then(
+      res => {
+        console.log(res)
+        return res.data
       }
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message)
+      return error.message
+    } else {
+      console.log(error)
+      return 'unexpected error occurred'
+    }
+  }
+}
+
+export async function unfollow(
+  fromId: number,
+  toId: number,
+) {
+  try {
+    const {data} = await axios.delete(
+      API_URL+`unfollow/${fromId}/${toId}`
+    ).then(
+      res => {
+        console.log(res)
+        return res.data
+      }
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message)
+      return error.message
+    } else {
+      console.log(error)
+      return 'unexpected error occurred'
+    }
+  }
+}
+
+export async function like(
+  userId: number,
+  videoId: number,
+) {
+  try {
+    const {data} = await axios.post(
+      API_URL+`like/${userId}/${videoId}`,
+      {
+        userId: userId,
+        videoId: videoId,
+      },
+    ).then(
+      res => {
+        console.log(res)
+        return res.data
+      }
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message)
+      return error.message
+    } else {
+      console.log(error)
+      return 'unexpected error occurred'
+    }
+  }
+}
+
+export async function unlike(
+  userId: number,
+  videoId: number,
+) {
+  try {
+    const {data} = await axios.delete(
+      API_URL+`unlike/${userId}/${videoId}`
+    ).then(
+      res => {
+        console.log(res)
+        return res.data
+      }
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message)
+      return error.message
+    } else {
+      console.log(error)
+      return 'unexpected error occurred'
+    }
+  }
+}
+
+export async function favFollow(
+  userId: number,
+  pageNum: number,
+) {
+  try {
+    const data = await axios.get(
+      API_URL+`user/${userId}/follow/${pageNum}`,
+    ).then(
+      res => {
+        console.log(res)
+        return res.data
+      }
+    );
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message)
+      return error.message
+    } else {
+      console.log(error)
+      return 'unexpected error occurred'
+    }
+  }
+}
+
+export async function favLike(
+  userId: number,
+  pageNum: number,
+) {
+  try {
+    const data = await axios.get(
+      API_URL+`user/${userId}/like/${pageNum}`,
     ).then(
       res => {
         console.log(res)

@@ -202,16 +202,16 @@ export default function SignUp() {
                         borderColor: '#E8AA42',
                       },}}
                   >
-                    <MenuItem value={'Dhance'}>🪐Dhance</MenuItem>
+                    <MenuItem value={'Dhance'}>🪐 Dhance</MenuItem>
                     <MenuItem value={'Australia'}>🇦🇺 Australia</MenuItem>
                     <MenuItem value={'Canada'}>🇨🇦 Canada</MenuItem>
                     <MenuItem value={'China'}>🇨🇳 China</MenuItem>
                     <MenuItem value={'Egypt'}>🇪🇬 Egypt</MenuItem>
                     <MenuItem value={'Europe'}>🇪🇺 Europe</MenuItem>
                     <MenuItem value={'Japan'}>🇯🇵 Japan</MenuItem>
-                    <MenuItem value={'ko'}>🇰🇷 Korea</MenuItem>
+                    <MenuItem value={'Korea'}>🇰🇷 Korea</MenuItem>
                     <MenuItem value={'RSA'}>🇿🇦 RSA</MenuItem>
-                    <MenuItem value={'us'}>🇺🇸 USA</MenuItem>
+                    <MenuItem value={'SUA'}>🇺🇸 USA</MenuItem>
                     <MenuItem value={'Vietnam'}>🇻🇳 Vietnam</MenuItem>
                   </Select>
                 </FormControl>
