@@ -25,7 +25,7 @@ class VideoTest {
 
     @Test
     void createVideo() {
-        Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko",-3,-3,-2.5);
+        Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko","img",-3,-3,-2.5);
         em.persist(nation1);
 
         User user1=User.createUser("email1@xx.xx","user1",null,null,nation1);
@@ -33,9 +33,14 @@ class VideoTest {
         User user2= User.createUser("email2@xx.xx","user2",null,null,nation1);
         em.persist(user2);
 
-        Music music1=Music.createMusic("title1","artist1","album img1","model url1","guide url1","mv url1", LocalDateTime.now());
+        Artist artist1=Artist.createArtist("artist1","/temp/55167a30-7e09-4633-b25f-d7770936aee8.png");
+        em.persist(artist1);
+        Artist artist2=Artist.createArtist("artist2","/temp/55167a30-7e09-4633-b25f-d7770936aee8.png");
+        em.persist(artist2);
+
+        Music music1=Music.createMusic("title1",artist1,"album img1","model url1","guide url1","mv url1", LocalDateTime.now());
         em.persist(music1);
-        Music music2=Music.createMusic("title2","artist2","album img2","model url2","guide url2","mv url2",LocalDateTime.now());
+        Music music2=Music.createMusic("title2",artist2,"album img2","model url2","guide url2","mv url2",LocalDateTime.now());
         em.persist(music2);
 
         List<Video> videos=new ArrayList<>();

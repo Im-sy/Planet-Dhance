@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Data
 public class VideoPlayDto {
+    private Long videoId;
     private Long musicId;
     private Long hit;
     private String videoUrl;
@@ -19,6 +20,7 @@ public class VideoPlayDto {
     private List<TagDto> tagList;
 
     public VideoPlayDto(Video video, List<Like> likeList) {
+        videoId=video.getId();
         musicId=video.getMusic().getId();
         hit=video.getHit();
         videoUrl= video.getVideoUrl();

@@ -48,7 +48,7 @@ public class MusicApi {
         User user = userService.findById(user_id);
         List<Tag> tagList=new ArrayList<>();
         tagList.add(tagService.findByNameAndType(music.getTitle(), TagType.TITLE));
-        tagList.add(tagService.findByNameAndType(music.getArtist(),TagType.ARTIST));
+        tagList.add(tagService.findByNameAndType(music.getArtist().getName(),TagType.ARTIST));
         tagList.add(tagService.findByNameAndType(user.getNickname(),TagType.NICKNAME));
         tagList.add(tagService.findByNameAndType(user.getNation().getName(),TagType.NATION));
         return new MusicChallengeResponse(music,tagList);

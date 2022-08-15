@@ -1,6 +1,7 @@
 package com.lemonmul.planetdhance.api;
 
 import com.lemonmul.planetdhance.dto.*;
+import com.lemonmul.planetdhance.entity.Artist;
 import com.lemonmul.planetdhance.entity.Clear;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
@@ -9,10 +10,7 @@ import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
-import com.lemonmul.planetdhance.service.MusicService;
-import com.lemonmul.planetdhance.service.TagService;
-import com.lemonmul.planetdhance.service.UserService;
-import com.lemonmul.planetdhance.service.VideoService;
+import com.lemonmul.planetdhance.service.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +32,7 @@ public class TagApi {
     private final MusicService musicService;
     private final UserService userService;
     private final VideoService videoService;
+    private final ArtistService artistService;
 
     private static final int tagSize=15;
     private static final int videoSize=18;
@@ -62,7 +61,8 @@ public class TagApi {
     public MusicSearchResponse musicsAndArtistVideos(@PathVariable Long tag_id){
         int page=0;
         Tag tag = tagService.findTagById(tag_id,page);
-        List<Music> musicList = musicService.findArtistVideoList(tag.getName());
+        Artist artist=artistService.findByName(tag.getName());
+        List<Music> musicList = musicService.findArtistVideoList(artist);
         Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
         return new MusicSearchResponse(musicList,"artist",videoList);
     }
@@ -76,7 +76,8 @@ public class TagApi {
     @GetMapping("/{tag_id}/artist/{page}")
     public GridResponse artistVideos(@PathVariable Long tag_id,@PathVariable int page){
         Tag tag = tagService.findTagById(tag_id,page);
-        List<Music> musicList = musicService.findArtistVideoList(tag.getName());
+        Artist artist=artistService.findByName(tag.getName());
+        List<Music> musicList = musicService.findArtistVideoList(artist);
         Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
         return new GridResponse("artist",videoList);
     }
@@ -216,7 +217,7 @@ public class TagApi {
         public MusicDto(Music music) {
             id=music.getId();
             title=music.getTitle();
-            artist=music.getArtist();
+            artist=music.getArtist().getName();
             imgUrl=music.getImgUrl();
         }
     }

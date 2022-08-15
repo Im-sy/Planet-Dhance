@@ -31,7 +31,7 @@ class UserServiceTest {
     @Test
     public void signup() {
         // given
-        Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko",-3,-3,-2.5);
+        Nation nation1=Nation.createNation("\uD83C\uDDF0\uD83C\uDDF7","ko","img",-3,-3,-2.5);
         em.persist(nation1);
 
         Basic basic = Basic.createBasic("1217jdk@naver.com", "1217jdk", "", "", nation1, Role.USER, "1234");

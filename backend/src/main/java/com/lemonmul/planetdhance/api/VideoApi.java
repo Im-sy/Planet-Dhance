@@ -33,6 +33,7 @@ public class VideoApi {
     private final MusicService musicService;
     private final UserService userService;
     private final LikeService likeService;
+    private final ArtistService artistService;
     private final RankingService rankingService;
     private final TagService tagService;
 
@@ -74,9 +75,10 @@ public class VideoApi {
     @GetMapping("/main")
     public MainPageResponse mainListAndRankingAndArtistList(){
         int size=12;
+        List<Artist> artistList = artistService.findTop5();
         Slice<Ranking> ranking = rankingService.getRanking();
         Slice<Video> videoList = videoService.findMainPageVideoList(0, size, VideoScope.PUBLIC);
-        return new MainPageResponse(ranking,videoList);
+        return new MainPageResponse(artistList,ranking,videoList);
     }
 
     /**
@@ -252,13 +254,26 @@ public class VideoApi {
      */
     @Data
     static class MainPageResponse{
+        private List<ArtistDto> artistList;
         private List<RankingDto> rankingList;
         private String prevPage="main";
         private Slice<VideoDto> videoList;
 
-        public MainPageResponse(Slice<Ranking> ranking,Slice<Video> videos) {
+        public MainPageResponse(List<Artist> artists,Slice<Ranking> ranking,Slice<Video> videos) {
+            artistList=artists.stream().map(ArtistDto::new).collect(Collectors.toList());
             rankingList = ranking.map(RankingDto::new).stream().collect(Collectors.toList());
             videoList=videos.map(VideoDto::new);
+        }
+    }
+
+    @Data
+    static class ArtistDto{
+        private String name;
+        private String imgUrl;
+
+        public ArtistDto(Artist artist) {
+            name=artist.getName();
+            imgUrl=artist.getImgUrl();
         }
     }
 

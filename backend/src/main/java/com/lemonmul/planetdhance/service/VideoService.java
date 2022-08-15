@@ -195,7 +195,7 @@ public class VideoService {
         tagList.add(tagRepo.findByNameAndType(user.getNickname(), TagType.NICKNAME));
         tagList.add(tagRepo.findByNameAndType(user.getNation().getName(), TagType.NATION));
         tagList.add(tagRepo.findByNameAndType(music.getTitle(), TagType.TITLE));
-        tagList.add(tagRepo.findByNameAndType(music.getArtist(), TagType.ARTIST));
+        tagList.add(tagRepo.findByNameAndType(music.getArtist().getName(), TagType.ARTIST));
         //커스텀 태그들 추가
         for (TagRequestDto tagRequestDto : challengeRequest.getTagList()) {
             String tagName=tagRequestDto.getType();
