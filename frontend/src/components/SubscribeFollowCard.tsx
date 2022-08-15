@@ -9,45 +9,23 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import {Link} from 'react-router-dom';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { contentItem } from '../pages/MyPage';
 
 interface cardProps {
   profileImg: string,
   nickname: string,
   introduction: string,
-  urls : string,
+  videoList : contentItem[],
   width : string,
   height : string,
 }
 
 export default function SubscribeFollowCard(props: cardProps) {
   // 프로필사진, 닉네임, 한줄 소개, 영상5 urls
-  const {profileImg, nickname, introduction, urls, width, height} = props
-  const cardrendering = () => {
-    const cardList = []
-    for (let i=0; i<5; i++) {
-      cardList.push(
-        // CardActionArea 하나 하나에 routher or href = 'google.com" 과 같이도 가능
-        <CardActionArea sx={{ p:1 , maxWidth : "16.5vw" }} component={Link} to='/' > 
-              <Grid item sm={4} >
-                  <CardMedia
-                    style={{
-                      width: width,
-                      height: height,
-                    }}
-                    component="img"
-                    image={urls[i]}
-                    alt="user upload video"
-                  />
-              </Grid>
-        </CardActionArea>  
-       
-      )
-    }
-    return cardList
-  }
+  const {profileImg, nickname, introduction, videoList, width, height} = props
+
   return (
     <div>
-
       <Card sx={{ maxWidth: "100vw" }}>
         <CardContent sx={{  padding:0 }}>
           <SubscribeProfile
@@ -60,16 +38,27 @@ export default function SubscribeFollowCard(props: cardProps) {
             />
         </CardContent>
         
-          <Grid container spacing={0} direction='row' sx={{ p:1 }}>
-                {cardrendering()}
-                <Link to='/'>
-                  <MoreHorizIcon sx={{  top : {height} }} > </MoreHorizIcon>
-                </Link>
-          </Grid>
-            
+        <Grid container spacing={0} direction='row' sx={{ p:1 }}>
+          {videoList.map((videoItem: contentItem) => (
+            <CardActionArea key={videoItem.videoId} sx={{ p:1 , maxWidth : "16.5vw" }} component={Link} to='/' > 
+              <Grid item sm={4} >
+                <CardMedia
+                  style={{
+                    width: width,
+                    height: height,
+                  }}
+                  component="img"
+                  image={videoItem.imgUrl}
+                  alt="user upload video"
+                />
+              </Grid>
+            </CardActionArea>  
+          ))}
+          <Link to='/'>
+            <MoreHorizIcon sx={{  top : {height} }} > </MoreHorizIcon>
+          </Link>
+        </Grid>
       </Card>
-
-      
     </div>
   );
 }

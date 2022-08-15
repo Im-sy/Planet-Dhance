@@ -8,10 +8,30 @@ import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import { useLocation } from 'react-router-dom';
 import { videoListProps } from './MyPage';
 import { playVideo } from '../components/API/MusicService';
+import { useSelector } from 'react-redux';
+import { rootState } from '../reducer';
+import HashTagList from '../components/HashTagList';
 import axios from 'axios';
 import myVideo from '../videos/Patissiere_guide.mp4';
 import '../styles/tailwind_reset.css'
 
+export interface tagItemProps {
+  id: number,
+  type: string,
+  className: string
+}
+interface videoItemProps {
+  videoId: number,
+  musicId: number,
+  hit: number,
+  videoUrl: string,
+  like: boolean,
+  likeCnt: number,
+  tagList: tagItemProps[],
+}
+interface playListProps {
+  videoList: videoItemProps[]
+}
 
 const playerStyle: CSSProperties = {
   position: 'absolute',
@@ -45,10 +65,10 @@ interface playProps {
 
 
 export default function PlayingPage( props : playProps ){
-  const {prevPage, videoId} = useLocation() as unknown as {
-    prevPage: string;
-    videoId: number;
-  }
+  const location = useLocation();
+  const state = location.state as {prevPage: string; videoId: number;}
+  const prevPage = state.prevPage
+  const videoId = state.videoId
 
   const [playState, setPlayState] = useState<playProps>({
     url: '',
@@ -58,12 +78,19 @@ export default function PlayingPage( props : playProps ){
   });
   const {played} = playState;
   const { url, playing,muted } = props;
+
+  const {isAuthenticated, user} = useSelector(
+    (state: rootState) => state.authReducer
+  );
+
   useEffect(() =>{
     const getPlayList = async () => {
-      const getplaylist = await playVideo(, prevPage, videoId)
+      const getplaylist = await playVideo(0, prevPage, user.userId)
+      setPlayListInfo(getplaylist)
     }
     getPlayList()
   },[])
+  const [playListInfo, setPlayListInfo] = useState<playListProps>()
 
   const handlePlay = () => {
     console.log('handlePlay');
@@ -89,26 +116,26 @@ export default function PlayingPage( props : playProps ){
   return (
     <div style={videoZone}>
       <progress
-          style={progressStyle}
-          className="progressbar"
-          max={1}
-          value={played}
-        />
-    <ReactPlayer
-          className="react-player"
-          width="98vw"
-          height="94vh"
-          loop
-          style={playerStyle}
-          url={myVideo}
-          playing={playing}
-          muted={muted}
-          onPlay={handlePlay}
-          onPause={handlePause}
-          onProgress={handleProgress}
-          onEnded={playEnd}
-        />
-
-      </div>
+        style={progressStyle}
+        className="progressbar"
+        max={1}
+        value={played}
+      />
+      <ReactPlayer
+        className="react-player"
+        width="98vw"
+        height="94vh"
+        loop
+        style={playerStyle}
+        url={myVideo}
+        playing={playing}
+        muted={muted}
+        onPlay={handlePlay}
+        onPause={handlePause}
+        onProgress={handleProgress}
+        onEnded={playEnd}
+      />
+      {/* <HashTagList tagList={playListInfo.tagList} /> */}
+    </div>
   )
 }

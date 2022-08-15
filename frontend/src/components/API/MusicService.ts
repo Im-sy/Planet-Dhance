@@ -67,3 +67,29 @@ export async function tagSearch(tagId: number, searchType: string) {
     }
   }
 }
+
+export async function playVideo(
+  lastVideoId: number,
+  prevPage: string,
+  userId: number,
+) {
+  try {
+    const data = await axios.get(
+      API_URL+`video/${lastVideoId}/${prevPage}/${userId}`,
+    ).then(
+      res => {
+        console.log(res)
+        return res.data
+      }
+    );
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message)
+      return error.message
+    } else {
+      console.log(error)
+      return 'unexpected error occurred'
+    }
+  }
+}
