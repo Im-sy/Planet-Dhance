@@ -16,24 +16,23 @@ import { styled } from '@mui/material/styles';
 import '../styles/NavBar.css';
 
 interface navProps {
-  current : string;
+  current: string;
 }
 
-export default function NavBar(props : navProps) {
+export default function NavBar(props: navProps) {
   const { isAuthenticated, user } = useSelector(
     (state: rootState) => state.authReducer
   );
   const { current } = props;
   let navNumber = 3;
-  if (current === "main"){
+  if (current === 'main') {
     navNumber = 0;
-  }else if(current === "search"){
+  } else if (current === 'search') {
     navNumber = 1;
-  }else if(current === "subscribe"){
+  } else if (current === 'subscribe') {
     navNumber = 2;
   }
   const [value, setValue] = useState(navNumber);
-  
 
   return (
     <div>
@@ -75,13 +74,27 @@ export default function NavBar(props : navProps) {
             label="Favorites"
             icon={<img src={navFav} alt="navFav" width="30"></img>}
           />
-          <MuiBottomNavigationAction
-            className="navbar"
-            component={Link}
-            to={'/login'}
-            label="My"
-            icon={<AccountCircleIcon color="secondary" sx={{ fontSize: 30 }} />}
-          />
+          {isAuthenticated ? (
+            <MuiBottomNavigationAction
+              className="navbar"
+              component={Link}
+              to={'/mypage'}
+              label="My"
+              icon={
+                <AccountCircleIcon color="secondary" sx={{ fontSize: 30 }} />
+              }
+            />
+          ) : (
+            <MuiBottomNavigationAction
+              className="navbar"
+              component={Link}
+              to={'/login'}
+              label="My"
+              icon={
+                <AccountCircleIcon color="secondary" sx={{ fontSize: 30 }} />
+              }
+            />
+          )}
         </BottomNavigation>
       </Paper>
     </div>

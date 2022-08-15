@@ -9,6 +9,7 @@ import {videoItemProps} from './ExplorePageList'
 import HashTagList from '../components/HashTagList';
 import BtnLike from '../components/UI/btnLike';
 import myVideo from '../videos/Patissiere_guide.mp4';
+
 import '../styles/tailwind_reset.css'
 
 
