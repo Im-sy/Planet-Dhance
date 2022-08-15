@@ -25,7 +25,7 @@ public class FileUtil {
         String separator = File.separator;
 
         File tempFile = new File("");
-        //TODO separator 빼기
+        //TODO: separator 빼기
         String rootPath = tempFile.getAbsolutePath().split("src")[0] + separator + "resource";
 
         String savePath = rootPath + separator + path;

@@ -212,8 +212,7 @@ public class UserApi {
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestPart MultipartFile inputFile, @RequestPart CreateUpdateRequest createUpdateRequest) {
         try {
-            userService.update(id, inputFile, createUpdateRequest);
-            return new ResponseEntity<>("Success", HttpStatus.OK);
+            return new ResponseEntity<>(userService.update(id, inputFile, createUpdateRequest), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
