@@ -14,7 +14,7 @@ export default function SubscribeFollowGridView({profiles}:SubscribeFollowGridVi
   return (
     <div>
       <Stack  spacing={1} style={{justifyContent: 'center'}} direction='column'>
-        {profiles.map((profile: followUserProps) => (
+        {profiles?.map((profile: followUserProps) => (
           <Grid item sm={4} key={profile.id}>
             <SubscribeFollowCard
               profileImg={profile.imgUrl}

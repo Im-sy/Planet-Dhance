@@ -3,6 +3,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ActionAreaCard from './Card';
+import ToSearchCard from './ToSearchCard';
 import '../styles/tailwind_reset.css'
 import '../styles/styles.css'
 
@@ -18,7 +19,7 @@ export default class Carousel extends Component {
       slidesToScroll: 1,
       autoplay: true,
       speed: 500,
-      autoplaySpeed: 2000,
+      autoplaySpeed: 5000,
       cssEase: 'linear',
       nextArrow: <div style={{display: "none"}}></div>,
     };
@@ -26,20 +27,23 @@ export default class Carousel extends Component {
       <div  className="container">
         <h2>Auto Play</h2>
         <Slider {...settings}>
-            <ActionAreaCard prevPage={'main'} videoId={1}
-              url="https://picsum.photos/1250/500"
-              width="100%"
-              height="200px"
+            <ToSearchCard id={1}
+              url="/resource/carousel/hot.jpg"
+              width="95.5%"
+              height="50%"
+              type="ARTIST"
             />
-            <ActionAreaCard prevPage={'main'} videoId={2}
-              url="https://picsum.photos/1300/500"
-              width="100%"
-              height="200px"
+            <ToSearchCard id={2}
+              url="/resource/carousel/latest.jpg"
+              width="95.5%"
+              height="50%"
+              type="TITLE"
             />
-            <ActionAreaCard prevPage={'main'} videoId={3}
-              url="https://picsum.photos/1310/500"
-              width="100%"
-              height="200px"
+            <ToSearchCard id={3}
+              url="/resource/carousel/latest.jpg"
+              width="95.5%"
+              height="50%"
+              type="TITLE"
             />
         </Slider>
       </div>
