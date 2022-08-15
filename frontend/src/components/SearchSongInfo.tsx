@@ -23,24 +23,6 @@ function isSearchInfo(arg:any): arg is SearchInfo {
   return arg.value !== undefined;
 }
 
-export default function SearchSongInfo(props: SearchInfo) {
-  const { id, img, value, type, sx } = props;
-  
-  const navigate = useNavigate();
-
-  const toGo = () => {
-    console.log(props);
-    if (type === "NICKNAME"){
-      navigate(`/profile/${id}`);
-    }else{
-      navigate(`/searchsong/${type}/${id}`);
-    }
-  }
-
-  const goToSongPage = () =>{
-    navigate(`/songPage/${id}`);
-  }
-
 export default function SearchSongInfo(props: SearchInfo | tagMusicInfo) {
   const navigate = useNavigate();
 
