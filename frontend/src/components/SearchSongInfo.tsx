@@ -20,8 +20,12 @@ export default function SearchSongInfo(props: SearchInfo) {
   const navigate = useNavigate();
 
   const toGo = () => {
-    console.log(props);    
-    navigate(`/searchsong/${type}/${id}`);
+    console.log(props);
+    if (type === "NICKNAME"){
+      navigate(`/profile/${id}`);
+    }else{
+      navigate(`/searchsong/${type}/${id}`);
+    }
   }
 
   const goToSongPage = () =>{
