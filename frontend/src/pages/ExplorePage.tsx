@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import myVideo from '../videos/IMG_0960.mp4';
+import myVideo from '../videos/pop_guide.mp4';
 import '../styles/tailwind_reset.css'
 
 const Text = styled.button`

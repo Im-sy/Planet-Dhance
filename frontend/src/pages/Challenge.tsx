@@ -29,9 +29,23 @@ import NavBar from '../components/NavBar'
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
-
-//---------------------------------------------------------------------------------
+//--------------------------------------------------------------
 //
+// 티쳐블 머신
+//
+//---------------------------------------------------------------------------
+import * as tmPose from '@teachablemachine/pose';
+// import * as tf from '@tensorflow/tfjs';
+// import song from "./teachable/temp1.json";
+// import song1 from "./static/song1/temp1.json";
+import song1 from "./static/song1/temp1.json";
+// import song1 from "./song1/temp1.json";
+// import song from "../../public/teachable/temp1.json";
+// import song from "C:/Users/multicampus/Desktop/react/pjt01/frontend/public/teachable/temp1.json"
+import testImg from "https://cdn.pixabay.com/photo/2022/07/27/07/37/thistle-7347371__340.jpg"
+
+
+//---------------------------------------------------------------------
 //      webcam 부분 1/2
 //
 //---------------------------------------------------------------------------------
@@ -56,6 +70,8 @@ const OPTIONS: RecordWebcamOptions = {
   height: 400,
   aspectRatio : 2,
 };
+
+
 
 //---------------------------------------------------------------------------------
 //
@@ -89,7 +105,10 @@ const notEndChallenge : CSSProperties = {
   display : 'none'
 };
 
+const scaled: CSSProperties = {
 
+  transform : 'scaleX(-1)',
+};
 
 //---------------------------------------------------------------------------------
 //
@@ -274,31 +293,37 @@ interface playProps {
 
 
 export default function ModeChallengeTimer() {
-
-//---------------------------------------------------------------------------------
-//
-//      5. 전체 페이지 상태 2 / 2 -  mode,  challenging, endChallenge 3가지 존재
+  
+  
+  
+  
+  
+  
+  
+  
+  //---------------------------------------------------------------------------------
+  //
+  //      5. 전체 페이지 상태 2 / 2 -  mode,  challenging, endChallenge 3가지 존재
 //
 //---------------------------------------------------------------------------------
 let [now, setNow] = useState('mode');
 
 
-//---------------------------------------------------------------------------------
 //
 //      6. webcam 부분 2/2 - webcam 생성 및 custom hook & 녹화 영상 Blob
 //
 //---------------------------------------------------------------------------------
   
-  const recordWebcam: RecordWebcamHook = useRecordWebcam(OPTIONS);
+const recordWebcam: RecordWebcamHook = useRecordWebcam(OPTIONS);
 
-  const [recordingVideo, setRecordingVideo] = useState<FormData>()
+const [recordingVideo, setRecordingVideo] = useState<FormData>()
 
 
   // 웹캠 데이터 저장
   const getRecordingFileHooks = async () => {
     const blob = await recordWebcam.getRecording();
     console.log({ blob });
-
+    
     // 데이터 서버에 전송하는 부분
     const file = new File([blob], 'video.webm', {
       type : "video/webm"
@@ -315,9 +340,9 @@ let [now, setNow] = useState('mode');
     // formData.append("inputFile", mediaBlobUrl);
     console.log('jsonData ----',jsonData)
     formData.append("sampleJson", blob2);
-
+    
     console.log(file);
-
+    
     setRecordingVideo(formData)
     
     // endChallenge에서 Next 눌러서, Thumnailpage 로 갈 때, 전송
@@ -331,12 +356,12 @@ let [now, setNow] = useState('mode');
     //     console.log(err)
     //   });
 
-
+    
   };
 
 
-//---------------------------------------------------------------------------------
-//
+  //---------------------------------------------------------------------------------
+  //
 //      7. 여러 곳에서 쓰이는 hook
 //
 //---------------------------------------------------------------------------------
@@ -356,7 +381,7 @@ const backToMode = () => {
     document.getElementById('webcam').style.display = "block";
     document.getElementById('prevcam').style.display = "none"
   }
-
+  
   setTimeout(recordWebcam.retake,500);
   setPlayState({ ...playState, played: 0}); // 티handlePlayPausepla칭영상 새로시작1
   player.current.seekTo(0); // 티칭영상 새로시작1
@@ -395,6 +420,7 @@ const handlePlayPause = () => {
 
 const handlePlay = () => {
   console.log('handlePlay 함수 호출');
+  // init()
 
   // 현재 OPEN이 아닌 경우, 카메라 켜기
   if (recordWebcam.status !== CAMERA_STATUS.OPEN  )
@@ -408,7 +434,7 @@ const handlePlay = () => {
       
     }
   }
-
+  
   // 정지 상태에서 다시 재생되는 경우
   if (playing===false){
     console.log('handlePlay 함수 실행');
@@ -421,7 +447,7 @@ const handlePlay = () => {
       document.getElementById('prevcam').style.display = "none";
     }
     console.log('debug ' ,recordWebcam.status)
-
+    
     // OPEN이 아닌 경우에만 OPEN
     if (recordWebcam.status !== CAMERA_STATUS.OPEN  )
     {recordWebcam.open()
@@ -445,7 +471,9 @@ const handleProgress = (state: ReactPlayerProps) => {
   console.log('웹캠상태 :', recordWebcam.status);
   console.log('화면상태 :', now);
   setPlayState(inState as SetStateAction<playProps>);
-
+  // console.log('context is ',context)
+  // init()
+  
   if (recordWebcam.status === CAMERA_STATUS.RECORDING){
     snap()
   }
@@ -465,9 +493,9 @@ const challengeEnd =  () => {
     console.log(recordWebcam.status,'before stop')
     console.log('웹캠 녹화가 종료되었습니다.');
     console.log(recordWebcam.status,'after stop')
+    
 
-
-
+    
     // endChallenge page 관련
     setTimeout(()=>{
       // setNow('endChallenge')
@@ -477,7 +505,7 @@ const challengeEnd =  () => {
     },1000)
   }
 
-    
+  
     // Blob 생성
     setTimeout(getRecordingFileHooks, 1000);
 
@@ -491,22 +519,22 @@ const challengeEnd =  () => {
 //      9. mode에서 쓰이는 hook & data
 //
 //---------------------------------------------------------------------------------
-  // 있어야 하는 데이터
-  // ReactPalyer : width "35vw"/"100vh", height "50vw"/"100vh", style subplayerStyle/mainplayerStyle
-  // video : maincamStyle/subcamStyle
+// 있어야 하는 데이터
+// ReactPalyer : width "35vw"/"100vh", height "50vw"/"100vh", style subplayerStyle/mainplayerStyle
+// video : maincamStyle/subcamStyle
 
-  let [reactPlayer, reactPlayerChange] = useState(['main','100vw','100vh']);
-  let [reactPlayerBackground, reactPlayerBackgroundChange] = useState(mainplayerStyle);
-  let [reactCamStyle, reactCamStyleChange] = useState(subcamStyle);
+let [reactPlayer, reactPlayerChange] = useState(['main','100vw','100vh']);
+let [reactPlayerBackground, reactPlayerBackgroundChange] = useState(mainplayerStyle);
+let [reactCamStyle, reactCamStyleChange] = useState(subcamStyle);
 
-  // 곡 선택페이지로 뒤로가기
-  const backToSongPage = () => {
+// 곡 선택페이지로 뒤로가기
+const backToSongPage = () => {
       setNow('mode')
       recordWebcam.close()
       
     };
   
-
+    
   // 안무영상이 main / 내 영상이 sub
   function mode1(){
     console.log('버튼이 클릭됨')
@@ -536,33 +564,33 @@ const challengeEnd =  () => {
       newData[2]='30vh'
       reactPlayerChange(newData);
       reactPlayerBackgroundChange(subplayerStyle);
-
+      
       // 내 영상 부분
       reactCamStyleChange(maincamStyle);
-    }
+    } 
 
   }
-
+  
 //---------------------------------------------------------------------------------
 //
 //      10. mode에서 쓰이는 hook & data 2 - timer 만
 //
 //---------------------------------------------------------------------------------
-    const Ref = useRef(null);
+const Ref = useRef(null);
   
-    // The state for our timer
+// The state for our timer
     const [timer, setTimer] = useState(' ');
 
-  
+    
     const getTimeRemaining = (e:any) => {
-        // console.log('getTimeRemaining and e : ', e)
+      // console.log('getTimeRemaining and e : ', e)
         const total = Date.parse(e) - Date.parse(new Date().toString());
         const seconds = Math.floor((total / 1000) % 60);
         const minutes = Math.floor((total / 1000 / 60) % 60);
         const hours = Math.floor((total / 1000 / 60 / 60) % 24);
         return {
             total, hours, minutes, seconds
-        };
+          };
     }
   
   
@@ -580,12 +608,12 @@ const challengeEnd =  () => {
                 (seconds > -1 ? seconds : ' ')
             )
             
-        }else if(seconds===-1){ // seconds===-1 로 안하면, 계속 실행됨
-          // console.log('debug 3 : total & seconds is ',total, seconds)
-          
-          // 0초가 되면 타이머 사라짐
-          setTimer(
-            (hours > -1 ? ' ' : ' ') + 
+          }else if(seconds===-1){ // seconds===-1 로 안하면, 계속 실행됨
+            // console.log('debug 3 : total & seconds is ',total, seconds)
+            
+            // 0초가 되면 타이머 사라짐
+            setTimer(
+              (hours > -1 ? ' ' : ' ') + 
             (minutes > -1 ? ' ': ' ' )+ 
             (seconds > -1 ? ' ' : ' ') )
 
@@ -608,17 +636,17 @@ const challengeEnd =  () => {
               recordWebcam.start();  // 내 캠 녹화 시작
               clearInterval(Ref.current) // 타이머에 쌓인 것들 초기화
            }
+          }
         }
-    }
-  
-  
-    const clearTimer = (e:any) => {
-        // 처음 시간 설정해 주는 부분
-        console.log('clearTimer')
-        setTimer('3');
-        if (Ref.current) clearInterval(Ref.current);
-        const id = setInterval(() => {
-                startTimer(e);
+        
+        
+        const clearTimer = (e:any) => {
+          // 처음 시간 설정해 주는 부분
+          console.log('clearTimer')
+          setTimer('3');
+          if (Ref.current) clearInterval(Ref.current);
+          const id = setInterval(() => {
+            startTimer(e);
         }, 1000)
         Ref.current = id;
         
@@ -638,13 +666,15 @@ const challengeEnd =  () => {
     const onClickReset = () => {
         
         
-        clearTimer(getDeadTime());
+      clearTimer(getDeadTime());
         console.log('onClickReset')
-    }
+      }
+      
+      
+      
+      
 
-
-
- 
+      
 //---------------------------------------------------------------------------------
 //
 //      11. endChallenge에서 쓰이는 hook 1 - 영상 재생 및 페이지 이동 관련
@@ -682,43 +712,76 @@ const challengeEnd =  () => {
     video.play();  //  
   }
 
-//---------------------------------------------------------------------------------
+  /*---------------------------------------------------------------------------------
 //
 //      12. endChallenge에서 쓰이는 hook & data 2 - 썸네일 관련
 //
-//---------------------------------------------------------------------------------
+썸네일 설명
+1. <canvas ref={canvasRef}>를 생성 & <video ref={캡쳐할 영상} > 생성
+2. VideoRef.current = 위의 video 를 QuerySelector로 가져와서 넣어주기
+3. component load 시, useEffect를 이용해서, canvasRef.current.width & heigth를 위의 VideoRef.width & height로 넣어주기
+4. 3.을 통해 canvasRef.current가 존재한다면  context = canvasRef.current.getContext('2d'); 를 이용해 context 생성
+5. snap() 함수를 이용해서 , context.drawImage이용해서 context 에 videoRef.current를 캡쳐 => canvasRef === canvas 에 그려짐
+6. 캡쳐한 이미지가 canvas에 그려지므로, 이를 가져와서 저장  
+const canvasHTML = document.querySelector('canvas');
+const imgURL = canvasHTML.toDataURL('image/png');
+// console.log([...thumbnail])
+setThumbnail([...thumbnail, imgURL]);
+//---------------------------------------------------------------------------------*/
   let videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>();  // context = canvasRef.current.getContext('2d'); error 제거
   const [dimensions, setDimensions] = useState<any>({});
   const [thumbnail, setThumbnail] = useState([]);
-
   let context : any;
+
+
   if (canvasRef.current) {
     context = canvasRef.current.getContext('2d');
-  }
- 
+      
+    };
+    
+
+  
+  // async function tmp () {
+
+
+  //   context = canvasRef.current.getContext('2d');
+  //   // context.rotate((Math.PI / 180) * 180); // 회전
+  // }
+
+  // if (canvasRef.current) {
+  //   tmp()
+    
+  // };
+  
   function getVideoSizeData(videoRef: React.MutableRefObject<any> ) {
-    const ratio = videoRef.current.videoWidth / videoRef.current.videoHeight;
-    const w = videoRef.current.videoWidth;
-    const h = videoRef.current.videoHeight;
+    // 썸네일 사진 크기 조절
+    // const ratio = videoRef.current.videoWidth / videoRef.current.videoHeight;
+    // const w = videoRef.current.videoWidth;
+    // const h = videoRef.current.videoHeight;
+    const ratio = 1/2;
+    // webcam OPTIONS의 크기와 같게 해주어야 함!
+    const w = 260;    
+    const h = 400;
     return {
       ratio,
       w,
       h,
     };
-  }
+  };
 
 
+
+  
   useEffect(() => {
     
     console.log('--------------------정상작동-----------')
     const video = document.querySelector('video')  // 추가
     videoRef.current = video                       //추가
-    // videoRef.current.onloadedmetadata=alert("Meta data for video loaded");
-    // Add listener when the video is actually available for
-    // the browser to be able to check the dimensions of the video.
+    console.log(videoRef.current)
+
+    // video의 메타데이터(재생시간, 크기 등)가 올라오면, canvas의 크기와 dimension의 크기를 video와 같게 해줌
     if (videoRef.current) {
-      // console.log('if (videoRef.current) 통과')
       videoRef.current.addEventListener('loadedmetadata', function () {
         const { w, h } = getVideoSizeData(videoRef);
         canvasRef.current.width = w;
@@ -729,19 +792,15 @@ const challengeEnd =  () => {
         });
       });
     }
-
   }, []);
+
+
 
   // snap으로 canvas에 그린 것을 blob으로 가져오는 것
   async function snap() {
-    // console.log('snap run');
-    // console.log('snap input time is : ',);
-    // console.log('context  : ', context);
-    // console.log('videoRef: ', videoRef);
 
-
-      await context.fillRect(0, 0, dimensions.w, dimensions.h);
-      await context.drawImage(
+    await context.fillRect(0, 0, dimensions.w, dimensions.h);
+    await context.drawImage(
         videoRef.current,
         0,
         0,
@@ -753,14 +812,112 @@ const challengeEnd =  () => {
       const imgURL = canvasHTML.toDataURL('image/png');
       // console.log([...thumbnail])
       setThumbnail([...thumbnail, imgURL]);
-   
-  };
+      
+    };
 // 썸네일 관련 끝----------------------------------------------------------------------------------------------------------
 
 
+//------------------------------------------------------------------------------------
+//
+//    13. 티쳐블 머신
+//
+//-------------------------------------------------------------------------------------
 
-  return (
+// 티쳐블 머신용 사진 생성
+
+
+
+
+// const URL = "./teachable2/my_model/";
+const URL = "./static/song1/";
+// const URL = "http://i7d201.p.ssafy.io/resource/music/model/test/"
+  let model : any
+  let ctx : any
+  let labelContainer : any
+  let maxPredictions : any
+
+  let startTime : any;
+  let countup : any // 1 = 0.1초
+  let nextNote : any;
+  let max : any;
+
+  // 곡의 모션 정보들
+  let duration : number;
+  let
+
+async function init() {
+  const modelURL = URL + "model.json"; 
+  const metadataURL = URL + "metadata.json";
+  //TODO 이 친구를 선택한 곡에 맞게
+  // const songURL = URL + "./static/temp1.json";
+
+
+  // let song1 = await JSON.parse(songURL);
+  console.log(song1);
+
+  console.log('song is ', song1)
+
+  nextNote = song1.notes[song1.next];
+  max = 0;
+
+  model = await tmPose.load(modelURL, metadataURL);
+  maxPredictions = model.getTotalClasses();
+  
+  predict()
+
+}
+
+
+async function predict () {
+
+  console.log('-------predict 시작-----------')
+    const video = document.querySelector('video')  // 추가
+    videoRef.current = video                       //추가
+    console.log(videoRef.current)
+
+    if (videoRef.current) {
+    
+        const { pose, posenetOutput } = await model.estimatePose(context.canvas);
+        const prediction = await model.predict(posenetOutput);
+        const motion : string = song1.notes[0]['type']   // 동작 class
+        console.log(motion)
+        // const prob : number = prediction
+        console.log(prediction)
+        console.log(prediction[0])
+        console.log(prediction[1])
+        console.log(prediction[2])
+        console.log(prediction[3])
+        console.log(prediction[4])
+
+        // setTimeout(function(){predict(); }, 1500);
+        setTimeout( predict , 1500);
+
+  }
+}
+
+let img : string
+img = URL + 'img.PNG'
+//---------------------------------------------------------------------------------
+
+return (
     <div >
+      {/* ---------------------------------------------------------------------------------------
+      //
+      //  0. 티쳐블 머신 관련
+      //
+      -----------------------------------------------------------------------------------------------*/}
+      <img src={img}></img>
+      
+      <div>
+          <div>Teachable Machine Pose Model</div>
+          <button type="button" onClick={init}>Starttttttttttttt</button>
+          {/* <div className="summary__timer"></div> */}
+          {/* <div><canvas id="tCanvas" ></canvas></div> */}
+          <div id="label-container"></div> 
+
+      </div>
+
+
        {/* ----------------------------------------------------------------------------------------
       //
       //            1. 썸네일 관련 
@@ -769,7 +926,8 @@ const challengeEnd =  () => {
       <div >
         {/* <video id='thumnail_video'  ref={recordWebcam.webcamRef} muted autoplay /> */}
         {/* 썸네일 그려줌 */}
-        <canvas id='canvas' hidden ref={canvasRef} />   
+        {/* <canvas id='canvas' hidden ref={canvasRef} />    */}
+        <canvas id='canvas' ref={canvasRef} />   
         {/* <button onClick={snap}>Take screenshot</button> */}
         {/* {thumbnail.map((imgBlobs, index) => {
           return <img key={index} src={imgBlobs} />;
