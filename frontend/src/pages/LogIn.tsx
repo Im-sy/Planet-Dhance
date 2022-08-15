@@ -1,9 +1,13 @@
 import * as React from 'react';
+import {login, logout, oauth2, jwtToken} from '../components/API/AuthService';
+import jwt_decode from 'jwt-decode';
+import { setCurrentUserAction, deleteCurrentUserAction } from '../reducer/authAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { rootState } from '../reducer';
 import NavBar from '../components/NavBar';
-import {Link as RouterLink} from 'react-router-dom';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -15,7 +19,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import Fab from '@mui/material/Fab'
+import '../styles/styles.css';
+
 
 const CssTextField = styled(TextField)({
   '& .MuiInputBase-input': {
@@ -40,30 +45,45 @@ const CssTextField = styled(TextField)({
   },
 });
 
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const theme = createTheme();
 
-export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+export default function SignIn() { 
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const {isAuthenticated, user} = useSelector(
+    (state: rootState) => state.authReducer
+  );
+  console.log(user.userId)
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
+    const email = data.get('email') as string
+    const pwd = data.get('password') as string
+    const loginRes = await login(email, pwd)
+    // console.log(loginRes)
+    if (loginRes.state === "Success"){
+      const decoded = jwt_decode<jwtToken>(loginRes.token);
+      console.log(decoded)
+      dispatch(setCurrentUserAction(decoded.details))
+      navigate('/')
+    }
   };
+
+  const handleLogout = async () => {
+    const logoutRes = await logout(user.userId)
+    if (logoutRes) {
+      dispatch(deleteCurrentUserAction())
+      navigate('/login')
+    }
+  };
+
+  const handleAuth = () => {
+    oauth2()
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -72,25 +92,31 @@ export default function SignIn() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Log in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <CssTextField
               margin="normal"
               required
               fullWidth
               id="email"
               label="Email Address"
+              type="email"
               name="email"
               autoComplete="email"
               autoFocus
@@ -108,11 +134,17 @@ export default function SignIn() {
               // color="warning"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" sx={{
-                color: '#FFE5B4',
-                '&.Mui-checked': {
-                  color: '#E8AA42',
-                }}} />}
+              control={
+                <Checkbox
+                  value="remember"
+                  sx={{
+                    color: "#FFE5B4",
+                    "&.Mui-checked": {
+                      color: "#E8AA42",
+                    },
+                  }}
+                />
+              }
               label="Remember me"
             />
             <Button
@@ -127,31 +159,71 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link sx={{color: '#E8AA42'}} href="#" variant="body2">
+                <Link sx={{ color: "#E8AA42" }} href="#" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link sx={{color: '#E8AA42'}} href="/signup" variant="body2" component={RouterLink} to='/signup'>
+                <Link
+                  sx={{ color: "#E8AA42" }}
+                  href="/signup"
+                  variant="body2"
+                  component={RouterLink}
+                  to="/signup"
+                >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
+          <Button
+            onClick={handleLogout}
+            fullWidth
+            size="large"
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            color="secondary"
+          >
+            Log Out
+          </Button>
           <Box>
-            <Fab sx={{mt: 8, mx: 3}}>
-              <img src="http://pngimg.com/uploads/google/google_PNG19635.png" alt="google" width="30"/>
-            </Fab>
-            <Fab sx={{mt: 8, mx: 3}}>
-              <img src="https://1000logos.net/wp-content/uploads/2016/11/meta-logo.png" alt="google" width="30"/>
-            </Fab>
-            <Fab sx={{mt: 8, mx: 3}}>
-              <img src="https://seeklogo.com/images/T/twitter-icon-circle-blue-logo-0902F48837-seeklogo.com.png" alt="google" width="30"/>
-            </Fab>
+            <Button
+              variant="contained"
+              color="inherit"
+              sx={{ mt: 8, mx: 3, py: 2, borderRadius: "50%" }}
+              onClick={handleAuth}
+            >
+              <img
+                src="http://pngimg.com/uploads/google/google_PNG19635.png"
+                alt="google"
+                width="30"
+              />
+            </Button>
+            <Button
+              variant="contained"
+              color="inherit"
+              sx={{ mt: 8, mx: 3, py: 2, borderRadius: "50%" }}
+            >
+              <img
+                src="https://logostransparent.com/wp-content/uploads/2022/03/Meta-Logo-Transparent.png"
+                alt="google"
+                width="30"
+              />
+            </Button>
+            <Button
+              variant="contained"
+              color="inherit"
+              sx={{ mt: 8, mx: 3, py: 2, borderRadius: "50%" }}
+            >
+              <img
+                src="https://seeklogo.com/images/T/twitter-icon-circle-blue-logo-0902F48837-seeklogo.com.png"
+                alt="google"
+                width="30"
+              />
+            </Button>
           </Box>
         </Box>
       </Container>
-      <NavBar />
     </ThemeProvider>
   );
 }
