@@ -1,12 +1,15 @@
 import React from 'react'
 import Button from '@mui/material/Button';
-import TryIcon from '@mui/icons-material/Try'
+import letsDance from '../../styles/navbtns/letsDance.png'
 
 export default function GoDance() {
+  const handleClick = () => {
+    console.log("let's dance")
+  }
   return (
     <div>
-      <Button variant="outlined" startIcon={<TryIcon />}>
-        Try it!
+      <Button sx={{ borderRadius: "50%" }} onClick={handleClick}>
+        <img src={letsDance} alt="letsDance" width="50"></img>
       </Button>
     </div>
   )

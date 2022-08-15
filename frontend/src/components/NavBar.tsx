@@ -10,6 +10,7 @@ import MuiBottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import navFav from '../styles/navbtns/navFav.png';
 import navHome2 from '../styles/navbtns/navHome2.png';
 import navSearch from '../styles/navbtns/navSearch.png';
+import navExplore from '../styles/navbtns/navExplore.png';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { styled } from '@mui/material/styles';
 import '../styles/NavBar.css';
@@ -59,6 +60,13 @@ export default function NavBar(props : navProps) {
             to="/hashresult"
             label="Search"
             icon={<img src={navSearch} alt="navSearch" width="30"></img>}
+          />
+          <MuiBottomNavigationAction
+            className="navbar"
+            component={Link}
+            to="/hashresult"
+            label="Explore"
+            icon={<img src={navExplore} alt="navExplore" width="50"></img>}
           />
           <MuiBottomNavigationAction
             className="navbar"
