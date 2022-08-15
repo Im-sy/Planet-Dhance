@@ -2,8 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactPageScroller from 'react-page-scroller';
 import VideoPage from './ExplorePage';
 
-import url from '../videos/pop_guide.mp4';
-
 import url from '../videos/Patissiere_guide.mp4';
 import { videoListProps } from './MyPage';
 import { playVideo } from '../components/API/MusicService';
