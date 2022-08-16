@@ -41,7 +41,8 @@ public class TagApi {
     private final ArtistService artistService;
 
     private static final int tagSize=15;
-    private static final int videoSize=18;
+    //TODO 기본값 18
+    private static final int videoSize=9;
 
     /**
      * 연관 검색어 리스트 반환 (검색 빈도순)
@@ -104,11 +105,11 @@ public class TagApi {
     /**
      * 곡 태그의 곡 리스트,영상 리스트 반환 (hit&like순) - 곡 검색 페이지 진입
      *
-     * 요청 파라미터 예시: /tag/{해시태그 아이디}/music/0
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/title/0
      * 곡 리스트는 전체
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/{tag_id}/music/0")
+    @GetMapping("/{tag_id}/title/0")
     public ResponseEntity<?> musicsAndMusicVideos(@PathVariable Long tag_id){
         int page=0;
 
@@ -127,10 +128,10 @@ public class TagApi {
     /**
      * 곡 태그의 영상 리스트 반환 (hit&like순) - 곡 검색 페이지 무한 스크롤
      *
-     * 요청 파라미터 예시: /tag/{해시태그 아이디}/music/{page 번호}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/title/{page 번호}
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/{tag_id}/music/{page}")
+    @GetMapping("/{tag_id}/title/{page}")
     public ResponseEntity<?> musicVideos(@PathVariable Long tag_id, @PathVariable int page){
 
         try {
@@ -138,7 +139,7 @@ public class TagApi {
             List<Music> musicList = musicService.findTitleVideoList(tag.getName());
             Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
 
-            return new ResponseEntity<>(new GridResponse("music",videoList), HttpStatus.OK);
+            return new ResponseEntity<>(new GridResponse("title",videoList), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -187,10 +188,10 @@ public class TagApi {
     /**
      * 유저 정보, 유저의 클리어 정보, 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 진입
      *
-     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user/0
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/nickname/0
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/{tag_id}/user/0")
+    @GetMapping("/{tag_id}/nickname/0")
     public ResponseEntity<?> userInfoAndUserVideos(@PathVariable Long tag_id){
         int page=0;
 
@@ -210,17 +211,17 @@ public class TagApi {
     /**
      * 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 무한 스크롤
      *
-     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user/{page 번호}
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/nickname/{page 번호}
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/{tag_id}/user/{page}")
+    @GetMapping("/{tag_id}/nickname/{page}")
     public ResponseEntity<?> userVideos(@PathVariable Long tag_id,@PathVariable int page){
         try {
             Tag tag = tagService.findTagById(tag_id, page);
             User user = userService.findByNickname(tag.getName());
             Slice<Video> videoList=videoService.findUserVideoList(page, videoSize, user, VideoScope.PUBLIC);
 
-            return new ResponseEntity<>(new GridResponse("user",videoList), HttpStatus.OK);
+            return new ResponseEntity<>(new GridResponse("nickname",videoList), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

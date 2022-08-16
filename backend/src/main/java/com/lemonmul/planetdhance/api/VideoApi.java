@@ -39,7 +39,8 @@ public class VideoApi {
     private final ArtistService artistService;
     private final RankingService rankingService;
 
-    private static final int listSize =18;
+    //TODO 기본값 18
+    private static final int listSize =9;
     private static final int infoSize=10;
 
     /**
@@ -153,9 +154,9 @@ public class VideoApi {
     /**
      * 곡 태그의 재생할 영상 정보 리스트
      *
-     * 요청 파라미터 예시: /video/{video_id}/music/{user_id}
+     * 요청 파라미터 예시: /video/{video_id}/title/{user_id}
      */
-    @GetMapping("/{video_id}/music/{user_id}")
+    @GetMapping("/{video_id}/title/{user_id}")
     public ResponseEntity<?> musicVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
         try {
             Video video = videoService.findById(video_id);
@@ -240,9 +241,9 @@ public class VideoApi {
     /**
      * 닉네임 태그의 재생할 영상 정보 리스트
      *
-     * 요청 파라미터 예시: /video/{video_id}/user/{user_id}
+     * 요청 파라미터 예시: /video/{video_id}/nickname/{user_id}
      */
-    @GetMapping("/{video_id}/user/{user_id}")
+    @GetMapping("/{video_id}/nickname/{user_id}")
     public ResponseEntity<?> userVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
         try {
             Video video = videoService.findById(video_id);
