@@ -1,4 +1,5 @@
 import React, { CSSProperties, SetStateAction, useState } from 'react';
+
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import '../styles/tailwind_reset.css';
 import sample1 from '../videos/Patissiere_guide.mp4';

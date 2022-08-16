@@ -1,4 +1,4 @@
-//ES6
+//ES6 , 썸네일, 해시태그 모두 모아서 보내기 react router dom use navigate state에 넣어서 썸네일 페이지
 import React, { Component, useState, useEffect } from 'react';
 
 import './hash.css';
@@ -10,8 +10,11 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from 'styled-components';
 import CheckIcon from '@mui/icons-material/Check';
-
 import ThumbnailCard from '../components/ThumbnailCard';
+
+import { useLocation } from 'react-router-dom';  // 데이터 받아오기
+
+
 
 const img1 = 'https://picsum.photos/1400/1200';
 
@@ -76,6 +79,43 @@ const KeyCodes = {
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 function UpLoad() {
+  //-------------------------------------------------------------------------------------
+  //
+  //                         데이터 받아오기
+  //
+  //--------------------------------------------------------------------------------------
+  const location = useLocation(); 
+  // const thumbnail = location.state.thumbnail;
+  const video = location.state.video;
+  const hashtags = location.state.hashtags;
+  const dummy = location.state.dummy;
+  const thumbnail = location.state.thumbnail;
+  const thumbnail2 = location.state.thumbnail2;
+  const fliped = location.state.fliped;
+  const now = location.state.now;
+  console.log(thumbnail)
+  console.log(thumbnail2)
+  console.log(video)
+  console.log(dummy)
+  console.log(hashtags)
+  console.log(fliped)
+  console.log(now)
+
+  
+  // useEffect( ()=>{
+
+  // } , [video])
+
+  // function checkThumbnail() {
+  //   console.log(thumbnail)
+  //   console.log(video)
+  //   console.log(dummy)
+  //   console.log(hashtags)
+  //   setTimeout(checkThumbnail)
+  // }
+
+
+
   const [tags, setTags] = useState([
     { id: '1', type: 'song', className: 'song' },
     { id: '2', type: 'artist', className: 'artist' },
@@ -136,6 +176,8 @@ function UpLoad() {
 
   return (
     <div>
+     
+
       <Container>
         <h1>Thumbnails</h1>
         <StyledSlider
@@ -145,6 +187,7 @@ function UpLoad() {
           cssEase={`linear`}
           centerMode={true}
           beforeChange={(slide, newSlide) => {
+            // const curImg = imageList.find((img, index) => {
             const curImg = imageList.find((img, index) => {
               if (index === newSlide) {
                 handleThumbNailClick({ img: img, index: index });
@@ -155,6 +198,7 @@ function UpLoad() {
           }}
           centerPadding={'50px'}
         >
+          {/* {[...imageList].map((image, i) => { */}
           {[...imageList].map((image, i) => {
             return (
               <div
