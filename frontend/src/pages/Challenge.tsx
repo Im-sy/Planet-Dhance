@@ -35,14 +35,16 @@ import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheck
 //
 //---------------------------------------------------------------------------
 import * as tmPose from '@teachablemachine/pose';
-// import * as tf from '@tensorflow/tfjs';
-// import song from "./teachable/temp1.json";
-// import song1 from "./static/song1/temp1.json";
 import song from "./static/song1/temp1.json";
-// import song1 from "./song1/temp1.json";
-// import song from "../../public/teachable/temp1.json";
-// import song from "C:/Users/multicampus/Desktop/react/pjt01/frontend/public/teachable/temp1.json"
-import testImg from "https://cdn.pixabay.com/photo/2022/07/27/07/37/thistle-7347371__340.jpg"
+
+//--------------------------------------------------------------
+//
+// upload 페이지로 데이터 전송
+//
+//---------------------------------------------------------------------------
+import { Navigate, useNavigate } from 'react-router-dom';
+
+
 
 
 //---------------------------------------------------------------------
@@ -293,7 +295,7 @@ interface playProps {
 
 
 export default function ModeChallengeTimer() {
-  
+
   
   
   
@@ -316,45 +318,126 @@ let [now, setNow] = useState('mode');
   
 const recordWebcam: RecordWebcamHook = useRecordWebcam(OPTIONS);
 
-const [recordingVideo, setRecordingVideo] = useState<FormData>()
+const [videoFile, setVideoFile] = useState<FormData>()
 
-
+  // --------------------------------------------------------------------------------------
+  //
+  // 데이터 서버에 전송하는 부분
+  //
+  //-----------------------------------------------------------------------------------------------
   // 웹캠 데이터 저장
   const getRecordingFileHooks = async () => {
     const blob = await recordWebcam.getRecording();
     console.log({ blob });
     
-    // 데이터 서버에 전송하는 부분
-    const file = new File([blob], 'video.webm', {
+    
+    const file = await new File([blob], 'video.webm', {
       type : "video/webm"
     });
-    // console.log(file);
-    
+    console.log(file);
     const formData = new FormData();
-    formData.append("inputFile", file, "ftfykfgh.webm");
+    await formData.append("inputFile", file, "videoFile.webm");
+    setVideoFile(formData) // 보낼 비디오 저장
+
+
+    // 썸네일
+    console.log(thumbnail[0])
+    const blob2 = thumbnail[0]
+    const img = await new File([blob2], 'image.jpeg', {
+      type : "image/jpeg"
+    }); 
+    console.log(img)
+    await formData.append("inputFile", img, "image.jpeg")
+    
+
+    // 썸네일2
+  //   function b64toBlob(b64Data : any, contentType = '', sliceSize = 512) {
+  //     const image_data = atob(b64Data.split(',')[1]); // data:image/gif;base64 필요없으니 떼주고, base64 인코딩을 풀어준다
+  //     console.log('dddd',image_data)
+    
+  //     const arraybuffer = new ArrayBuffer(image_data.length);
+  //     const view = new Uint8Array(arraybuffer);
+    
+  //     for (let i = 0; i < image_data.length; i++) {
+  //        view[i] = image_data.charCodeAt(i) & 0xff;
+  //        // charCodeAt() 메서드는 주어진 인덱스에 대한 UTF-16 코드를 나타내는 0부터 65535 사이의 정수를 반환
+  //        // 비트연산자 & 와 0xff(255) 값은 숫자를 양수로 표현하기 위한 설정
+  //     }
+    
+  //     return new Blob([arraybuffer], { type: contentType });
+  //     }
+    
+  //  const contentType = 'image/png';
+  
+  //  const thumblob = b64toBlob(thumbnail[0], contentType); // base64 -> blob
+  //  console.log(thumblob)
+  //  const img2 = await new File([thumblob], 'image.png', {
+  //   type : "image/png"
+  //   }); 
+  // console.log(img2)
+  // await formData.append("inputFile", img2, "image.png")
+
+
+
+    // hashtag
     const jsonData = JSON.stringify({
-      content: 'my test!'
+      scope : "PUBLIC",
+      userId : 25,
+      musicId : 66,
+      clear : true,
+      
+      tagList: [ 
+        {
+          id:'4',
+          type : "custom tag 1"
+        },
+        {
+          id:'4',
+          type : "custom tag 2"
+        },
+        {
+          id:'4',
+          type : "custom tag 3"
+        }
+      ]      
     })
-    const blob2 = new Blob([jsonData], {type : "application/json"});
+    
+    // ---------------------test용 json 보내는 파일 명
+    // const blob3 = new Blob([jsonData], {type : "application/json"});
+    // formData.append("sampleJson", blob3, 'sampleJson');
+    //-----------------------------------------------------------------------------
+    // const jsonData = JSON.stringify({
+    //   content:"test"      
+    // })
+    // console.log('jsonData ----',jsonData)
+    // // formData.append("challengeRequest", blob3);
+    const blob3 = new Blob([jsonData], {type : "application/json"});
+    formData.append("challengeRequest", blob3, 'sampleJson');  // 최종적으로 진짜로 보내는 파일명
+    // console.log(blob3)
 
     // formData.append("inputFile", mediaBlobUrl);
-    console.log('jsonData ----',jsonData)
-    formData.append("sampleJson", blob2);
     
-    console.log(file);
-    
-    setRecordingVideo(formData)
-    
-    // endChallenge에서 Next 눌러서, Thumnailpage 로 갈 때, 전송
-    // axios
-    //   .post("http://i7d201.p.ssafy.io:8081/file/upload", formData)
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     alert("실패");
-    //     console.log(err)
-    //   });
+
+    // IMG test
+    // const testImg = new Image();
+    // testImg.src = "./logo192.png"
+    // console.log(testImg)
+    // await formData.append("inputFile", "https://picsum.photos/1400/1200", "imgFile")
+
+
+    // axios 요청
+    axios
+      // .post("http://i7d201.p.ssafy.io:8081/file/upload", formData)
+      // .post("http://i7d201.p.ssafy.io/api/file/upload", formData)
+      // .post("https://i7d201.p.ssafy.io/api/file/upload/file_json", formData)
+      .post("https://i7d201.p.ssafy.io/api/video/upload", formData)  // 최종적으로 진짜로 보내는 주소
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        alert("실패");
+        console.log(err)
+      });
 
     
   };
@@ -688,18 +771,48 @@ const Ref = useRef(null);
 
 
   
-  
-  const goToThumnail = () => {
+  const navigate = useNavigate(); // upload 페이지로 데이터 전송하기 위해서
+  const goToUpload = () => {
+    const inputFile = videoFile
+    // axios
+    // .post("https://i7d201.p.ssafy.io/api/file/upload", inputFile) 
+    // .then((res) => {
+    //   console.log(res);
+    // })
+    // .catch((err) => {
+    //   alert("실패");
+    //   console.log(err)
+    // });
+    // console.log(thumbnail)
+    // console.log(videoFile)
+    // for (let value of videoFile.values()) {
+    //   console.log(videoFile);
+    // }
+    
 
-    axios
-    .post("http://i7d201.p.ssafy.io:8081/file/upload/file_json", recordingVideo)
-    .then((res) => {
-      console.log(res);
+    navigate('/test', {
+      // state : {
+      //   thumbnail : {thumbnail},
+      //   dummy : 1,
+      //   video : {videoFile},
+      //   hashtags :[ 'hash1', 'hash2','hash3']
+      // }
+      state : {
+        thumbnail : thumbnail[0],
+        thumbnail2 : thumbnail,
+        dummy : 123,
+        video : videoFile,
+        hashtags :[ 'hash1', 'hash2','hash3'],
+        now : {now},
+        fliped : {fliped} 
+      }
     })
-    .catch((err) => {
-      alert("실패");
-      console.log(err)
-    });
+
+
+
+
+
+
   }
 
   // 녹화한 영상 재생하기
@@ -830,6 +943,7 @@ const [fliped, setFliped] = useState(false)
     // console.log([...thumbnail])
     setThumbnail([...thumbnail, imgURL]);
     // console.log(thumbnail) 
+    // console.log(thumbnail[0]) 
     };
 // 썸네일 관련 끝----------------------------------------------------------------------------------------------------------
 
@@ -977,11 +1091,11 @@ async function predict () {
         // console.log(prediction[4])
 
         // setTimeout( snap , 300);   //0.1초마다 predict() 실행
-        setTimeout( predict , 300);   //0.1초마다 predict() 실행
-
-
+        
+        
         // 채점하는 부분
         if (nextNote != null) {   // 채점할 것이 있다면,
+          setTimeout( predict , 300);   //0.3초마다 predict() 실행
           console.log('-------predict 시작-----------2222222222222222')
           console.log('countup & nextNote.delay ', countup, nextNote.delay )
           if (
@@ -1086,6 +1200,13 @@ function showEffect(songNext : number  , rate : number) {
 
 return (
     <div >
+      <div>
+        <button onClick={getRecordingFileHooks} > 업로드</button>
+        <button onClick={getRecordingFileHooks} > 업로드</button>
+        <button onClick={getRecordingFileHooks} > 업로드</button>
+        <button onClick={getRecordingFileHooks} > 업로드</button>
+      </div>
+
       {/* ---------------------------------------------------------------------------------------
       //
       //  0. 티쳐블 머신 관련 & 이모지
@@ -1110,16 +1231,16 @@ return (
       //            1. 썸네일 관련 
       //
       -----------------------------------------------------------------------------------------*/}
-      <div >
+      <div>
         {/* <video id='thumnail_video'  ref={recordWebcam.webcamRef} muted autoplay /> */}
         {/* 썸네일 그려줌 */}
         {/* <canvas id='canvas' hidden ref={canvasRef} />    */}
         <canvas id='canvas' ref={canvasRef} hidden/>   
         {/* <button onClick={snap}>Take screenshot</button> */}
-        {thumbnail.map((imgBlobs, index) => {
+        {/* {thumbnail.map((imgBlobs, index) => {
           return <img key={index} src={imgBlobs} />;
-        })}
-    </div>
+        })} */}
+      </div>
 
 
       {/* ----------------------------------------------------------------------------------------
@@ -1226,7 +1347,8 @@ return (
 
       {/* 곡선택페이지로 뒤로가기 */}
         <ArrowBack
-          onClick={backToSongPage}
+          onClick={goToUpload}
+          // onClick={backToSongPage}
           aria-label={playing ? 'pause' : 'play'}
           style = { now==='mode' ?  backToSongPageStyle : notMode  }
         />
@@ -1275,7 +1397,7 @@ return (
         </button>
 
         {/* Next : 썸네일 선택하는 곳으로 이동 */}
-           <button  onClick={goToThumnail} 
+           <button  onClick={goToUpload} 
               style={ now ==='endChallenge' ? endChallengeNext : notEndChallenge  }
               >
           Next
