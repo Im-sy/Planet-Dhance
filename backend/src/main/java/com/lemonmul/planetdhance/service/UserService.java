@@ -11,6 +11,7 @@ import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.repo.NationRepo;
 import com.lemonmul.planetdhance.repo.TagRepo;
 import com.lemonmul.planetdhance.repo.UserRepo;
+import com.lemonmul.planetdhance.repo.VideoRepo;
 import com.lemonmul.planetdhance.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -32,7 +33,8 @@ public class UserService {
     private final UserRepo userRepo;
     private final TagRepo tagRepo;
     private final NationRepo nationRepo;
-    private static final String defaultImgPath = "/user/default/default_profile_img.png";
+    private final VideoRepo videoRepo;
+    private static final String defaultImgPath = "/resource/users/img/default/default_profile.png";
 
     /**
      * 이메일 중복 검사
@@ -203,13 +205,24 @@ public class UserService {
         String separator = File.separator;
 
         File tempFile = new File("");
-        String rootPath = tempFile.getAbsolutePath().split("src")[0];
+        String rootPath = tempFile.getAbsolutePath().split("src")[0] + separator + "resource";
 
         //TODO: separator 빼기
-        String savePath = rootPath + separator + "users" + separator + findUser.getEmail();
+        String savePath = rootPath + separator + "users" + separator + "img" + separator + findUser.getEmail();
 
-        File deleteFile = new File(savePath);
-        deleteFile.delete();
+        File deleteFolder = new File(savePath);
+
+        if(deleteFolder.exists()){
+            File[] deleteFolderList = deleteFolder.listFiles();
+            for (int i = 0; i < deleteFolderList.length; i++) {
+                deleteFolderList[i].delete();
+            }
+            deleteFolder.delete();
+        }
+
+//        // 닉네임 태그 삭제
+//        Tag findTag = tagRepo.findByNameAndType(findUser.getNickname(), TagType.NICKNAME).orElseThrow(() -> new Exception("Tag Not Found"));
+//        tagRepo.delete(findTag);
 
         // 사용자가 올린 게시글 삭제 안되도록 video 각각에 null 처리
         List<Video> videoList = findUser.getVideos();
