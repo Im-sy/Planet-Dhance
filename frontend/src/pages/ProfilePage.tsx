@@ -44,7 +44,7 @@ interface profileProps {
 export default function ProfilePage() {
   const {tagId} = useParams();
   const getProfileInfo = async () => {
-    const getprofile = await tagSearch(parseInt(tagId), 'user')
+    const getprofile = await tagSearch(parseInt(tagId), 'nickname', 0)
     setProfileInfo(getprofile)
   }
 

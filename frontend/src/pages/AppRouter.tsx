@@ -15,7 +15,7 @@ import ModeChallengeTimer from './Challenge';
 import Ranking from './Ranking';
 import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
-import HashTagTextArea from '../components/HashTagTextArea';
+import HashTagTextArea from './UpLoad';
 import ExplorePage from './ExplorePageList'
 
 import Teachable from './TeachableScript'

@@ -92,11 +92,11 @@ export default function SubscribeTabs() {
   
 
         <StyledTabPanel value="1" >
-          <SubscribeFollowGridView profiles={favFollowInfo.content}/>     
+          <SubscribeFollowGridView profiles={favFollowInfo?.content}/>
         </StyledTabPanel>
 
         <StyledTabPanel value="2">
-          <SongPageGridView prevPage={favLikeInfo.prevPage} videoList={favLikeInfo.videoList}/>
+          <SongPageGridView prevPage={favLikeInfo?.prevPage} videoList={favLikeInfo?.videoList}/>
         </StyledTabPanel>
       </TabContext>
     </Box>

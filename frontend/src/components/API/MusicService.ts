@@ -2,10 +2,10 @@ import axios from "axios"
 
 const API_URL = "https://i7d201.p.ssafy.io/api/"
 
-export async function mainVideo() {
+export async function mainVideo(pageNum: number) {
   try {
     const data = await axios.get(
-      API_URL+`video/main`,
+      API_URL+`video/main/${pageNum}`,
     ).then(
       res => {
         console.log(res)
@@ -46,10 +46,14 @@ export async function musicList(songId: number) {
   }
 }
 
-export async function tagSearch(tagId: number, searchType: string) {
+export async function tagSearch(
+  tagId: number,
+  searchType: string,
+  pageNum: number
+) {
   try {
     const data = await axios.get(
-      API_URL+`tag/${tagId}/${searchType}`,
+      API_URL+`tag/${tagId}/${searchType}/${pageNum}`,
     ).then(
       res => {
         console.log(res)

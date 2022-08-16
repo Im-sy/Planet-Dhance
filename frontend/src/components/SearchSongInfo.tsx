@@ -65,7 +65,7 @@ export default function SearchSongInfo(props: SearchInfo | tagMusicInfo) {
           <CardMedia
             sx={sx}
             component="img"
-            image={imgUrl}
+            image={`https://i7d201.p.ssafy.io/${imgUrl}`}
             alt="album cover"
           />
           <CardContent sx={{ flex: '1 0 auto' }}>

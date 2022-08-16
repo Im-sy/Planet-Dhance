@@ -24,12 +24,14 @@ export default function NavBar(props: navProps) {
     (state: rootState) => state.authReducer
   );
   const { current } = props;
-  let navNumber = 3;
+  let navNumber = 4;
   if (current === 'main') {
     navNumber = 0;
   } else if (current === 'search') {
     navNumber = 1;
   } else if (current === 'subscribe') {
+    navNumber = 3;
+  } else if (current === 'random') {
     navNumber = 2;
   }
   const [value, setValue] = useState(navNumber);
@@ -63,17 +65,29 @@ export default function NavBar(props: navProps) {
           <MuiBottomNavigationAction
             className="navbar"
             component={Link}
-            to="/hashresult"
+            to="/random"
             label="Explore"
             icon={<img src={navExplore} alt="navExplore" width="50"></img>}
           />
-          <MuiBottomNavigationAction
+          {isAuthenticated ? (
+            <MuiBottomNavigationAction
             className="navbar"
             component={Link}
             to="/subscribe"
             label="Favorites"
             icon={<img src={navFav} alt="navFav" width="30"></img>}
           />
+          ) : (
+            <MuiBottomNavigationAction
+              className="navbar"
+              component={Link}
+              to={'/login'}
+              label="Favorites"
+              icon={
+                <img src={navFav} alt="navFav" width="30"></img>
+              }
+            />
+          )}
           {isAuthenticated ? (
             <MuiBottomNavigationAction
               className="navbar"

@@ -8,37 +8,43 @@ interface cardProps {
   width: string,
   height: string,
   type: string,
-  id: number
+  id: number,
+  curSlide : number,
 }
 
 
 
-export default function ToSearchCard(props: cardProps) {
-  const navigate = useNavigate();
+export default function ThumbnailCard(props: cardProps) {
   const { type, id } = props;
-  const toSearch = () =>{
-    if (type === 'ARTIST'){
-      navigate(`/searchsong/ARTIST/${id}`);
-    }else{
-      navigate(`/searchsong/TITTLE/${id}`);
-    }
+  
 
-  }
-
-  const { url, width, height } = props
+  const { url, width, height, curSlide } = props
   return (
-    <div onClick={toSearch}>
+    <div>
       <Card sx={{ maxWidth: width }}>
         <CardActionArea >
-          <CardMedia
+          {
+            curSlide === id ? <CardMedia
             style={{
               width: width,
               height: height,
             }}
+            // src={`${url}`}
             component="img"
-            image={`https://i7d201.p.ssafy.io/${url}`}
-            alt="sea"
-          />
+            image={url}
+            alt="thumbnail"
+          /> : <CardMedia
+          style={{
+            width: width,
+            height: height,
+            opacity: "0.6",
+          }}
+          // src={`${url}`}
+          component="img"
+          image={url}
+          alt="thumbnail"
+        />
+          }
         </CardActionArea>
       </Card>
     </div>
