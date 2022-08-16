@@ -59,11 +59,11 @@ public class TagApi {
     /**
      * 가수 태그의 곡 리스트,영상 리스트 반환 (hit&like순) - 가수 검색 페이지 진입
      *
-     * 요청 파라미터 예시: /tag/{해시태그 아이디}/artist
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/artist/0
      * 곡 리스트는 전체
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/{tag_id}/artist")
+    @GetMapping("/{tag_id}/artist/0")
     public ResponseEntity<?> musicsAndArtistVideos(@PathVariable Long tag_id){
         int page=0;
 
@@ -104,11 +104,11 @@ public class TagApi {
     /**
      * 곡 태그의 곡 리스트,영상 리스트 반환 (hit&like순) - 곡 검색 페이지 진입
      *
-     * 요청 파라미터 예시: /tag/{해시태그 아이디}/music
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/music/0
      * 곡 리스트는 전체
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/{tag_id}/music")
+    @GetMapping("/{tag_id}/music/0")
     public ResponseEntity<?> musicsAndMusicVideos(@PathVariable Long tag_id){
         int page=0;
 
@@ -187,10 +187,10 @@ public class TagApi {
     /**
      * 유저 정보, 유저의 클리어 정보, 닉네임 태그의 영상 리스트 반환(hit&like순) - 닉네임 검색 페이지 진입
      *
-     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user
+     * 요청 파라미터 예시: /tag/{해시태그 아이디}/user/0
      * 영상 리스트 size는 기본값 18
      */
-    @GetMapping("/{tag_id}/user")
+    @GetMapping("/{tag_id}/user/0")
     public ResponseEntity<?> userInfoAndUserVideos(@PathVariable Long tag_id){
         int page=0;
 

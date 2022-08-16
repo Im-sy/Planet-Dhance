@@ -81,10 +81,10 @@ public class VideoApi {
     /**
      * 국가 랭킹, 인기 영상 리스트 - 메인 페이지 진입
      *
-     * 요청 파라미터 예시: /video/main
+     * 요청 파라미터 예시: /video/main/0
      * 영상 리스트 size는 12개
      */
-    @GetMapping("/main")
+    @GetMapping("/main/0")
     public MainPageResponse mainListAndRankingAndArtistList() {
         int size=12;
         List<Artist> artistList = artistService.findTop5();
@@ -278,6 +278,16 @@ public class VideoApi {
         }
 
     }
+
+//    /**
+//     * 챌린지 영상 수정
+//     *
+//     * 요청 파라미터 예시: /video/update
+//     */
+//    @PutMapping(value = "/update")
+//    public ResponseEntity<?> upddateChallengeVideo(){
+//
+//    }
 
     /**
      * 조회수 올리기
