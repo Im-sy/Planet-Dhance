@@ -92,7 +92,7 @@ export default function SubscribeTabs() {
   
 
         <StyledTabPanel value="1" >
-          <SubscribeFollowGridView profiles={favFollowInfo.content}/>
+          <SubscribeFollowGridView profiles={favFollowInfo.content}/>     
         </StyledTabPanel>
 
         <StyledTabPanel value="2">

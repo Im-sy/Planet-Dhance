@@ -38,7 +38,7 @@ import * as tmPose from '@teachablemachine/pose';
 // import * as tf from '@tensorflow/tfjs';
 // import song from "./teachable/temp1.json";
 // import song1 from "./static/song1/temp1.json";
-import song1 from "./static/song1/temp1.json";
+import song from "./static/song1/temp1.json";
 // import song1 from "./song1/temp1.json";
 // import song from "../../public/teachable/temp1.json";
 // import song from "C:/Users/multicampus/Desktop/react/pjt01/frontend/public/teachable/temp1.json"
@@ -737,7 +737,7 @@ setThumbnail([...thumbnail, imgURL]);
 
   if (canvasRef.current) {
     context = canvasRef.current.getContext('2d');
-      
+
     };
     
 
@@ -795,19 +795,31 @@ setThumbnail([...thumbnail, imgURL]);
   }, []);
 
 
+const [fliped, setFliped] = useState(false)
 
   // snap으로 canvas에 그린 것을 blob으로 가져오는 것
   async function snap() {
 
     await context.fillRect(0, 0, dimensions.w, dimensions.h);
+    
+    // 이미지 좌우 반전해서 drawImage 할 수 있도록-------------
+    if (fliped === false){
+      await context.translate(dimensions.w, 0);
+      await context.scale(-1, 1);
+      setFliped(true)
+    }
+    //--------------------------------------------------------
+    // 이미지 그리기
     await context.drawImage(
-        videoRef.current,
-        0,
-        0,
-        dimensions.w,
-        dimensions.h
+      videoRef.current,
+      0,
+      0,
+      dimensions.w,
+      dimensions.h
       );
-      // console.log('context2 : ', context);
+
+  
+      // console.log('context2 : ', context);   
       const canvasHTML = document.querySelector('canvas');
       const imgURL = canvasHTML.toDataURL('image/png');
       // console.log([...thumbnail])
@@ -851,52 +863,182 @@ async function init() {
   //TODO 이 친구를 선택한 곡에 맞게
   // const songURL = URL + "./static/temp1.json";
 
-
   // let song1 = await JSON.parse(songURL);
-  console.log(song1);
-
-  console.log('song is ', song1)
-
-  nextNote = song1.notes[song1.next];
+  console.log(song);
+  
+  console.log('song is ', song)
+  
+  startTime = Date.now();
+  startScoreTimer(song.duration); // 이게 시작되어야, 현재 진행시간 countup이 update되어서, predict()에서 채점이 작동됨
+  nextNote = song.notes[song.next];   // 몇 번째 맞춰야 하는 동작인지 초기화
   max = 0;
 
   model = await tmPose.load(modelURL, metadataURL);
   maxPredictions = model.getTotalClasses();
+  // maxPredictions = song.notes.length;    //  src에서 가져옴!
   
+
+  //라벨관련인데, 필요없을듯?
+  labelContainer = document.getElementById("label-container");
+  console.log('maxPredictions',maxPredictions)
+  for (let i = 0; i < maxPredictions+1; i++) {   // 추가 1
+  // and class labels
+  labelContainer.appendChild(document.createElement("div"));
+  }
+
   predict()
 
 }
 
 
+
+const startScoreTimer = function (duration : number) {
+  const display : any = document.querySelector(".summary__timer");
+  const timer = duration;
+  // var minutes;
+  // var seconds;
+  countup = 0;
+
+  display.style.display = "block";
+  display.style.opacity = 1;
+
+  // 안무 시작된 후, 종료까지 시간 세기
+  const songDurationInterval = setInterval(function () {
+    display.innerHTML = countup;
+
+    if (++countup > timer) {
+      clearInterval(songDurationInterval);
+    }
+  }, 100);
+};
+
+
+
+
 async function predict () {
-
   console.log('-------predict 시작-----------')
-    const video = document.querySelector('video')  // 추가
-    videoRef.current = video                       //추가
-    console.log(videoRef.current)
+    /*썸네일의 캔버스 쓸 것이라 필요 x
+    // const video = document.querySelector('video')  
+    // videoRef.current = video                       
+    // console.log(videoRef.current)
+    // if (videoRef.current) { */
 
-    if (videoRef.current) {
-    
-        const { pose, posenetOutput } = await model.estimatePose(context.canvas);
-        const prediction = await model.predict(posenetOutput);
-        const motion : string = song1.notes[0]['type']   // 동작 class
-        console.log(motion)
-        // const prob : number = prediction
-        console.log(prediction)
+    // 썸네일이 있다면
+    if (context.canvas  ) {
+        const { pose, posenetOutput } = await model.estimatePose(context.canvas); // 모델로 사진 평가
+        const prediction = await model.predict(posenetOutput);  // 예측 값으로 아래와 같은 형식
+        /*
+          (5) [{…}, {…}, {…}, {…}, {…}]
+            0: {className: '좌상', probability: 0.05242524296045303}
+            1: {className: '우상', probability: 0.0050522517412900925}
+            2: {className: '대기', probability: 0.9000952839851379}
+            3: {className: '좌이마', probability: 0.041525620967149734}
+            4: {className: '우이마', probability: 0.0009016186813823879}
+            length: 5
+            [[Prototype]]: Array(0)
+        */
+        const motion : string = song.notes[0]['type']   // 동작 class
+        /* song은 다음과 같은 형식
+        {
+          "duration": 150,
+          "next": 0,
+          "notes": [
+            { "duration": 10, "delay": 30, "type": "오른손" },
+            { "duration": 10, "delay": 60, "type": "왼손" },
+            { "duration": 10, "delay": 90, "type": "오른손" },
+            { "duration": 10, "delay": 120, "type": "왼손" }
+          ]
+        }
+        */
+
+
+        // console.log(motion)
+        // // const prob : number = prediction
+        // console.log(prediction)
         console.log(prediction[0])
         console.log(prediction[1])
         console.log(prediction[2])
-        console.log(prediction[3])
-        console.log(prediction[4])
+        // console.log(prediction[3])
+        // console.log(prediction[4])
 
         // setTimeout(function(){predict(); }, 1500);
-        setTimeout( predict , 1500);
+        setTimeout( predict , 1000);   //1초마다 predict() 실행
 
+
+        // 채점하는 부분
+        if (nextNote != null) {   // 채점할 것이 있다면,
+          if (
+            // delay < 현재시간 < delay + 1초 
+            countup >= nextNote.delay &&
+            countup < nextNote.delay + nextNote.duration
+          ) {
+            //   console.log(countup);
+            //   console.log(prediction);
+          
+            //이 안에서 판정
+            //prediction[i].className==nextNote.type 일때
+            //prediction[i].probability가 일정 점수 이상이면 판정
+            //일정 점수 0.9 이상: perfect, 0.9~0.5: good, 0.5~: miss
+          
+              for (let i = 0; i < maxPredictions; i++) {
+                if (
+                  prediction[i].className == nextNote.type &&  max < prediction[i].probability
+                ) {
+                  max = prediction[i].probability;
+                }
+              }
+            
+              // max가 perfect이면 nextNote로 넘어감
+              // if (max >= 0.8) {
+              // showEffect(max);
+              //   song.next++;
+              //   nextNote = song.notes[song.next];
+              //   max = 0.0;
+              // }
+                showEffect(max);
+                song.next++;
+                nextNote = song.notes[song.next];
+                max = 0.0;
+              
+
+          } else if (countup == nextNote.delay + nextNote.duration) {
+            //miss인지 good인지 판단
+            // showEffect(max);
+            song.next++;
+            nextNote = song.notes[song.next];
+            max = 0.0;
+          }
+        }
+      
+        // 예측 class
+        const curMotion : string = nextNote['type']   // 추가 1
+        labelContainer.childNodes[0].innerHTML ="현재 맞춰야할 동작:" + curMotion;  // 추가 1
+        for (let i =0; i < maxPredictions; i++) {   // 추가 1
+          const classPrediction =
+            prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+
+          labelContainer.childNodes[i+1].innerHTML = classPrediction; 
+        }
   }
+  
+};
+
+
+  const emojiList = []
+
+function showEffect(rate : number) {
+  //rate(perfect:1.0~0.9,good:0.9~0.5,miss:0.5~0.0)에 따라 이모티콘 피드백 표시
+  //한 판정 내에 여러개 이모티콘 있고 랜덤으로 표시해주면 좋겠다....
+  //프론트 분들 부탁합니다....ㅎㅎㅎ
+  emojiList.push( <Emoji emoji='💘'/>
+
+  )
+
+  console.log("현재 동작 : " , nextNote.type, "현재 점수 : ", rate);
 }
 
-let img : string
-img = URL + 'img.PNG'
+
+
 //---------------------------------------------------------------------------------
 
 return (
@@ -906,12 +1048,11 @@ return (
       //  0. 티쳐블 머신 관련
       //
       -----------------------------------------------------------------------------------------------*/}
-      <img src={img}></img>
-      
+
       <div>
           <div>Teachable Machine Pose Model</div>
           <button type="button" onClick={init}>Starttttttttttttt</button>
-          {/* <div className="summary__timer"></div> */}
+          <div className="summary__timer"></div>
           {/* <div><canvas id="tCanvas" ></canvas></div> */}
           <div id="label-container"></div> 
 
