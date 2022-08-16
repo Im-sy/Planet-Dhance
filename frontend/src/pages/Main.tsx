@@ -49,7 +49,7 @@ export default function Main() {
 
   useEffect(() => {
     const getMainVideo = async () => {
-      const getMain = await mainVideo();
+      const getMain = await mainVideo(0);
       setMainVideoInfo(getMain);
     };
     getMainVideo();
@@ -95,7 +95,7 @@ export default function Main() {
             <h2> Hot Clips</h2>
             <GridView
               prevPage={mainVideoInfo?.prevPage}
-              videoList={mainVideoInfo?.videoList}
+              videoList={mainVideoInfo?.videoList?.content}
             />
           </div>
         </div>
