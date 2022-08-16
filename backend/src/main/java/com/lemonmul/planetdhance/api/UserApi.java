@@ -185,7 +185,7 @@ public class UserApi {
         User user = userService.findById(user_id);
         List<Clear> clearList = user.getClears();
         Slice<Video> videoList=videoService.findAllNewestVideoListByUser(page,videoSize,user);
-        return new UserSearchResponse(user,clearList,videoList, false);
+        return new UserSearchResponse(user,false,clearList,videoList);
     }
 
     /**

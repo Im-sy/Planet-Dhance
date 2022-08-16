@@ -208,7 +208,7 @@ public class TagApi {
             Long fromId = Long.parseLong(jwtTokenProvider.getUserPk(headers.get("authorization").get(0)));
             boolean isFollow = followService.isFollow(fromId, user.getId());
 
-            return new ResponseEntity<>(new UserSearchResponse(user,clearList,videoList, isFollow), HttpStatus.OK);
+            return new ResponseEntity<>(new UserSearchResponse(user, isFollow,clearList,videoList), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
