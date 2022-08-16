@@ -634,11 +634,11 @@ const Ref = useRef(null);
               setPlayState({ ...playState, played: 0}); // 티칭영상 새로시작1
               // console.log('debug1')
               handlePlay()
+          
               player.current.seekTo(0); // 티칭영상 새로시작1
               console.log(CAMERA_STATUS)
               console.log(recordWebcam.status)
               recordWebcam.start();  // 내 캠 녹화 시작
-              init()
               clearInterval(Ref.current) // 타이머에 쌓인 것들 초기화
            }
           }
@@ -673,6 +673,7 @@ const Ref = useRef(null);
         
       clearTimer(getDeadTime());
         console.log('onClickReset')
+     
       }
       
       
@@ -1088,13 +1089,13 @@ return (
     <div >
       {/* ---------------------------------------------------------------------------------------
       //
-      //  0. 티쳐블 머신 관련 & 이모지
+      //  0. 티쳐블 머신 관련
       //
       -----------------------------------------------------------------------------------------------*/}
 
       <div>
           <div>Teachable Machine Pose Model</div>
-          {/* <button type="button" onClick={init}>Starttttttttttttt</button> */}
+          <button type="button" onClick={init}>Starttttttttttttt</button>
           <div className="summary__timer"></div>
           {/* {emojiList} */}
           {emojis}
@@ -1116,9 +1117,9 @@ return (
         {/* <canvas id='canvas' hidden ref={canvasRef} />    */}
         <canvas id='canvas' ref={canvasRef} hidden/>   
         {/* <button onClick={snap}>Take screenshot</button> */}
-        {thumbnail.map((imgBlobs, index) => {
+        {/* {thumbnail.map((imgBlobs, index) => {
           return <img key={index} src={imgBlobs} />;
-        })}
+        })} */}
     </div>
 
 
