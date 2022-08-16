@@ -13,7 +13,7 @@ interface cardProps {
 
 
 
-export default function ActionAreaCard(props: cardProps) {
+export default function ToSearchCard(props: cardProps) {
   const navigate = useNavigate();
   const { type, id } = props;
   const toSearch = () =>{
@@ -36,7 +36,7 @@ export default function ActionAreaCard(props: cardProps) {
               height: height,
             }}
             component="img"
-            image={url}
+            image={`https://i7d201.p.ssafy.io/${url}`}
             alt="sea"
           />
         </CardActionArea>

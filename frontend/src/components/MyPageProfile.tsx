@@ -126,7 +126,7 @@ export default function MyPageProfile(props: MyPageProfileProps) {
             </h2>
               
             <p style={{  overflow: 'hidden',  textOverflow: 'ellipsis', whiteSpace : 'nowrap', width: '60vw',  height: '2.5vh', }}> 
-              {introduction} ddddddddddddddddddddddddddddddd
+              {introduction}
             </p>
           </div>
 

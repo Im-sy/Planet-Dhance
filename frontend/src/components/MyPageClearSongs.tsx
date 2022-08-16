@@ -16,7 +16,7 @@ export default function MyPageClearSongs({clearList}: clearListProps) {
     <div>
 		<CardContent sx={{ p : 1}}>
 			<Grid container spacing={0.4} direction='row'>
-				{clearList.map((clearItem: clearListItem) => (
+				{clearList?.map((clearItem: clearListItem) => (
 				<Grid item sm={4} key={clearItem.title}>
 					<Card sx={{ maxWidth: "28.2vw"}}>
 						<CardActionArea >

@@ -65,12 +65,12 @@ export default function MyPage() {
 
       <div>
         <MyPageProfile 
-            img={profileInfo.user.imgUrl}
-            nickname={profileInfo.user.nickname}
-            introduction={profileInfo.user.introduce}
-            nation={profileInfo.user.nationFlag}
-            follower={profileInfo.user.followerCnt}
-            following={profileInfo.user.followingCnt}
+            img={profileInfo?.user?.imgUrl}
+            nickname={profileInfo?.user?.nickname}
+            introduction={profileInfo?.user?.introduce}
+            nation={profileInfo?.user?.nationFlag}
+            follower={profileInfo?.user?.followerCnt}
+            following={profileInfo?.user?.followingCnt}
             type={1}
             // 프로필 부분 패딩과 마진 설정
             sx={{ display: 'flex', flexDirection: 'column', width: '5rem',  borderRadius: "50%", padding:" 0px 0.5rem", margin:"0.5rem 0.2rem" }}
@@ -82,19 +82,19 @@ export default function MyPage() {
       {/* <div style={{ marginTop : 30, marginLeft : 10, marginBottom : 10, marginRight : 10 }}> */}
       <div style={{ marginTop : 10, marginLeft : 10, marginBottom : 10, marginRight : 10 }}>
         <h2>Achievments</h2>
-        <MyPageAchievements clear={profileInfo.clearCnt} />
+        <MyPageAchievements clear={profileInfo?.clearCnt} />
       </div>
 
       {/* clear한 곡들  */}
       <div style={{  marginLeft : 10, marginBottom : 10, marginRight : 10 }}>
         <h2>Clear Songs</h2>
-        <MyPageClearSongs clearList={profileInfo.clearList} />
+        <MyPageClearSongs clearList={profileInfo?.clearList} />
       </div>
 
       {/* 내가 올린 영상 */}
       <div>
         <h2  style={{  marginLeft : 10 , marginBottom : 5}}>My Videos</h2>
-        <SongPageGridView videoList={profileInfo.videoList} prevPage={profileInfo.prevPage} />
+        <SongPageGridView videoList={profileInfo?.videoList} prevPage={profileInfo?.prevPage} />
       </div>
 
       <NavBar current={"myPage"} />
