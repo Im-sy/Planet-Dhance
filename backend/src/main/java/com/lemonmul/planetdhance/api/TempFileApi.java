@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin
 @Slf4j
@@ -23,7 +24,7 @@ public class TempFileApi {
     private final TempFileService tempFileService;
 
     @PostMapping("/upload")
-    public boolean upload(@RequestPart MultipartFile inputFile) throws IOException {
+    public boolean upload(@RequestPart List<MultipartFile> inputFile) throws IOException {
         return tempFileService.upload(inputFile);
     }
 
@@ -33,7 +34,7 @@ public class TempFileApi {
     }
 
     @PostMapping(value = "/upload/file_json",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public boolean uploadFileAndJson(@RequestPart MultipartFile inputFile,@RequestPart SampleJson sampleJson) throws IOException{
+    public boolean uploadFileAndJson(@RequestPart List<MultipartFile> inputFile, @RequestPart SampleJson sampleJson) throws IOException{
         return tempFileService.uploadFileAndJson(inputFile,sampleJson.content);
     }
 

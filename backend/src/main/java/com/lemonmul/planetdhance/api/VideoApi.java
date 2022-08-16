@@ -266,12 +266,10 @@ public class VideoApi {
      * form-data로 영상, 썸네일, 공개 여부, 로그인 유저 아이디, 곡 아이디, 클리어 여부, 커스텀 태그 리스트 받기
      */
     @PostMapping(value = "/upload",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE,
-                    MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> uploadChallengeVideo(@RequestPart MultipartFile videoFile,@RequestPart MultipartFile imgFile,
-                                        @RequestPart ChallengeRequest challengeRequest) {
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> uploadChallengeVideo(@RequestPart List<MultipartFile> inputFile,@RequestPart ChallengeRequest challengeRequest) {
         try {
-            return new ResponseEntity<>(videoService.uploadChallengeVideo(videoFile, imgFile, challengeRequest), HttpStatus.OK);
+            return new ResponseEntity<>(videoService.uploadChallengeVideo(inputFile, challengeRequest), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

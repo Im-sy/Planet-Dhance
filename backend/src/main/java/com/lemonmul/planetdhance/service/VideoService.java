@@ -97,6 +97,11 @@ public class VideoService {
         return videoRepo.findMainByScopeOrderByOrderWeightDescRegDateDescIdDesc(scope,pageable);
     }
 
+    public Slice<Video> findNextMainPageVideoList(int page,int size,Long orderWeight,VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findMainByOrderWeightLessThanEqualAndScopeOrderByOrderWeightDescRegDateDescIdDesc(orderWeight,scope,pageable);
+    }
+
     /**
      * 검색 조건: 없음
      * 정렬: 없음(랜덤)
@@ -167,18 +172,22 @@ public class VideoService {
      * 영상을 video 테이블에 추가
      */
     @Transactional
-    public boolean uploadChallengeVideo(MultipartFile videoFile, MultipartFile imgFile,
-                                        ChallengeRequest challengeRequest) throws Exception {
+    public boolean uploadChallengeVideo(List<MultipartFile> inputFile,ChallengeRequest challengeRequest) throws Exception {
 
-        if(videoFile.isEmpty())
-            throw new Exception("Video Not Found");
-
-        if(imgFile.isEmpty())
-            throw new Exception("Img Not Found");
+        if(inputFile.isEmpty() || inputFile.size()<2)
+            throw new Exception("File Not Found");
 
         //영상 경로, 썸네일 경로
-        String videoUrl = FileUtil.createFilePath(videoFile, "video" + File.separator + "article");
-        String imgUrl=FileUtil.createFilePath(imgFile,"video"+File.separator+"img");
+        String videoUrl=null,imgUrl=null;
+        for (MultipartFile multipartFile : inputFile) {
+            String originalFilename = multipartFile.getOriginalFilename();
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            if(".webm".equals(extension) || ".mp4".equals(extension)){
+                videoUrl=FileUtil.createFilePath(multipartFile,"video" + File.separator + "article");
+            }else{
+                imgUrl=FileUtil.createFilePath(multipartFile,"video"+File.separator+"img");
+            }
+        }
 
         VideoScope scope=challengeRequest.getScope();
 
