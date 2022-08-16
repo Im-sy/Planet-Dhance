@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class UserDto {
+    private Long id;
     private String nickname;
     private String introduce;
     private String imgUrl;
@@ -13,6 +14,7 @@ public class UserDto {
     private int followerCnt;
 
     public UserDto(User user) {
+        id = user.getId();
         nickname=user.getNickname();
         introduce=user.getIntroduce();
         imgUrl=user.getImgUrl();

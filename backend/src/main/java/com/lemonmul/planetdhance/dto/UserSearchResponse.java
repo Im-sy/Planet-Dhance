@@ -17,8 +17,9 @@ public class UserSearchResponse{
     private int clearCnt;
     private String prevPage="user";
     private Slice<VideoProfileDto> videoList;
+    private boolean isFollow;
 
-    public UserSearchResponse(User user, List<Clear> clearList, Slice<Video> videoList) {
+    public UserSearchResponse(User user, List<Clear> clearList, Slice<Video> videoList, boolean isFollow) {
         this.user=new UserDto(user);
         //최신 클리어 정보 5개
         this.clearList=clearList.stream()
@@ -26,5 +27,6 @@ public class UserSearchResponse{
                 .map(ClearDto::new).collect(Collectors.toList());
         this.clearCnt=clearList.size();
         this.videoList=videoList.map(VideoProfileDto::new);
+        this.isFollow = isFollow;
     }
 }

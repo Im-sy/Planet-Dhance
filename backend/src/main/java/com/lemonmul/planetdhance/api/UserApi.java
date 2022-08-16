@@ -185,7 +185,7 @@ public class UserApi {
         User user = userService.findById(user_id);
         List<Clear> clearList = user.getClears();
         Slice<Video> videoList=videoService.findAllNewestVideoListByUser(page,videoSize,user);
-        return new UserSearchResponse(user,clearList,videoList);
+        return new UserSearchResponse(user,clearList,videoList, false);
     }
 
     /**
@@ -248,7 +248,7 @@ public class UserApi {
 
         try {
             User user=userService.findById(user_id);
-            return new ResponseEntity<>(userService.findFollowingUserInfo(page,size,user.getTos()).map(UserFollowDto::new), HttpStatus.OK);
+            return new ResponseEntity<>(userService.findFollowingUserInfo(page,size,user.getFroms()).map(UserFollowDto::new), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -310,10 +310,10 @@ public class UserApi {
             this.introduce = user.getIntroduce();
             this.imgUrl = user.getImgUrl();
             this.nationName = user.getNation().getName();
-
-            // TODO: imgUrl이 null일 때의 반환값 처리 통합?
-            if(this.imgUrl == null)
-                imgUrl = "/resource/users/img/default/default_profile.png";
+//
+//            // TODO: imgUrl이 null일 때의 반환값 처리 통합?
+//            if(this.imgUrl == null)
+//                imgUrl = "/resource/users/img/default/default_profile.png";
         }
     }
 
@@ -350,10 +350,10 @@ public class UserApi {
             introduce=user.getIntroduce();
             imgUrl=user.getImgUrl();
             nation=user.getNation().getFlag();
-
-            if(imgUrl == null)
-                //TODO 프로필 이미지 경로 수정
-                imgUrl = "/resource/users/img/default/default_profile.png";
+//
+//            if(imgUrl == null)
+//                //TODO 프로필 이미지 경로 수정
+//                imgUrl = "/resource/users/img/default/default_profile.png";
 
             //최신 영상 5개만
             videoList=user.getVideos().stream().sorted(Comparator.comparing(Video::getRegDate).reversed())
