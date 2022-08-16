@@ -260,6 +260,27 @@ public class VideoApi {
     }
 
     /**
+     * 메인 페이지의 재생할 영상 정보 리스트
+     *
+     * 요청 파라미터 예시: /video/{video_id}/main/{user_id}
+     */
+    @GetMapping("/{video_id}/main/{user_id}")
+    public ResponseEntity<?> mainVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
+        try {
+            Video video = videoService.findById(video_id);
+            Slice<Video> videoList=videoService.findNextMainPageVideoList(0,infoSize,video.getOrderWeight(),VideoScope.PUBLIC);
+
+            User user = userService.findById(user_id);
+            List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+
+            return new ResponseEntity<>(new VideoInfoResponse(videoList,likeList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * 챌린지 영상 업로드
      *
      * 요청 파라미터 예시: /video/upload
