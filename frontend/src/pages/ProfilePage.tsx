@@ -9,6 +9,7 @@ import SongPageGridView from '../components/MusicPageGridView'
 import TopBar from '../components/TopBar';
 
 interface userProps {
+  userId: number,
   nickname: string,
   imgUrl: string,
   nationFlag: string,
@@ -31,7 +32,7 @@ export interface videoListProps {
   first: boolean,
   last: boolean,
   numberOfElements: number,
-  empty: boolean
+  empty: boolean,
 }
 interface profileProps {
   user: userProps,
@@ -39,6 +40,7 @@ interface profileProps {
   clearCnt: number,
   prevPage: string,
   videoList: videoListProps
+  follow: boolean,
 }
 
 export default function ProfilePage() {
@@ -62,12 +64,14 @@ export default function ProfilePage() {
 
       <div>
         <MyPageProfile 
+            toId={profileInfo?.user?.userId}
             img={profileInfo.user.imgUrl}
             nickname={profileInfo.user.nickname}
             introduction={profileInfo.user.introduce}
             nation={profileInfo.user.nationFlag}
             follower={profileInfo.user.followerCnt}
             following={profileInfo.user.followingCnt}
+            isFollowed={profileInfo?.follow}
             type={1}
             // 프로필 부분 패딩과 마진 설정
             sx={{ display: 'flex', flexDirection: 'column', width: '5rem',  borderRadius: "50%", padding:" 0px 0.5rem", margin:"0.5rem 0.2rem" }}
@@ -91,7 +95,7 @@ export default function ProfilePage() {
       {/* 내가 올린 영상 */}
       <div>
         <h2  style={{  marginLeft : 10 , marginBottom : 5}}>My Videos</h2>
-        <SongPageGridView videoList={profileInfo.videoList} prevPage={profileInfo.prevPage} />
+        <SongPageGridView videoList={profileInfo.videoList?.content} prevPage={profileInfo.prevPage} />
       </div>
 
       <NavBar current={"myPage"} />

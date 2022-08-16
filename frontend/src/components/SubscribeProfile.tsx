@@ -9,6 +9,7 @@ interface SearchInfo {
   img: string;
   nickname: string;
   introduction : string;
+  nation: string;
   type: number;
   sx? : CSSProperties;
 }
@@ -23,7 +24,7 @@ export default function SubscribeProfile(props: SearchInfo) {
     height: '2.5vh',
   };
 
-  const { img, nickname, introduction, type, sx } = props;
+  const { img, nickname, introduction, nation, type, sx } = props;  
   if (typeof sx === 'undefined') {
     let sx = { display: 'flex', flexDirection: 'column', width: '7rem' }
     return (
@@ -53,13 +54,13 @@ export default function SubscribeProfile(props: SearchInfo) {
           <CardMedia
             sx={sx} 
             component="img"
-            image={img}
+            image={"https://i7d201.p.ssafy.io/"+img}
             alt="profile img"
           />
 
           <CardContent sx={{ flex: '1 0 auto' }}> 
             <Typography gutterBottom variant="body1" component="div" sx={introductionStyle} >
-              {nickname}  <span>🇰🇷</span> <span>&#x1F1F0;&#x1F1F7;</span>
+            {nickname}  <span>{ nation }</span>
               
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={introductionStyle}>

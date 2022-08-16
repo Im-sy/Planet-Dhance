@@ -32,25 +32,6 @@ export default function SearchSong() {
   const [videoList, setVideoList] = useState<contentItem[]>()
   const [pageNum, setPageNum] = useState<number>(0)
   const [lastPage, setLastPage] = useState<boolean>(false)
-  
-  const fetchMoreSearchInfo = async () => {
-    // 추가 데이터를 로드하는 상태로 전환
-    setFetching(true);
-    console.log(lastPage)
-    if (!lastPage) {
-      setPageNum(pageNum+1)
-      console.log(pageNum)
-      const scrollsearch = await tagSearch(parseInt(tagId), searchType.toLowerCase(), pageNum+1)
-      console.log(scrollsearch)
-      setPrevPage(scrollsearch.prevPage)
-      console.log(videoList)
-      // [...videoList, scrollsearch.videoList?.content]
-      setVideoList(scrollsearch.videoList?.content)
-    }
-
-    // 추가 데이터 로드 끝
-    setFetching(false)
-  };
 
   const handleScroll = () => {
     const scrollHeight = document.documentElement.scrollHeight;
@@ -63,10 +44,25 @@ export default function SearchSong() {
     }
   };
   
+  const fetchMoreSearchInfo = async () => {
+    // 추가 데이터를 로드하는 상태로 전환
+    setFetching(true);
+    console.log(lastPage)
+    if (!lastPage) {
+      const scrollsearch = await tagSearch(parseInt(tagId), searchType.toLowerCase(), pageNum+1)
+      setPageNum(pageNum+1)
+      setPrevPage(scrollsearch.prevPage)
+      setVideoList(videoList.concat(...scrollsearch.videoList?.content))
+      setLastPage(scrollsearch.videoList?.last)
+    }
+
+    // 추가 데이터 로드 끝
+    setFetching(false)
+  };
 
   useEffect( () => {
     const getSearchInfo = async () => {
-      const getsearch = await tagSearch(parseInt(tagId), searchType.toLowerCase(), pageNum)
+      const getsearch = await tagSearch(parseInt(tagId), searchType.toLowerCase(), pageNum);
       console.log(getsearch)
       if (searchType==="ARTIST" || searchType==="TITLE") {
         setMusicList(getsearch.musicList)
@@ -76,13 +72,15 @@ export default function SearchSong() {
       setLastPage(getsearch.videoList?.last)
     }
     getSearchInfo();
-    
+  }, []); 
+
+  useEffect( () => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       // scroll event listener 해제
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []); 
+  })
 
 
   return (

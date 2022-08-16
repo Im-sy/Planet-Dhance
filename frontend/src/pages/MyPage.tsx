@@ -39,7 +39,7 @@ interface profileProps {
   clearList: clearListItem[],
   clearCnt: number,
   prevPage: string,
-  videoList: videoListProps
+  videoList: videoListProps,
 }
 
 export default function MyPage() {
@@ -65,12 +65,14 @@ export default function MyPage() {
 
       <div>
         <MyPageProfile 
+            toId={user.userId}
             img={profileInfo?.user?.imgUrl}
             nickname={profileInfo?.user?.nickname}
             introduction={profileInfo?.user?.introduce}
             nation={profileInfo?.user?.nationFlag}
             follower={profileInfo?.user?.followerCnt}
             following={profileInfo?.user?.followingCnt}
+            isFollowed={false}
             type={1}
             // 프로필 부분 패딩과 마진 설정
             sx={{ display: 'flex', flexDirection: 'column', width: '5rem',  borderRadius: "50%", padding:" 0px 0.5rem", margin:"0.5rem 0.2rem" }}
@@ -94,7 +96,7 @@ export default function MyPage() {
       {/* 내가 올린 영상 */}
       <div>
         <h2  style={{  marginLeft : 10 , marginBottom : 5}}>My Videos</h2>
-        <SongPageGridView videoList={profileInfo?.videoList} prevPage={profileInfo?.prevPage} />
+        <SongPageGridView videoList={profileInfo?.videoList?.content} prevPage={profileInfo?.prevPage} />
       </div>
 
       <NavBar current={"myPage"} />
