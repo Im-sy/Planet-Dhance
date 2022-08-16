@@ -9,19 +9,20 @@ export default function MyPageAchievements(props : MyPageAchievementsProps) {
 	
 	if (clear <= 3) {
 		return (
-			<div>🌱</div>
+			<p style={{ fontSize: '50px'}}>🌱</p>
 		)
 	} else if (clear > 3 && clear <= 5) {
 		return (
-			<div>🍀</div>
+			<p style={{ fontSize: '50px'}}>🍀🌱</p>
 		)
 	} else if (clear > 5 && clear <= 10) {
 		return (
-			<div>🌷</div>
+			<p style={{ fontSize: '50px'}}>🌷🍀🌱</p>
 		)	
 	} else {
 		return (
-			<div>💐</div>
+			<p style={{ fontSize: '50px'}}>💐🌷🍀🌱</p>
+
 		)	
 	}
 }

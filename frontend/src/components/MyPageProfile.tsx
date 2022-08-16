@@ -97,46 +97,46 @@ export default function MyPageProfile(props: MyPageProfileProps) {
           </CardContent>
         </Card> */}
 
-          <div id="profile_img" style={{ display : "inline-block" , maxWidth : "30%" }}>
-            <Avatar alt={nickname} src={img}   sx={{ width: "80%", height: "80%", m:1}} />
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "20px 20px 20px 0px", textAlign: "center" }}>
+            <div id="profile_img" style={{ display : "inline-block" }}>
+              <Avatar alt={nickname} src={img}   sx={{ width: "100px", height: "100px" }} />
 
-          </div>
-          {/* follower */}
-          <div id="follow"  style={{ display : "inline-block" , maxWidth : "70%" , paddingLeft : 20 }} >
-            <div id="follow"  style={{ display : "inline-block" , maxWidth : "45%" }} >
-              {/* <div>
-              <Avatar sx={{ bgcolor: green[500] }} variant="rounded">
-                {follower} 
-              </Avatar>
+            </div>
+            {/* follower */}
+            <div id="follow"  style={{ display : "flex"}} >
+              <div id="follow"  style={{ display : "flex" , flexDirection : "column", alignItems: "center", maxWidth : "45%", fontSize: '17px'}} >
+                {/* <div>
+                <Avatar sx={{ bgcolor: green[500] }} variant="rounded">
+                  {follower} 
+                </Avatar>
+                </div>
+
+                <div>
+                <Avatar sx={{ bgcolor: green[500] }} variant="rounded">
+                  {following} 
+                </Avatar>
+                </div> */}
+                <p>Follower</p>
+                <p><b>{ follower }</b></p>   
               </div>
-
-              <div>
-              <Avatar sx={{ bgcolor: green[500] }} variant="rounded">
-                {following} 
-              </Avatar>
-              </div> */}
-              <p> Follower  <b>{ follower }</b>   </p>
             </div>
-
+            <div id="follow"  style={{ display : "flex" , maxWidth : "70%" , }} >
             {/* following */}
-            <div id="follow"  style={{ display : "inline-block" , maxWidth : "45%" }} >
-
-              <p>  Following <b>{ following } </b> </p>
+              <div id="follow"  style={{ display : "flex" , flexDirection : "column", alignItems: "center", maxWidth : "45%", fontSize: '17px' }} >
+                <p>Following</p>
+                <p><b>{ following } </b> </p>
+              </div>
             </div>
-            {(user.userId!==toId)? 
-            <BtnFollow isFollowed={isFollowed} fromId={user.userId} toId={toId} />
-            : ''
-            }
           </div>
 
 
           {/* 자기소개 */}
           <div>
-            <h2 style={{overflow: 'hidden',  textOverflow: 'ellipsis', whiteSpace : 'nowrap', width: '60vw',  height: '2.5vh',}}>
-                {nickname} {nation} 
+            <h2 style={{overflow: 'hidden',  textOverflow: 'ellipsis', whiteSpace : 'nowrap', width: '60vw',  height: '2.5vh', fontSize:'20px', margin: '5px 0px'}}>
+              <b> {nickname} </b> {nation}
             </h2>
               
-            <p style={{  overflow: 'hidden',  textOverflow: 'ellipsis', whiteSpace : 'nowrap', width: '60vw',  height: '2.5vh', }}> 
+            <p style={{  overflow: 'hidden',  textOverflow: 'ellipsis', whiteSpace : 'nowrap', width: '60vw',  height: '2.5vh', margin: '5px 0px'}}> 
               {introduction}
             </p>
           </div>

@@ -77,25 +77,25 @@ export default function MyPage() {
             // 프로필 부분 패딩과 마진 설정
             sx={{ display: 'flex', flexDirection: 'column', width: '5rem',  borderRadius: "50%", padding:" 0px 0.5rem", margin:"0.5rem 0.2rem" }}
           />
-
       </div>
 
       {/* 업적 */}
       {/* <div style={{ marginTop : 30, marginLeft : 10, marginBottom : 10, marginRight : 10 }}> */}
       <div style={{ marginTop : 10, marginLeft : 10, marginBottom : 10, marginRight : 10 }}>
-        <h2>Achievments</h2>
+        <h2 style={{ fontSize: '22px'}}>Achievments</h2>
         <MyPageAchievements clear={profileInfo?.clearCnt} />
+        <hr />
       </div>
 
       {/* clear한 곡들  */}
-      <div style={{  marginLeft : 10, marginBottom : 10, marginRight : 10 }}>
-        <h2>Clear Songs</h2>
+      <div style={{  marginLeft : 10, marginBottom : 10, marginRight : 10,}}>
+        <h2 style={{ fontSize: '22px'}}>Cleared Songs</h2>
         <MyPageClearSongs clearList={profileInfo?.clearList} />
       </div>
 
       {/* 내가 올린 영상 */}
-      <div>
-        <h2  style={{  marginLeft : 10 , marginBottom : 5}}>My Videos</h2>
+      <div style={{  marginLeft : 10, marginBottom : 10, marginRight : 10,}}>
+        <h2 style={{ fontSize: '22px'}}>My Videos</h2>
         <SongPageGridView videoList={profileInfo?.videoList?.content} prevPage={profileInfo?.prevPage} />
       </div>
 
