@@ -37,7 +37,7 @@ export default function ThumbnailCard(props: cardProps) {
           style={{
             width: width,
             height: height,
-            opacity: "0.6",
+            opacity: "0.4",
           }}
           // src={`${url}`}
           component="img"

@@ -86,20 +86,7 @@ function UpLoad() {
   //--------------------------------------------------------------------------------------
   const location = useLocation(); 
   // const thumbnail = location.state.thumbnail;
-  const video = location.state.video;
-  const hashtags = location.state.hashtags;
-  const dummy = location.state.dummy;
-  const thumbnail = location.state.thumbnail;
-  const thumbnail2 = location.state.thumbnail2;
-  const fliped = location.state.fliped;
-  const now = location.state.now;
-  console.log(thumbnail)
-  console.log(thumbnail2)
-  console.log(video)
-  console.log(dummy)
-  console.log(hashtags)
-  console.log(fliped)
-  console.log(now)
+  console.log(location);
 
   
   // useEffect( ()=>{

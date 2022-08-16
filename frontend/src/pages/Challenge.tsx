@@ -320,6 +320,8 @@ const recordWebcam: RecordWebcamHook = useRecordWebcam(OPTIONS);
 
 const [videoFile, setVideoFile] = useState<FormData>()
 
+const [uploadData, setUploadData] = useState([])
+
   // --------------------------------------------------------------------------------------
   //
   // 데이터 서버에 전송하는 부분
@@ -331,24 +333,64 @@ const [videoFile, setVideoFile] = useState<FormData>()
     console.log({ blob });
     
     
-    const file = await new File([blob], 'video.webm', {
+    
+    const file =  new File([blob], 'video.webm', {
       type : "video/webm"
     });
     console.log(file);
+    setUploadData([...uploadData, blob]);
+    console.log("uploadData", uploadData);
+    
     const formData = new FormData();
-    await formData.append("inputFile", file, "videoFile.webm");
-    setVideoFile(formData) // 보낼 비디오 저장
+    formData.append("inputFile", file, "videoFile.webm");
+    setVideoFile(blob) // 보낼 비디오 저장
 
 
     // 썸네일
-    console.log(thumbnail[0])
-    const blob2 = thumbnail[0]
-    const img = await new File([blob2], 'image.jpeg', {
-      type : "image/jpeg"
-    }); 
-    console.log(img)
-    await formData.append("inputFile", img, "image.jpeg")
+    // console.log(thumbnail[0])
+    // const blob2 = thumbnail[0]
+    // const img = await new File([blob2], 'image.jpeg', {
+    //   type : "image/jpeg"
+    // }); 
+    // console.log(img)
+    // await formData.append("inputFile", img, "image.jpeg")
     
+    
+    thumbnail.map((img, i) =>{
+      img.blob()
+      setUploadData([...uploadData, blob])
+    })
+    console.log(uploadData);
+    console.log(videoFile);
+    
+    
+    // fetch(thumbnail[0])
+    //   .then((res) => res.blob())
+    //   .then((blob) => {
+    //     const NewFile = new File([blob], "video_thumbnail", {
+    //       type: "image/png"
+    //     });
+    //     console.log(NewFile);
+    //     setUploadData([...uploadData, blob]);
+    //     formData.append("inputFile", NewFile, "image.png");
+    //     const blob3 = new Blob([jsonData], {type : "application/json"});
+    //     formData.append("challengeRequest", blob3, 'sampleJson'); 
+    //   }).then(()=>{
+    //   //   axios
+    //   // // .post("http://i7d201.p.ssafy.io:8081/file/upload", formData)
+    //   // // .post("http://i7d201.p.ssafy.io/api/file/upload", formData)
+    //   // // .post("https://i7d201.p.ssafy.io/api/file/upload/file_json", formData)
+    //   // .post("https://i7d201.p.ssafy.io/api/video/upload", formData)  // 최종적으로 진짜로 보내는 주소
+    //   // .then((res) => {
+    //   //   console.log(res);
+    //   // })
+    //   // .catch((err) => {
+    //   //   alert("실패");
+    //   //   console.log(err)
+    //   // });
+    //   console.log([blob ,videoBlob]);
+    //   setUploadData([blob ,videoBlob])
+    //   });
 
     // 썸네일2
   //   function b64toBlob(b64Data : any, contentType = '', sliceSize = 512) {
@@ -426,18 +468,18 @@ const [videoFile, setVideoFile] = useState<FormData>()
 
 
     // axios 요청
-    axios
-      // .post("http://i7d201.p.ssafy.io:8081/file/upload", formData)
-      // .post("http://i7d201.p.ssafy.io/api/file/upload", formData)
-      // .post("https://i7d201.p.ssafy.io/api/file/upload/file_json", formData)
-      .post("https://i7d201.p.ssafy.io/api/video/upload", formData)  // 최종적으로 진짜로 보내는 주소
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        alert("실패");
-        console.log(err)
-      });
+    // axios
+    //   // .post("http://i7d201.p.ssafy.io:8081/file/upload", formData)
+    //   // .post("http://i7d201.p.ssafy.io/api/file/upload", formData)
+    //   // .post("https://i7d201.p.ssafy.io/api/file/upload/file_json", formData)
+    //   .post("https://i7d201.p.ssafy.io/api/video/upload", formData)  // 최종적으로 진짜로 보내는 주소
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     alert("실패");
+    //     console.log(err)
+    //   });
 
     
   };
@@ -773,7 +815,10 @@ const Ref = useRef(null);
   
   const navigate = useNavigate(); // upload 페이지로 데이터 전송하기 위해서
   const goToUpload = () => {
-    const inputFile = videoFile
+    
+    const inputFile = uploadData
+    console.log(inputFile);
+    
     // axios
     // .post("https://i7d201.p.ssafy.io/api/file/upload", inputFile) 
     // .then((res) => {
@@ -790,25 +835,30 @@ const Ref = useRef(null);
     // }
     
 
-    navigate('/test', {
-      // state : {
-      //   thumbnail : {thumbnail},
-      //   dummy : 1,
-      //   video : {videoFile},
-      //   hashtags :[ 'hash1', 'hash2','hash3']
-      // }
-      state : {
-        thumbnail : thumbnail[0],
-        thumbnail2 : thumbnail,
-        dummy : 123,
-        video : videoFile,
-        hashtags :[ 'hash1', 'hash2','hash3'],
-        now : {now},
-        fliped : {fliped} 
-      }
-    })
+    // navigate('/test', {
+    //   // state : {
+    //   //   thumbnail : {thumbnail},
+    //   //   dummy : 1,
+    //   //   video : {videoFile},
+    //   //   hashtags :[ 'hash1', 'hash2','hash3']
+    //   // }
+    //   state : {
+    //     thumbnail : thumbnail[0],
+    //     thumbnail2 : thumbnail,
+    //     dummy : 123,
+    //     video : videoFile,
+    //     hashtags :[ 'hash1', 'hash2','hash3'],
+    //     now : {now},
+    //     fliped : {fliped} 
+    //   }
+    // })
 
-
+    // navigate('/test', {
+    //   state : {
+    //     file : {inputFile}
+    //   }
+    // }
+    // )
 
 
 
@@ -942,7 +992,7 @@ const [fliped, setFliped] = useState(false)
     const imgURL = canvasHTML.toDataURL('image/png');
     // console.log([...thumbnail])
     setThumbnail([...thumbnail, imgURL]);
-    // console.log(thumbnail) 
+    console.log(thumbnail) 
     // console.log(thumbnail[0]) 
     };
 // 썸네일 관련 끝----------------------------------------------------------------------------------------------------------
@@ -1039,8 +1089,6 @@ const startScoreTimer = function (duration : number) {
     curMotionNum=0 
     setEmojis(prevState=>{ return [ ...prevState,  <Emoji emoji='💯'/>] }) },  end)
   console.log('setTimeout 실행됨')
-
-
 };
 
 

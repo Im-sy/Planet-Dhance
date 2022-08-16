@@ -15,11 +15,11 @@ import ModeChallengeTimer from './Challenge';
 import Ranking from './Ranking';
 import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
-import HashTagTextArea from './UpLoad';
+import Upload from './UpLoad';
 import ExplorePage from './ExplorePageList'
 
 import Teachable from './TeachableScript'
-
+import Thumbnail from './Thumanil2'
 import SongPage from './MusicPage';
 
 
@@ -53,7 +53,7 @@ function AppRouter() {
 
         <Route element={<NotFound404 />} />
         {/* test */}
-        <Route path='/test' element={<HashTagTextArea />} />
+        <Route path='/test' element={<Upload />} />
         <Route path='/:prevPage/playing/:videoId' element={<ExplorePage />} />
       </Routes>
     </BrowserRouter>
