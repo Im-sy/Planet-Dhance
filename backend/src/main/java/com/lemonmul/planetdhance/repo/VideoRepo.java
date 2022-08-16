@@ -32,7 +32,7 @@ public interface VideoRepo extends JpaRepository<Video,Long> {
     Slice<Video> findByOrderWeightLessThanEqualAndVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(Long orderWeight, List<VideoTag> videoTagList, VideoScope scope, Pageable pageable);
 
     //메인 페이지 인기 영상 리스트
-    Slice<Video> findMainByScopeOrderByOrderWeightDescRegDateDesc(VideoScope scope,Pageable pageable);
+    Slice<Video> findMainByScopeOrderByOrderWeightDescRegDateDescIdDesc(VideoScope scope,Pageable pageable);
 
     //랜덤 영상 정보 리스트
     @Query(value = "select * from video order by rand() limit :size",nativeQuery = true)

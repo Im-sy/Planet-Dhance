@@ -94,7 +94,7 @@ public class VideoService {
      */
     public Slice<Video> findMainPageVideoList(int page,int size,VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findMainByScopeOrderByOrderWeightDescRegDateDesc(scope,pageable);
+        return videoRepo.findMainByScopeOrderByOrderWeightDescRegDateDescIdDesc(scope,pageable);
     }
 
     /**

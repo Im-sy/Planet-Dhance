@@ -83,14 +83,13 @@ public class VideoApi {
      * 국가 랭킹, 인기 영상 리스트 - 메인 페이지 진입
      *
      * 요청 파라미터 예시: /video/main/0
-     * 영상 리스트 size는 12개
+     * 영상 리스트 size는 18개
      */
     @GetMapping("/main/0")
     public MainPageResponse mainListAndRankingAndArtistList() {
-        int size=12;
         List<Artist> artistList = artistService.findTop5();
         Slice<Ranking> ranking = rankingService.getRanking();
-        Slice<Video> videoList = videoService.findMainPageVideoList(0, size, VideoScope.PUBLIC);
+        Slice<Video> videoList = videoService.findMainPageVideoList(0, listSize, VideoScope.PUBLIC);
         return new MainPageResponse(artistList,ranking,videoList);
     }
 
