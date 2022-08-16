@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 
 // 2. Do some testing before implementing it.
 // 3. Yoau have to get the file URL with the Form Apped
+import axios from 'axios'
 
 export default function GetThumbnail() {
   const [file, setFile] = useState(null);
@@ -33,6 +34,7 @@ export default function GetThumbnail() {
       );
 
     setImgSrc(canvas.toDataURL(), "image.png");
+    console.log(imgSrc);
     fetch(imgSrc)
       .then((res) => res.blob())
       .then((blob) => {
@@ -40,6 +42,18 @@ export default function GetThumbnail() {
           type: "image/png"
         });
         console.log(NewFile);
+        const formData = new FormData();
+        formData.append("inputFile", NewFile, "image.png");
+        axios.post("https://i7d201.p.ssafy.io/api/file/upload", formData, {
+          'Content-Type' : 'multipart/form-data'
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          alert("실패");
+          console.log(err)
+        });
       });
   };
 

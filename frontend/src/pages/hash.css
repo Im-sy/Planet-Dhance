@@ -55,7 +55,7 @@
 
 .ReactTags__selected span.song  {
   border: 1px solid #ddd;
-  background: red;
+  background: rgb(54, 52, 52);
   color: white;
   font-size: 12px;
   display: inline-block;
@@ -66,7 +66,7 @@
 
 .ReactTags__selected span.artist {
   border: 1px solid #ddd;
-  background: orange;
+  background: rgb(54, 52, 52);;
   color: white;
   font-size: 12px;
   display: inline-block;
@@ -77,7 +77,7 @@
 
 .ReactTags__selected span.nation {
   border: 1px solid #ddd;
-  background: rgb(21, 160, 21);
+  background: rgb(54, 52, 52);;
   color: white;
   font-size: 12px;
   display: inline-block;
@@ -88,8 +88,8 @@
 
 .ReactTags__selected span.nickname {
   border: 1px solid #ddd;
-  background: bisque;
-  color: black;
+  background: rgb(54, 52, 52);;
+  color: white;
   font-size: 12px;
   display: inline-block;
   padding: 5px;
