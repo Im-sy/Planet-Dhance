@@ -249,10 +249,8 @@ public class TagApi {
             className =tag.getType();
             if(tag.getImgUrl()==null){
                 if(tag.getType().equals(TagType.CUSTOM)) {
-                    //TODO 커스텀 태그 이미지 경로 넣기
-                    imgUrl = "default custom tag img";
+                    imgUrl = "/resource/tag/img/default/default_tag.png";
                 }else if(tag.getType().equals(TagType.NICKNAME)){
-                    //TODO 프로필 이미지 경로 수정
                     imgUrl = "/resource/users/img/default/default_profile.png";
                 }
             }else {

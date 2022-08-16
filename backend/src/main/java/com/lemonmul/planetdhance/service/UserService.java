@@ -92,7 +92,7 @@ public class UserService {
         userRepo.save(user);
 
         //Tag 테이블에 nickname 추가
-        tagRepo.save(Tag.createTag(user.getNickname(), TagType.NICKNAME, ""));
+        tagRepo.save(Tag.createTag(user.getNickname(), TagType.NICKNAME, null));
 
         return true;
     }
@@ -214,8 +214,8 @@ public class UserService {
 
         if(deleteFolder.exists()){
             File[] deleteFolderList = deleteFolder.listFiles();
-            for (int i = 0; i < deleteFolderList.length; i++) {
-                deleteFolderList[i].delete();
+            for (File file : deleteFolderList) {
+                file.delete();
             }
             deleteFolder.delete();
         }
