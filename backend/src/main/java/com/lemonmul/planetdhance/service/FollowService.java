@@ -106,4 +106,19 @@ public class FollowService {
 
         return followRepo.findAllByTo(toUser);
     }
+
+    /**
+     * 팔로우 여부
+     */
+    public boolean isFollow(Long fromId, Long toId) throws Exception {
+        User fromUser = userRepo.findById(fromId).orElseThrow(() -> new Exception("From User Not Found"));
+        User toUser = userRepo.findById(toId).orElseThrow(() -> new Exception("To User Not Found"));
+
+        Optional<Follow> findFollow = followRepo.findByFromAndTo(fromUser, toUser);
+
+        if(findFollow.isPresent())
+            return true;
+        else
+            return false;
+    }
 }
