@@ -159,3 +159,27 @@ export async function favLike(
     }
   }
 }
+
+export async function addHit(
+  videoId: number,
+) {
+  try {
+    const data = await axios.post(
+      API_URL+`video/hit/${videoId}`,
+    ).then(
+      res => {
+        console.log(res)
+        return res.data
+      }
+    );
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.message)
+      return error.message
+    } else {
+      console.log(error)
+      return 'unexpected error occurred'
+    }
+  }
+}

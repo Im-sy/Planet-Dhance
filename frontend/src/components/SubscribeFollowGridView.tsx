@@ -21,6 +21,7 @@ export default function SubscribeFollowGridView({profiles}:SubscribeFollowGridVi
               nickname={profile.nickname}
               introduction={profile.introduce}
               videoList={profile.videoList}
+              nation={profile.nation}
               width="16vw"
               height="12vh" />
           </Grid>

@@ -73,9 +73,12 @@ export default function SignUp() {
       oAuth2Sub: auth,
       type: type,
     }
+    
     // formData.append('createSignUpRequest', new Blob([JSON.stringify(signupreq)], {type: 'application/json'}))
     const signupRes = await signup(email, nick, '', nation, pwd, auth, type)
-    if (signupRes === "Success") {
+    console.log(signupRes);
+    
+    if (signupRes) {
       navigate('/login')
     }
   };

@@ -38,7 +38,7 @@ import * as tmPose from '@teachablemachine/pose';
 // import * as tf from '@tensorflow/tfjs';
 // import song from "./teachable/temp1.json";
 // import song1 from "./static/song1/temp1.json";
-import song1 from "./static/song1/temp1.json";
+import song from "./static/song1/temp1.json";
 // import song1 from "./song1/temp1.json";
 // import song from "../../public/teachable/temp1.json";
 // import song from "C:/Users/multicampus/Desktop/react/pjt01/frontend/public/teachable/temp1.json"
@@ -476,6 +476,10 @@ const handleProgress = (state: ReactPlayerProps) => {
   
   if (recordWebcam.status === CAMERA_STATUS.RECORDING){
     snap()
+    setTimeout(snap,200)
+    setTimeout(snap,400)
+    setTimeout(snap,600)
+    setTimeout(snap,800)
   }
 };
 
@@ -634,6 +638,7 @@ const Ref = useRef(null);
               console.log(CAMERA_STATUS)
               console.log(recordWebcam.status)
               recordWebcam.start();  // 내 캠 녹화 시작
+              init()
               clearInterval(Ref.current) // 타이머에 쌓인 것들 초기화
            }
           }
@@ -737,7 +742,7 @@ setThumbnail([...thumbnail, imgURL]);
 
   if (canvasRef.current) {
     context = canvasRef.current.getContext('2d');
-      
+
     };
     
 
@@ -795,24 +800,36 @@ setThumbnail([...thumbnail, imgURL]);
   }, []);
 
 
+const [fliped, setFliped] = useState(false)
 
   // snap으로 canvas에 그린 것을 blob으로 가져오는 것
   async function snap() {
 
     await context.fillRect(0, 0, dimensions.w, dimensions.h);
+    
+    // 이미지 좌우 반전해서 drawImage 할 수 있도록-------------
+    if (fliped === false){
+      setFliped(true)
+      console.log(fliped)
+      await context.translate(dimensions.w, 0);
+      await context.scale(-1, 1);
+    }
+    //--------------------------------------------------------
+    // 이미지 그리기
     await context.drawImage(
-        videoRef.current,
-        0,
-        0,
-        dimensions.w,
-        dimensions.h
+      videoRef.current,
+      0,
+      0,
+      dimensions.w,
+      dimensions.h
       );
-      // console.log('context2 : ', context);
-      const canvasHTML = document.querySelector('canvas');
-      const imgURL = canvasHTML.toDataURL('image/png');
-      // console.log([...thumbnail])
-      setThumbnail([...thumbnail, imgURL]);
-      
+
+   
+    const canvasHTML = document.querySelector('canvas');
+    const imgURL = canvasHTML.toDataURL('image/png');
+    // console.log([...thumbnail])
+    setThumbnail([...thumbnail, imgURL]);
+    // console.log(thumbnail) 
     };
 // 썸네일 관련 끝----------------------------------------------------------------------------------------------------------
 
@@ -839,6 +856,7 @@ const URL = "./static/song1/";
   let startTime : any;
   let countup : any // 1 = 0.1초
   let nextNote : any;
+  let curMotionNum : number = 0 ;
   let max : any;
 
   // 곡의 모션 정보들
@@ -851,67 +869,236 @@ async function init() {
   //TODO 이 친구를 선택한 곡에 맞게
   // const songURL = URL + "./static/temp1.json";
 
-
   // let song1 = await JSON.parse(songURL);
-  console.log(song1);
-
-  console.log('song is ', song1)
-
-  nextNote = song1.notes[song1.next];
+  console.log(song);
+  
+  console.log('song is ', song)
+  
+  startTime = Date.now();
+  startScoreTimer(song.duration); // 이게 시작되어야, 현재 진행시간 countup이 update되어서, predict()에서 채점이 작동됨
+  nextNote = song.notes[song.next];   // 몇 번째 맞춰야 하는 동작인지 초기화
   max = 0;
 
   model = await tmPose.load(modelURL, metadataURL);
   maxPredictions = model.getTotalClasses();
+  // maxPredictions = song.notes.length;    //  src에서 가져옴!
   
+
+  //라벨관련인데, 필요없을듯?
+  labelContainer = document.getElementById("label-container");
+  console.log('maxPredictions',maxPredictions)
+  for (let i = 0; i < maxPredictions+1; i++) {   // 추가 1
+  // and class labels
+  labelContainer.appendChild(document.createElement("div"));
+  }
+ 
   predict()
 
 }
 
 
+
+const startScoreTimer = function (duration : number) {
+  const display : any = document.querySelector(".summary__timer");
+  const timer = duration;
+  // var minutes;
+  // var seconds;
+  countup = 0;
+
+  display.style.display = "block";
+  display.style.opacity = 1;
+
+  // 안무 시작된 후, 종료까지 시간 세기
+  const songDurationInterval = setInterval(function () {
+    display.innerHTML = countup;
+
+    if (++countup > timer) {
+      clearInterval(songDurationInterval);
+    }
+  }, 100);
+
+  // 종료 이모지 넣기
+  const end = song.duration*100
+  console.log(end)
+  setTimeout(
+     ()=>{ 
+    curMotionNum=0 
+    setEmojis(prevState=>{ return [ ...prevState,  <Emoji emoji='💯'/>] }) },  end)
+  console.log('setTimeout 실행됨')
+
+
+};
+
+
+
+
 async function predict () {
-
   console.log('-------predict 시작-----------')
-    const video = document.querySelector('video')  // 추가
-    videoRef.current = video                       //추가
-    console.log(videoRef.current)
+    /*썸네일의 캔버스 쓸 것이라 필요 x
+    // const video = document.querySelector('video')  
+    // videoRef.current = video                       
+    // console.log(videoRef.current)
+    // if (videoRef.current) { */
 
-    if (videoRef.current) {
-    
-        const { pose, posenetOutput } = await model.estimatePose(context.canvas);
-        const prediction = await model.predict(posenetOutput);
-        const motion : string = song1.notes[0]['type']   // 동작 class
-        console.log(motion)
-        // const prob : number = prediction
-        console.log(prediction)
+    // 썸네일이 있다면
+    if (context.canvas  ) {
+        const { pose, posenetOutput } = await model.estimatePose(context.canvas); // 모델로 사진 평가
+        const prediction = await model.predict(posenetOutput);  // 예측 값으로 아래와 같은 형식
+        /*
+          (5) [{…}, {…}, {…}, {…}, {…}]
+            0: {className: '좌상', probability: 0.05242524296045303}
+            1: {className: '우상', probability: 0.0050522517412900925}
+            2: {className: '대기', probability: 0.9000952839851379}
+            3: {className: '좌이마', probability: 0.041525620967149734}
+            4: {className: '우이마', probability: 0.0009016186813823879}
+            length: 5
+            [[Prototype]]: Array(0)
+        */
+
+        /* song은 다음과 같은 형식
+        {
+          "duration": 150,
+          "next": 0,
+          "notes": [
+            { "duration": 10, "delay": 30, "type": "오른손" },
+            { "duration": 10, "delay": 60, "type": "왼손" },
+            { "duration": 10, "delay": 90, "type": "오른손" },
+            { "duration": 10, "delay": 120, "type": "왼손" }
+          ]
+        }
+        */
+
+
+        // console.log(prediction)
         console.log(prediction[0])
         console.log(prediction[1])
         console.log(prediction[2])
-        console.log(prediction[3])
-        console.log(prediction[4])
+        // console.log(prediction[3])
+        // console.log(prediction[4])
 
-        // setTimeout(function(){predict(); }, 1500);
-        setTimeout( predict , 1500);
+        // setTimeout( snap , 300);   //0.1초마다 predict() 실행
+        setTimeout( predict , 300);   //0.1초마다 predict() 실행
 
+
+        // 채점하는 부분
+        if (nextNote != null) {   // 채점할 것이 있다면,
+          console.log('-------predict 시작-----------2222222222222222')
+          console.log('countup & nextNote.delay ', countup, nextNote.delay )
+          if (
+            // 시작시간 - 0.5초 < 현재시간 < delay + 1초 
+            countup >= nextNote.delay -5 &&
+            countup < nextNote.delay + nextNote.duration
+          ) {
+    
+              for (let i = 0; i < maxPredictions; i++) {
+                if (
+                  prediction[i].className == nextNote.type &&  max < prediction[i].probability
+                ) {
+                  max = prediction[i].probability;
+                }
+              }
+            
+              // max가 perfect이면 nextNote로 넘어감
+              // if (max >= 0.8) {
+              // showEffect(max);
+              //   song.next++;
+              //   nextNote = song.notes[song.next];
+              //   max = 0.0;
+              // }
+              console.log("max is ,", max)
+              console.log("count up is ,", countup)
+              console.log("nextNote.dealy , nextNote.duration is ,", nextNote.delay, nextNote.duration)
+              console.log("curMotionNum is ,", curMotionNum)
+              if (max>=0.8){
+
+                showEffect(song.next, max);
+                song.next++; // 다음 모션으로 넘어감
+                nextNote = song.notes[song.next];
+                max = 0.0; 
+              }else if (countup >= nextNote.delay + nextNote.duration - 5) {  // 진행된시간 >= 모션 시작 + 1초 후
+                //miss인지 good인지 판단
+                showEffect(song.next,max);
+                song.next++;  // 다음 모션으로 넘어감
+                nextNote = song.notes[song.next];
+                max = 0.0;
+              }
+              
+
+          } 
+        }
+
+
+      
+        // 예측 class
+        const curMotion : string = nextNote['type']   // 추가 1
+        labelContainer.childNodes[0].innerHTML ="현재 맞춰야할 동작:" + curMotion;  // 추가 1
+        for (let i =0; i < maxPredictions; i++) {   // 추가 1
+          const classPrediction =
+            prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+
+          labelContainer.childNodes[i+1].innerHTML = classPrediction; 
+        }
   }
+  
+};
+
+
+  const [emojis, setEmojis] = useState<any[]>([])
+function showEffect(songNext : number  , rate : number) {
+  //rate(perfect:1.0~0.9,good:0.9~0.5,miss:0.5~0.0)에 따라 이모티콘 피드백 표시
+  //한 판정 내에 여러개 이모티콘 있고 랜덤으로 표시해주면 좋겠다....
+  //프론트 분들 부탁합니다....ㅎㅎㅎ
+  console.log(songNext, curMotionNum)
+  
+  // 현재 판단해야 하는 경우에만 진행
+  if (songNext===curMotionNum){
+    curMotionNum++
+    console.log(curMotionNum)
+    
+    // 잘한 경우 이모지 넣기
+    if (rate >= 0.8 ){
+      const goodEmojiList = ['💘','💕','💖','💓','😍','🥰','😊','🤗','😻','👏','💋']
+      let goodPick = goodEmojiList[ Math.floor(Math.random() * goodEmojiList.length)];
+  
+      setEmojis(prevState=>{
+        //'user3' 추가
+        return [ ...prevState,  <Emoji emoji={goodPick}/>]
+      })
+      console.log('good 이모지들어감')
+    } 
+    // 잘 못한 경우 이모지 넣기
+    else{
+      const badEmojiList = ['😝','😱','😈','😹']
+      let badPick = badEmojiList[ Math.floor(Math.random() * badEmojiList.length)];
+      setEmojis(prevState=>{
+        //'user3' 추가
+        return [ ...prevState,  <Emoji emoji={badPick}/>]
+      })
+      console.log('bad 이모지 들어감')
+    }
+  }
+ 
 }
 
-let img : string
-img = URL + 'img.PNG'
+
+
 //---------------------------------------------------------------------------------
 
 return (
     <div >
       {/* ---------------------------------------------------------------------------------------
       //
-      //  0. 티쳐블 머신 관련
+      //  0. 티쳐블 머신 관련 & 이모지
       //
       -----------------------------------------------------------------------------------------------*/}
-      <img src={img}></img>
-      
+
       <div>
           <div>Teachable Machine Pose Model</div>
-          <button type="button" onClick={init}>Starttttttttttttt</button>
-          {/* <div className="summary__timer"></div> */}
+          {/* <button type="button" onClick={init}>Starttttttttttttt</button> */}
+          <div className="summary__timer"></div>
+          {/* {emojiList} */}
+          {emojis}
+          {/* {showEffect()} */}
           {/* <div><canvas id="tCanvas" ></canvas></div> */}
           <div id="label-container"></div> 
 
@@ -927,11 +1114,11 @@ return (
         {/* <video id='thumnail_video'  ref={recordWebcam.webcamRef} muted autoplay /> */}
         {/* 썸네일 그려줌 */}
         {/* <canvas id='canvas' hidden ref={canvasRef} />    */}
-        <canvas id='canvas' ref={canvasRef} />   
+        <canvas id='canvas' ref={canvasRef} hidden/>   
         {/* <button onClick={snap}>Take screenshot</button> */}
-        {/* {thumbnail.map((imgBlobs, index) => {
+        {thumbnail.map((imgBlobs, index) => {
           return <img key={index} src={imgBlobs} />;
-        })} */}
+        })}
     </div>
 
 
@@ -941,10 +1128,10 @@ return (
       //
       -----------------------------------------------------------------------------------------*/}
       <div> {/* recordWebcam.record() 가 완료된 후 , played=0 되도록? */} 
-        {recordWebcam.status === CAMERA_STATUS.RECORDING  && played>=0.3 ? <Emoji emoji='💘'/> : ''}
+        {/* {recordWebcam.status === CAMERA_STATUS.RECORDING  && played>=0.3 ? <Emoji emoji='💘'/> : ''}
         {recordWebcam.status === CAMERA_STATUS.RECORDING && played>=0.6 ? <Emoji emoji='😍'/> : ''}
         {recordWebcam.status === CAMERA_STATUS.RECORDING && played>=0.9 ? <Emoji emoji='🎉'/> : ''}
-        {recordWebcam.status === CAMERA_STATUS.RECORDING && played >= 0.97 ? <Emoji emoji='💯'/> : ''}
+        {recordWebcam.status === CAMERA_STATUS.RECORDING && played >= 0.97 ? <Emoji emoji='💯'/> : ''} */}
       </div>
 
 
