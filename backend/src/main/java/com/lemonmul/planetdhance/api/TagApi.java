@@ -10,11 +10,13 @@ import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.User;
 import com.lemonmul.planetdhance.entity.video.Video;
 import com.lemonmul.planetdhance.entity.video.VideoScope;
+import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
 import com.lemonmul.planetdhance.service.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +41,8 @@ public class TagApi {
     private final UserService userService;
     private final VideoService videoService;
     private final ArtistService artistService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final FollowService followService;
 
     private static final int tagSize=15;
     //TODO 기본값 18
@@ -192,7 +196,7 @@ public class TagApi {
      * 영상 리스트 size는 기본값 18
      */
     @GetMapping("/{tag_id}/nickname/0")
-    public ResponseEntity<?> userInfoAndUserVideos(@PathVariable Long tag_id){
+    public ResponseEntity<?> userInfoAndUserVideos(@PathVariable Long tag_id, @RequestHeader HttpHeaders headers){
         int page=0;
 
         try {
@@ -201,7 +205,10 @@ public class TagApi {
             List<Clear> clearList = user.getClears();
             Slice<Video> videoList=videoService.findUserVideoList(page, videoSize, user, VideoScope.PUBLIC);
 
-            return new ResponseEntity<>(new UserSearchResponse(user,clearList,videoList), HttpStatus.OK);
+            Long fromId = Long.parseLong(jwtTokenProvider.getUserPk(headers.get("authorization").get(0)));
+            boolean isFollow = followService.isFollow(fromId, user.getId());
+
+            return new ResponseEntity<>(new UserSearchResponse(user,clearList,videoList, isFollow), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -245,8 +252,8 @@ public class TagApi {
                     //TODO 커스텀 태그 이미지 경로 넣기
                     imgUrl = "default custom tag img";
                 }else if(tag.getType().equals(TagType.NICKNAME)){
-                    //TODO 가수 태그 이미지 경로 넣기
-                    imgUrl="default user tag img";
+                    //TODO 프로필 이미지 경로 수정
+                    imgUrl = "/resource/users/img/default/default_profile.png";
                 }
             }else {
                 imgUrl = tag.getImgUrl();

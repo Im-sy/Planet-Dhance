@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,21 +22,24 @@ public class TempFileService {
     private final TempFileRepo tempFileRepo;
 
     @Transactional
-    public boolean upload(MultipartFile inputFile) throws IOException {
-        if(inputFile == null)
+    public boolean upload(List<MultipartFile> inputFile) throws IOException {
+        if(inputFile.isEmpty())
             return false;
 
-        String filePath = createFile(inputFile);
+        for (MultipartFile multipartFile : inputFile) {
+            System.out.println("================multipartFile.getOriginalFilename() = " + multipartFile.getOriginalFilename());
+            System.out.println("multipartFile.getContentType() = " + multipartFile.getContentType());
+            String filePath = createFile(multipartFile);
 
-        TempFile tempFile = new TempFile(filePath);
-        tempFileRepo.save(tempFile);
+            TempFile tempFile = new TempFile(filePath);
+            tempFileRepo.save(tempFile);
+        }
 
         return true;
     }
 
     @Transactional
-    public boolean uploadFileAndJson(MultipartFile inputFile,String jsonContent) throws IOException{
-        log.debug("==============jsonContent: "+jsonContent);
+    public boolean uploadFileAndJson(List<MultipartFile> inputFile, String jsonContent) throws IOException{
         System.out.println("jsonContent = " + jsonContent);
         return upload(inputFile);
     }
