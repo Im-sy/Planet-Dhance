@@ -245,8 +245,8 @@ public class TagApi {
                     //TODO 커스텀 태그 이미지 경로 넣기
                     imgUrl = "default custom tag img";
                 }else if(tag.getType().equals(TagType.NICKNAME)){
-                    //TODO 가수 태그 이미지 경로 넣기
-                    imgUrl="default user tag img";
+                    //TODO 프로필 이미지 경로 수정
+                    imgUrl = "/resource/users/img/default/default_profile.png";
                 }
             }else {
                 imgUrl = tag.getImgUrl();
