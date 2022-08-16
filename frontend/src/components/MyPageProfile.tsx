@@ -9,9 +9,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import { deepOrange, green } from '@mui/material/colors';
-
+import BtnFollow from '../components/UI/btnFollow';
+import { useSelector } from 'react-redux';
+import { rootState } from '../reducer';
 
 interface MyPageProfileProps {
+  toId: number;
   img: string;
   nickname: string;
   introduction : string;
@@ -19,6 +22,7 @@ interface MyPageProfileProps {
   follower : number;
   following : number;
   type: number;
+  isFollowed: boolean;
   sx? : CSSProperties;
 }
 
@@ -26,6 +30,9 @@ const StyledCardContent= styled(CardContent)(`
 padding : 0
 `);
 export default function MyPageProfile(props: MyPageProfileProps) {
+  const {isAuthenticated, user} = useSelector(
+    (state: rootState) => state.authReducer
+  );
 
   const introductionStyle: CSSProperties = {
     overflow: 'hidden',
@@ -40,7 +47,7 @@ export default function MyPageProfile(props: MyPageProfileProps) {
     // margin : '2px'
   };
 
-  const { img, nickname, introduction, nation, follower, following, type, sx } = props;
+  const { toId, img, nickname, introduction, nation, follower, following, isFollowed, type, sx } = props;
   if (typeof sx === 'undefined') {
     let sx = { display: 'flex', flexDirection: 'column', width: '7rem' }
     return (
@@ -116,6 +123,10 @@ export default function MyPageProfile(props: MyPageProfileProps) {
 
               <p>  Following <b>{ following } </b> </p>
             </div>
+            {(user.userId!==toId)? 
+            <BtnFollow isFollowed={isFollowed} fromId={user.userId} toId={toId} />
+            : ''
+            }
           </div>
 
 
