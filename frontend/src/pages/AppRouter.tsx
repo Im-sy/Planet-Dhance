@@ -54,7 +54,7 @@ function AppRouter() {
         <Route element={<NotFound404 />} />
         {/* test */}
         <Route path='/test' element={<HashTagTextArea />} />
-        <Route path='/playing' element={<ExplorePage />} />
+        <Route path='/:prevPage/playing/:videoId' element={<ExplorePage />} />
       </Routes>
     </BrowserRouter>
 

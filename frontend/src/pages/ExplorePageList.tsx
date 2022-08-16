@@ -7,7 +7,7 @@ import { videoListProps } from './MyPage';
 import { playVideo } from '../components/API/MusicService';
 import { useSelector } from 'react-redux';
 import { rootState } from '../reducer';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 export interface tagItemProps {
@@ -35,10 +35,12 @@ interface playListProps {
 
 
 export default function ExplorePageList() {
-  const location = useLocation();
-  const state = location.state as {prevPage: string; videoId: number;}
-  const prevPage = state.prevPage
-  const videoId = state.videoId
+  // const location = useLocation();
+  // const state = location.state as {prevPage: string; videoId: number;}
+  // const prevPage = state.prevPage
+  // const videoId = state.videoId
+  const  {prevPage, videoId } = useParams();
+  
 
   const {isAuthenticated, user} = useSelector(
     (state: rootState) => state.authReducer
@@ -46,15 +48,20 @@ export default function ExplorePageList() {
 
   useEffect(() =>{
     const getPlayList = async () => {
-      const getplaylist = await playVideo(videoId, prevPage, user.userId)
+      console.log('hi');
+      const getplaylist = await playVideo(parseInt(videoId), prevPage, user.userId)
+      console.log(getplaylist);
+      
+      setData(getplaylist?.videoList)
       setPlayListInfo(getplaylist)
     }
     getPlayList()
+    console.log("???", prevPage, videoId)
   },[])
-  const [playListInfo, setPlayListInfo] = useState<playListProps>()
 
+  const [playListInfo, setPlayListInfo] = useState<playListProps>()
   const [currentPage, setCurrentPage] = useState(null);
-  const [data, setData] = useState<videoItemProps[]>(playListInfo.videoList);
+  const [data, setData] = useState<videoItemProps[]>([]);
   const pageOnChange = (number: number) => {
     setCurrentPage(number);
     // console.log(number);
@@ -69,6 +76,7 @@ export default function ExplorePageList() {
       setData([...data, ])
     }
   };
+  
   return (
     <ReactPageScroller
       pageOnChange={pageOnChange}
@@ -78,7 +86,7 @@ export default function ExplorePageList() {
 
       {[...data].map((x, i) =>
         <section className="full-page">
-          <VideoPage playing={!!(currentPage == i)} muted={true} videoItem={x} />
+          <VideoPage key={i} playing={!!(currentPage == i)} muted={true} videoItem={x} />
         </section>
       )}
 
