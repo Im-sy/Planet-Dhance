@@ -17,4 +17,6 @@ public interface MusicRepo extends JpaRepository<Music, Long> {
 
     //해당 제목의 곡 리스트 반환 (최신순)
     List<Music> findByTitleOrderByRelDate(String title);
+
+    Music findTestByTitle(String title);
 }
