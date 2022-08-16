@@ -91,7 +91,7 @@ public class User {
 
     public void setImgUrl(String imgUrl){
         if(imgUrl==null){
-            imgUrl="/user/default/default_profile_img.png";
+            imgUrl="/resource/users/img/default/default_profile.png";
         }
         this.imgUrl=imgUrl;
     }

@@ -6,11 +6,8 @@ import com.lemonmul.planetdhance.dto.VideoDto;
 import com.lemonmul.planetdhance.entity.Clear;
 import com.lemonmul.planetdhance.entity.Nation;
 import com.lemonmul.planetdhance.entity.Validate;
-import com.lemonmul.planetdhance.entity.tag.Tag;
-import com.lemonmul.planetdhance.entity.tag.TagType;
 import com.lemonmul.planetdhance.entity.user.*;
 import com.lemonmul.planetdhance.entity.video.Video;
-import com.lemonmul.planetdhance.entity.video.VideoScope;
 import com.lemonmul.planetdhance.security.jwt.CustomUserDetails;
 import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;
@@ -316,7 +313,7 @@ public class UserApi {
 
             // TODO: imgUrl이 null일 때의 반환값 처리 통합?
             if(this.imgUrl == null)
-                imgUrl = "/resource/user/img/default/default_profile.png";
+                imgUrl = "/resource/users/img/default/default_profile.png";
         }
     }
 
@@ -356,7 +353,7 @@ public class UserApi {
 
             if(imgUrl == null)
                 //TODO 프로필 이미지 경로 수정
-                imgUrl = "/resource/user/img/default/default_profile.png";
+                imgUrl = "/resource/users/img/default/default_profile.png";
 
             //최신 영상 5개만
             videoList=user.getVideos().stream().sorted(Comparator.comparing(Video::getRegDate).reversed())
