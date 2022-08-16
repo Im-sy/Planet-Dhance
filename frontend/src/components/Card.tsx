@@ -18,7 +18,8 @@ export default function ActionAreaCard(props: cardProps) {
   const {url, width, height, prevPage, videoId} = props
 
   const handleCardClick = () => {
-    navigate(`${prevPage}/playing/${videoId}`, {state:{prevPage: prevPage, videoId: videoId,}})
+    // navigate(`${prevPage}/playing/${videoId}`, {state:{prevPage: prevPage, videoId: videoId,}})
+    navigate(`/playing`, {state:{prevPage: prevPage, videoId: videoId,}})
   }
 
   return (

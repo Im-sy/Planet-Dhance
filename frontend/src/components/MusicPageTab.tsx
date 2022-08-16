@@ -81,10 +81,10 @@ export default function SongPageTabs(tabsList: tabsListProps) {
 
         {/* <StyledTabPanel  value="1" > */}
         <StyledTabPanel value="1" >
-            <SongPageGridView videoList={hitlikeList?.videoList} prevPage={hitlikeList?.prevPage}/>
+            <SongPageGridView videoList={hitlikeList?.videoList?.content} prevPage={hitlikeList?.prevPage} />
             </StyledTabPanel>
         <StyledTabPanel value="2">
-            <SongPageGridView videoList={latestList?.videoList} prevPage={latestList?.prevPage}/>
+            <SongPageGridView videoList={latestList?.videoList?.content} prevPage={latestList?.prevPage} />
         </StyledTabPanel>
 
       </TabContext>

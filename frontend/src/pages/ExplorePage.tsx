@@ -49,7 +49,7 @@ interface playStateProps {
 
 
 export default function PlayingPage( {playing, muted, videoItem } : playProps ){
-
+  
   const [playState, setPlayState] = useState<playStateProps>({
     playing: true,
     muted: true,

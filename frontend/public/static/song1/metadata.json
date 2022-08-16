@@ -1,1 +1,18 @@
-{"tfjsVersion":"1.3.1","tmVersion":"0.8.6","packageVersion":"0.8.6","packageName":"@teachablemachine/pose","timeStamp":"2022-08-15T09:10:53.953Z","userMetadata":{},"modelName":"my-pose-model","labels":["좌상","우상","대기","좌이마","우이마"],"modelSettings":{"posenet":{"architecture":"MobileNetV1","outputStride":16,"inputResolution":257,"multiplier":0.75}}}
+{
+  "tfjsVersion": "1.3.1",
+  "tmVersion": "0.8.6",
+  "packageVersion": "0.8.6",
+  "packageName": "@teachablemachine/pose",
+  "timeStamp": "2022-07-24T03:32:33.916Z",
+  "userMetadata": {},
+  "modelName": "my-pose-model",
+  "labels": ["오른손", "왼손", "대기"],
+  "modelSettings": {
+    "posenet": {
+      "architecture": "MobileNetV1",
+      "outputStride": 16,
+      "inputResolution": 257,
+      "multiplier": 0.75
+    }
+  }
+}

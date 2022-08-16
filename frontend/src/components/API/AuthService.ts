@@ -5,7 +5,7 @@ import AuthHeader from './AuthHeader';
 import { setCurrentUserAction } from '../../reducer/authAction';
 import { useDispatch } from 'react-redux';
 
-const API_URL = "http://i7d201.p.ssafy.io/api/user/"
+const API_URL = "https://i7d201.p.ssafy.io/api/user/"
 
 interface signUpCreateSignUpRequest {
   email: string,

@@ -16,14 +16,14 @@ interface cardProps {
   nickname: string,
   introduction: string,
   videoList : contentItem[],
+  nation: string,
   width : string,
   height : string,
 }
 
 export default function SubscribeFollowCard(props: cardProps) {
   // 프로필사진, 닉네임, 한줄 소개, 영상5 urls
-  const {profileImg, nickname, introduction, videoList, width, height} = props
-
+  const {profileImg, nickname, introduction, videoList, nation, width, height} = props
   return (
     <div>
       <Card sx={{ maxWidth: "100vw" }}>
@@ -32,6 +32,7 @@ export default function SubscribeFollowCard(props: cardProps) {
               img={profileImg}
               nickname={nickname}
               introduction={introduction}
+              nation={nation}
               type={1}
               // 프로필 부분 패딩과 마진 설정
               sx={{ display: 'flex', flexDirection: 'column', width: '5rem',  borderRadius: "50%", padding:" 0px 0.5rem", margin:"0.5rem 0.2rem" }}
@@ -48,7 +49,7 @@ export default function SubscribeFollowCard(props: cardProps) {
                     height: height,
                   }}
                   component="img"
-                  image={videoItem.imgUrl}
+                  image={"https://i7d201.p.ssafy.io/"+videoItem.imgUrl}
                   alt="user upload video"
                 />
               </Grid>

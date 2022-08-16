@@ -13,8 +13,8 @@ export default function verticalCard(){
     // dots: true,
     // fade: true,
     // infinite: true,
-    slidesToShow: 3.3,
-    slidesToScroll: 3,
+    slidesToShow: 2.8,
+    slidesToScroll: 1,
     // autoplay: true,
     speed: 500,
     autoplaySpeed: 2000,
@@ -26,21 +26,21 @@ export default function verticalCard(){
       <h1>heelo</h1>
       <Slider {...settings}>
         <ToSearchCard 
-          url={"https://picsum.photos/700/1200"}
+          url={"/resource/artist/img/bts.JPG"}
           width="8.438rem"
           height="15rem"
           type={"ARTIST"}
           id={1}
         />
         <ToSearchCard 
-          url={"https://picsum.photos/700/1200"}
+          url={"/resource/artist/img/bts.JPG"}
           width="8.438rem"
           height="15rem"
           type={"ARTIST"}
           id={1}
         />
         <ToSearchCard 
-          url={"https://picsum.photos/700/1200"}
+          url={"/resource/artist/img/bts.JPG"}
           width="8.438rem"
           height="15rem"
           type={"ARTIST"}

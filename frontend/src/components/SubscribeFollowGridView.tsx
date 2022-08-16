@@ -14,13 +14,14 @@ export default function SubscribeFollowGridView({profiles}:SubscribeFollowGridVi
   return (
     <div>
       <Stack  spacing={1} style={{justifyContent: 'center'}} direction='column'>
-        {profiles.map((profile: followUserProps) => (
+        {profiles?.map((profile: followUserProps) => (
           <Grid item sm={4} key={profile.id}>
             <SubscribeFollowCard
               profileImg={profile.imgUrl}
               nickname={profile.nickname}
               introduction={profile.introduce}
               videoList={profile.videoList}
+              nation={profile.nation}
               width="16vw"
               height="12vh" />
           </Grid>

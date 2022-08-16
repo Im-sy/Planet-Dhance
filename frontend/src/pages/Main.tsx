@@ -5,7 +5,7 @@ import React, {
   useState,
 } from 'react';
 import { Link } from 'react-router-dom';
-import { videoListProps } from './MyPage';
+import { videoListProps, contentItem } from './MyPage';
 import { mainVideo } from '../components/API/MusicService';
 import ActionAreaCard from '../components/Card';
 import Carousel from '../components/Carousel';
@@ -42,19 +42,57 @@ export interface rankingItem {
 }
 
 export default function Main() {
-  // const getMainVideo = async () => {
-  //   const getMain = await mainVideo()
-  //   setMainVideoInfo(getMain)
-  // }
+  const [fetching, setFetching] = useState(false); // 추가 데이터를 로드하는지 아닌지를 담기위한 state
+  const [pageNum, setPageNum] = useState<number>(0)
+  const [lastPage, setLastPage] = useState<boolean>(false)
+  const [videoList, setVideoList] = useState<contentItem[]>()
 
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    // console.log(scrollTop, clientHeight, scrollHeight)
+    if (scrollTop + clientHeight + 21 >= scrollHeight && fetching === false) {
+      // 페이지 끝에 도달하면 추가 데이터를 받아온다
+      console.log('end')
+      fetchMoreSearchInfo();
+    }
+  };
+  
+  const fetchMoreSearchInfo = async () => {
+    // 추가 데이터를 로드하는 상태로 전환
+    setFetching(true);
+    console.log(lastPage)
+    if (!lastPage) {
+      const scrollsearch = await mainVideo(pageNum+1)
+      console.log(scrollsearch)
+      setPageNum(pageNum+1)
+      setVideoList(videoList?.concat(...scrollsearch.videoList?.content))
+      setLastPage(scrollsearch.videoList?.last)
+    }
+
+    // 추가 데이터 로드 끝
+    setFetching(false)
+  };
+
+  
   useEffect(() => {
     const getMainVideo = async () => {
-      const getMain = await mainVideo();
+      const getMain = await mainVideo(0);
       setMainVideoInfo(getMain);
+      setVideoList(getMain.videoList?.content)
     };
     getMainVideo();
   }, []);
 
+  useEffect( () => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      // scroll event listener 해제
+      window.removeEventListener("scroll", handleScroll);
+    };
+  })
+  
   const [mainVideoInfo, setMainVideoInfo] = useState<mainProps>();
 
   return (
@@ -95,7 +133,7 @@ export default function Main() {
             <h2> Hot Clips</h2>
             <GridView
               prevPage={mainVideoInfo?.prevPage}
-              videoList={mainVideoInfo?.videoList}
+              videoList={videoList && videoList}
             />
           </div>
         </div>

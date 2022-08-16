@@ -5,7 +5,7 @@ import { videoListProps, contentItem } from '../pages/MyPage';
 
 interface gridViewProps {
   prevPage: string,
-  videoList: videoListProps,
+  videoList: contentItem[],
 }
 
 export default function GridView({prevPage, videoList}: gridViewProps) {
@@ -27,10 +27,10 @@ export default function GridView({prevPage, videoList}: gridViewProps) {
   return (
     <div>
       <Grid container spacing={0.4} style={{justifyContent: 'center'}}>
-        {videoList?.content.map((contentItem: contentItem) => (
+        {videoList?.map((contentItem: contentItem) => (
           <Grid item sm={4} key={contentItem.videoId}>
             <ActionAreaCard prevPage={prevPage} videoId={contentItem.videoId}
-              url={"https://i7d201.p.ssafy.io/"+contentItem.imgUrl}
+              url={contentItem.imgUrl}
               width="28.2vw"
               height="30vh" />
           </Grid>

@@ -30,7 +30,7 @@ export default function RankScore(props: RankScoreProps) {
     speed: 1200,
     vertical: true,
     verticalSwiping: true,
-    autoplaySpeed: 1000,
+    autoplaySpeed: 4000,
     cssEase: 'ease-out',
     nextArrow: <div style={{ display: 'none' }}></div>,
   };
