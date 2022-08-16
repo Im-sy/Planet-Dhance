@@ -2,6 +2,8 @@ package com.lemonmul.planetdhance.entity;
 
 import com.lemonmul.planetdhance.entity.user.User;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -10,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Clear {
-    @Column(columnDefinition = "INT UNSIGNED", name ="clear_id")
+    @Column(name ="clear_id")
     @Id
     @GeneratedValue
     private Long id;
@@ -21,6 +23,7 @@ public class Clear {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     //==생성 메서드==//

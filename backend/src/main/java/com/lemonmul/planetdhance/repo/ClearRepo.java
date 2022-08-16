@@ -1,12 +1,18 @@
 package com.lemonmul.planetdhance.repo;
 
 import com.lemonmul.planetdhance.entity.Clear;
-import com.lemonmul.planetdhance.entity.Video;
+import com.lemonmul.planetdhance.entity.Music;
+import com.lemonmul.planetdhance.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface ClearRepo extends JpaRepository<Clear, Long> {
     /*
-    * mypage -> clear 테이블에서 user_id와 일치하는 거 찾기 -> 해당하는 music 반환
-    * */
-//    List<Music> findByUserId
+     * myPage -> clear 테이블에서 user_id와 일치하는 거 찾기 -> 해당하는 music 반환
+     * */
+    List<Clear> findClearsByUserOrderByIdDesc(User user);
+
+    Optional<Clear> findByMusicAndUser(Music music,User user);
 }

@@ -2,11 +2,15 @@ spring:
   profiles:
     include: oauth
   datasource:
-#    url: jdbc:mysql://localhost:3306/planetdhance_test?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    url: jdbc:mysql://i7d201.p.ssafy.io:3306/planetdhance_test?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/planetdhance_test?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
     username: ssafy
-    password:
+    password: abcd123!
     driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:h2:tcp://localhost/~/test
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+
 
   jpa:
     hibernate:
@@ -16,9 +20,13 @@ spring:
         format_sql: true
         use_sql_comments: true
     database: mysql
-    database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 #    database-platform: org.hibernate.dialect.H2Dialect
 
+  data:
+    web:
+      pageable:
+        default-page-size: 30
 
 logging.level:
   org.hibernate.SQL: debug

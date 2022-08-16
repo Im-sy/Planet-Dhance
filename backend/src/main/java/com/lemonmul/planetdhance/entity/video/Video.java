@@ -3,6 +3,7 @@ package com.lemonmul.planetdhance.entity.video;
 import com.lemonmul.planetdhance.entity.Like;
 import com.lemonmul.planetdhance.entity.Music;
 import com.lemonmul.planetdhance.entity.VideoTag;
+import com.lemonmul.planetdhance.entity.tag.Tag;
 import com.lemonmul.planetdhance.entity.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,14 +27,15 @@ public class Video {
 
     private String videoUrl;
 
+    private String imgUrl;
+
     @Enumerated(EnumType.STRING)
     private VideoScope scope;
 
-    private String imgUrl;
+    private Long hit;
 
-    private int hit;
-
-    private int likeCnt;
+    //정렬 가중치(hit+likeCnt*3)
+    private Long orderWeight;
 
     private LocalDateTime regDate;
 
@@ -45,25 +47,23 @@ public class Video {
     @JoinColumn(name = "music_id")
     private Music music;
 
-    @OneToMany(mappedBy = "video")
+    @OneToMany(mappedBy = "video",cascade = CascadeType.ALL)
     private List<VideoTag> videoTags=new ArrayList<>();
 
-    @OneToMany(mappedBy = "video")
+    @OneToMany(mappedBy = "video",cascade = CascadeType.ALL)
     private List<Like> likes=new ArrayList<>();
 
     //==생성 메서드==//
-    public static Video createVideo(String videoUrl,VideoScope scope,String imgUrl,User user,Music music){
+    public static Video createVideo(String videoUrl, String imgUrl, VideoScope scope, User user, Music music){
         Video video=new Video();
         video.videoUrl=videoUrl;
-        video.scope=scope;
         video.imgUrl=imgUrl;
-        video.hit=0;
-        video.likeCnt=0;
+        video.scope=scope;
+        video.hit=0L;
+        video.orderWeight =0L;
         video.regDate=LocalDateTime.now();
         video.setUser(user);
         video.setMusic(music);
-        //TODO 인자로 받아온 custom tag들 Tag 테이블에 추가 여기서?
-//        Tag.createTag("",TagType.CUSTOM,"");
         return video;
     }
 
@@ -91,10 +91,14 @@ public class Video {
     //==비즈니스 로직==//
     public void addHit(){
         this.hit++;
+        this.orderWeight++;
     }
 
-    public void addLikeCnt(){
-        this.likeCnt++;
+    public void addLikeWeight(){
+        this.orderWeight+=3;
     }
 
+    public void removeUser(){
+        this.user = null;
+    }
 }

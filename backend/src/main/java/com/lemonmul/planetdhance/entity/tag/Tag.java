@@ -1,5 +1,7 @@
 package com.lemonmul.planetdhance.entity.tag;
 
+import com.lemonmul.planetdhance.api.VideoApi;
+import com.lemonmul.planetdhance.dto.TagRequestDto;
 import com.lemonmul.planetdhance.entity.VideoTag;
 import lombok.*;
 
@@ -35,6 +37,15 @@ public class Tag {
         tag.name=name;
         tag.type=type;
         tag.imgUrl=imgUrl;
+        tag.hit=0;
+        return tag;
+    }
+
+    public static Tag createCustomTag(TagRequestDto tagRequestDto){
+        Tag tag=new Tag();
+        tag.name= tagRequestDto.getType();
+        tag.type=TagType.CUSTOM;
+        tag.imgUrl=null;
         tag.hit=0;
         return tag;
     }
