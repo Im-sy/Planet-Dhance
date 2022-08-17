@@ -9,12 +9,13 @@ import '../styles/Card.css'
 interface SearchInfo {
   img: string;
   value: string;
+  point: number;
   type: number;
   sx? : CSSProperties;
 }
 
 export default function SearchSongInfo(props: SearchInfo) {
-  const { img, value, type, sx } = props;
+  const { img, value, point, type, sx } = props;
   if (typeof sx === 'undefined') {
     let sx = { display: 'flex', flexDirection: 'column', width: '40px', height : '40px', padding: '2px', marginLeft: '2px', borderRadius: '50%'};
 
@@ -24,12 +25,12 @@ export default function SearchSongInfo(props: SearchInfo) {
           <CardMedia
             sx={sx}
             component="img"
-            image="https://picsum.photos/40/40"
+            image={"https://i7d201.p.ssafy.io/"+img}
             alt="album cover"
           />
           <CardContent sx={{ flex: '1 0 auto', padding: '0px'   }}>
             <Typography gutterBottom variant="h6" component="div" sx={{ padding : '0px'}}>
-              {value}
+              {value}     {point}
             </Typography>
           </CardContent>
         </Card>

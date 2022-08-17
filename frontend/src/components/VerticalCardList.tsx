@@ -1,12 +1,16 @@
 import React from  'react';
-
+import { artistItem } from '../pages/Main';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import ToSearchCard from './ToSearchCard'
 
-export default function verticalCard(){
+interface verticalCardProp {
+  artistList: artistItem[];
+}
+
+export default function verticalCard({artistList}: verticalCardProp){
 
 
   const settings = {
@@ -25,76 +29,15 @@ export default function verticalCard(){
     <div  className="container">
       <h1>heelo</h1>
       <Slider {...settings}>
-        <ToSearchCard 
-          url={"/resource/artist/img/bts.JPG"}
-          width="8.438rem"
-          height="15rem"
-          type={"ARTIST"}
-          id={1}
-        />
-        <ToSearchCard 
-          url={"/resource/artist/img/bts.JPG"}
-          width="8.438rem"
-          height="15rem"
-          type={"ARTIST"}
-          id={1}
-        />
-        <ToSearchCard 
-          url={"/resource/artist/img/bts.JPG"}
-          width="8.438rem"
-          height="15rem"
-          type={"ARTIST"}
-          id={1}
-        />
-        <ToSearchCard 
-          url={"https://picsum.photos/700/1200"}
-          width="8.438rem"
-          height="15rem"
-          type={"ARTIST"}
-          id={1}
-        />
-        <ToSearchCard 
-          url={"https://picsum.photos/700/1200"}
-          width="8.438rem"
-          height="15rem"
-          type={"ARTIST"}
-          id={1}
-        />
-        <ToSearchCard 
-          url={"https://picsum.photos/700/1200"}
-          width="8.438rem"
-          height="15rem"
-          type={"ARTIST"}
-          id={1}
-        />
-        <ToSearchCard 
-          url={"https://picsum.photos/700/1200"}
-          width="8.438rem"
-          height="15rem"
-          type={"ARTIST"}
-          id={1}
-        />
-        <ToSearchCard 
-          url={"https://picsum.photos/700/1200"}
-          width="8.438rem"
-          height="15rem"
-          type={"ARTIST"}
-          id={1}
-        />
-        <ToSearchCard 
-          url={"https://picsum.photos/700/1200"}
-          width="8.438rem"
-          height="15rem"
-          type={"ARTIST"}
-          id={1}
-        />
-        <ToSearchCard 
-          url={"https://picsum.photos/700/1200"}
-          width="8.438rem"
-          height="15rem"
-          type={"ARTIST"}
-          id={1}
-        />
+        {artistList?.map((artistItem: artistItem) => (
+          <ToSearchCard 
+            url={artistItem.imgUrl}
+            width="8.438rem"
+            height="15rem"
+            type={"ARTIST"}
+            id={1}
+          />
+        ))}
       </Slider>
     </div>
   );

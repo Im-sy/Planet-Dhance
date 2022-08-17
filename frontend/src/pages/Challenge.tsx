@@ -318,7 +318,7 @@ let [now, setNow] = useState('mode');
   
 const recordWebcam: RecordWebcamHook = useRecordWebcam(OPTIONS);
 
-const [videoFile, setVideoFile] = useState<FormData>()
+const [videoFile, setVideoFile] = useState<Blob>()
 
 const [uploadData, setUploadData] = useState([])
 

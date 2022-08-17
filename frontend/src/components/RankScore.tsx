@@ -37,16 +37,12 @@ export default function RankScore(props: RankScoreProps) {
   return (
     <div className="container__rank">
       <Slider {...settings}>
-        {/* {
-          scores.map((data, index) => {
-            <div>
-            <RankCard img={data.nationFlag} value={data.nationName} type={0} />;
-            </div>
-          })
-        } */}
+        {scores?.map((data, index) => (
+            <RankCard key={index} img={data.nationFlag} value={data.nationName} point={data.clearCnt} type={0} />
+          ))}
         {/* <RankCard img={scores[0].nationFlag} value={scores[0].nationName} type={0} />;
         <RankCard img={scores[1].nationFlag} value={scores[1].nationName} type={0} />; */}
-        <RankCard
+        {/* <RankCard
             img={"여기에 국기 "}
             value={"&#65039"}
             type = {0}
@@ -75,7 +71,7 @@ export default function RankScore(props: RankScoreProps) {
             img={"여기에 국기 "}
             value={"&#65039"}
             type = {0}
-          />
+          /> */}
           
       </Slider>
     </div>

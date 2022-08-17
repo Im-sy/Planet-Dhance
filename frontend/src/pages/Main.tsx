@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { videoListProps, contentItem } from './MyPage';
 import { mainVideo } from '../components/API/MusicService';
 import ActionAreaCard from '../components/Card';
@@ -26,8 +26,12 @@ import VerticalCardList from '../components/VerticalCardList';
 //   padding : '5vh 1vh 0 1vh',
 
 // };
-
+export interface artistItem {
+  tagId: number,
+  imgUrl: string,
+}
 interface mainProps {
+  artistList: artistItem[];
   rankingList: rankingItem[];
   prevPage: string;
   videoList: videoListProps;
@@ -38,10 +42,11 @@ export interface rankingItem {
   x: number;
   y: number;
   z: number;
-  point: number;
+  clearCnt: number;
 }
 
 export default function Main() {
+  const navigate = useNavigate();
   const [fetching, setFetching] = useState(false); // 추가 데이터를 로드하는지 아닌지를 담기위한 state
   const [pageNum, setPageNum] = useState<number>(0)
   const [lastPage, setLastPage] = useState<boolean>(false)
@@ -94,6 +99,9 @@ export default function Main() {
   })
   
   const [mainVideoInfo, setMainVideoInfo] = useState<mainProps>();
+  const handleRankClick = () => {
+    navigate('/ranking', {state: {scores: mainVideoInfo?.rankingList}})
+  }
 
   return (
     <div>
@@ -109,7 +117,7 @@ export default function Main() {
         <div>
           <span>Ranking</span>
           {/* 네비게이트 써서 랭킹 데이터 넘기기 */}
-          <IconButton color="secondary" component={Link} to="/ranking">
+          <IconButton onClick={handleRankClick} color="secondary">
             <AddIcon />
           </IconButton>
         </div>
@@ -126,7 +134,7 @@ export default function Main() {
         >
           {/* 가로카드 */}
           <div>
-            <VerticalCardList />
+            <VerticalCardList artistList={mainVideoInfo?.artistList} />
           </div>
           {/* GridView */}
           <div>
