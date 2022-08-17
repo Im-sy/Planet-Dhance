@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { tagSearch } from '../components/API/MusicService';
 import GridView from '../components/GridView'
 import SearchSongInfo from '../components/SearchSongInfo'
@@ -81,12 +81,15 @@ export default function SearchSong() {
       window.removeEventListener("scroll", handleScroll);
     };
   })
+  const navigate = useNavigate()
 
 
   return (
     <div>
       <TopBar />
-      <div className="search-bar">
+      <div onClick={()=>{
+        navigate('/hashresult')
+      }} className="search-bar">
         <SearchBar />
       </div>
       <div>
@@ -103,7 +106,7 @@ export default function SearchSong() {
       <div>
         <GridView prevPage={prevPage} videoList={videoList} />
       </div>
-      <NavBar current={"main"} />
+      <NavBar current={"search"} />
     </div>
   )
 }

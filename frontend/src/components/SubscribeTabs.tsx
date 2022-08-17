@@ -54,6 +54,7 @@ export default function SubscribeTabs() {
   }
   const getLikeInfo = async () => {
     const getlikeinfo = await favLike(user.userId, 0)
+    setFavLikeInfo(getlikeinfo)
     setVideoList(getlikeinfo.videoList?.content)
   }
 

@@ -24,6 +24,7 @@ import Thumbnail from './Thumanil2'
 import SongPage from './MusicPage';
 
 import Scroll2 from './Scroll2'
+import Random from './Random'
 
 
 
@@ -58,7 +59,11 @@ function AppRouter() {
         <Route element={<NotFound404 />} />
         {/* test */}
         <Route path='/test' element={<Upload />} />
+        <Route path='/random' element={<Random />} />
         <Route path='/:prevPage/playing/:videoId' element={<Scroll2 />} />
+        <Route path='/subscribe/:prevPage/playing/:videoId' element={<Scroll2 />} />
+        <Route path='/searchsong/:type/:musicId/:prevPage/playing/:videoId' element={<Scroll2 />} />
+        <Route path='/songPage/:musicId/:prevPage/playing/:videoId' element={<Scroll2 />} />
         {/* <Route path='/:prevPage/playing/:videoId' element={<ExplorePage />} /> */}
       </Routes>
     </BrowserRouter>

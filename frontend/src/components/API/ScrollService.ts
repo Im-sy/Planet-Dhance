@@ -8,7 +8,7 @@ export async function scrollVideoLatest(
 ) {
   try {
     const data = await axios.get(
-      API_URL+`video/${musicId}/latest/${pageNum}`,
+      API_URL+`music/${musicId}/latest/${pageNum}`,
     ).then(
       res => {
         console.log(res)
@@ -33,7 +33,7 @@ export async function scrollVideoHitLike(
 ) {
   try {
     const data = await axios.get(
-      API_URL+`video/${musicId}/hitlike/${pageNum}`,
+      API_URL+`music/${musicId}/hitlike/${pageNum}`,
     ).then(
       res => {
         console.log(res)

@@ -98,3 +98,7 @@ video {
   margin: 0;
   padding : 0.1vh 0 0 0; 
 }
+
+.full-page > div {
+  height: 10px;
+}

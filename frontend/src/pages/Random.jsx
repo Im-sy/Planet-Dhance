@@ -3,7 +3,7 @@ import ReactPageScroller from 'react-page-scroller';
 import VideoPage from './ExplorePage';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { playVideo } from '../components/API/MusicService';
+import { randomPlayVideo } from '../components/API/MusicService';
 import NavBar from '../components/NavBar'
 import TopBar from '../components/TopBar'
 
@@ -18,13 +18,11 @@ export default function ExplorePageList() {
 
   useEffect(() => {
     const getPlayList = async () => {
-      const getplaylist = await playVideo(
-        parseInt(videoId),
-        prevPage,
+      const getplaylist = await randomPlayVideo(
         user.userId
       ).then((results) => {
-        setData(results.videoList);
-        setPlayListInfo(results);
+        setData(results);
+        // setPlayListInfo(results);
       });
     };
     getPlayList();
@@ -46,7 +44,7 @@ export default function ExplorePageList() {
   console.log(data);
   return (
     <div>
-    <TopBar />
+      <TopBar />
     <ReactPageScroller
       pageOnChange={pageOnChange}
       onBeforePageScroll={beforePageChange}
@@ -60,7 +58,7 @@ export default function ExplorePageList() {
       )}
 
     </ReactPageScroller>
-    <NavBar current='main' />
-    </div>
+    <NavBar current={"random"} />
+    </ div>
   );
 }
