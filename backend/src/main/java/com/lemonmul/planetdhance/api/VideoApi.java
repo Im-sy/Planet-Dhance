@@ -373,7 +373,7 @@ public class VideoApi {
 
         public RankingDto(Ranking ranking) {
             this.nationName = ranking.getNation().getName();
-            this.nationFlag = ranking.getNation().getFlag();
+            this.nationFlag = ranking.getNation().getImgUrl();
             this.x = ranking.getNation().getX();
             this.y = ranking.getNation().getY();
             this.z = ranking.getNation().getZ();
