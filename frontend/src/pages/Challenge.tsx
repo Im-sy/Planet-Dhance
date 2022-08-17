@@ -1113,9 +1113,9 @@ return (
           width={reactPlayer[1]}
           height={reactPlayer[2]}
           style={reactPlayerBackground}
-          // url={myVideo7} 
+          url={myVideo7} 
           // url={`https://i7d201.p.ssafy.io/music/${musicID}`}
-          url={`https://i7d201.p.ssafy.io/music/7`}
+          // url={`https://i7d201.p.ssafy.io/music/7`}
           playing={playing}
           muted={muted}
           onPlay={handlePlay}
