@@ -25,7 +25,7 @@ export default class Carousel extends Component {
     };
     return (
       <div  className="container">
-        <h2>Auto Play</h2>
+        {/* <h2>Auto Play</h2> */}
         <Slider {...settings}>
             <ToSearchCard id={1}
               url="/resource/carousel/hot.jpg"

@@ -1,6 +1,6 @@
 import React , { CSSProperties, useState, useEffect } from 'react';
 import { profile } from '../components/API/AuthService';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { rootState } from '../reducer';
 import NavBar from '../components/NavBar'
 import MyPageProfile from '../components/MyPageProfile'
@@ -8,6 +8,10 @@ import MyPageAchievements from '../components/MyPageAchievements'
 import MyPageClearSongs from '../components/MyPageClearSongs'
 import SongPageGridView from '../components/MusicPageGridView'
 import TopBar from '../components/TopBar';
+import {logout} from '../components/API/AuthService';
+import { useNavigate } from 'react-router-dom';
+import { setCurrentUserAction, deleteCurrentUserAction } from '../reducer/authAction';
+import Button from '@mui/material/Button';
 
 interface userProps {
   nickname: string,
@@ -43,6 +47,9 @@ interface profileProps {
 }
 
 export default function MyPage() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const {isAuthenticated, user} = useSelector(
     (state: rootState) => state.authReducer
   );
@@ -56,6 +63,14 @@ export default function MyPage() {
   }, []);
 
   const [profileInfo, setProfileInfo] = useState<profileProps>()
+
+  const handleLogout = async () => {
+    const logoutRes = await logout(user.userId)
+    if (logoutRes) {
+      dispatch(deleteCurrentUserAction())
+      navigate('/login')
+    }
+  };
 
   return (
     <div>
@@ -98,6 +113,21 @@ export default function MyPage() {
         <h2 style={{ fontSize: '22px'}}>My Videos</h2>
         <SongPageGridView videoList={profileInfo?.videoList?.content} prevPage={profileInfo?.prevPage} />
       </div>
+
+      <div>
+        <Button
+          onClick={handleLogout}
+          fullWidth
+          size="large"
+          variant="contained"
+          sx={{ mt: 3, mb: 3 }}
+          color="secondary"
+        >
+          Log Out
+        </Button>
+      </div>
+      <br />
+      <br />
 
       <NavBar current={"myPage"} />
     </div>
