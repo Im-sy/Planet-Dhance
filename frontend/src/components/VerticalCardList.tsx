@@ -27,7 +27,7 @@ export default function verticalCard({artistList}: verticalCardProp){
   };
   return (
     <div  className="container">
-      <h1>heelo</h1>
+      <h1>Hot Artist</h1>
       <Slider {...settings}>
         {artistList?.map((artistItem: artistItem) => (
           <ToSearchCard 

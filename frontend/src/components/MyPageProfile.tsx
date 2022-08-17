@@ -143,9 +143,9 @@ export default function MyPageProfile(props: MyPageProfileProps) {
 
 
           {/* 프로필 편집 or follow */}
-          <div>
+          {/* <div>
             <Button variant="contained" color="success" sx={{ mt : 1, width : "100%"}}> Profile Edit </Button>
-          </div>
+          </div> */}
 
 
       </div>

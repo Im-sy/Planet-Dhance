@@ -73,13 +73,6 @@ export default function SignIn() {
     }
   };
 
-  const handleLogout = async () => {
-    const logoutRes = await logout(user.userId)
-    if (logoutRes) {
-      dispatch(deleteCurrentUserAction())
-      navigate('/login')
-    }
-  };
 
   const handleAuth = () => {
     oauth2()
@@ -177,17 +170,7 @@ export default function SignIn() {
               </Grid>
             </Grid>
           </Box>
-          <Button
-            onClick={handleLogout}
-            fullWidth
-            size="large"
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            color="secondary"
-          >
-            Log Out
-          </Button>
-          <Box>
+          {/* <Box>
             <Button
               variant="contained"
               color="inherit"
@@ -222,7 +205,7 @@ export default function SignIn() {
                 width="30"
               />
             </Button>
-          </Box>
+          </Box> */}
         </Box>
       </Container>
       <NavBar current="login" />

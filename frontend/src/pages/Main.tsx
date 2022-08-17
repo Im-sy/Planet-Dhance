@@ -128,7 +128,7 @@ export default function Main() {
             position: 'absolute',
             top: '40rem',
             backgroundColor: '#060318ff',
-            width: '100%',
+            width: '98%',
             height: '100%',
           }}
         >
