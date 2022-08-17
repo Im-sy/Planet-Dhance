@@ -16,6 +16,18 @@ import { useLocation } from 'react-router-dom';  // 데이터 받아오기
 
 import axios from 'axios';
 
+
+// private 체크박스 관련
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
+
+
+// 뒤로가기, 업로드 버튼 관련
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+
 const img1 = 'https://picsum.photos/1400/1200';
 
 
@@ -80,6 +92,13 @@ const KeyCodes = {
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
+
+
+const privateStyle = {
+  backgroundColor: 'rgba( 255, 255, 255, 1 )',
+  color: 'rgba( 255, 255, 255, 1 )',
+}
+
 function UpLoad() {
   //-------------------------------------------------------------------------------------
   //
@@ -99,144 +118,125 @@ function UpLoad() {
     img1,
     img1,
   ]);
-  const [recordedVideo, setRecordedVideo] = useState('init_video')
+
   
   const location = useLocation(); 
   const thumbnail = location.state.thumbnail;
   const [pick, setPick] = useState(thumbnail.thumbnail[0]);
   const [formData, setFormData] = useState()
   // const [pick, setPick] = useState();
-  // const [pickedThumbnail, setPickedThumbnail] = useState()
+  const [pickedVideoFile, setPickedVideoFile] = useState()  // 1개밖에 없지만 이름 통일성을 위해 이렇게 지음
+  const [pickedThumbnailFile, setPickedThumbnailFile] = useState()
+  const [pickedHashtagFile, setPickedHashtagFile] = useState()
+ 
   
 
-  // const initVideo async () => {
+  const initVideo = async () => {
+    // 1. 비디오
 
-  //   const videoBlob = location.state.videoBlob;
-  //   setRecordedVideo(videoBlob.videoFile)
-  //   const initFormData = new FormData(); // 저장할 곳
-
-  //   // 1. 비디오
-  //   const file = new File([recordedVideo], 'video.webm', {
-  //     type : "video/webm"
-  //   });
+    const videoBlob = location.state.videoBlob;
+    const file = await new File([videoBlob.videoFile], 'video.webm', {
+      type : "video/webm"
+    });
     
-  //   initFormData.append("inputFile", file, "videoFile.webm");
+    await setPickedVideoFile(file)
+    console.log('video File : ',pickedVideoFile)
+  
+  }
 
-  //   for (var pair of initFormData.entries()) {
-  //     console.log('비디오추가 : ',pair[0]+ ', ' + pair[1]); 
-  // }
-  // }
+  const updatePick = async () => {
+    let tmp
+    await fetch(pick)
+      .then((res) => res.blob())
+      .then((blob2) => {
+        const NewFile = new File([blob2], "video_thumbnail", {
+          type: "image/png"
+        });
+        tmp = NewFile
+        console.log('ThumbnailFile',tmp)
+      })
+      .catch((err) => {
+        alert("실패");
+        console.log(err)
+      });
 
-  // const initPick = () => {
+    setPickedThumbnailFile(tmp)
+  };
 
-  // };
-
-  // const initJson = () => {
-
-  // }
-
-
-
-  // useEffect(
-  //     () =>{
+  const updateHashTag = async () => {
+    // private 유무 판정
+    // if (selected===false){
+    //   setIstPrivate('PUBLIC')
+    // }else{
+    //   setIstPrivate('PRIVATE')
+    // }
+    console.log(selected)
+    console.log(custom)
+    // JSON 만들기
+    const jsonData = JSON.stringify({
+      // scope : "PUBLIC",
+      scope : selected,
+      userId : 25,
+      musicId : 66,
+      clear : true,
+      tagList: custom
+    })
+    console.log('jsonData',jsonData)
         
+    const blob3 = await new Blob([jsonData], {type : "application/json"});
+    setPickedHashtagFile(blob3)
+    console.log("HashTagFile", blob3)
+  }
 
-  //     // const thumbnail = location.state.thumbnail;
-  //     // console.log(thumbnail.thumbnail)
-  //     // console.log(thumbnail.thumbnail[0])
-  //     // const data = { img : thumbnail.thumbnail[0], index : 0 }
-  //     // console.log(data)
-  //     // handleThumbNailClick(data) // 첫 사진을 썸네일 default로 넣어주기
-  //     // console.log(recordedVideo)
+
+
+  useEffect(
+    () =>{
+      initVideo()
+      updatePick()
+      updateHashTag()
+        console.log('video File : ',pickedVideoFile)
+      }
+
+      , []  )
+
+
+      console.log(location);
       
-
-
-  //       // if (pick===undefined){
-  //   //   return alert('썸네일을 선택해주세요')
-  //   // }
       
-    
+      const [custom, setCustom] = useState([{ id: '5', type: 'planetDhance' }]);
+      const [selected, setSelected] = useState('PUBLIC')
 
-  //   const initFormData = new FormData(); // 저장할 곳
+  useEffect(  () => {
+    async function tmp() {
 
-  //   // 1. 비디오
-  //   const file = new File([recordedVideo], 'video.webm', {
-  //     type : "video/webm"
-  //   });
-  //   // console.log(file);
-  //   initFormData.append("inputFile", file, "videoFile.webm");
-
-  //   for (var pair of initFormData.entries()) {
-  //     console.log('비디오추가 : ',pair[0]+ ', ' + pair[1]); 
-  // }
-
-
-  //   // 2. 선택한 썸네일
-  //   // pick.img
-  //     // 이미지 보내는 법
-  //   // fetch(pick)
-  //   let tmp
-  //   fetch(pick)
-  //     .then((res) => res.blob())
-  //     .then((blob2) => {
-  //       const NewFile = new File([blob2], "video_thumbnail", {
-  //         type: "image/png"
-  //       });
-  //       tmp = NewFile
-  //       // setPickedThumbnail(NewFile);
-
-  //     })
-  //     .catch((err) => {
-  //       alert("실패");
-  //       console.log(err)
-  //     });
-
-  //   console.log(tmp)
-  //   // console.log(pickedThumbnail)
-   
-  //   initFormData.append("inputFile",tmp,"image.png")
-  //   // await formData.append("inputFile",pickedThumbnail,"image.png")
-    
-  //   for (var pair of initFormData.entries()) {
-  //     console.log('이미지추가 : ',pair[0]+ ', ' + pair[1]); 
-  // }
+      console.log(custom);
+      const jsonData = JSON.stringify({
+        // scope : "PUBLIC",
+        scope : selected,
+        userId : 25,
+        musicId : 66,
+        clear : true,
+        tagList: custom
+      })
+      console.log('jsonData',jsonData)
+          
+      const blob3 = await new Blob([jsonData], {type : "application/json"});
+      setPickedHashtagFile(blob3)
+      console.log("HashTagFile", blob3)
+    }
+    tmp()
+  }, [custom,selected])
 
 
+  // useEffect( () => {
+  //   console.log(selected);
+  // }, [selected])
 
-    
-  //   // 3. 해시태그
-  //   const jsonData = JSON.stringify({
-  //     scope : "PUBLIC",
-  //     userId : 25,
-  //     musicId : 66,
-  //     clear : true,
-      
-  //     tagList: custom
-  //   })
-    
-  //   setJsonCustom(jsonData)
-    
-  //   const blob3 = new Blob([jsonCustom], {type : "application/json"});
-  //   initFormData.append("challengeRequest", blob3, 'sampleJson'); 
+  
 
-    
-  //   for (var pair of initFormData.entries()) {
-  //     console.log('json추가 : ',pair[0]+ ', ' + pair[1]); 
-  // }
-
-
-  // setFormData(initFormData)
-
-  //     // uploadToServer()
-  //   }
-//--------------------------------------------------------------------------
-  // , []  )
-  // console.log(location);
- 
-
-
-
-
+  
+  
   const [tags, setTags] = useState([
     { id: '1', type: 'song', className: 'song' },
     { id: '2', type: 'artist', className: 'artist' },
@@ -244,17 +244,20 @@ function UpLoad() {
     { id: '2', type: 'nickname', className: 'nickname' },
   ]);
 
+  
 
 
-
-  const [custom, setCustom] = useState([{ id: '5', type: 'planetDhance' }]);
   const handleDelete = (i) => {
     setCustom(custom.filter((custom, index) => index !== i));
   };
 
 
-  const handleAddition = (tag) => {
+  const handleAddition =  (tag) => {
+    console.log('before setCustom tag', tag)
     setCustom([...custom, tag]);
+    console.log('after setCustom : ', custom)
+    updateHashTag()  // 해시태그 JSON 최신화
+    
   };
 
 
@@ -296,10 +299,12 @@ function UpLoad() {
     const img = data.img
     setPick(img);
     console.log(pick);
+    updatePick()  // 썸네일 최신화
     // console.log(pick.img);   // base64로 challenge page의 사진과 똑같은 형식
   };
 
-  const [selected, setSelected] = useState(false)
+ 
+
   useEffect(() => {
     //axios
   }, []);
@@ -313,92 +318,30 @@ function UpLoad() {
   //------------------------------------------------------------------------
 
 
-  const [jsonCustom, setJsonCustom] = useState()
 
-
+// video만 가져온 후, 다른 것들 넣기
   const uploadToServer = async () => {
 
+    const formData = new FormData();
 
-  //   // if (pick===undefined){
-  //   //   return alert('썸네일을 선택해주세요')
-  //   // }
+    // let tmpFormData = formData
+    console.log('Video File',pickedVideoFile)
+    console.log('Thumbnail File',pickedThumbnailFile)
+    console.log('HashTagFile',pickedHashtagFile)
+  
+    await formData.append("inputFile",pickedVideoFile,"videoFile.webm")
+    await formData.append("inputFile",pickedThumbnailFile,"image.png")
+    await formData.append("challengeRequest", pickedHashtagFile, 'sampleJson'); 
 
-
-  //   const formData = new FormData(); // 저장할 곳
-
-  //   // 1. 비디오
-  //   const file = await new File([recordedVideo], 'video.webm', {
-  //     type : "video/webm"
-  //   });
-  //   // console.log(file);
-  //   await formData.append("inputFile", file, "videoFile.webm");
-
-  //   for (var pair of formData.entries()) {
-  //     console.log('비디오추가 : ',pair[0]+ ', ' + pair[1]); 
-  // }
-
-
-  //   // 2. 선택한 썸네일
-  //   // pick.img
-  //     // 이미지 보내는 법
-  //   // fetch(pick)
-  //   let tmp
-  //   await fetch(pick)
-  //     .then((res) => res.blob())
-  //     .then((blob2) => {
-  //       const NewFile = new File([blob2], "video_thumbnail", {
-  //         type: "image/png"
-  //       });
-  //       tmp = NewFile
-  //       // setPickedThumbnail(NewFile);
-
-  //     })
-  //     .catch((err) => {
-  //       alert("실패");
-  //       console.log(err)
-  //     });
-
-  //   console.log(tmp)
-  //   // console.log(pickedThumbnail)
-   
-  //   await formData.append("inputFile",tmp,"image.png")
-  //   // await formData.append("inputFile",pickedThumbnail,"image.png")
-    
-  //   for (var pair of formData.entries()) {
-  //     console.log('이미지추가 : ',pair[0]+ ', ' + pair[1]); 
-  // }
-
-
-
-    
-  //   // 3. 해시태그
-  //   const jsonData = JSON.stringify({
-  //     scope : "PUBLIC",
-  //     userId : 25,
-  //     musicId : 66,
-  //     clear : true,
-      
-  //     tagList: custom
-  //   })
-    
-  //   setJsonCustom(jsonData)
-    
-  //   const blob3 = await new Blob([jsonCustom], {type : "application/json"});
-  //   await formData.append("challengeRequest", blob3, 'sampleJson'); 
-
-    
-  //   for (var pair of formData.entries()) {
-  //     console.log('json추가 : ',pair[0]+ ', ' + pair[1]); 
-  // }
-
-    
-    
     
     // 4. 서버로 전송
    
     console.log('axios')
     
     const inputFile = formData
+    for (var pair of inputFile.entries()) {
+      console.log('최종데이터 : ',pair[0]+ ', ' + pair[1]); 
+  }
 
     axios
     .post("https://i7d201.p.ssafy.io/api/video/upload", inputFile)  // 최종적으로 진짜로 보내는 주소
@@ -410,6 +353,7 @@ function UpLoad() {
       alert("실패");
       console.log(err)
     });
+
 
   }
 
@@ -437,12 +381,11 @@ function UpLoad() {
           centerMode={true}
           beforeChange={(slide, newSlide) => {
             // const curImg = imageList.find((img, index) => {
-            const curImg = imageList.find((img, index) => {
+            const curImg = thumbnail.thumbnail.find((img, index) => {
               if (index === newSlide) {
                 handleThumbNailClick({ img: img, index: index });
               }
             });
-            // console.log(newSlide);
             setCurrentSlide(newSlide);
           }}
           centerPadding={'50px'}
@@ -473,14 +416,35 @@ function UpLoad() {
 
 
       {/* private */}
-      <ToggleButton
+      {/* <ToggleButton
         value="check"
         selected={selected}
         onChange={() => {
-          setSelected(!selected);
+          setSelected(!selected)
+          updateHashTag();
         }}
+        sytle={privateStyle}
       ><CheckIcon /> private
-      </ToggleButton>
+      </ToggleButton> */}
+    
+      <div style={{display:'flex', justifyContent:'end'}}>
+        <FormGroup>
+          <FormControlLabel 
+            control={<Checkbox
+                      style={{
+                        color: "rgba(255,255,255,0.5)"
+                      }}
+                      onChange={async () => {
+                      // setSelected(selected===false?!selected)
+                      setSelected(selected==='PRIVATE'? 'PUBLIC':'PRIVATE' )
+                      // setTimeout(updateHashTag,5000)
+                      updateHashTag();
+                      }}/>} 
+            Style={{color: 'blue'}}
+            label="private" />
+        </FormGroup>
+
+      </div>
 
 
       {/* Tags */}
@@ -513,6 +477,13 @@ function UpLoad() {
 
       {/* Back / upload 버튼 */}
       <div>
+        <Stack direction="row" spacing={2}>
+          <Button variant="outlined" href="/challenge">Prev</Button>
+          {/* <Button variant="outlined" href="/music/{musicId}/challenge/{userId}">Prev</Button> */}
+          <Button variant="outlined" onClick={uploadToServer} href="/" disabled>   Upload     </Button>
+          {/* <Button variant="outlined" href="/video/{선택한비디오아이디}/{이전페이지}/{로그인한유저아이디}">   Upload     </Button> */}
+        </Stack>
+
       <button>back</button>
       <button onClick={uploadToServer}>uploadrrrr</button>
       {/* <button>upload</button> */}

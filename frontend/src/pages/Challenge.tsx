@@ -36,7 +36,8 @@ import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheck
 //---------------------------------------------------------------------------
 import * as tmPose from '@teachablemachine/pose';
 // import song from "./static/song1/temp1.json";
-import song from "./static/pop/chart.json";
+// import song from "./static/pop/chart.json";
+import song from "./static/PtoD/chart.json";
 
 //--------------------------------------------------------------
 //
@@ -991,7 +992,7 @@ const [fliped, setFliped] = useState(false)
 
 
 // const URL = "./teachable2/my_model/";
-const URL = "./static/pop/";
+const URL = "./static/PtoD/";
 // const URL = "http://i7d201.p.ssafy.io/resource/music/model/test/"
   let model : any
   let ctx : any
@@ -1318,7 +1319,7 @@ return (
           width={reactPlayer[1]}
           height={reactPlayer[2]}
           style={reactPlayerBackground}
-          url={myVideo6} 
+          url={myVideo7} 
           playing={playing}
           muted={muted}
           onPlay={handlePlay}
