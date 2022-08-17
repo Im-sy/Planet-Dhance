@@ -119,6 +119,11 @@ public class VideoService {
         return videoRepo.findByLikesInOrderByRegDateDesc(likeList,pageable);
     }
 
+    public Slice<Video> findNextLikeVideoList(int page, int size,Long videoId, List<Like> likeList){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByIdLessThanEqualAndLikesInOrderByRegDateDescIdDesc(videoId,likeList,pageable);
+    }
+
     /**
      * 검색 조건: 유저 한 명, 공개 여부
      * 정렬: 최신순

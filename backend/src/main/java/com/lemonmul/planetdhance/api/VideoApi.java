@@ -42,7 +42,7 @@ public class VideoApi {
 
     //TODO 기본값 18
     private static final int listSize =9;
-    private static final int infoSize=10;
+    private static final int infoSize=11;
 
     /**
      * 해당 곡 최신 영상 리스트 - 곡 페이지 latest 무한 스크롤
@@ -249,6 +249,28 @@ public class VideoApi {
             Video video = videoService.findById(video_id);
             User videoUser = userService.findById(video.getUser().getId());
             Slice<Video> videoList=videoService.findNextUserVideoList(0,infoSize,video.getOrderWeight(),videoUser,VideoScope.PUBLIC);
+
+            User user = userService.findById(user_id);
+            List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+
+            return new ResponseEntity<>(new VideoInfoResponse(videoList,likeList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 로그인한 사용자가 좋아요한 재생할 영상 정보 리스트
+     *
+     * 요청 파라미터 예시: /video/{video_id}/like/{user_id}
+     */
+    @GetMapping("/{video_id}/like/{user_id}")
+    public ResponseEntity<?> likeVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
+        try {
+            Video video = videoService.findById(video_id);
+            User videoUser = userService.findById(video.getUser().getId());
+            Slice<Video> videoList=videoService.findNextLikeVideoList(0,infoSize,video_id, videoUser.getLikes());
 
             User user = userService.findById(user_id);
             List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
