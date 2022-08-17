@@ -27,7 +27,9 @@ export default function verticalCard({artistList}: verticalCardProp){
   };
   return (
     <div  className="container">
-      <h1>Hot Artist</h1>
+      <div style={{ margin: "1rem 0.5rem 0.5rem"}}>
+        <h2 style={{ display: 'inline', fontSize: '22px'}}>💎Hot Artist</h2>
+      </div>
       <Slider {...settings}>
         {artistList?.map((artistItem: artistItem) => (
           <ToSearchCard  key={artistItem.tagId}
