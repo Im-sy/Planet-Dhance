@@ -55,6 +55,7 @@ export default function ProfilePage() {
   const getProfileInfo = async () => {
     const getprofile = await tagSearch(parseInt(tagId), 'nickname', 0)
     setProfileInfo(getprofile)
+    console.log("getprofile.prevPage", getprofile.prevPage);
     setPrevPage(getprofile.prevPage);
     setVideoList(getprofile.videoList?.content);
   }
@@ -76,7 +77,6 @@ export default function ProfilePage() {
     console.log(lastPage)
     if (!lastPage) {
       const scrollsearch = await tagSearch(parseInt(tagId), 'nickname', pageNum+1)
-      console.log(scrollsearch)
       setPageNum(pageNum + 1);
       setPrevPage(scrollsearch.prevPage);
       setVideoList(videoList.concat(...scrollsearch.videoList?.content))
@@ -139,7 +139,7 @@ export default function ProfilePage() {
       {/* 내가 올린 영상 */}
       <div style={{  marginLeft : 10, marginBottom : 10, marginRight : 10,}}>
         <h2 style={{ fontSize: '22px'}}>My Videos</h2>
-        <SongPageGridView videoList={profileInfo?.videoList?.content} prevPage={profileInfo?.prevPage} />
+        <SongPageGridView videoList={videoList} prevPage={prevPage} />
       </div>
 
       <NavBar current={"search"} />

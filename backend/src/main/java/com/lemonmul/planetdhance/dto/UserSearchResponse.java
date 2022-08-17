@@ -16,7 +16,7 @@ public class UserSearchResponse{
     private boolean isFollow;
     private List<ClearDto> clearList;
     private int clearCnt;
-    private String prevPage="user";
+    private String prevPage="nickname";
     private Slice<VideoProfileDto> videoList;
 
     public UserSearchResponse(User user, boolean isFollow, List<Clear> clearList, Slice<Video> videoList) {
