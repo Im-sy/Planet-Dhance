@@ -122,7 +122,7 @@ public class TagApi {
             List<Music> musicList = musicService.findTitleVideoList(tag.getName());
             Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
 
-            return new ResponseEntity<>(new MusicSearchResponse(musicList,"music",videoList), HttpStatus.OK);
+            return new ResponseEntity<>(new MusicSearchResponse(musicList,"title",videoList), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
