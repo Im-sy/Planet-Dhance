@@ -10,6 +10,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TagService {
@@ -55,5 +57,9 @@ public class TagService {
     }
     public Tag findByNameAndType(String name,TagType type){
         return tagRepo.findTestByNameAndType(name, type);
+    }
+
+    public List<Tag> findArtistTop5(){
+        return tagRepo.findTop5ByTypeOrderByHitDesc(TagType.ARTIST);
     }
 }

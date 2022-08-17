@@ -38,6 +38,7 @@ public class VideoApi {
     private final LikeService likeService;
     private final ArtistService artistService;
     private final RankingService rankingService;
+    private final TagService tagService;
 
     //TODO 기본값 18
     private static final int listSize =9;
@@ -87,10 +88,10 @@ public class VideoApi {
      */
     @GetMapping("/main/0")
     public MainPageResponse mainListAndRankingAndArtistList() {
-        List<Artist> artistList = artistService.findTop5();
+        List<Tag> tags = tagService.findArtistTop5();
         Slice<Ranking> ranking = rankingService.getRanking();
         Slice<Video> videoList = videoService.findMainPageVideoList(0, listSize, VideoScope.PUBLIC);
-        return new MainPageResponse(artistList,ranking,videoList);
+        return new MainPageResponse(tags,ranking,videoList);
     }
 
     /**
@@ -343,8 +344,8 @@ public class VideoApi {
         private String prevPage="main";
         private Slice<VideoDto> videoList;
 
-        public MainPageResponse(List<Artist> artists,Slice<Ranking> ranking,Slice<Video> videos) {
-            artistList=artists.stream().map(ArtistDto::new).collect(Collectors.toList());
+        public MainPageResponse(List<Tag> tags,Slice<Ranking> ranking,Slice<Video> videos) {
+            artistList=tags.stream().map(ArtistDto::new).collect(Collectors.toList());
             rankingList = ranking.map(RankingDto::new).stream().collect(Collectors.toList());
             videoList=videos.map(VideoDto::new);
         }
@@ -352,12 +353,14 @@ public class VideoApi {
 
     @Data
     static class ArtistDto{
+        private Long tagId;
         private String name;
         private String imgUrl;
 
-        public ArtistDto(Artist artist) {
-            name=artist.getName();
-            imgUrl=artist.getImgUrl();
+        public ArtistDto(Tag tag) {
+            tagId=tag.getId();
+            name=tag.getName();
+            imgUrl=tag.getImgUrl();
         }
     }
 
