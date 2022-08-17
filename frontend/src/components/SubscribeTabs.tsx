@@ -17,6 +17,7 @@ import { rootState } from '../reducer';
 
 export interface followUserProps {
   id: number,
+  tagId: number,
   nickname: string,
   introduce: string,
   imgUrl: string,

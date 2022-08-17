@@ -17,6 +17,7 @@ import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
 import Upload from './UpLoad';
 import ExplorePage from './ExplorePageList'
+import ProfilePage from './ProfilePage';
 
 import Teachable from './TeachableScript'
 import Thumbnail from './Thumanil2'
@@ -46,6 +47,7 @@ function AppRouter() {
         <Route path='/ranking' element={<Ranking />} />
         <Route path='/dancecompare' element={<DanceCompare />} />
         <Route path='/emoji' element={<App2 />} />
+        <Route path='/profile/:tagId' element={<ProfilePage />} />
 
         <Route path='/teachable' element={<Teachable />} />
 
