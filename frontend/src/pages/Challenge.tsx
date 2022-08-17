@@ -318,7 +318,7 @@ let [now, setNow] = useState('mode');
   
 const recordWebcam: RecordWebcamHook = useRecordWebcam(OPTIONS);
 
-const [videoFile, setVideoFile] = useState<FormData>()
+const [videoFile, setVideoFile] = useState<Blob>()
 
 const [uploadData, setUploadData] = useState([])
 
@@ -332,8 +332,9 @@ const [uploadData, setUploadData] = useState([])
     const blob = await recordWebcam.getRecording();
     console.log({ blob });
     
+
     
-    
+
     const file =  new File([blob], 'video.webm', {
       type : "video/webm"
     });
@@ -343,7 +344,7 @@ const [uploadData, setUploadData] = useState([])
     
     const formData = new FormData();
     formData.append("inputFile", file, "videoFile.webm");
-    setVideoFile(blob) // 보낼 비디오 저장
+    // setVideoFile(blob) // 보낼 비디오 저장
 
 
     // 썸네일
@@ -853,12 +854,12 @@ const Ref = useRef(null);
     //   }
     // })
 
-    // navigate('/test', {
-    //   state : {
-    //     file : {inputFile}
-    //   }
-    // }
-    // )
+    navigate('/test', {
+      state : {
+        file : {inputFile}
+      }
+    }
+    )
 
 
 
