@@ -115,11 +115,13 @@ export default function Main() {
       {/* ranking */}
       <div>
         <div>
-          <span>Ranking</span>
+          <div style={{ margin: "1rem 0.5rem 0.5rem"}}>
+            <h2 style={{ display: 'inline', fontSize: '22px'}}>🏆Ranking</h2>
+            <IconButton onClick={handleRankClick} color="secondary">
+              <AddIcon />
+            </IconButton>
+          </div>
           {/* 네비게이트 써서 랭킹 데이터 넘기기 */}
-          <IconButton onClick={handleRankClick} color="secondary">
-            <AddIcon />
-          </IconButton>
         </div>
         <RankScore scores={mainVideoInfo?.rankingList} />
         <Planet />
@@ -138,7 +140,9 @@ export default function Main() {
           </div>
           {/* GridView */}
           <div style={{width: '98%'}}>
-            <h2> Hot Clips</h2>
+            <div style={{ margin: "1rem 0.5rem 0.5rem"}}>
+              <h2 style={{ display: 'inline', fontSize: '22px'}}>🔥Hot Clips</h2>
+            </div>
             <GridView
               prevPage={mainVideoInfo?.prevPage}
               videoList={videoList && videoList}
