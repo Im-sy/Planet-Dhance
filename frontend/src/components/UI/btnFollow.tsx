@@ -32,6 +32,10 @@ export default function BtnFollow({isFollowed, fromId, toId}: followProps) {
   }
 
   useEffect(() => {
+    setIsFollow(isFollowed);
+  }, [isFollowed])
+  
+  useEffect(() => {
     console.log(isFollow);
   }, [isFollow])
 
