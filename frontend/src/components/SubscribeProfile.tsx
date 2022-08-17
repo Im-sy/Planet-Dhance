@@ -49,7 +49,7 @@ export default function SubscribeProfile(props: SearchInfo) {
     );
   }else{
     return (
-      <div style={{ margin: '0.5rem 0.5rem 0rem 0.5rem'}}>
+      <div style={{ margin: '0.5rem 0.4rem 0rem 0.4rem'}}>
         <Card sx={{ maxWidth: '100%', display: 'flex', backgroundColor:'rgba(55, 64, 120, 0.4) !important' }}>
           <CardMedia
             sx={sx} 
