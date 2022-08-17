@@ -34,7 +34,8 @@ public class MusicApi {
     private final UserService userService;
     private final TagService tagService;
 
-    private static final int size=18;
+    //TODO 기본값 18
+    private static final int size=9;
 
     /**
     * 챌린지 페이지 진입 시
@@ -81,6 +82,42 @@ public class MusicApi {
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * 해당 곡 최신 영상 리스트 - 곡 페이지 latest 무한 스크롤
+     *
+     * 요청 파라미터 예시: /music/{곡 아이디}/latest/{page번호}
+     * size는 기본값 18
+     */
+    @GetMapping("/{music_id}/latest/{page}")
+    public ResponseEntity<?> latestList(@PathVariable Long music_id, @PathVariable int page) {
+        try {
+            Music music=musicService.getMusicInfo(music_id);
+            Slice<Video> videoList = videoService.findLatestVideoList(page, size,music, VideoScope.PUBLIC);
+            return new ResponseEntity<>(new GridResponse("latest",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 해당 곡 조회수&좋아요 영상 리스트 - 곡 페이지 hit&like 무한 스크롤
+     *
+     * 요청 파라미터 예시: /music/{곡 아이디}/hitlike/{page번호}
+     * size는 기본값 18
+     */
+    @GetMapping("/{music_id}/hitlike/{page}")
+    public ResponseEntity<?> hitlikeList(@PathVariable Long music_id,@PathVariable int page) {
+        try {
+            Music music=musicService.getMusicInfo(music_id);
+            Slice<Video> videoList = videoService.findMusicVideoList(page, size,music, VideoScope.PUBLIC);
+            return new ResponseEntity<>(new GridResponse("hitlike",videoList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
