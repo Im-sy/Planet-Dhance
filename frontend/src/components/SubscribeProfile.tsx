@@ -28,7 +28,7 @@ export default function SubscribeProfile(props: SearchInfo) {
   if (typeof sx === 'undefined') {
     let sx = { display: 'flex', flexDirection: 'column', width: '7rem' }
     return (
-      <div style={{ margin: '0.5rem 1rem' }}>
+      <div style={{ margin: '0.5rem 1rem',  }}>
         <Card sx={{ maxWidth: '100%', display: 'flex' }}>
           <CardMedia
             sx={sx}
@@ -49,8 +49,8 @@ export default function SubscribeProfile(props: SearchInfo) {
     );
   }else{
     return (
-      <div style={{ margin: '0.5rem 0.5rem 0rem 0.5rem', height:'100px' }}>
-        <Card sx={{ maxWidth: '100%', display: 'flex' }}>
+      <div style={{ margin: '0.5rem 0.5rem 0rem 0.5rem'}}>
+        <Card sx={{ maxWidth: '100%', display: 'flex', backgroundColor:'rgba(55, 64, 120, 0.4) !important' }}>
           <CardMedia
             sx={sx} 
             component="img"
@@ -58,12 +58,12 @@ export default function SubscribeProfile(props: SearchInfo) {
             alt="profile img"
           />
 
-          <CardContent sx={{ flex: '1 0 auto' }}> 
-            <Typography gutterBottom variant="body1" component="div" sx={introductionStyle} >
+          <CardContent sx={{ flex: '1 0 auto',paddingBottom:'0 !important' }}> 
+            <Typography gutterBottom variant="body1"  color='#e6e6e6' component="div" sx={introductionStyle} >
             {nickname}  <span>{ nation }</span>
               
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={introductionStyle}>
+            <Typography variant="body2" color="#bababa !important" sx={introductionStyle}>
              { introduction } 
             </Typography>
           </CardContent>

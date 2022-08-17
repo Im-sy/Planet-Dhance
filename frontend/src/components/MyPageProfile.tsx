@@ -99,7 +99,7 @@ export default function MyPageProfile(props: MyPageProfileProps) {
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "20px 20px 20px 0px", textAlign: "center" }}>
             <div id="profile_img" style={{ display : "inline-block" }}>
-              <Avatar alt={nickname} src={img}   sx={{ width: "100px", height: "100px" }} />
+              <Avatar alt={nickname} src={"https://i7d201.p.ssafy.io"+img}   sx={{ width: "100px", height: "100px" }} />
 
             </div>
             {/* follower */}
