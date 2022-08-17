@@ -12,6 +12,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { contentItem } from '../pages/MyPage';
 
 interface cardProps {
+  tagId: number,
   profileImg: string,
   nickname: string,
   introduction: string,
@@ -23,7 +24,7 @@ interface cardProps {
 
 export default function SubscribeFollowCard(props: cardProps) {
   // 프로필사진, 닉네임, 한줄 소개, 영상5 urls
-  const {profileImg, nickname, introduction, videoList, nation, width, height} = props
+  const {tagId, profileImg, nickname, introduction, videoList, nation, width, height} = props
   return (
     <div>
       <Card sx={{ maxWidth: "100vw" }}>
@@ -41,7 +42,7 @@ export default function SubscribeFollowCard(props: cardProps) {
         
         <Grid container spacing={0} direction='row' sx={{ p:1 }}>
           {videoList.map((videoItem: contentItem) => (
-            <CardActionArea key={videoItem.videoId} sx={{ p:1 , maxWidth : "16.5vw" }} component={Link} to='/' > 
+            <CardActionArea key={videoItem.videoId} sx={{ p:1 , maxWidth : "16.5vw" }} component={Link} to={`/profile/${tagId}`} > 
               <Grid item sm={4} >
                 <CardMedia
                   style={{

@@ -20,7 +20,7 @@ import java.util.Date;
 public class JwtTokenProvider {
     private String secretKey = "planetdhancetenalpecnahd";
 
-    final long tokenValidTime = 30 * 60 * 1000L;
+    final long tokenValidTime = 1440 * 60 * 1000L;
 
     private final UserDetailsService userDetailsService;
 
