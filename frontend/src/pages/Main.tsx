@@ -133,11 +133,11 @@ export default function Main() {
           }}
         >
           {/* 가로카드 */}
-          <div>
+          <div style={{width: '98%'}}>
             <VerticalCardList artistList={mainVideoInfo?.artistList} />
           </div>
           {/* GridView */}
-          <div>
+          <div style={{width: '98%'}}>
             <h2> Hot Clips</h2>
             <GridView
               prevPage={mainVideoInfo?.prevPage}

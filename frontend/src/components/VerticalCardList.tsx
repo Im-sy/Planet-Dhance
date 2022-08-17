@@ -30,12 +30,12 @@ export default function verticalCard({artistList}: verticalCardProp){
       <h1>Hot Artist</h1>
       <Slider {...settings}>
         {artistList?.map((artistItem: artistItem) => (
-          <ToSearchCard 
+          <ToSearchCard  key={artistItem.tagId}
             url={artistItem.imgUrl}
             width="8.438rem"
             height="15rem"
             type={"ARTIST"}
-            id={1}
+            id={artistItem.tagId}
           />
         ))}
       </Slider>

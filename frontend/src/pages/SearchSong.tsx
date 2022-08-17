@@ -52,7 +52,7 @@ export default function SearchSong() {
       const scrollsearch = await tagSearch(parseInt(tagId), searchType.toLowerCase(), pageNum+1)
       setPageNum(pageNum+1)
       setPrevPage(scrollsearch.prevPage)
-      setVideoList(videoList.concat(...scrollsearch.videoList?.content))
+      setVideoList(videoList?.concat(...scrollsearch.videoList?.content))
       setLastPage(scrollsearch.videoList?.last)
     }
 
@@ -103,7 +103,7 @@ export default function SearchSong() {
       <div>
         <GridView prevPage={prevPage} videoList={videoList} />
       </div>
-      <NavBar current={"main"} />
+      <NavBar current={"search"} />
     </div>
   )
 }
