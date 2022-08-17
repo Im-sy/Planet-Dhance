@@ -17,6 +17,7 @@ export default function SubscribeFollowGridView({profiles}:SubscribeFollowGridVi
         {profiles?.map((profile: followUserProps) => (
           <Grid item sm={4} key={profile.id}>
             <SubscribeFollowCard
+              tagId={profile.tagId}
               profileImg={profile.imgUrl}
               nickname={profile.nickname}
               introduction={profile.introduce}
