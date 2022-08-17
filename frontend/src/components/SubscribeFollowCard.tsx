@@ -28,8 +28,9 @@ export default function SubscribeFollowCard(props: cardProps) {
   return (
     <div>
       <Card sx={{ maxWidth: "100vw" }}>
-        <CardContent sx={{  padding:0 }}>
-          <SubscribeProfile
+        <CardContent sx={{ padding: 0 }}>
+          <CardActionArea component={Link} to={`/profile/${tagId}`} > 
+            <SubscribeProfile
               img={profileImg}
               nickname={nickname}
               introduction={introduction}
@@ -38,25 +39,28 @@ export default function SubscribeFollowCard(props: cardProps) {
               // 프로필 부분 패딩과 마진 설정
               sx={{ display: 'flex', flexDirection: 'column', width: '5rem',  borderRadius: "50%", padding:" 0px 0.5rem", margin:"0.5rem 0.2rem" }}
             />
+          </CardActionArea>
         </CardContent>
         
         <Grid container spacing={0} direction='row' sx={{ p:1 }}>
           {videoList.map((videoItem: contentItem) => (
-            <CardActionArea key={videoItem.videoId} sx={{ p:1 , maxWidth : "16.5vw" }} component={Link} to={`/profile/${tagId}`} > 
+            // TODO: 각 동영상 재생 페이지로 연결
+            <CardActionArea key={videoItem.videoId} sx={{ p:1 , maxWidth : "16.5vw" }} component={Link} to={`/`} > 
               <Grid item sm={4} >
-                <CardMedia
-                  style={{
-                    width: width,
-                    height: height,
-                  }}
-                  component="img"
-                  image={"https://i7d201.p.ssafy.io/"+videoItem.imgUrl}
-                  alt="user upload video"
-                />
+                  <CardMedia
+                    style={{
+                      width: width,
+                      height: height,
+                    }}
+                    component="img"
+                    image={"https://i7d201.p.ssafy.io/"+videoItem.imgUrl}
+                    alt="user upload video"
+                  >
+                  </CardMedia>
               </Grid>
             </CardActionArea>  
           ))}
-          <Link to='/'>
+          <Link to={`/profile/${tagId}`}>
             <MoreHorizIcon sx={{  top : {height} }} > </MoreHorizIcon>
           </Link>
         </Grid>
