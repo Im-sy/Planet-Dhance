@@ -477,15 +477,15 @@ function UpLoad() {
 
       {/* Back / upload 버튼 */}
       <div>
-        <Stack direction="row" spacing={2}>
-          <Button variant="outlined" href="/challenge">Prev</Button>
+        <Stack direction="row" spacing={2} style={{justifyContent: 'center'}} sx={{margin:"1rem"}}>
+          <Button variant="outlined" variant="outlined" sx={{color:"white"}} href="/challenge" >Prev</Button>
           {/* <Button variant="outlined" href="/music/{musicId}/challenge/{userId}">Prev</Button> */}
-          <Button variant="outlined" onClick={uploadToServer} href="/" disabled>   Upload     </Button>
+          <Button variant="outlined" onClick={uploadToServer} variant="outlined" sx={{color:"white"}} href="/" >   Upload     </Button>
           {/* <Button variant="outlined" href="/video/{선택한비디오아이디}/{이전페이지}/{로그인한유저아이디}">   Upload     </Button> */}
         </Stack>
 
-      <button>back</button>
-      <button onClick={uploadToServer}>uploadrrrr</button>
+      {/* <button>back</button>
+      <button onClick={uploadToServer}>uploadrrrr</button> */}
       {/* <button>upload</button> */}
 
       </div>
