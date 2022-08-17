@@ -23,6 +23,8 @@ import Teachable from './TeachableScript'
 import Thumbnail from './Thumanil2'
 import SongPage from './MusicPage';
 
+import Scroll2 from './Scroll2'
+
 
 
 
@@ -56,7 +58,8 @@ function AppRouter() {
         <Route element={<NotFound404 />} />
         {/* test */}
         <Route path='/test' element={<Upload />} />
-        <Route path='/:prevPage/playing/:videoId' element={<ExplorePage />} />
+        <Route path='/:prevPage/playing/:videoId' element={<Scroll2 />} />
+        {/* <Route path='/:prevPage/playing/:videoId' element={<ExplorePage />} /> */}
       </Routes>
     </BrowserRouter>
 
