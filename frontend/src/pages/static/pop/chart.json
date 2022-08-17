@@ -2,9 +2,10 @@
   "duration": 110,
   "next": 0,
   "notes": [
-    { "duration": 10, "delay": 0, "type": "1" },
-    { "duration": 10, "delay": 35, "type": "2" },
-    { "duration": 10, "delay": 55, "type": "3" },
-    { "duration": 10, "delay": 70, "type": "4" }
+    { "duration": 35, "delay": 0, "type": "1" },
+    { "duration": 20, "delay": 35, "type": "2" },
+    { "duration": 15, "delay": 55, "type": "3" },
+    { "duration": 20, "delay": 70, "type": "4" },
+    { "duration": 20, "delay": 90, "type": "5" }
   ]
 }

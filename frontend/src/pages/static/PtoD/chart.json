@@ -2,11 +2,12 @@
   "duration": 210,
   "next": 0,
   "notes": [
-    { "duration": 10, "delay": 40, "type": "1" },
-    { "duration": 10, "delay": 60, "type": "2" },
-    { "duration": 10, "delay": 80, "type": "3" },
-    { "duration": 10, "delay": 120, "type": "1" },
-    { "duration": 10, "delay": 140, "type": "2" },
-    { "duration": 10, "delay": 160, "type": "3" }
+    { "duration": 20, "delay": 40, "type": "1" },
+    { "duration": 20, "delay": 60, "type": "2" },
+    { "duration": 20, "delay": 80, "type": "3" },
+    { "duration": 20, "delay": 120, "type": "1" },
+    { "duration": 20, "delay": 140, "type": "2" },
+    { "duration": 50, "delay": 160, "type": "3" },
+    { "duration": 20, "delay": 190, "type": "4" }
   ]
 }
