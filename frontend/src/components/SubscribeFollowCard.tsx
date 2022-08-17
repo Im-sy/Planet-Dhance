@@ -28,8 +28,9 @@ export default function SubscribeFollowCard(props: cardProps) {
   return (
     <div>
       <Card sx={{ maxWidth: "100vw", backgroundColor:'rgb(55, 64, 120,0.37) !important' }}>
-        <CardContent sx={{  padding:0}}>
-          <SubscribeProfile
+        <CardContent sx={{ padding: 0 }}>
+          <CardActionArea component={Link} to={`/profile/${tagId}`} > 
+            <SubscribeProfile
               img={profileImg}
               nickname={nickname}
               introduction={introduction}
@@ -58,7 +59,7 @@ export default function SubscribeFollowCard(props: cardProps) {
               </Grid>
             </CardActionArea>  
           ))}
-          <Link to='/'>
+          <Link to={`/profile/${tagId}`}>
             <MoreHorizIcon sx={{  top : {height},color:'rgb(120, 120, 120)' }} > </MoreHorizIcon>
           </Link>
         </Grid>
