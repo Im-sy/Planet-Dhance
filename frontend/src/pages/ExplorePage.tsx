@@ -8,11 +8,22 @@ import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import { videoItemProps } from './ExplorePageList';
 import HashTagList from '../components/HashTagList';
 import BtnLike from '../components/UI/btnLike';
+import GoBack from '../components/UI/goBack';
 import myVideo from '../videos/Patissiere_guide.mp4';
-
+import { useSelector } from 'react-redux';
+import { rootState } from '../reducer';
 import '../styles/tailwind_reset.css';
 
 const playerStyle: CSSProperties = {
+  position: 'absolute',
+  width: '96vw',
+  height: '88vh',
+  transform: 'scaleX(-1)',
+  backgroundColor: 'black',
+  // backgroundColor: 'green',
+};
+
+const likeBtnStyle: CSSProperties = {
   position: 'absolute',
   width: '98vw',
   height: '95vh',
@@ -24,7 +35,7 @@ const playerStyle: CSSProperties = {
 const progressStyle: CSSProperties = {
   position: 'absolute',
   top: '5vh',
-  width: '98vw',
+  width: '96vw',
   height: '10px',
   backgroundColor: 'gray',
   zIndex: '100',
@@ -46,6 +57,9 @@ interface playStateProps {
 }
 
 function PlayingPage(props: playProps) {
+  const { isAuthenticated, user } = useSelector(
+    (state: rootState) => state.authReducer
+  );
   useEffect(() => {
     console.log(props);
   }, [props]);
@@ -72,7 +86,7 @@ function PlayingPage(props: playProps) {
       ...playState,
       ...state,
     };
-    // console.log('onProgress', inState);
+    console.log('onProgress', inState);
     setPlayState(inState as SetStateAction<playStateProps>);
   };
 
@@ -89,8 +103,8 @@ function PlayingPage(props: playProps) {
         />
         <ReactPlayer
           className="react-player"
-          width="98vw"
-          height="94vh"
+          width="96vw"
+          height="80vh"
           loop
           style={playerStyle}
           url={`https://i7d201.p.ssafy.io/${videoItem?.videoUrl}`}
@@ -102,8 +116,9 @@ function PlayingPage(props: playProps) {
           onEnded={playEnd}
         />
       </div>
-      {/* <HashTagList tagList={videoItem.tagList} /> */}
-      {/* <BtnLike like={videoItem.like} /> */}
+      <HashTagList tagList={videoItem.tagList} />
+      <GoBack />
+      <BtnLike like={videoItem.like} userId={user.userId} videoId={videoItem.videoId}/>
     </div>
   );
 }

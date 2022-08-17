@@ -38,12 +38,11 @@
 }
 
 .progressbar::-webkit-progress-bar {
-  background:#f0f0f0;
-  box-shadow: inset 3px 3px 10px #ccc;
+  background:rgba(0,0,0,0.3);
 }
 .progressbar::-webkit-progress-value {
-  background: #1D976C;
-  background: -webkit-linear-gradient(to right, #93F9B9, #1D976C);
-  background: linear-gradient(to right, #93F9B9, #1D976C);
+  background: #ffffff;
+  /* background: -webkit-linear-gradient(to right, #93F9B9, #1D976C); */
+  /* background: linear-gradient(to right, #93F9B9, #1D976C); */
 
 }

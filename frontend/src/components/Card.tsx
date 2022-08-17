@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -16,8 +16,13 @@ export default function ActionAreaCard(props: cardProps) {
   const navigate = useNavigate();
 
   const {url, width, height, prevPage, videoId} = props
-
+  useEffect(() =>{
+    console.log(prevPage)
+  },[props])
   const handleCardClick = () => {
+    
+    console.log(prevPage);
+    
     navigate(`${prevPage}/playing/${videoId}`, {state:{prevPage: prevPage, videoId: videoId,}})
     // navigate(`/playing`, {state:{prevPage: prevPage, videoId: videoId,}})
   }

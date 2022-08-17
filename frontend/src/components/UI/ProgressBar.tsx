@@ -2,10 +2,9 @@ import React, { CSSProperties, SetStateAction, useState } from 'react';
 
 const progressStyle: CSSProperties = {
   position: 'absolute',
-  top: '10px',
-  width: '100vw',
-  height: '10px',
-  backgroundColor: 'gray',
+  top: '4vh',
+  width: '94vw',
+  height: '4px',
   zIndex: '10'
 };
 
