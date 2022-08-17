@@ -46,6 +46,11 @@ public class VideoService {
         return videoRepo.findByMusicAndScopeOrderByRegDateDesc(music,scope,pageable);
     }
 
+    public Slice<Video> findNextLatestVideoList(int page, int size, Long videoId,Music music, VideoScope scope){
+        Pageable pageable=PageRequest.of(page,size);
+        return videoRepo.findByIdLessThanEqualAndMusicAndScopeOrderByRegDateDescIdDesc(videoId,music,scope,pageable);
+    }
+
     /**
      * 검색 조건: 곡 1건, 공개 여부
      * 정렬: 조회수&좋아요 가중치, 가중치 같으면 최신순
@@ -55,9 +60,9 @@ public class VideoService {
         return videoRepo.findByMusicAndScopeOrderByOrderWeightDescRegDateDesc(music,scope,pageable);
     }
 
-    public Slice<Video> findNextMusicVideoList(int page, int size, Long orderWeight, List<Music> musicList, VideoScope scope){
+    public Slice<Video> findNextMusicVideoList(int page, int size, Long orderWeight, Music music, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByOrderWeightLessThanEqualAndMusicInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,musicList,scope,pageable);
+        return videoRepo.findByOrderWeightLessThanEqualAndMusicAndScopeOrderByOrderWeightDescRegDateDescIdDesc(orderWeight,music,scope,pageable);
     }
 
     /**

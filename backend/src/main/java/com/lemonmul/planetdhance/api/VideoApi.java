@@ -45,42 +45,6 @@ public class VideoApi {
     private static final int infoSize=11;
 
     /**
-     * 해당 곡 최신 영상 리스트 - 곡 페이지 latest 무한 스크롤
-     *
-     * 요청 파라미터 예시: /video/{곡 아이디}/latest/{page번호}
-     * size는 기본값 18
-     */
-    @GetMapping("/{music_id}/latest/{page}")
-    public ResponseEntity<?> latestList(@PathVariable Long music_id, @PathVariable int page) {
-        try {
-            Music music=musicService.getMusicInfo(music_id);
-            Slice<Video> videoList = videoService.findLatestVideoList(page, listSize,music, VideoScope.PUBLIC);
-            return new ResponseEntity<>(new GridResponse("latest",videoList), HttpStatus.OK);
-        }catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * 해당 곡 조회수&좋아요 영상 리스트 - 곡 페이지 hit&like 무한 스크롤
-     *
-     * 요청 파라미터 예시: /video/{곡 아이디}/hitlike/{page번호}
-     * size는 기본값 18
-     */
-    @GetMapping("/{music_id}/hitlike/{page}")
-    public ResponseEntity<?> hitlikeList(@PathVariable Long music_id,@PathVariable int page) {
-        try {
-            Music music=musicService.getMusicInfo(music_id);
-            Slice<Video> videoList = videoService.findMusicVideoList(page, listSize,music, VideoScope.PUBLIC);
-            return new ResponseEntity<>(new GridResponse("hitlike",videoList), HttpStatus.OK);
-        }catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
      * 국가 랭킹, 인기 영상 리스트 - 메인 페이지 진입
      *
      * 요청 파라미터 예시: /video/main/0
@@ -160,8 +124,7 @@ public class VideoApi {
     public ResponseEntity<?> musicVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
         try {
             Video video = videoService.findById(video_id);
-            List<Music> musicList=musicService.findTitleVideoList(video.getMusic().getTitle());
-            Slice<Video> videoList=videoService.findNextMusicVideoList(0,infoSize,video.getOrderWeight(),musicList,VideoScope.PUBLIC);
+            Slice<Video> videoList=videoService.findNextMusicVideoList(0,infoSize,video.getOrderWeight(),video.getMusic(),VideoScope.PUBLIC);
 
             User user = userService.findById(user_id);
             List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
@@ -271,6 +234,48 @@ public class VideoApi {
             Video video = videoService.findById(video_id);
             User videoUser = userService.findById(video.getUser().getId());
             Slice<Video> videoList=videoService.findNextLikeVideoList(0,infoSize,video_id, videoUser.getLikes());
+
+            User user = userService.findById(user_id);
+            List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+
+            return new ResponseEntity<>(new VideoInfoResponse(videoList,likeList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 곡의 재생할 최신 영상 정보 리스트
+     *
+     * 요청 파라미터 예시: /video/{video_id}/latest/{user_id}
+     */
+    @GetMapping("/{video_id}/latest/{user_id}")
+    public ResponseEntity<?> latestVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
+        try {
+            Video video = videoService.findById(video_id);
+            Slice<Video> videoList=videoService.findNextLatestVideoList(0,infoSize,video_id,video.getMusic(),VideoScope.PUBLIC);
+
+            User user = userService.findById(user_id);
+            List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
+
+            return new ResponseEntity<>(new VideoInfoResponse(videoList,likeList), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 곡의 재생할 인기 영상 정보 리스트
+     *
+     * 요청 파라미터 예시: /video/{video_id}/hitlike/{user_id}
+     */
+    @GetMapping("/{video_id}/hitlike/{user_id}")
+    public ResponseEntity<?> hitlikeVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
+        try {
+            Video video = videoService.findById(video_id);
+            Slice<Video> videoList=videoService.findNextMusicVideoList(0,infoSize,video.getOrderWeight(),video.getMusic(),VideoScope.PUBLIC);
 
             User user = userService.findById(user_id);
             List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
