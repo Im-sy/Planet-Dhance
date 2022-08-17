@@ -48,6 +48,7 @@ export default function MyPageProfile(props: MyPageProfileProps) {
   };
 
   const { toId, img, nickname, introduction, nation, follower, following, isFollowed, type, sx } = props;
+  console.log("MyPageProfile", toId);
   if (typeof sx === 'undefined') {
     let sx = { display: 'flex', flexDirection: 'column', width: '7rem' }
     return (
@@ -143,8 +144,12 @@ export default function MyPageProfile(props: MyPageProfileProps) {
 
 
           {/* 프로필 편집 or follow */}
-          <div>
-            <Button variant="contained" color="success" sx={{ mt : 1, width : "100%"}}> Profile Edit </Button>
+        <div>
+          {
+            user.userId === toId
+            ? <Button variant="contained" color="success" sx={{ mt: 1, width: "100%" }}> Profile Edit </Button>
+            : <BtnFollow isFollowed={isFollowed} fromId={user.userId} toId={toId} />
+          }
           </div>
 
 

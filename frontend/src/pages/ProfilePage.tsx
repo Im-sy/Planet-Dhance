@@ -9,7 +9,7 @@ import SongPageGridView from '../components/MusicPageGridView'
 import TopBar from '../components/TopBar';
 
 interface userProps {
-  userId: number,
+  id: number,
   nickname: string,
   imgUrl: string,
   nationFlag: string,
@@ -107,7 +107,7 @@ export default function ProfilePage() {
 
       <div>
         <MyPageProfile 
-            toId={profileInfo?.user?.userId}
+            toId={profileInfo?.user?.id}
             img={profileInfo?.user?.imgUrl}
             nickname={profileInfo?.user?.nickname}
             introduction={profileInfo?.user?.introduce}
@@ -142,7 +142,7 @@ export default function ProfilePage() {
         <SongPageGridView videoList={videoList} prevPage={prevPage} />
       </div>
 
-      <NavBar current={"myPage"} />
+      <NavBar current={"search"} />
     </div>
   )
 }
