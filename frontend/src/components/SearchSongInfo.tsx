@@ -65,16 +65,16 @@ export default function SearchSongInfo(props: SearchInfo | tagMusicInfo) {
     }
     let sx = { display: 'flex', flexDirection: 'column', width: '7rem' }
     return (
-      <div style={{ margin: '0.5rem 1rem' }}>
-        <Card onClick={goToSongPage} sx={{ maxWidth: '100%', display: 'flex' }}>
+      <div style={{ margin: '2rem 1rem 0.5rem' }}>
+        <Card onClick={goToSongPage} sx={{ maxWidth: '100%', display: 'flex', backgroundColor: 'rgba(0, 0, 0, 0.87)' }}>
           <CardMedia
             sx={sx}
             component="img"
             image={`https://i7d201.p.ssafy.io/${imgUrl}`}
             alt="album cover"
           />
-          <CardContent sx={{ flex: '1 0 auto', alignItems: 'center', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} >
-            <Typography gutterBottom variant="h5" component="div" color="white" style={{margin: '0.5rem 0rem 0rem'}} >
+          <CardContent sx={{ flex: '1 0 auto', alignItems: 'center'}} >
+            <Typography gutterBottom variant="h6" component="div" color="white" style={{margin: '0.5rem 0rem 0.3rem'}} >
               {title}
               
             </Typography>
