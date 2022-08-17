@@ -14,23 +14,25 @@ import ThumbnailCard from '../components/ThumbnailCard';
 
 import { useLocation } from 'react-router-dom';  // 데이터 받아오기
 
-
+import axios from 'axios';
 
 const img1 = 'https://picsum.photos/1400/1200';
 
-const imageList = [
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-];
+
+
+// const imageList = [
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+// ];
 
 const Container = styled.div`
   overflow: hidden;
@@ -84,22 +86,154 @@ function UpLoad() {
   //                         데이터 받아오기
   //
   //--------------------------------------------------------------------------------------
-  const location = useLocation(); 
-  // const thumbnail = location.state.thumbnail;
-  console.log(location);
-
+  const [imageList, setImageList] = useState([
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+  ]);
+  const [recordedVideo, setRecordedVideo] = useState('init_video')
   
-  // useEffect( ()=>{
+  const location = useLocation(); 
+  const thumbnail = location.state.thumbnail;
+  const [pick, setPick] = useState(thumbnail.thumbnail[0]);
+  const [formData, setFormData] = useState()
+  // const [pick, setPick] = useState();
+  // const [pickedThumbnail, setPickedThumbnail] = useState()
+  
 
-  // } , [video])
+  // const initVideo async () => {
 
-  // function checkThumbnail() {
-  //   console.log(thumbnail)
-  //   console.log(video)
-  //   console.log(dummy)
-  //   console.log(hashtags)
-  //   setTimeout(checkThumbnail)
+  //   const videoBlob = location.state.videoBlob;
+  //   setRecordedVideo(videoBlob.videoFile)
+  //   const initFormData = new FormData(); // 저장할 곳
+
+  //   // 1. 비디오
+  //   const file = new File([recordedVideo], 'video.webm', {
+  //     type : "video/webm"
+  //   });
+    
+  //   initFormData.append("inputFile", file, "videoFile.webm");
+
+  //   for (var pair of initFormData.entries()) {
+  //     console.log('비디오추가 : ',pair[0]+ ', ' + pair[1]); 
   // }
+  // }
+
+  // const initPick = () => {
+
+  // };
+
+  // const initJson = () => {
+
+  // }
+
+
+
+  // useEffect(
+  //     () =>{
+        
+
+  //     // const thumbnail = location.state.thumbnail;
+  //     // console.log(thumbnail.thumbnail)
+  //     // console.log(thumbnail.thumbnail[0])
+  //     // const data = { img : thumbnail.thumbnail[0], index : 0 }
+  //     // console.log(data)
+  //     // handleThumbNailClick(data) // 첫 사진을 썸네일 default로 넣어주기
+  //     // console.log(recordedVideo)
+      
+
+
+  //       // if (pick===undefined){
+  //   //   return alert('썸네일을 선택해주세요')
+  //   // }
+      
+    
+
+  //   const initFormData = new FormData(); // 저장할 곳
+
+  //   // 1. 비디오
+  //   const file = new File([recordedVideo], 'video.webm', {
+  //     type : "video/webm"
+  //   });
+  //   // console.log(file);
+  //   initFormData.append("inputFile", file, "videoFile.webm");
+
+  //   for (var pair of initFormData.entries()) {
+  //     console.log('비디오추가 : ',pair[0]+ ', ' + pair[1]); 
+  // }
+
+
+  //   // 2. 선택한 썸네일
+  //   // pick.img
+  //     // 이미지 보내는 법
+  //   // fetch(pick)
+  //   let tmp
+  //   fetch(pick)
+  //     .then((res) => res.blob())
+  //     .then((blob2) => {
+  //       const NewFile = new File([blob2], "video_thumbnail", {
+  //         type: "image/png"
+  //       });
+  //       tmp = NewFile
+  //       // setPickedThumbnail(NewFile);
+
+  //     })
+  //     .catch((err) => {
+  //       alert("실패");
+  //       console.log(err)
+  //     });
+
+  //   console.log(tmp)
+  //   // console.log(pickedThumbnail)
+   
+  //   initFormData.append("inputFile",tmp,"image.png")
+  //   // await formData.append("inputFile",pickedThumbnail,"image.png")
+    
+  //   for (var pair of initFormData.entries()) {
+  //     console.log('이미지추가 : ',pair[0]+ ', ' + pair[1]); 
+  // }
+
+
+
+    
+  //   // 3. 해시태그
+  //   const jsonData = JSON.stringify({
+  //     scope : "PUBLIC",
+  //     userId : 25,
+  //     musicId : 66,
+  //     clear : true,
+      
+  //     tagList: custom
+  //   })
+    
+  //   setJsonCustom(jsonData)
+    
+  //   const blob3 = new Blob([jsonCustom], {type : "application/json"});
+  //   initFormData.append("challengeRequest", blob3, 'sampleJson'); 
+
+    
+  //   for (var pair of initFormData.entries()) {
+  //     console.log('json추가 : ',pair[0]+ ', ' + pair[1]); 
+  // }
+
+
+  // setFormData(initFormData)
+
+  //     // uploadToServer()
+  //   }
+//--------------------------------------------------------------------------
+  // , []  )
+  // console.log(location);
+ 
+
 
 
 
@@ -110,16 +244,19 @@ function UpLoad() {
     { id: '2', type: 'nickname', className: 'nickname' },
   ]);
 
-  const [pick, setPick] = useState(0);
+
+
 
   const [custom, setCustom] = useState([{ id: '5', type: 'planetDhance' }]);
   const handleDelete = (i) => {
     setCustom(custom.filter((custom, index) => index !== i));
   };
 
+
   const handleAddition = (tag) => {
     setCustom([...custom, tag]);
   };
+
 
   const handleDrag = (tag, currPos, newPos) => {
     const newTags = custom.slice();
@@ -130,11 +267,15 @@ function UpLoad() {
     // re-render
     setCustom(newTags);
   };
-  // const [imgList, setImgList] = useState([img]);
   const handleTagClick = (index) => {
     console.log('The tag at index ' + index + ' was clicked');
   };
-  
+
+
+
+
+
+
   const settings = {
     dots: true,
     slidesToShow: 2,
@@ -152,19 +293,140 @@ function UpLoad() {
   };
 
   const handleThumbNailClick = (data) => {
-    setPick(data);
+    const img = data.img
+    setPick(img);
     console.log(pick);
+    // console.log(pick.img);   // base64로 challenge page의 사진과 똑같은 형식
   };
+
   const [selected, setSelected] = useState(false)
   useEffect(() => {
     //axios
   }, []);
   const [currentSlide, setCurrentSlide] = useState(0);
 
+
+  // -------------------------------------------------------------------------
+  //
+  //  서버로 전송
+  //
+  //------------------------------------------------------------------------
+
+
+  const [jsonCustom, setJsonCustom] = useState()
+
+
+  const uploadToServer = async () => {
+
+
+  //   // if (pick===undefined){
+  //   //   return alert('썸네일을 선택해주세요')
+  //   // }
+
+
+  //   const formData = new FormData(); // 저장할 곳
+
+  //   // 1. 비디오
+  //   const file = await new File([recordedVideo], 'video.webm', {
+  //     type : "video/webm"
+  //   });
+  //   // console.log(file);
+  //   await formData.append("inputFile", file, "videoFile.webm");
+
+  //   for (var pair of formData.entries()) {
+  //     console.log('비디오추가 : ',pair[0]+ ', ' + pair[1]); 
+  // }
+
+
+  //   // 2. 선택한 썸네일
+  //   // pick.img
+  //     // 이미지 보내는 법
+  //   // fetch(pick)
+  //   let tmp
+  //   await fetch(pick)
+  //     .then((res) => res.blob())
+  //     .then((blob2) => {
+  //       const NewFile = new File([blob2], "video_thumbnail", {
+  //         type: "image/png"
+  //       });
+  //       tmp = NewFile
+  //       // setPickedThumbnail(NewFile);
+
+  //     })
+  //     .catch((err) => {
+  //       alert("실패");
+  //       console.log(err)
+  //     });
+
+  //   console.log(tmp)
+  //   // console.log(pickedThumbnail)
+   
+  //   await formData.append("inputFile",tmp,"image.png")
+  //   // await formData.append("inputFile",pickedThumbnail,"image.png")
+    
+  //   for (var pair of formData.entries()) {
+  //     console.log('이미지추가 : ',pair[0]+ ', ' + pair[1]); 
+  // }
+
+
+
+    
+  //   // 3. 해시태그
+  //   const jsonData = JSON.stringify({
+  //     scope : "PUBLIC",
+  //     userId : 25,
+  //     musicId : 66,
+  //     clear : true,
+      
+  //     tagList: custom
+  //   })
+    
+  //   setJsonCustom(jsonData)
+    
+  //   const blob3 = await new Blob([jsonCustom], {type : "application/json"});
+  //   await formData.append("challengeRequest", blob3, 'sampleJson'); 
+
+    
+  //   for (var pair of formData.entries()) {
+  //     console.log('json추가 : ',pair[0]+ ', ' + pair[1]); 
+  // }
+
+    
+    
+    
+    // 4. 서버로 전송
+   
+    console.log('axios')
+    
+    const inputFile = formData
+
+    axios
+    .post("https://i7d201.p.ssafy.io/api/video/upload", inputFile)  // 최종적으로 진짜로 보내는 주소
+    .then((res) => {
+      console.log(res);
+      console.log('성공')
+    })
+    .catch((err) => {
+      alert("실패");
+      console.log(err)
+    });
+
+  }
+
+
+
+
+
+
+
+
+
+
+  
   return (
     <div>
      
-
+      {/* thumbnail */}
       <Container>
         <h1>Thumbnails</h1>
         <StyledSlider
@@ -185,8 +447,10 @@ function UpLoad() {
           }}
           centerPadding={'50px'}
         >
+    
+          {/* 기존 */}
           {/* {[...imageList].map((image, i) => { */}
-          {[...imageList].map((image, i) => {
+          {thumbnail.thumbnail.map((image, i) => {
             return (
               <div
                 onClick={() => {
@@ -206,6 +470,9 @@ function UpLoad() {
           })}
         </StyledSlider>
       </Container>
+
+
+      {/* private */}
       <ToggleButton
         value="check"
         selected={selected}
@@ -214,6 +481,9 @@ function UpLoad() {
         }}
       ><CheckIcon /> private
       </ToggleButton>
+
+
+      {/* Tags */}
       <h1> Tags </h1>
       <div>
         <ReactTags
@@ -240,8 +510,14 @@ function UpLoad() {
           autocomplete
         />
       </div>
+
+      {/* Back / upload 버튼 */}
+      <div>
       <button>back</button>
-      <button>upload</button>
+      <button onClick={uploadToServer}>uploadrrrr</button>
+      {/* <button>upload</button> */}
+
+      </div>
     </div>
   );
 }
