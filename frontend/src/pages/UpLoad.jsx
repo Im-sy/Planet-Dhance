@@ -32,20 +32,6 @@ const img1 = 'https://picsum.photos/1400/1200';
 
 
 
-// const imageList = [
-//   img1,
-//   img1,
-//   img1,
-//   img1,
-//   img1,
-//   img1,
-//   img1,
-//   img1,
-//   img1,
-//   img1,
-//   img1,
-// ];
-
 const Container = styled.div`
   overflow: hidden;
 `;
@@ -212,7 +198,6 @@ function UpLoad() {
 
       console.log(custom);
       const jsonData = JSON.stringify({
-        // scope : "PUBLIC",
         scope : selected,
         userId : 25,
         musicId : 66,
@@ -477,15 +462,15 @@ function UpLoad() {
 
       {/* Back / upload 버튼 */}
       <div>
-        <Stack direction="row" spacing={2}>
-          <Button variant="outlined" href="/challenge">Prev</Button>
+        <Stack direction="row" spacing={2} style={{justifyContent: 'center'}} sx={{margin:"1rem"}}>
+          <Button variant="outlined" sx={{color:"white"}} href="/challenge" >Prev</Button>
           {/* <Button variant="outlined" href="/music/{musicId}/challenge/{userId}">Prev</Button> */}
-          <Button variant="outlined" onClick={uploadToServer} href="/" disabled>   Upload     </Button>
+          <Button variant="outlined" onClick={uploadToServer} sx={{color:"white"}} href="/" >   Upload     </Button>
           {/* <Button variant="outlined" href="/video/{선택한비디오아이디}/{이전페이지}/{로그인한유저아이디}">   Upload     </Button> */}
         </Stack>
 
-      <button>back</button>
-      <button onClick={uploadToServer}>uploadrrrr</button>
+      {/* <button>back</button>
+      <button onClick={uploadToServer}>uploadrrrr</button> */}
       {/* <button>upload</button> */}
 
       </div>

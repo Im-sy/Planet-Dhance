@@ -75,7 +75,7 @@ export default function SongPageTabs(tabsList: tabsListProps) {
             textColor="inherit"
           >
             <Tab label="Hit" value="1" />
-            <Tab label="Lastest" value="2" />
+            <Tab label="Latest" value="2" />
           </TabList>
         </Box>
 

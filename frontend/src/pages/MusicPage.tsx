@@ -214,7 +214,7 @@ export default function SongPage() {
       </div>
 
       <div>
-        <h3 style={mvLetterStyle}>MV</h3>
+        {/* <h3 style={mvLetterStyle}>MV</h3> */}
         <ReactPlayer
           className="react-player"
           // width="99.5vw"
