@@ -39,7 +39,7 @@ export default function NavBar(props: navProps) {
 
   return (
     <div>
-      <Paper sx={{ position: 'fixed', bottom: 0, width: '100%' }} elevation={3}>
+      <Paper sx={{ position: 'fixed', bottom: 0, width: '98%' }} elevation={3}>
         <BottomNavigation
           style={{ backgroundColor: '#231955' }}
           showLabels

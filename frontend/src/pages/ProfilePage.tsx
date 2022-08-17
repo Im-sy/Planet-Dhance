@@ -125,21 +125,21 @@ export default function ProfilePage() {
       {/* 업적 */}
       {/* <div style={{ marginTop : 30, marginLeft : 10, marginBottom : 10, marginRight : 10 }}> */}
       <div style={{ marginTop : 10, marginLeft : 10, marginBottom : 10, marginRight : 10 }}>
-        <h2 style={{ fontSize: '14px'}}>Achievments</h2>
+        <h2 style={{ fontSize: '22px'}}>Achievments</h2>
         <MyPageAchievements clear={profileInfo?.clearCnt} />
+        <hr />
       </div>
 
       {/* clear한 곡들  */}
-      <div style={{  marginLeft : 10, marginBottom : 10, marginRight : 10 }}>
-        <h2 style={{ fontSize: '14px'}}>Cleared Songs</h2>
+      <div style={{  marginLeft : 10, marginBottom : 10, marginRight : 10,}}>
+        <h2 style={{ fontSize: '22px'}}>Cleared Songs</h2>
         <MyPageClearSongs clearList={profileInfo?.clearList} />
       </div>
 
       {/* 내가 올린 영상 */}
-      <div>
-        <h2 style={{ fontSize: '14px'}}>My Videos</h2>
-        {/* <SongPageGridView videoList={profileInfo?.videoList?.content} prevPage={profileInfo?.prevPage} /> */}
-        <SongPageGridView videoList={videoList} prevPage={prevPage} />
+      <div style={{  marginLeft : 10, marginBottom : 10, marginRight : 10,}}>
+        <h2 style={{ fontSize: '22px'}}>My Videos</h2>
+        <SongPageGridView videoList={profileInfo?.videoList?.content} prevPage={profileInfo?.prevPage} />
       </div>
 
       <NavBar current={"search"} />

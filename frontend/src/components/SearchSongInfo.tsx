@@ -1,5 +1,7 @@
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom'
+import { useSelector } from 'react-redux';
+import { rootState } from '../reducer';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -25,13 +27,20 @@ function isSearchInfo(arg:any): arg is SearchInfo {
 
 export default function SearchSongInfo(props: SearchInfo | tagMusicInfo) {
   const navigate = useNavigate();
+  const {isAuthenticated, user} = useSelector(
+    (state: rootState) => state.authReducer
+  );
 
   if (isSearchInfo(props)) {
     console.log('SearchInfo')
     const { id, img, value, type, sx } = props;
     const toGo = () => {
       if (type === "NICKNAME") {
-        navigate(`/profile/${id}`);
+        if (isAuthenticated) {
+          navigate(`/profile/${id}`);
+        } else {
+          navigate('/login')
+        }
       } else {
         console.log(props);    
         navigate(`/searchsong/${type}/${id}`);        
