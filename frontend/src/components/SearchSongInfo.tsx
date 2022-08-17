@@ -69,16 +69,20 @@ export default function SearchSongInfo(props: SearchInfo | tagMusicInfo) {
             image={`https://i7d201.p.ssafy.io/${imgUrl}`}
             alt="album cover"
           />
-          <CardContent sx={{ flex: '1 0 auto' }}>
-            <Typography gutterBottom variant="h5" component="div">
+          <CardContent sx={{ flex: '1 0 auto', alignItems: 'center', backgroundColor: 'rgba(255, 255, 255, 0.1)' }} >
+            <Typography gutterBottom variant="h5" component="div" color="white" style={{margin: '0.5rem 0rem 0rem'}} >
               {title}
+              
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {artist}
+            <Typography variant="body2" color="rgba(188, 188, 188, 1)" style={{display: 'flex', justifyContent: 'space-between', margin: '0rem 0rem 0rem'}} >
+              <p>{artist}</p>
+              <p> { "Join >>" } </p>
             </Typography>
+
           </CardContent>
         </Card>
       </div>
     );
   }
 }
+
