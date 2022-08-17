@@ -30,8 +30,12 @@ export default function SearchSongInfo(props: SearchInfo | tagMusicInfo) {
     console.log('SearchInfo')
     const { id, img, value, type, sx } = props;
     const toGo = () => {
-      console.log(props);    
-      navigate(`/searchsong/${type}/${id}`);
+      if (type === "NICKNAME") {
+        navigate(`/profile/${id}`);
+      } else {
+        console.log(props);    
+        navigate(`/searchsong/${type}/${id}`);        
+      }
     }
     return (
       <div style={{ margin: '0.5rem', height:'100px' }}>

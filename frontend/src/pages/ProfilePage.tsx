@@ -9,7 +9,7 @@ import SongPageGridView from '../components/MusicPageGridView'
 import TopBar from '../components/TopBar';
 
 interface userProps {
-  userId: number,
+  id: number,
   nickname: string,
   imgUrl: string,
   nationFlag: string,
@@ -45,16 +45,59 @@ interface profileProps {
 
 export default function ProfilePage() {
   const {tagId} = useParams();
+  const [fetching, setFetching] = useState(false); // 추가 데이터를 로드하는지 아닌지를 담기위한 state
+  const [prevPage, setPrevPage] = useState<string>()
+  const [videoList, setVideoList] = useState<contentItem[]>()
+  const [pageNum, setPageNum] = useState<number>(0)
+  const [lastPage, setLastPage] = useState<boolean>(false)
+  const [profileInfo, setProfileInfo] = useState<profileProps>()
+  
   const getProfileInfo = async () => {
     const getprofile = await tagSearch(parseInt(tagId), 'nickname', 0)
     setProfileInfo(getprofile)
+    setPrevPage(getprofile.prevPage);
+    setVideoList(getprofile.videoList?.content);
   }
+
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    if (scrollTop + clientHeight + 21 >= scrollHeight && fetching === false) {
+      // 페이지 끝에 도달하면 추가 데이터를 받아온다
+      console.log('end')
+      fetchMoreSearchInfo();
+    }
+  };
+  
+  const fetchMoreSearchInfo = async () => {
+    // 추가 데이터를 로드하는 상태로 전환
+    setFetching(true);
+    console.log(lastPage)
+    if (!lastPage) {
+      const scrollsearch = await tagSearch(parseInt(tagId), 'nickname', pageNum+1)
+      console.log(scrollsearch)
+      setPageNum(pageNum + 1);
+      setPrevPage(scrollsearch.prevPage);
+      setVideoList(videoList.concat(...scrollsearch.videoList?.content))
+      setLastPage(scrollsearch.videoList?.last)
+    }
+
+    // 추가 데이터 로드 끝
+    setFetching(false)
+  };
 
   useEffect(() => {
     getProfileInfo();
   }, []);
 
-  const [profileInfo, setProfileInfo] = useState<profileProps>()
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      // scroll event listener 해제
+      window.removeEventListener("scroll", handleScroll);
+    };
+  })
 
   return (
     <div>
@@ -64,13 +107,13 @@ export default function ProfilePage() {
 
       <div>
         <MyPageProfile 
-            toId={profileInfo?.user?.userId}
-            img={profileInfo.user.imgUrl}
-            nickname={profileInfo.user.nickname}
-            introduction={profileInfo.user.introduce}
-            nation={profileInfo.user.nationFlag}
-            follower={profileInfo.user.followerCnt}
-            following={profileInfo.user.followingCnt}
+            toId={profileInfo?.user?.id}
+            img={profileInfo?.user?.imgUrl}
+            nickname={profileInfo?.user?.nickname}
+            introduction={profileInfo?.user?.introduce}
+            nation={profileInfo?.user?.nationFlag}
+            follower={profileInfo?.user?.followerCnt}
+            following={profileInfo?.user?.followingCnt}
             isFollowed={profileInfo?.follow}
             type={1}
             // 프로필 부분 패딩과 마진 설정
@@ -83,22 +126,23 @@ export default function ProfilePage() {
       {/* <div style={{ marginTop : 30, marginLeft : 10, marginBottom : 10, marginRight : 10 }}> */}
       <div style={{ marginTop : 10, marginLeft : 10, marginBottom : 10, marginRight : 10 }}>
         <h2 style={{ fontSize: '14px'}}>Achievments</h2>
-        <MyPageAchievements clear={profileInfo.clearCnt} />
+        <MyPageAchievements clear={profileInfo?.clearCnt} />
       </div>
 
       {/* clear한 곡들  */}
       <div style={{  marginLeft : 10, marginBottom : 10, marginRight : 10 }}>
         <h2 style={{ fontSize: '14px'}}>Cleared Songs</h2>
-        <MyPageClearSongs clearList={profileInfo.clearList} />
+        <MyPageClearSongs clearList={profileInfo?.clearList} />
       </div>
 
       {/* 내가 올린 영상 */}
       <div>
         <h2 style={{ fontSize: '14px'}}>My Videos</h2>
-        <SongPageGridView videoList={profileInfo.videoList?.content} prevPage={profileInfo.prevPage} />
+        {/* <SongPageGridView videoList={profileInfo?.videoList?.content} prevPage={profileInfo?.prevPage} /> */}
+        <SongPageGridView videoList={videoList} prevPage={prevPage} />
       </div>
 
-      <NavBar current={"myPage"} />
+      <NavBar current={"search"} />
     </div>
   )
 }

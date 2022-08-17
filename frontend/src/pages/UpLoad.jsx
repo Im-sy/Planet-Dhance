@@ -14,23 +14,37 @@ import ThumbnailCard from '../components/ThumbnailCard';
 
 import { useLocation } from 'react-router-dom';  // 데이터 받아오기
 
+import axios from 'axios';
 
+
+// private 체크박스 관련
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
+
+
+// 뒤로가기, 업로드 버튼 관련
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 const img1 = 'https://picsum.photos/1400/1200';
 
-const imageList = [
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-  img1,
-];
+
+
+// const imageList = [
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+//   img1,
+// ];
 
 const Container = styled.div`
   overflow: hidden;
@@ -78,31 +92,151 @@ const KeyCodes = {
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
+
+
+const privateStyle = {
+  backgroundColor: 'rgba( 255, 255, 255, 1 )',
+  color: 'rgba( 255, 255, 255, 1 )',
+}
+
 function UpLoad() {
   //-------------------------------------------------------------------------------------
   //
   //                         데이터 받아오기
   //
   //--------------------------------------------------------------------------------------
-  const location = useLocation(); 
-  // const thumbnail = location.state.thumbnail;
-  console.log(location);
+  const [imageList, setImageList] = useState([
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+    img1,
+  ]);
 
   
-  // useEffect( ()=>{
+  const location = useLocation(); 
+  const thumbnail = location.state.thumbnail;
+  const [pick, setPick] = useState(thumbnail.thumbnail[0]);
+  const [formData, setFormData] = useState()
+  // const [pick, setPick] = useState();
+  const [pickedVideoFile, setPickedVideoFile] = useState()  // 1개밖에 없지만 이름 통일성을 위해 이렇게 지음
+  const [pickedThumbnailFile, setPickedThumbnailFile] = useState()
+  const [pickedHashtagFile, setPickedHashtagFile] = useState()
+ 
+  
 
-  // } , [video])
+  const initVideo = async () => {
+    // 1. 비디오
 
-  // function checkThumbnail() {
-  //   console.log(thumbnail)
-  //   console.log(video)
-  //   console.log(dummy)
-  //   console.log(hashtags)
-  //   setTimeout(checkThumbnail)
-  // }
+    const videoBlob = location.state.videoBlob;
+    const file = await new File([videoBlob.videoFile], 'video.webm', {
+      type : "video/webm"
+    });
+    
+    await setPickedVideoFile(file)
+    console.log('video File : ',pickedVideoFile)
+  
+  }
+
+  const updatePick = async () => {
+    let tmp
+    await fetch(pick)
+      .then((res) => res.blob())
+      .then((blob2) => {
+        const NewFile = new File([blob2], "video_thumbnail", {
+          type: "image/png"
+        });
+        tmp = NewFile
+        console.log('ThumbnailFile',tmp)
+      })
+      .catch((err) => {
+        alert("실패");
+        console.log(err)
+      });
+
+    setPickedThumbnailFile(tmp)
+  };
+
+  const updateHashTag = async () => {
+    // private 유무 판정
+    // if (selected===false){
+    //   setIstPrivate('PUBLIC')
+    // }else{
+    //   setIstPrivate('PRIVATE')
+    // }
+    console.log(selected)
+    console.log(custom)
+    // JSON 만들기
+    const jsonData = JSON.stringify({
+      // scope : "PUBLIC",
+      scope : selected,
+      userId : 25,
+      musicId : 66,
+      clear : true,
+      tagList: custom
+    })
+    console.log('jsonData',jsonData)
+        
+    const blob3 = await new Blob([jsonData], {type : "application/json"});
+    setPickedHashtagFile(blob3)
+    console.log("HashTagFile", blob3)
+  }
 
 
 
+  useEffect(
+    () =>{
+      initVideo()
+      updatePick()
+      updateHashTag()
+        console.log('video File : ',pickedVideoFile)
+      }
+
+      , []  )
+
+
+      console.log(location);
+      
+      
+      const [custom, setCustom] = useState([{ id: '5', type: 'planetDhance' }]);
+      const [selected, setSelected] = useState('PUBLIC')
+
+  useEffect(  () => {
+    async function tmp() {
+
+      console.log(custom);
+      const jsonData = JSON.stringify({
+        // scope : "PUBLIC",
+        scope : selected,
+        userId : 25,
+        musicId : 66,
+        clear : true,
+        tagList: custom
+      })
+      console.log('jsonData',jsonData)
+          
+      const blob3 = await new Blob([jsonData], {type : "application/json"});
+      setPickedHashtagFile(blob3)
+      console.log("HashTagFile", blob3)
+    }
+    tmp()
+  }, [custom,selected])
+
+
+  // useEffect( () => {
+  //   console.log(selected);
+  // }, [selected])
+
+  
+
+  
+  
   const [tags, setTags] = useState([
     { id: '1', type: 'song', className: 'song' },
     { id: '2', type: 'artist', className: 'artist' },
@@ -110,16 +244,22 @@ function UpLoad() {
     { id: '2', type: 'nickname', className: 'nickname' },
   ]);
 
-  const [pick, setPick] = useState(0);
+  
 
-  const [custom, setCustom] = useState([{ id: '5', type: 'planetDhance' }]);
+
   const handleDelete = (i) => {
     setCustom(custom.filter((custom, index) => index !== i));
   };
 
-  const handleAddition = (tag) => {
+
+  const handleAddition =  (tag) => {
+    console.log('before setCustom tag', tag)
     setCustom([...custom, tag]);
+    console.log('after setCustom : ', custom)
+    updateHashTag()  // 해시태그 JSON 최신화
+    
   };
+
 
   const handleDrag = (tag, currPos, newPos) => {
     const newTags = custom.slice();
@@ -130,11 +270,15 @@ function UpLoad() {
     // re-render
     setCustom(newTags);
   };
-  // const [imgList, setImgList] = useState([img]);
   const handleTagClick = (index) => {
     console.log('The tag at index ' + index + ' was clicked');
   };
-  
+
+
+
+
+
+
   const settings = {
     dots: true,
     slidesToShow: 2,
@@ -152,19 +296,81 @@ function UpLoad() {
   };
 
   const handleThumbNailClick = (data) => {
-    setPick(data);
+    const img = data.img
+    setPick(img);
     console.log(pick);
+    updatePick()  // 썸네일 최신화
+    // console.log(pick.img);   // base64로 challenge page의 사진과 똑같은 형식
   };
-  const [selected, setSelected] = useState(false)
+
+ 
+
   useEffect(() => {
     //axios
   }, []);
   const [currentSlide, setCurrentSlide] = useState(0);
 
+
+  // -------------------------------------------------------------------------
+  //
+  //  서버로 전송
+  //
+  //------------------------------------------------------------------------
+
+
+
+// video만 가져온 후, 다른 것들 넣기
+  const uploadToServer = async () => {
+
+    const formData = new FormData();
+
+    // let tmpFormData = formData
+    console.log('Video File',pickedVideoFile)
+    console.log('Thumbnail File',pickedThumbnailFile)
+    console.log('HashTagFile',pickedHashtagFile)
+  
+    await formData.append("inputFile",pickedVideoFile,"videoFile.webm")
+    await formData.append("inputFile",pickedThumbnailFile,"image.png")
+    await formData.append("challengeRequest", pickedHashtagFile, 'sampleJson'); 
+
+    
+    // 4. 서버로 전송
+   
+    console.log('axios')
+    
+    const inputFile = formData
+    for (var pair of inputFile.entries()) {
+      console.log('최종데이터 : ',pair[0]+ ', ' + pair[1]); 
+  }
+
+    axios
+    .post("https://i7d201.p.ssafy.io/api/video/upload", inputFile)  // 최종적으로 진짜로 보내는 주소
+    .then((res) => {
+      console.log(res);
+      console.log('성공')
+    })
+    .catch((err) => {
+      alert("실패");
+      console.log(err)
+    });
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+  
   return (
     <div>
      
-
+      {/* thumbnail */}
       <Container>
         <h1>Thumbnails</h1>
         <StyledSlider
@@ -175,18 +381,19 @@ function UpLoad() {
           centerMode={true}
           beforeChange={(slide, newSlide) => {
             // const curImg = imageList.find((img, index) => {
-            const curImg = imageList.find((img, index) => {
+            const curImg = thumbnail.thumbnail.find((img, index) => {
               if (index === newSlide) {
                 handleThumbNailClick({ img: img, index: index });
               }
             });
-            // console.log(newSlide);
             setCurrentSlide(newSlide);
           }}
           centerPadding={'50px'}
         >
+    
+          {/* 기존 */}
           {/* {[...imageList].map((image, i) => { */}
-          {[...imageList].map((image, i) => {
+          {thumbnail.thumbnail.map((image, i) => {
             return (
               <div
                 onClick={() => {
@@ -206,14 +413,41 @@ function UpLoad() {
           })}
         </StyledSlider>
       </Container>
-      <ToggleButton
+
+
+      {/* private */}
+      {/* <ToggleButton
         value="check"
         selected={selected}
         onChange={() => {
-          setSelected(!selected);
+          setSelected(!selected)
+          updateHashTag();
         }}
+        sytle={privateStyle}
       ><CheckIcon /> private
-      </ToggleButton>
+      </ToggleButton> */}
+    
+      <div style={{display:'flex', justifyContent:'end'}}>
+        <FormGroup>
+          <FormControlLabel 
+            control={<Checkbox
+                      style={{
+                        color: "rgba(255,255,255,0.5)"
+                      }}
+                      onChange={async () => {
+                      // setSelected(selected===false?!selected)
+                      setSelected(selected==='PRIVATE'? 'PUBLIC':'PRIVATE' )
+                      // setTimeout(updateHashTag,5000)
+                      updateHashTag();
+                      }}/>} 
+            Style={{color: 'blue'}}
+            label="private" />
+        </FormGroup>
+
+      </div>
+
+
+      {/* Tags */}
       <h1> Tags </h1>
       <div>
         <ReactTags
@@ -240,8 +474,21 @@ function UpLoad() {
           autocomplete
         />
       </div>
+
+      {/* Back / upload 버튼 */}
+      <div>
+        <Stack direction="row" spacing={2}>
+          <Button variant="outlined" href="/challenge">Prev</Button>
+          {/* <Button variant="outlined" href="/music/{musicId}/challenge/{userId}">Prev</Button> */}
+          <Button variant="outlined" onClick={uploadToServer} href="/" disabled>   Upload     </Button>
+          {/* <Button variant="outlined" href="/video/{선택한비디오아이디}/{이전페이지}/{로그인한유저아이디}">   Upload     </Button> */}
+        </Stack>
+
       <button>back</button>
-      <button>upload</button>
+      <button onClick={uploadToServer}>uploadrrrr</button>
+      {/* <button>upload</button> */}
+
+      </div>
     </div>
   );
 }

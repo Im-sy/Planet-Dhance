@@ -11,6 +11,7 @@ import navFav from '../styles/navbtns/navFav.png';
 import navHome2 from '../styles/navbtns/navHome2.png';
 import navSearch from '../styles/navbtns/navSearch.png';
 import navExplore from '../styles/navbtns/navExplore.png';
+import alien from '../styles/navbtns/alien.png';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { styled } from '@mui/material/styles';
 import '../styles/NavBar.css';
@@ -67,7 +68,7 @@ export default function NavBar(props: navProps) {
             component={Link}
             to="/random"
             label="Explore"
-            icon={<img src={navExplore} alt="navExplore" width="50"></img>}
+            icon={<img src={navExplore} alt="navExplore" width="40"></img>}
           />
           {isAuthenticated ? (
             <MuiBottomNavigationAction
@@ -95,7 +96,7 @@ export default function NavBar(props: navProps) {
               to={'/mypage'}
               label="My"
               icon={
-                <AccountCircleIcon color="secondary" sx={{ fontSize: 30 }} />
+                <img src={alien} alt="navFav" width="30"></img>
               }
             />
           ) : (
@@ -105,7 +106,7 @@ export default function NavBar(props: navProps) {
               to={'/login'}
               label="My"
               icon={
-                <AccountCircleIcon color="secondary" sx={{ fontSize: 30 }} />
+                <img src={alien} alt="navFav" width="30"></img>
               }
             />
           )}

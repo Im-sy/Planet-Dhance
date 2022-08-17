@@ -35,7 +35,9 @@ import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheck
 //
 //---------------------------------------------------------------------------
 import * as tmPose from '@teachablemachine/pose';
-import song from "./static/song1/temp1.json";
+// import song from "./static/song1/temp1.json";
+// import song from "./static/pop/chart.json";
+import song from "./static/PtoD/chart.json";
 
 //--------------------------------------------------------------
 //
@@ -333,7 +335,8 @@ const [uploadData, setUploadData] = useState([])
     console.log({ blob });
     
     
-    
+    setVideoFile(blob)
+
     const file =  new File([blob], 'video.webm', {
       type : "video/webm"
     });
@@ -343,7 +346,7 @@ const [uploadData, setUploadData] = useState([])
     
     const formData = new FormData();
     formData.append("inputFile", file, "videoFile.webm");
-    setVideoFile(blob) // 보낼 비디오 저장
+    // setVideoFile(blob) // 보낼 비디오 저장
 
 
     // 썸네일
@@ -363,7 +366,7 @@ const [uploadData, setUploadData] = useState([])
     console.log(uploadData);
     console.log(videoFile);
     
-    
+    // 이미지 보내는 법
     // fetch(thumbnail[0])
     //   .then((res) => res.blob())
     //   .then((blob) => {
@@ -376,18 +379,7 @@ const [uploadData, setUploadData] = useState([])
     //     const blob3 = new Blob([jsonData], {type : "application/json"});
     //     formData.append("challengeRequest", blob3, 'sampleJson'); 
     //   }).then(()=>{
-    //   //   axios
-    //   // // .post("http://i7d201.p.ssafy.io:8081/file/upload", formData)
-    //   // // .post("http://i7d201.p.ssafy.io/api/file/upload", formData)
-    //   // // .post("https://i7d201.p.ssafy.io/api/file/upload/file_json", formData)
-    //   // .post("https://i7d201.p.ssafy.io/api/video/upload", formData)  // 최종적으로 진짜로 보내는 주소
-    //   // .then((res) => {
-    //   //   console.log(res);
-    //   // })
-    //   // .catch((err) => {
-    //   //   alert("실패");
-    //   //   console.log(err)
-    //   // });
+   
     //   console.log([blob ,videoBlob]);
     //   setUploadData([blob ,videoBlob])
     //   });
@@ -443,6 +435,7 @@ const [uploadData, setUploadData] = useState([])
         }
       ]      
     })
+    console.log(jsonData)
     
     // ---------------------test용 json 보내는 파일 명
     // const blob3 = new Blob([jsonData], {type : "application/json"});
@@ -540,6 +533,10 @@ const { url, playing, muted, played, loaded } = playState;
 const handlePlayPause = () => {
   setPlayState({ ...playState, playing: !playing });
 
+};
+const handleToggleMuted = () => {
+  console.log('muted', muted);
+  setPlayState({ ...playState, muted: !muted });
 };
 
 
@@ -835,30 +832,14 @@ const Ref = useRef(null);
     // }
     
 
-    // navigate('/test', {
-    //   // state : {
-    //   //   thumbnail : {thumbnail},
-    //   //   dummy : 1,
-    //   //   video : {videoFile},
-    //   //   hashtags :[ 'hash1', 'hash2','hash3']
-    //   // }
-    //   state : {
-    //     thumbnail : thumbnail[0],
-    //     thumbnail2 : thumbnail,
-    //     dummy : 123,
-    //     video : videoFile,
-    //     hashtags :[ 'hash1', 'hash2','hash3'],
-    //     now : {now},
-    //     fliped : {fliped} 
-    //   }
-    // })
 
-    // navigate('/test', {
-    //   state : {
-    //     file : {inputFile}
-    //   }
-    // }
-    // )
+    navigate('/test', {
+      state : {
+        videoBlob : {videoFile},
+        thumbnail : {thumbnail}
+      }
+    }
+    )
 
 
 
@@ -993,6 +974,7 @@ const [fliped, setFliped] = useState(false)
     // console.log([...thumbnail])
     setThumbnail([...thumbnail, imgURL]);
     console.log(thumbnail) 
+    console.log(typeof(thumbnail)) 
     // console.log(thumbnail[0]) 
     };
 // 썸네일 관련 끝----------------------------------------------------------------------------------------------------------
@@ -1010,7 +992,7 @@ const [fliped, setFliped] = useState(false)
 
 
 // const URL = "./teachable2/my_model/";
-const URL = "./static/song1/";
+const URL = "./static/PtoD/";
 // const URL = "http://i7d201.p.ssafy.io/resource/music/model/test/"
   let model : any
   let ctx : any
@@ -1337,7 +1319,7 @@ return (
           width={reactPlayer[1]}
           height={reactPlayer[2]}
           style={reactPlayerBackground}
-          url={myVideo10} 
+          url={myVideo7} 
           playing={playing}
           muted={muted}
           onPlay={handlePlay}
@@ -1407,6 +1389,14 @@ return (
           aria-label={playing ? 'pause' : 'play'}
         >
           {playing ? <PauseIcon style = { now==='mode' ?  playPauseStyle : notMode  }/> : <PlayArrowIcon style = { now==='mode' ?  playPauseStyle : notMode  }/>}
+        </IconButton>
+
+        <IconButton
+          onClick={handleToggleMuted}
+          aria-label={muted ? 'off' : 'on'}
+          style = { now==='mode' ? muteStyle : notMode }
+        >
+          {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
         </IconButton>
 
 
