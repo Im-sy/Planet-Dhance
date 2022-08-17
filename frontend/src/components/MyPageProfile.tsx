@@ -48,7 +48,7 @@ export default function MyPageProfile(props: MyPageProfileProps) {
   };
 
   const { toId, img, nickname, introduction, nation, follower, following, isFollowed, type, sx } = props;
-  console.log("MyPageProfile", toId);
+  console.log("img", `http://i7d201.p.ssafy.io/${img}`)
   if (typeof sx === 'undefined') {
     let sx = { display: 'flex', flexDirection: 'column', width: '7rem' }
     return (
@@ -57,7 +57,7 @@ export default function MyPageProfile(props: MyPageProfileProps) {
           <CardMedia
             sx={sx}
             component="img"
-            image={img}
+            image={`http://i7d201.p.ssafy.io/${img}`}
             alt="profile img"
           />
           <StyledCardContent id='dfd' sx={{ flex: '1 0 auto' }}>
@@ -100,7 +100,7 @@ export default function MyPageProfile(props: MyPageProfileProps) {
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "20px 20px 20px 0px", textAlign: "center" }}>
             <div id="profile_img" style={{ display : "inline-block" }}>
-              <Avatar alt={nickname} src={img}   sx={{ width: "100px", height: "100px" }} />
+              <Avatar alt={nickname} src={`http://i7d201.p.ssafy.io/${img}`}   sx={{ width: "100px", height: "100px" }} />
 
             </div>
             {/* follower */}
