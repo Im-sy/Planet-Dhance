@@ -16,6 +16,7 @@ import { rootState } from '../reducer';
 import '../styles/tailwind_reset.css';
 import {addHit} from '../components/API/ComService'
 
+
 const playerStyle: CSSProperties = {
   position: 'absolute',
   width: '96vw',
@@ -58,6 +59,7 @@ interface playStateProps {
   played: number;
 }
 
+
 function PlayingPage(props: playProps) {
   const { isAuthenticated, user } = useSelector(
     (state: rootState) => state.authReducer
@@ -83,6 +85,7 @@ function PlayingPage(props: playProps) {
     console.log('onPause');
     setPlayState({ ...playState, playing: false });
   };
+  
   const handleProgress = (state: ReactPlayerProps) => {
     console.log(state)
     const inState = {
@@ -123,6 +126,7 @@ function PlayingPage(props: playProps) {
           onDuration={(state) => {console.log(state)}}
           onEnded={playEnd}
         />
+  
       </div>
       <GoDance musicId={videoItem.musicId}/>
       <HashTagList tagList={videoItem.tagList} />
