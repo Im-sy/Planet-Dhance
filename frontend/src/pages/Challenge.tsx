@@ -41,6 +41,16 @@ import * as tmPose from '@teachablemachine/pose';
 // import song from "./static/song1/temp1.json";
 // import song from "./static/pop/chart.json";
 import song from "./static/PtoD/chart.json";
+import song30 from "./static/30/chart.json";
+import song34 from "./static/34/chart.json";
+import song38 from "./static/38/chart.json";
+import song42 from "./static/42/chart.json";
+import song46 from "./static/46/chart.json";
+import song50 from "./static/50/chart.json";
+import song54 from "./static/54/chart.json";
+import song58 from "./static/58/chart.json";
+import song62 from "./static/62/chart.json";
+import song66 from "./static/66/chart.json";
 
 //--------------------------------------------------------------
 //
@@ -320,6 +330,11 @@ const [data, setData] = useState([]);
 const { isAuthenticated, user } = useSelector(
   (state: rootState) => state.authReducer
 );
+
+let songs = {30:song30, 34:song34, 38:song38, 42 : song42, 
+              46:song46, 50:song50, 54:song54, 58:song58, 62:song62, 66:song66}
+// console.log(songs[musicId])
+console.log(songs[30])
 
 // taglist들을 받아와서 썸네일 페이지 까지 무사히 전달해주면 됨
 useEffect(() => {
@@ -850,7 +865,7 @@ const [fliped, setFliped] = useState(false)
 //-------------------------------------------------------------------------------------
 
 // 티쳐블 머신용 사진 생성
-const URL = "./static/PtoD/";
+const URL = "./static/30/";
   let model : any
   let ctx : any
   let labelContainer : any
@@ -1114,9 +1129,9 @@ return (
           width={reactPlayer[1]}
           height={reactPlayer[2]}
           style={reactPlayerBackground}
-          // url={myVideo7} 
+          url={myVideo7} 
           // url={`https://i7d201.p.ssafy.io/music/${musicID}`}
-          url={`https://i7d201.p.ssafy.io/resource/music/guide/pop_guide.mp4`}
+          // url={`https://i7d201.p.ssafy.io/resource/music/guide/pop_guide.mp4`}
           playing={playing}
           muted={muted}
           onPlay={handlePlay}

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactPageScroller from 'react-page-scroller';
 import VideoPage from './ExplorePage';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { randomPlayVideo } from '../components/API/MusicService';
 import NavBar from '../components/NavBar'
@@ -14,9 +14,15 @@ export default function ExplorePageList() {
   const { isAuthenticated, user } = useSelector(
     (state) => state.authReducer
   );
+  const navigate = useNavigate();
   const [data, setData] = useState([0, 1, 2, 3]);
-
+  // if (!isAuthenticated){
+  //   (()=> navigate('/login'))
+  // }
   useEffect(() => {
+    if (!isAuthenticated){
+      navigate('/login')
+    }
     const getPlayList = async () => {
       const getplaylist = await randomPlayVideo(
         user.userId
