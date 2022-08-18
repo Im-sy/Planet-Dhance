@@ -28,6 +28,13 @@ import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
+
+
+
+// user관련
+import { useSelector } from 'react-redux';
+
+
 const img1 = 'https://picsum.photos/1400/1200';
 
 
@@ -107,15 +114,22 @@ function UpLoad() {
 
   
   const location = useLocation(); 
+
+  const { isAuthenticated, user } = useSelector(
+    (state) => state.authReducer
+  );
+
   const thumbnail = location.state.thumbnail;
+  const musicId = location.state.musicId.musicId
   const [pick, setPick] = useState(thumbnail.thumbnail[0]);
+  const [tags, setTags] = useState(location.state.tagList.tagList)
   const [formData, setFormData] = useState()
   // const [pick, setPick] = useState();
   const [pickedVideoFile, setPickedVideoFile] = useState()  // 1개밖에 없지만 이름 통일성을 위해 이렇게 지음
   const [pickedThumbnailFile, setPickedThumbnailFile] = useState()
   const [pickedHashtagFile, setPickedHashtagFile] = useState()
  
-  
+
 
   const initVideo = async () => {
     // 1. 비디오
@@ -162,8 +176,8 @@ function UpLoad() {
     const jsonData = JSON.stringify({
       // scope : "PUBLIC",
       scope : selected,
-      userId : 25,
-      musicId : 66,
+      userId : user.userId,
+      musicId : musicId,
       clear : true,
       tagList: custom
     })
@@ -178,6 +192,9 @@ function UpLoad() {
 
   useEffect(
     () =>{
+      console.log(location)
+      console.log(tags)
+      console.log(musicId)
       initVideo()
       updatePick()
       updateHashTag()
@@ -222,12 +239,13 @@ function UpLoad() {
 
   
   
-  const [tags, setTags] = useState([
-    { id: '1', type: 'song', className: 'song' },
-    { id: '2', type: 'artist', className: 'artist' },
-    { id: '3', type: 'nation', className: 'nation' },
-    { id: '2', type: 'nickname', className: 'nickname' },
-  ]);
+  // const [tags, setTags] = useState([
+  //   { id: '1', type: 'song11', className: 'song123' },
+  //   { id: '2', type: 'artist', className: 'artist' },
+  //   { id: '3', type: 'nation', className: 'nation' },
+  //   { id: '2', type: 'nickname', className: 'nickname' },
+  // ]);
+
 
   
 
@@ -445,7 +463,7 @@ function UpLoad() {
           readOnly
         />
         <div>
-          <br />
+          {/* <br /> */}
         </div>
         <ReactTags
           tags={custom}
@@ -465,7 +483,8 @@ function UpLoad() {
         <Stack direction="row" spacing={2} style={{justifyContent: 'center'}} sx={{margin:"1rem"}}>
           <Button variant="contained" color="secondary" sx={{color:"white"}} href="/challenge" >Prev</Button>
           {/* <Button variant="outlined" href="/music/{musicId}/challenge/{userId}">Prev</Button> */}
-          <Button variant="contained" color="secondary" onClick={uploadToServer} sx={{color:"white"}} href="/" >   Upload     </Button>
+          <Button variant="contained" color="secondary" onClick={uploadToServer} sx={{color:"white"}} >   Upload     </Button>
+          {/* <Button variant="contained" color="secondary" onClick={uploadToServer} sx={{color:"white"}} href="/mypage" >   Upload     </Button> */}
           {/* <Button variant="outlined" href="/video/{선택한비디오아이디}/{이전페이지}/{로그인한유저아이디}">   Upload     </Button> */}
         </Stack>
 

@@ -11,11 +11,13 @@ import SearchSong from './SearchSong';
 import Subscribe from './Subscribe';
 import {HashResult} from './HashResult';
 import MyPage from './MyPage';
-import ModeChallengeTimer from './Challenge';
+// import ModeChallengeTimer from './Challenge_wrong_다완성했던것';
+import TestChallenge from './Challenge';
 import Ranking from './Ranking';
 import { DanceCompare } from './DanceCompare';
 import App2 from './EmojiPlayer';
 import Upload from './UpLoad';
+// import UpLoadBackUp from './UpLoad_초기화';
 import ExplorePage from './ExplorePageList'
 import ProfilePage from './ProfilePage';
 
@@ -44,7 +46,8 @@ function AppRouter() {
         <Route path='/searchsong/:searchType/:tagId' element={<SearchSong />} />
         <Route path='/hashresult' element={<HashResult />} />
         <Route path='/mypage' element={<MyPage />} />
-        <Route path='/:musicId/challenge' element={<ModeChallengeTimer />} />
+        {/* <Route path='/:musicId/challenge' element={<ModeChallengeTimer />} /> */}
+        {/* <Route path='/:musicId/challenge' element={<TestChallenge />} /> */}
         <Route path='/login' element={<LogIn />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/ranking' element={<Ranking />} />
@@ -58,13 +61,15 @@ function AppRouter() {
 
         <Route element={<NotFound404 />} />
         {/* test */}
-        <Route path='/test' element={<Upload />} />
+        <Route path='/video/upload' element={<Upload />} />
+        {/* <Route path='/upload' element={<UpLoadBackUp />} /> */}
         <Route path='/random' element={<Random />} />
         <Route path='/:prevPage/playing/:videoId' element={<Scroll2 />} />
         <Route path='/subscribe/:prevPage/playing/:videoId' element={<Scroll2 />} />
         <Route path='/searchsong/:type/:musicId/:prevPage/playing/:videoId' element={<Scroll2 />} />
         <Route path='/songPage/:musicId/:prevPage/playing/:videoId' element={<Scroll2 />} />
         <Route path='/profile/:userId/:prevPage/playing/:videoId' element={<Scroll2 />} />
+        <Route path='/challenge' element={<TestChallenge />} />
         {/* <Route path='/:prevPage/playing/:videoId' element={<ExplorePage />} /> */}
       </Routes>
     </BrowserRouter>

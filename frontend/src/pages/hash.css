@@ -25,11 +25,11 @@
 .ReactTags__tagInput input.ReactTags__tagInputField,
 .ReactTags__tagInput input.ReactTags__tagInputField:focus {
   height: 31px;
-  margin-top: 10px;
+  margin : 10px 10px 0px 5px;
   font-size: 12px;
   border: 1px solid #eee;
   min-width: 150px;
-  width: 100%;
+  width: 97%;
   background-color: black;
 }
 
@@ -44,56 +44,56 @@
 /* Styles for selected tags */
 .ReactTags__selected span.ReactTags__tag {
   /* border: 1px solid #ddd; */
-  background: #ffffff8f;
+  background: #ffffffd0;
   color: rgb(0, 0, 0);
   font-size: 12px;
   display: inline-block;
-  padding: 5px;
+  padding: 3px 10px 3px 10px;
   margin: 0 5px;
   border-radius: 2px;
 }
 
-.ReactTags__selected span.song  {
+.ReactTags__selected span.TITLE  {
   border: 1px solid #ddd;
   background: rgb(54, 52, 52);
   color: white;
   font-size: 12px;
   display: inline-block;
-  padding: 5px;
-  margin: 0 5px;
+  padding: 3px 10px 3px 10px;
+  margin: 10px 5px;
   border-radius: 2px;
 }
 
-.ReactTags__selected span.artist {
+.ReactTags__selected span.ARTIST {
   border: 1px solid #ddd;
   background: rgb(54, 52, 52);;
   color: white;
   font-size: 12px;
   display: inline-block;
-  padding: 5px;
-  margin: 0 5px;
+  padding: 3px 10px 3px 10px;
+  margin: 7px 5px;
   border-radius: 2px;
 }
 
-.ReactTags__selected span.nation {
+.ReactTags__selected span.NATION {
   border: 1px solid #ddd;
   background: rgb(54, 52, 52);;
   color: white;
   font-size: 12px;
   display: inline-block;
-  padding: 5px;
-  margin: 0 5px;
+  padding: 3px 10px 3px 10px;
+  margin: 3px 5px;
   border-radius: 2px;
 }
 
-.ReactTags__selected span.nickname {
+.ReactTags__selected span.NICKNAME {
   border: 1px solid #ddd;
   background: rgb(54, 52, 52);;
   color: white;
   font-size: 12px;
   display: inline-block;
-  padding: 5px;
-  margin: 0 5px;
+  padding: 3px 10px 3px 10px;
+  margin: 5px 5px;
   border-radius: 2px;
 }
 
