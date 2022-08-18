@@ -48,7 +48,7 @@ export default function ExplorePageList() {
       ).then((results) => {
         console.log("results: ", results);
         console.log("results.videoList: ", results.videoList);
-        setData([...data, ...results.videoList]);
+        setData([...data, ...results.videoList.slice(1)]);
         // setPlayListInfo(results);
       })
       // setData([...data, 4, 5, 6])
