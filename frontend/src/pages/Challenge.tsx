@@ -315,7 +315,7 @@ export default function ModeChallengeTimer() {
 //   API
 //  
 //------------------------------------------------------------------------------
-const { musicID, userId } = useParams();
+const { musicId, userId } = useParams();
 const [data, setData] = useState([]);
 const { isAuthenticated, user } = useSelector(
   (state: rootState) => state.authReducer
@@ -325,7 +325,7 @@ const { isAuthenticated, user } = useSelector(
 useEffect(() => {
   const getMusic = async () => {
     const getMusic = await challenge(
-      parseInt(musicID),
+      parseInt(musicId),
       user.userId
     ).then((results) => {
       setData(results);
@@ -484,6 +484,7 @@ const handleProgress = (state: ReactPlayerProps) => {
   console.log('onProgress', inState);
   console.log('웹캠상태 :', recordWebcam.status);
   console.log('화면상태 :', now);
+  console.log('받아온 데이터',data)
   setPlayState(inState as SetStateAction<playProps>);
   
   // 영상이 재생중이고, 녹화중이면, 스냅샷찍기
@@ -1113,9 +1114,9 @@ return (
           width={reactPlayer[1]}
           height={reactPlayer[2]}
           style={reactPlayerBackground}
-          url={myVideo7} 
+          // url={myVideo7} 
           // url={`https://i7d201.p.ssafy.io/music/${musicID}`}
-          // url={`https://i7d201.p.ssafy.io/music/7`}
+          url={`https://i7d201.p.ssafy.io/resource/music/guide/pop_guide.mp4`}
           playing={playing}
           muted={muted}
           onPlay={handlePlay}
