@@ -36,7 +36,7 @@ export default function BtnLike({like, userId, videoId}: btnLikeProps) {
         '& .MuiSvgIcon-root': { fontSize: 50 },
         display: 'absolute',
         top : '51vh',
-        left: '81.5vw'
+        left: '80vw'
       }}
         {...label}
         checked={isLike}
