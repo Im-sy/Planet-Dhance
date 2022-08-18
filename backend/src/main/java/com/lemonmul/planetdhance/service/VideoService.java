@@ -43,7 +43,7 @@ public class VideoService {
      */
     public Slice<Video> findLatestVideoList(int page, int size, Music music, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByMusicAndScopeOrderByRegDateDesc(music,scope,pageable);
+        return videoRepo.findByMusicAndScopeOrderByRegDateDescIdDesc(music,scope,pageable);
     }
 
     public Slice<Video> findNextLatestVideoList(int page, int size, Long videoId,Music music, VideoScope scope){
@@ -57,7 +57,7 @@ public class VideoService {
      */
     public Slice<Video> findMusicVideoList(int page, int size, Music music, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByMusicAndScopeOrderByOrderWeightDescRegDateDesc(music,scope,pageable);
+        return videoRepo.findByMusicAndScopeOrderByOrderWeightDescRegDateDescIdDesc(music,scope,pageable);
     }
 
     public Slice<Video> findNextMusicVideoList(int page, int size, Long orderWeight, Music music, VideoScope scope){
@@ -71,12 +71,12 @@ public class VideoService {
      */
     public Slice<Video> findArtistVideoList(int page, int size, List<Music> musicList, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByMusicInAndScopeOrderByOrderWeightDescRegDateDesc(musicList,scope,pageable);
+        return videoRepo.findByMusicInAndScopeOrderByOrderWeightDescRegDateDescIdDesc(musicList,scope,pageable);
     }
 
     public Slice<Video> findNextArtistVideoList(int page, int size, Long orderWeight, List<Music> musicList, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByOrderWeightLessThanEqualAndMusicInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,musicList,scope,pageable);
+        return videoRepo.findByOrderWeightLessThanEqualAndMusicInAndScopeOrderByOrderWeightDescRegDateDescIdDesc(orderWeight,musicList,scope,pageable);
     }
 
     /**
@@ -85,12 +85,12 @@ public class VideoService {
      */
     public Slice<Video> findCustomVideoList(int page, int size, List<VideoTag> videoTagList, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(videoTagList,scope,pageable);
+        return videoRepo.findByVideoTagsInAndScopeOrderByOrderWeightDescRegDateDescIdDesc(videoTagList,scope,pageable);
     }
 
     public Slice<Video> findNextCustomVideoList(int page, int size, Long orderWeight,List<VideoTag> videoTagList, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByOrderWeightLessThanEqualAndVideoTagsInAndScopeOrderByOrderWeightDescRegDateDesc(orderWeight,videoTagList,scope,pageable);
+        return videoRepo.findByOrderWeightLessThanEqualAndVideoTagsInAndScopeOrderByOrderWeightDescRegDateDescIdDesc(orderWeight,videoTagList,scope,pageable);
     }
 
     /**
@@ -121,7 +121,7 @@ public class VideoService {
      */
     public Slice<Video> findLikeVideoList(int page, int size, List<Like> likeList){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByLikesInOrderByRegDateDesc(likeList,pageable);
+        return videoRepo.findByLikesInOrderByRegDateDescIdDesc(likeList,pageable);
     }
 
     public Slice<Video> findNextLikeVideoList(int page, int size,Long videoId, List<Like> likeList){
@@ -138,9 +138,9 @@ public class VideoService {
         return videoRepo.findByUserAndScopeOrderByRegDateDesc(user,scope,pageable);
     }
 
-    public Slice<Video> findNextUserVideoList(int page, int size, Long orderWeight,User user, VideoScope scope){
+    public Slice<Video> findNextUserVideoList(int page, int size, Long videoId,User user, VideoScope scope){
         Pageable pageable=PageRequest.of(page,size);
-        return videoRepo.findByOrderWeightLessThanEqualAndUserAndScopeOrderByRegDateDesc(orderWeight,user,scope,pageable);
+        return videoRepo.findByIdLessThanEqualAndUserAndScopeOrderByRegDateDescIdDesc(videoId,user,scope,pageable);
     }
 
     /**
