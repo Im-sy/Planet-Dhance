@@ -2,6 +2,7 @@ import React, { CSSProperties, SetStateAction, useEffect, useState } from 'react
 import { useParams } from 'react-router-dom';
 import { videoListProps } from "./MyPage";
 import { musicList } from '../components/API/MusicService';
+import GoDance from '../components/UI/goDance';
 import Grid from '@mui/material/Grid';
 import ActionAreaCard from '../components/Card';
 import SongPageTabs from '../components/MusicPageTab';
@@ -266,7 +267,7 @@ export default function SongPage() {
       </div>
 
       <SongPageTabs latestList={musicInfo?.latestList} hitlikeList={musicInfo?.hitlikeList} />
-
+      <GoDance musicId={parseInt(songId)} sx={{position: 'fixed', bottom: '80px', right: '5vw'}}/>
       {/* Navbar */}
       <NavBar current={"search"}/>
     </div>

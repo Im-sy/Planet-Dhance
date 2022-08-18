@@ -1513,7 +1513,7 @@ return (
 
       {/* 곡선택페이지로 뒤로가기 */}
         <ArrowBack
-          onClick={goToUpload}
+          onClick={()=>{navigate(-1)}}
           // onClick={backToSongPage}
           aria-label={playing ? 'pause' : 'play'}
           style = { now==='mode' ?  backToSongPageStyle : notMode  }
