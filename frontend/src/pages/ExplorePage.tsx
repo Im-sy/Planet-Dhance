@@ -17,7 +17,7 @@ import '../styles/tailwind_reset.css';
 const playerStyle: CSSProperties = {
   position: 'absolute',
   width: '96vw',
-  height: '88vh',
+  height: '80vh',
   transform: 'scaleX(-1)',
   backgroundColor: 'black',
   // backgroundColor: 'green',
