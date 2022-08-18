@@ -146,7 +146,8 @@ const scaled: CSSProperties = {
 const subcamStyle: CSSProperties = {
   position: 'absolute',
   zIndex : '1',
-  top: '5.5vh',
+  // top: '5.5vh',
+  top: '2.5vh',
   left : '65vw',
   width: '35vw',
   height: '30vh',
@@ -165,7 +166,7 @@ const maincamStyle: CSSProperties = {
 
 const subplayerStyle: CSSProperties = {
   position: 'absolute',
-  top : '9vh',
+  top : '5vh',
   left : '65vw',
   width: '35vw',
   height: '5vh',
