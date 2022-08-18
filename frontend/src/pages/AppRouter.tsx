@@ -44,7 +44,7 @@ function AppRouter() {
         <Route path='/searchsong/:searchType/:tagId' element={<SearchSong />} />
         <Route path='/hashresult' element={<HashResult />} />
         <Route path='/mypage' element={<MyPage />} />
-        <Route path='/challenge' element={<ModeChallengeTimer />} />
+        <Route path='/:musicId/challenge' element={<ModeChallengeTimer />} />
         <Route path='/login' element={<LogIn />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/ranking' element={<Ranking />} />
