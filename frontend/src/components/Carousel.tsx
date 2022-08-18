@@ -40,7 +40,7 @@ export default class Carousel extends Component {
               type="TITLE"
             />
             <ToSearchCard id={60}
-              url="/resource/carousel/latest.jpg"
+              url="/resource/carousel/hotsong_hot.jpg"
               width="95.5%"
               height="50%"
               type="TITLE"
