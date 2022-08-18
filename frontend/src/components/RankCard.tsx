@@ -28,9 +28,10 @@ export default function SearchSongInfo(props: SearchInfo) {
             image={"https://i7d201.p.ssafy.io/"+img}
             alt="album cover"
           />
-          <CardContent sx={{ flex: '1 0 auto', padding: '0px',paddingBottom:'0 !important'    }}>
-            <Typography gutterBottom variant="h6" component="div" sx={{ padding : '0px'}} style={{fontFamily: 'Titillium Web'}}>
-              {value}     {point}
+          <CardContent sx={{ flex: '1 0 auto', padding: '0px',paddingBottom:'0 !important'   }}>
+            <Typography variant="h6" component="div" sx={{ padding : '0px', display: 'flex', justifyContent: 'space-between'}} style={{fontFamily: 'Titillium Web', color: 'white'}}>
+                <div>{value}</div>
+                <div style={{ margin: "0rem 0.5rem"}}>{point}</div>
             </Typography>
           </CardContent>
         </Card>
