@@ -13,7 +13,8 @@ export default function GoDance({ musicId }: danceProps) {
 
   const handleClick = () => {
     // console.log("let's dance")
-    navigate(`/${musicId}/challenge`);     
+    navigate("/challenge",
+          {state: { musicId : {musicId} } });     
     }
   
   return (

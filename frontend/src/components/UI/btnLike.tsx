@@ -33,10 +33,10 @@ export default function BtnLike({like, userId, videoId}: btnLikeProps) {
         '&.Mui-checked': {
           color: pink[600],
         },
-        '& .MuiSvgIcon-root': { fontSize: 50 },
+        '& .MuiSvgIcon-root': { fontSize: 60 },
         display: 'absolute',
-        top : '51vh',
-        left: '81.5vw'
+        top : '42.5vh',
+        left: '78.5vw'
       }}
         {...label}
         checked={isLike}
