@@ -20,7 +20,7 @@ export default function ToSearchCard(props: cardProps) {
     if (type === 'ARTIST'){
       navigate(`/searchsong/ARTIST/${id}`);
     }else{
-      navigate(`/searchsong/TITTLE/${id}`);
+      navigate(`/searchsong/TITLE/${id}`);
     }
 
   }

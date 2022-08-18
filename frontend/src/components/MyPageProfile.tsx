@@ -133,11 +133,11 @@ export default function MyPageProfile(props: MyPageProfileProps) {
 
           {/* 자기소개 */}
           <div>
-            <h2 style={{overflow: 'hidden',  textOverflow: 'ellipsis', whiteSpace : 'nowrap', width: '60vw',  height: '2.5vh', fontSize:'20px', margin: '5px 0px'}}>
+            <h2 style={{ textOverflow: 'ellipsis', whiteSpace : 'nowrap', width: '60vw',  height: '2.5vh', fontSize:'20px', margin: '5px 0px'}}>
               <b> {nickname} </b> {nation}
             </h2>
               
-            <p style={{  overflow: 'hidden',  textOverflow: 'ellipsis', whiteSpace : 'nowrap', width: '60vw',  height: '2.5vh', margin: '5px 0px'}}> 
+            <p style={{ textOverflow: 'ellipsis', whiteSpace : 'nowrap', width: '60vw',  height: '2.5vh', margin: '5px 0px'}}> 
               {introduction}
             </p>
           </div>
