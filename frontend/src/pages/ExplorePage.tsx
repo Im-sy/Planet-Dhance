@@ -116,7 +116,7 @@ function PlayingPage(props: playProps) {
           style={playerStyle}
           url={`https://i7d201.p.ssafy.io/${videoItem?.videoUrl}`}
           playing={playing}
-          muted={muted}
+          muted={!muted}
           onPlay={handlePlay}
           onPause={handlePause}
           onProgress={handleProgress}
