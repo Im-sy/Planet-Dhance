@@ -210,25 +210,25 @@ function UpLoad() {
       const [custom, setCustom] = useState([{ id: '5', type: 'planetDhance' }]);
       const [selected, setSelected] = useState('PUBLIC')
 
-  useEffect(  () => {
-    async function tmp() {
+  // useEffect(  () => {
+  //   async function tmp() {
 
-      console.log(custom);
-      const jsonData = JSON.stringify({
-        scope : selected,
-        userId : 25,
-        musicId : 66,
-        clear : true,
-        tagList: custom
-      })
-      console.log('jsonData',jsonData)
+  //     console.log(custom);
+  //     const jsonData = JSON.stringify({
+  //       scope : selected,
+  //       userId : 25,
+  //       musicId : 66,
+  //       clear : true,
+  //       tagList: custom
+  //     })
+  //     console.log('jsonData',jsonData)
           
-      const blob3 = await new Blob([jsonData], {type : "application/json"});
-      setPickedHashtagFile(blob3)
-      console.log("HashTagFile", blob3)
-    }
-    tmp()
-  }, [custom,selected])
+  //     const blob3 = await new Blob([jsonData], {type : "application/json"});
+  //     setPickedHashtagFile(blob3)
+  //     console.log("HashTagFile", blob3)
+  //   }
+  //   tmp()
+  // }, [custom,selected])
 
 
   // useEffect( () => {
