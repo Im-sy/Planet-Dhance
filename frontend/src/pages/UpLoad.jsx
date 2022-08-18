@@ -29,7 +29,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
 
-
+import { Navigate, useNavigate } from 'react-router-dom';
 
 // user관련
 import { useSelector } from 'react-redux';
@@ -323,6 +323,7 @@ function UpLoad() {
 
 
 // video만 가져온 후, 다른 것들 넣기
+  const navigate = useNavigate();
   const uploadToServer = async () => {
 
     const formData = new FormData();
@@ -345,12 +346,14 @@ function UpLoad() {
     for (var pair of inputFile.entries()) {
       console.log('최종데이터 : ',pair[0]+ ', ' + pair[1]); 
   }
-
+    
     axios
     .post("https://i7d201.p.ssafy.io/api/video/upload", inputFile)  // 최종적으로 진짜로 보내는 주소
     .then((res) => {
       console.log(res);
       console.log('성공')
+      
+      navigate('/mypage')
     })
     .catch((err) => {
       alert("실패");
@@ -483,7 +486,7 @@ function UpLoad() {
         <Stack direction="row" spacing={2} style={{justifyContent: 'center'}} sx={{margin:"1rem"}}>
           <Button variant="contained" color="secondary" sx={{color:"white"}} href="/main" >Prev</Button>
           {/* <Button variant="outlined" href="/music/{musicId}/challenge/{userId}">Prev</Button> */}
-          <Button variant="contained" color="secondary" onClick={uploadToServer} href="/mypage" sx={{color:"white"}} >   Upload     </Button>
+          <Button variant="contained" color="secondary" onClick={uploadToServer}  sx={{color:"white"}} >   Upload     </Button>
           {/* <Button variant="contained" color="secondary" onClick={uploadToServer} sx={{color:"white"}} href="/mypage" >   Upload     </Button> */}
           {/* <Button variant="outlined" href="/video/{선택한비디오아이디}/{이전페이지}/{로그인한유저아이디}">   Upload     </Button> */}
         </Stack>
