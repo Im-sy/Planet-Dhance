@@ -27,19 +27,19 @@ export default class Carousel extends Component {
       <div  className="container">
         {/* <h2>Auto Play</h2> */}
         <Slider {...settings}>
-            <ToSearchCard id={1}
+            <ToSearchCard id={35}
               url="/resource/carousel/hot.jpg"
               width="95.5%"
               height="50%"
               type="ARTIST"
             />
-            <ToSearchCard id={2}
+            <ToSearchCard id={48}
               url="/resource/carousel/latest.jpg"
               width="95.5%"
               height="50%"
               type="TITLE"
             />
-            <ToSearchCard id={3}
+            <ToSearchCard id={60}
               url="/resource/carousel/latest.jpg"
               width="95.5%"
               height="50%"
