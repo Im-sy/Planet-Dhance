@@ -29,6 +29,10 @@ import NavBar from '../components/NavBar'
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
+
+import GuideImage from '../components/UI/GuideImg';
+import GuideImageBig from '../components/UI/GuideImgBig'
+
 //--------------------------------------------------------------
 //
 // 티쳐블 머신
@@ -838,7 +842,7 @@ const backToSongPage = () => {
 const Ref = useRef(null);
   
 // The state for our timer
-    const [timer, setTimer] = useState(' ');
+    const [timer, setTimer] = useState('');
 
     
     const getTimeRemaining = (e:any) => {
@@ -871,6 +875,7 @@ const Ref = useRef(null);
             // console.log('debug 3 : total & seconds is ',total, seconds)
             
             // 0초가 되면 타이머 사라짐
+            
             setTimer(
               (hours > -1 ? ' ' : ' ') + 
             (minutes > -1 ? ' ': ' ' )+ 
@@ -1531,7 +1536,9 @@ return (
           {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
         </IconButton>
 
-
+        {/* 가이드 이미지 삽입 */}
+        { (timer==='3' || timer==='  2' || timer==='  1' ) && reactPlayer[0]==='main' &&<GuideImage /> }
+        {  (timer==='3' || timer==='  2' || timer==='  1' ) && reactPlayer[0]==='sub' &&<GuideImageBig /> }
      {/* ----------------------------------------------------------------------------------------
       //
       //            5. challenging 부분 컴포넌트

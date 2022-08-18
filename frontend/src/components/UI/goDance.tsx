@@ -19,7 +19,7 @@ export default function GoDance({ musicId }: danceProps) {
   
   return (
     <div>
-      <Button sx={{ borderRadius: "50%", display: "absolute", top: "73vh", 
+      <Button sx={{ borderRadius: "50%", display: "absolute", top: "70vh", 
     left: "80vw"}} onClick={handleClick}>
         <img src={letsDance} alt="letsDance" width="50"></img>
       </Button>

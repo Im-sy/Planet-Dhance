@@ -14,11 +14,12 @@ import myVideo from '../videos/Patissiere_guide.mp4';
 import { useSelector } from 'react-redux';
 import { rootState } from '../reducer';
 import '../styles/tailwind_reset.css';
+import {addHit} from '../components/API/ComService'
 
 const playerStyle: CSSProperties = {
   position: 'absolute',
   width: '96vw',
-  height: '88vh',
+  height: '80vh',
   transform: 'scaleX(-1)',
   backgroundColor: 'black',
   // backgroundColor: 'green',
@@ -61,9 +62,6 @@ function PlayingPage(props: playProps) {
   const { isAuthenticated, user } = useSelector(
     (state: rootState) => state.authReducer
   );
-  useEffect(() => {
-    console.log(props);
-  }, [props]);
   
   const [playState, setPlayState] = useState<playStateProps>({
     playing: true,
@@ -71,6 +69,9 @@ function PlayingPage(props: playProps) {
     played: 0,
   });
   const { played } = playState;
+  useEffect(() => {
+    console.log(played);
+  }, [playState.played]);
   const { playing, muted, videoItem } = props;
   console.log(videoItem);
 
@@ -83,15 +84,20 @@ function PlayingPage(props: playProps) {
     setPlayState({ ...playState, playing: false });
   };
   const handleProgress = (state: ReactPlayerProps) => {
+    console.log(state)
     const inState = {
       ...playState,
-      ...state,
+      played: state.played as number
     };
     console.log('onProgress', inState);
     setPlayState(inState as SetStateAction<playStateProps>);
   };
 
-  const playEnd = () => {};
+  const playEnd = () => {
+    console.log('END!@!@!@@!@!@!@!@')
+    addHit(videoItem?.videoId)
+    setPlayState({ ...playState, playing: true, played: 0 });
+  };
 
   return (
     <div style={videoZone}>
@@ -106,7 +112,7 @@ function PlayingPage(props: playProps) {
           className="react-player"
           width="96vw"
           height="80vh"
-          loop
+          // loop
           style={playerStyle}
           url={`https://i7d201.p.ssafy.io/${videoItem?.videoUrl}`}
           playing={playing}
@@ -114,6 +120,7 @@ function PlayingPage(props: playProps) {
           onPlay={handlePlay}
           onPause={handlePause}
           onProgress={handleProgress}
+          onDuration={(state) => {console.log(state)}}
           onEnded={playEnd}
         />
       </div>

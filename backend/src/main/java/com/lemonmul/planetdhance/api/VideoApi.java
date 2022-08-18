@@ -140,23 +140,22 @@ public class VideoApi {
      * 커스텀 태그의 재생할 영상 정보 리스트
      *
      * 요청 파라미터 예시: /video/{video_id}/custom/{user_id}
-     * TODO 커스텀 태그 만들면 테스트해보기
+     * TODO 커스텀 태그 만들면 테스트해보기 -> 안됨 ㅠㅠ 어느 커스텀 태그인지 구별할 인자 받아와야 함
      */
     @GetMapping("/{video_id}/custom/{user_id}")
     public ResponseEntity<?> customVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
         try {
             Video video = videoService.findById(video_id);
+
             List<VideoTag> videoTags = video.getVideoTags();
-            List<Tag> tags=new ArrayList<>();
+            Tag tag=null;
             for (VideoTag videoTag : videoTags) {
-                if(videoTag.getTag().getType().equals(TagType.CUSTOM)){
-                    tags.add(videoTag.getTag());
+                if(videoTag.getTag().getType().equals(TagType.NATION)){
+                    tag=videoTag.getTag();
+                    break;
                 }
             }
-            List<VideoTag> findVideoTags=new ArrayList<>();
-            for (Tag tag : tags) {
-                findVideoTags.addAll(tag.getVideoTags());
-            }
+            List<VideoTag> findVideoTags=tag.getVideoTags();
 
             Slice<Video> videoList=videoService.findNextCustomVideoList(0,infoSize,video.getOrderWeight(),findVideoTags,VideoScope.PUBLIC);
 
@@ -211,7 +210,7 @@ public class VideoApi {
         try {
             Video video = videoService.findById(video_id);
             User videoUser = userService.findById(video.getUser().getId());
-            Slice<Video> videoList=videoService.findNextUserVideoList(0,infoSize,video.getOrderWeight(),videoUser,VideoScope.PUBLIC);
+            Slice<Video> videoList=videoService.findNextUserVideoList(0,infoSize,video_id,videoUser,VideoScope.PUBLIC);
 
             User user = userService.findById(user_id);
             List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());

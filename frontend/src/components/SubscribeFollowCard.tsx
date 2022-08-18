@@ -44,7 +44,7 @@ export default function SubscribeFollowCard(props: cardProps) {
         
         <Grid container spacing={0} direction='row' sx={{ p:1 }}>
           {videoList.map((videoItem: contentItem) => (
-            <CardActionArea key={videoItem.videoId} sx={{ p:1,padding:'0',paddingRight:'6px !important',maxWidth : "17vw" }} component={Link} to='/' > 
+            <CardActionArea key={videoItem.videoId} sx={{ p:1,padding:'0',paddingRight:'6px !important',maxWidth : "17vw" }} component={Link} to={`/nickname/playing/${videoItem.videoId}`} > 
               <Grid item sm={4} >
                 <CardMedia
                   style={{

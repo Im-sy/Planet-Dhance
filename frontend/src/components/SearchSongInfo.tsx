@@ -55,13 +55,13 @@ export default function SearchSongInfo(props: SearchInfo | tagMusicInfo) {
             image={`https://i7d201.p.ssafy.io/${img}`}
           />
           <CardContent sx={{ flex: '1 0 auto' }}>
-            <Typography gutterBottom variant="body1" component="div" sx={{ color: 'white', fontFamily: 'san-serif', fontSize: '20px', }}>
+            <Typography gutterBottom variant="body1" component="div" sx={{ color: 'white', fontSize: '20px',}} style={{fontFamily: 'Titillium Web'}}>
               {value}
               
             </Typography>
-            <Typography variant="body2" color="text.secondary" style={{display: 'flex', justifyContent: 'space-between',}} sx={{ color: '#C7C7C7', fontFamily: 'san-serif',}}>
+            <Typography variant="body2" style={{display: 'flex', justifyContent: 'space-between',}} sx={{ color: '#C7C7C7',}}>
               <p style={{margin: '0px',}}>{type}</p>
-              <p style={{ fontSize: '0.8rem', paddingTop: '5px', lineHeight: '1rem',}}>{ "More Video >>" } </p>
+              <p style={{ fontSize: '0.8rem', paddingTop: '5px', lineHeight: '1rem', fontFamily: 'Titillium Web'}}>{ "More Video >>" } </p>
             </Typography>
           </CardContent>
         </Card>
