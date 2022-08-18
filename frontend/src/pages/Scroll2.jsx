@@ -40,6 +40,17 @@ export default function ExplorePageList() {
     console.log(number);
     if(number === data.length-1){
       console.log('last4');
+      console.log(data[data.length - 1].videoId);
+      playVideo(
+        data[data.length - 1].videoId,
+        prevPage,
+        user.userId
+      ).then((results) => {
+        console.log("results: ", results);
+        console.log("results.videoList: ", results.videoList);
+        setData([...data, ...results.videoList.slice(1)]);
+        // setPlayListInfo(results);
+      })
       // setData([...data, 4, 5, 6])
     }
   };

@@ -64,6 +64,7 @@ function AppRouter() {
         <Route path='/subscribe/:prevPage/playing/:videoId' element={<Scroll2 />} />
         <Route path='/searchsong/:type/:musicId/:prevPage/playing/:videoId' element={<Scroll2 />} />
         <Route path='/songPage/:musicId/:prevPage/playing/:videoId' element={<Scroll2 />} />
+        <Route path='/profile/:userId/:prevPage/playing/:videoId' element={<Scroll2 />} />
         {/* <Route path='/:prevPage/playing/:videoId' element={<ExplorePage />} /> */}
       </Routes>
     </BrowserRouter>

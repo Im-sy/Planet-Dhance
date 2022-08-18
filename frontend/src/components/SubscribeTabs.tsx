@@ -130,14 +130,10 @@ export default function SubscribeTabs() {
           <TabList onChange={handleChange} aria-label="lab API tabs example" centered 
             TabIndicatorProps={{style: {display:'none', color:'#FFFFFF'}}} 
             textColor="inherit"  >
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Tab label="Follow" value="1" /> 
-              <p style={{ color:"grey"}}><b>{'|'}</b></p>
-              <Tab label="Likes" value="2" />
-            </div>
+            <Tab label="Follow" value="1" /> 
+            <Tab label="Likes" value="2" />
           </TabList>
         </Box>
-  
 
         <StyledTabPanel value="1" >
           <SubscribeFollowGridView profiles={favFollowInfo?.content}/>
