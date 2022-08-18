@@ -15,6 +15,7 @@ export default function HashTagList({ tagList }: hashTagListProps) {
     <Stack direction="row" spacing={1}>
       {tagList?.map((tagItem: tagItemProps) => (
         <Chip
+          style={{fontFamily: 'Titillium Web'}}
           sx={{ display: 'absolute', top: '76vh', left: '0px', color: 'white' }}
           key={tagItem.id}
           label={tagItem.type}
