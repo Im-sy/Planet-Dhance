@@ -44,6 +44,13 @@ export default function ExplorePageList() {
     console.log(number);
     if(number === data.length-1){
       console.log('last4');
+      randomPlayVideo(
+        user.userId
+        ).then((results) => {
+          console.log("results: ", results);
+          console.log("results.videoList: ", results.videoList);
+          setData([...data, ...results]);
+        })
       // setData([...data, 4, 5, 6])
     }
   };
