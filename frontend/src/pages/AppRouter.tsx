@@ -44,7 +44,7 @@ function AppRouter() {
         <Route path='/searchsong/:searchType/:tagId' element={<SearchSong />} />
         <Route path='/hashresult' element={<HashResult />} />
         <Route path='/mypage' element={<MyPage />} />
-        <Route path='/challenge' element={<ModeChallengeTimer />} />
+        <Route path='/:musicId/challenge' element={<ModeChallengeTimer />} />
         <Route path='/login' element={<LogIn />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/ranking' element={<Ranking />} />
@@ -64,6 +64,7 @@ function AppRouter() {
         <Route path='/subscribe/:prevPage/playing/:videoId' element={<Scroll2 />} />
         <Route path='/searchsong/:type/:musicId/:prevPage/playing/:videoId' element={<Scroll2 />} />
         <Route path='/songPage/:musicId/:prevPage/playing/:videoId' element={<Scroll2 />} />
+        <Route path='/profile/:userId/:prevPage/playing/:videoId' element={<Scroll2 />} />
         {/* <Route path='/:prevPage/playing/:videoId' element={<ExplorePage />} /> */}
       </Routes>
     </BrowserRouter>

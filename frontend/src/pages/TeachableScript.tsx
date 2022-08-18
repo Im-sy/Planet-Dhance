@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import * as tmPose from '@teachablemachine/pose';
-import song from "./static/song1/temp1.json";
+import song from "./static/30/chart.json";
 // import song from "../../public/teachable/temp1.json";
 // import testImg from "https://cdn.pixabay.com/photo/2022/07/27/07/37/thistle-7347371__340.jpg"
 import * as tf from '@tensorflow/tfjs';

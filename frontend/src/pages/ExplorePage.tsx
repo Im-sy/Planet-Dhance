@@ -9,6 +9,7 @@ import { videoItemProps } from './ExplorePageList';
 import HashTagList from '../components/HashTagList';
 import BtnLike from '../components/UI/btnLike';
 import GoBack from '../components/UI/goBack';
+import GoDance from '../components/UI/goDance';
 import myVideo from '../videos/Patissiere_guide.mp4';
 import { useSelector } from 'react-redux';
 import { rootState } from '../reducer';
@@ -116,6 +117,7 @@ function PlayingPage(props: playProps) {
           onEnded={playEnd}
         />
       </div>
+      <GoDance musicId={videoItem.musicId}/>
       <HashTagList tagList={videoItem.tagList} />
       <GoBack />
       <BtnLike like={videoItem.like} userId={user.userId} videoId={videoItem.videoId}/>

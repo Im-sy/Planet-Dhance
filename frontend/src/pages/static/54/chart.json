@@ -1,0 +1,13 @@
+{
+  "duration": 409.3,
+  "next": 0,
+  "notes": [
+    { "duration": 10, "delay": 12, "type": "1" },
+    { "duration": 10, "delay": 39.1, "type": "2" },
+    { "duration": 10, "delay": 113.1, "type": "3" },
+    { "duration": 10, "delay": 132.2, "type": "4" },
+    { "duration": 10, "delay": 147.5, "type": "5" },
+    { "duration": 10, "delay": 180.1, "type": "6" },
+    { "duration": 10, "delay": 262, "type": "7" }
+  ]
+}

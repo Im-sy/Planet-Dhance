@@ -161,7 +161,7 @@ class VideoServiceTest {
         Artist artist=Artist.createArtist("NAYEON","/resource/artist/img/nayeon.jpg");
         artist.setOrderWeight(5L);
         em.persist(artist);
-        Music music=Music.createMusic("POP!",artist,"/resource/music/img/pop_img.jpg","model url1","/resource/artist/video/pop_guide.mp4","https://youtu.be/f6YDKF0LVWw", LocalDateTime.of(2022,6,24,0,0));
+        Music music=Music.createMusic("POP!",artist,"/resource/music/img/pop_img.jpg","model url1","/resource/music/guide/pop_guide.mp4","https://youtu.be/f6YDKF0LVWw", LocalDateTime.of(2022,6,24,0,0));
         em.persist(music);
         em.persist(Tag.createTag(music.getArtist().getName(),TagType.ARTIST,music.getArtist().getImgUrl()));
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
@@ -169,28 +169,28 @@ class VideoServiceTest {
         artist=Artist.createArtist("BTS","/resource/artist/img/bts.JPG");
         artist.setOrderWeight(20L);
         em.persist(artist);
-        music=Music.createMusic("Permission to Dance",artist,"/resource/music/img/PtoD_img.jpg","model url1","/resource/artist/video/PtoD_guide.mp4","https://youtu.be/CuklIb9d3fI", LocalDateTime.of(2021,7,9,0,0));
+        music=Music.createMusic("Permission to Dance",artist,"/resource/music/img/PtoD_img.jpg","model url1","/resource/music/guide/PtoD_guide.mp4","https://youtu.be/CuklIb9d3fI", LocalDateTime.of(2021,7,9,0,0));
         em.persist(music);
         em.persist(Tag.createTag(music.getArtist().getName(),TagType.ARTIST,music.getArtist().getImgUrl()));
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
 
         artist=Artist.createArtist("CHUNG HA","/resource/artist/img/chungha.jpg");
         em.persist(artist);
-        music=Music.createMusic("Sparkling",artist,"/resource/music/img/sparkling_img.jpg","model url1","/resource/artist/video/sparkling_guide.mp4","https://youtu.be/lDV5cM9YE4g", LocalDateTime.of(2022,7,11,0,0));
+        music=Music.createMusic("Sparkling",artist,"/resource/music/img/sparkling_img.jpg","model url1","/resource/music/guide/sparkling_guide.mp4","https://youtu.be/lDV5cM9YE4g", LocalDateTime.of(2022,7,11,0,0));
         em.persist(music);
         em.persist(Tag.createTag(music.getArtist().getName(),TagType.ARTIST,music.getArtist().getImgUrl()));
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
 
         artist=Artist.createArtist("TWICE","/resource/artist/img/twice.jpg");
         em.persist(artist);
-        music=Music.createMusic("TT",artist,"/resource/music/img/TT_img.jpg","model url1","/resource/artist/video/TT_guide.mp4","https://youtu.be/ePpPVE-GGJw", LocalDateTime.of(2016,10,24,0,0));
+        music=Music.createMusic("TT",artist,"/resource/music/img/TT_img.jpg","model url1","/resource/music/guide/TT_guide.mp4","https://youtu.be/ePpPVE-GGJw", LocalDateTime.of(2016,10,24,0,0));
         em.persist(music);
         em.persist(Tag.createTag(music.getArtist().getName(),TagType.ARTIST,music.getArtist().getImgUrl()));
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
 
         artist=Artist.createArtist("Girls' Generation","/resource/artist/img/snsd.jpg");
         em.persist(artist);
-        music=Music.createMusic("FOREVER 1",artist,"/resource/music/img/Forever1_img.jpg","model url1","/resource/artist/video/Forever1_guide.mp4","https://youtu.be/Qpf26PtBXgo", LocalDateTime.of(2022,8,5,0,0));
+        music=Music.createMusic("FOREVER 1",artist,"/resource/music/img/Forever1_img.jpg","model url1","/resource/music/guide/Forever1_guide.mp4","https://youtu.be/Qpf26PtBXgo", LocalDateTime.of(2022,8,5,0,0));
         em.persist(music);
         em.persist(Tag.createTag(music.getArtist().getName(),TagType.ARTIST,music.getArtist().getImgUrl()));
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
@@ -205,7 +205,7 @@ class VideoServiceTest {
         artist=Artist.createArtist("IVE","/resource/artist/img/ive.jpg");
         artist.setOrderWeight(2L);
         em.persist(artist);
-        music=Music.createMusic("LOVE DIVE",artist,"/resource/music/img/lovedive_img.jpg","model url1","/resource/artist/video/LoveDive_guide.mp4","https://youtu.be/Y8JFxS1HlDo", LocalDateTime.of(2020,4,5,0,0));
+        music=Music.createMusic("LOVE DIVE",artist,"/resource/music/img/lovedive_img.jpg","model url1","/resource/music/guide/LoveDive_guide.mp4","https://youtu.be/Y8JFxS1HlDo", LocalDateTime.of(2020,4,5,0,0));
         em.persist(music);
         em.persist(Tag.createTag(music.getArtist().getName(),TagType.ARTIST,music.getArtist().getImgUrl()));
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
@@ -213,14 +213,14 @@ class VideoServiceTest {
         artist=Artist.createArtist("IU","/resource/artist/img/iu.jpg");
         artist.setOrderWeight(4L);
         em.persist(artist);
-        music=Music.createMusic("my dream patissiere",artist,"/resource/music/img/Patissiere_img.png","model url1","/resource/artist/video/Patissiere_guide.mp4","https://youtu.be/bgQIzPnPI88", LocalDateTime.of(2010,11,13,0,0));
+        music=Music.createMusic("my dream patissiere",artist,"/resource/music/img/Patissiere_img.png","model url1","/resource/music/guide/Patissiere_guide.mp4","https://youtu.be/bgQIzPnPI88", LocalDateTime.of(2010,11,13,0,0));
         em.persist(music);
         em.persist(Tag.createTag(music.getArtist().getName(),TagType.ARTIST,music.getArtist().getImgUrl()));
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
 
         artist=Artist.createArtist("SEVENTEEN","/resource/artist/img/seventeen.jpeg");
         em.persist(artist);
-        music=Music.createMusic("HOT",artist,"/resource/music/img/hot_img.jpg","model url1","/resource/artist/video/hot_guide.mp4","https://youtu.be/gRnuFC4Ualw", LocalDateTime.of(2022,5,27,0,0));
+        music=Music.createMusic("HOT",artist,"/resource/music/img/hot_img.jpg","model url1","/resource/music/guide/hot_guide.mp4","https://youtu.be/gRnuFC4Ualw", LocalDateTime.of(2022,5,27,0,0));
         em.persist(music);
         em.persist(Tag.createTag(music.getArtist().getName(),TagType.ARTIST,music.getArtist().getImgUrl()));
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
@@ -228,14 +228,14 @@ class VideoServiceTest {
         artist=Artist.createArtist("SUPER JUNIOR","/resource/artist/img/superjunior.jpg");
         artist.setOrderWeight(3L);
         em.persist(artist);
-        music=Music.createMusic("Sorry, Sorry",artist,"/resource/music/img/SorrySorry_img.jpg","model url1","/resource/artist/video/SorrySorry_guide.mp4","https://youtu.be/x6QA3m58DQw", LocalDateTime.of(2022,3,12,0,0));
+        music=Music.createMusic("Sorry, Sorry",artist,"/resource/music/img/SorrySorry_img.jpg","model url1","/resource/music/guide/SorrySorry_guide.mp4","https://youtu.be/x6QA3m58DQw", LocalDateTime.of(2022,3,12,0,0));
         em.persist(music);
         em.persist(Tag.createTag(music.getArtist().getName(),TagType.ARTIST,music.getArtist().getImgUrl()));
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));
 
         artist=Artist.createArtist("(G)I-DLE","/resource/artist/img/gidle.jpg");
         em.persist(artist);
-        music=Music.createMusic("TOMBOY",artist,"/resource/music/img/Tomboy_img.jpg","model url1","/resource/artist/video/Tomboy_guide.mp4","https://youtu.be/Jh4QFaPmdss", LocalDateTime.of(2022,3,14,0,0));
+        music=Music.createMusic("TOMBOY",artist,"/resource/music/img/Tomboy_img.jpg","model url1","/resource/music/guide/Tomboy_guide.mp4","https://youtu.be/Jh4QFaPmdss", LocalDateTime.of(2022,3,14,0,0));
         em.persist(music);
         em.persist(Tag.createTag(music.getArtist().getName(),TagType.ARTIST,music.getArtist().getImgUrl()));
         em.persist(Tag.createTag(music.getTitle(),TagType.TITLE, music.getImgUrl()));

@@ -6,22 +6,20 @@ import { useNavigate } from 'react-router-dom';
 
 interface danceProps {
   musicId: number,
-  userId: number
 }
 
-export default function GoDance({ musicId, userId }: danceProps) {
+export default function GoDance({ musicId }: danceProps) {
   const navigate =  useNavigate();
 
   const handleClick = () => {
     // console.log("let's dance")
-    challenge(musicId, userId)
-      .then(res => {
-        navigate('/challenge');      
-    })
-  }
+    navigate(`/${musicId}/challenge`);     
+    }
+  
   return (
     <div>
-      <Button sx={{ borderRadius: "50%" }} onClick={handleClick}>
+      <Button sx={{ borderRadius: "50%", display: "absolute", top: "73vh", 
+    left: "80vw"}} onClick={handleClick}>
         <img src={letsDance} alt="letsDance" width="50"></img>
       </Button>
     </div>

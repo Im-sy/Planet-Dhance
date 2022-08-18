@@ -1,0 +1,11 @@
+{
+  "duration": 330,
+  "next": 0,
+  "notes": [
+    { "duration": 10, "delay": 70, "type": "1" },
+    { "duration": 10, "delay": 100, "type": "2" },
+    { "duration": 10, "delay": 120, "type": "3" },
+    { "duration": 10, "delay": 165, "type": "4" },
+    { "duration": 10, "delay": 280, "type": "5" }
+  ]
+}
