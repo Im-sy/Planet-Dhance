@@ -65,19 +65,21 @@ export default function ExplorePageList() {
     <div>
     <TopBar />
     <ReactPageScroller
+      containerWidth={'98vw'}
+      containerHeight={'98vh'}
       pageOnChange={pageOnChange}
       onBeforePageScroll={beforePageChange}
     >
       {/* for 문으로 key index 값을 가지며, index == current일경우 플레이 */}
 
       {[...data].map((x, i) =>
-      <section className="full-page">
-      <VideoPage playing={!!(currentPage == i)} muted={true} videoItem={x}/>
-    </section>
+      <section className="full-page" >
+        <VideoPage playing={!!(currentPage == i)} muted={true} videoItem={x}/>
+      </section>
       )}
 
     </ReactPageScroller>
-    <NavBar current='main' />
+    <NavBar current='random' />
     </div>
   );
 }

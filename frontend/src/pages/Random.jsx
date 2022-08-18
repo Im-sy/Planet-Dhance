@@ -58,7 +58,9 @@ export default function ExplorePageList() {
   return (
     <div>
       <TopBar />
-    <ReactPageScroller
+    <ReactPageScroller 
+      containerWidth={'98vw'}
+      containerHeight={'98vh'}
       pageOnChange={pageOnChange}
       onBeforePageScroll={beforePageChange}
     >
@@ -66,8 +68,8 @@ export default function ExplorePageList() {
 
       {[...data].map((x, i) =>
       <section className="full-page">
-      <VideoPage playing={!!(currentPage == i)} muted={true} videoItem={x}/>
-    </section>
+        <VideoPage playing={!!(currentPage == i)} muted={true} videoItem={x}/>
+      </section>
       )}
 
     </ReactPageScroller>
