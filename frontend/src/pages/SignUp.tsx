@@ -214,7 +214,7 @@ export default function SignUp() {
                     <MenuItem value={'Japan'}>🇯🇵 Japan</MenuItem>
                     <MenuItem value={'Korea'}>🇰🇷 Korea</MenuItem>
                     <MenuItem value={'RSA'}>🇿🇦 RSA</MenuItem>
-                    <MenuItem value={'SUA'}>🇺🇸 USA</MenuItem>
+                    <MenuItem value={'USA'}>🇺🇸 USA</MenuItem>
                     <MenuItem value={'Vietnam'}>🇻🇳 Vietnam</MenuItem>
                   </Select>
                 </FormControl>
