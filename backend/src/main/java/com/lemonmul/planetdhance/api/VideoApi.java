@@ -231,10 +231,9 @@ public class VideoApi {
     public ResponseEntity<?> likeVideoInfoList(@PathVariable Long video_id, @PathVariable Long user_id) {
         try {
             Video video = videoService.findById(video_id);
-            User videoUser = userService.findById(video.getUser().getId());
-            Slice<Video> videoList=videoService.findNextLikeVideoList(0,infoSize,video_id, videoUser.getLikes());
-
             User user = userService.findById(user_id);
+            Slice<Video> videoList=videoService.findNextLikeVideoList(0,infoSize,video_id, user.getLikes());
+
             List<Like> likeList=likeService.findLikeByUserAndVideos(user,videoList.stream().toList());
 
             return new ResponseEntity<>(new VideoInfoResponse(videoList,likeList), HttpStatus.OK);
