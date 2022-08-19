@@ -1,6 +1,9 @@
 package com.lemonmul.planetdhance.entity.user;
 
-import com.lemonmul.planetdhance.entity.*;
+import com.lemonmul.planetdhance.entity.Clear;
+import com.lemonmul.planetdhance.entity.Follow;
+import com.lemonmul.planetdhance.entity.Like;
+import com.lemonmul.planetdhance.entity.Nation;
 import com.lemonmul.planetdhance.entity.video.Video;
 import lombok.*;
 
@@ -15,7 +18,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "DTYPE")
 @ToString
 public class User {
     @Column(name ="user_id")
@@ -23,39 +25,40 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    protected String email;
+    private String email;
 
-    protected String nickname;
+    private String nickname;
 
-    protected String introduce;
+    private String introduce;
 
-    protected String imgUrl;
+    @Lob
+    private String imgUrl;
 
-    protected LocalDateTime regDate;
+    private LocalDateTime regDate;
 
-    protected LocalDateTime renewDate;
+    private LocalDateTime renewDate;
 
     @Enumerated(EnumType.STRING)
-    protected Role role;
+    private Role role;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nation_id")
-    protected Nation nation;
+    private Nation nation;
 
     @OneToMany(mappedBy = "from")
-    protected List<Follow> froms=new ArrayList<>();
+    private List<Follow> froms=new ArrayList<>();
 
     @OneToMany(mappedBy = "to")
-    protected List<Follow> tos=new ArrayList<>();
+    private List<Follow> tos=new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Like> likes=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    protected List<Like> likes=new ArrayList<>();
+    private List<Clear> clears=new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    protected List<Clear> clears=new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    protected List<Video> videos=new ArrayList<>();
+    private List<Video> videos=new ArrayList<>();
 
     public User(String imgUrl){
         this.imgUrl = imgUrl;
@@ -69,27 +72,26 @@ public class User {
         this.setNation(nation);
         this.role = role;
         this.regDate = LocalDateTime.now();
-        this.renewDate = this.regDate;
+        this.renewDate=LocalDateTime.of(1000, 1, 1, 0, 0, 0);
     }
 
     //==생성 메서드==//
-    public static User createUser(String nickname,String introduce,String imgUrl,Nation nation){
+    public static User createUser(String email, String nickname,String introduce,String imgUrl,Nation nation){
         User user=new User();
+        user.email = email;
         user.nickname=nickname;
         user.setIntroduce(introduce);
         user.setImgUrl(imgUrl);
         user.regDate=LocalDateTime.now();
-        user.renewDate=user.regDate;
+        user.renewDate=LocalDateTime.of(1000, 1, 1, 0, 0, 0);
         user.role=Role.USER;
         user.setNation(nation);
         return user;
     }
 
-
     public void setImgUrl(String imgUrl){
         if(imgUrl==null){
-            //TODO 기본 이미지 설정
-            imgUrl="default img path";
+            imgUrl="/resource/users/img/default/default_profile.png";
         }
         this.imgUrl=imgUrl;
     }
@@ -105,7 +107,7 @@ public class User {
     //==연관관계 메서드==//
     public void setNation(Nation nation){
         this.nation=nation;
-//        nation.getUsers().add(this);
+        nation.getUsers().add(this);
     }
 
     public void setRenewDate(LocalDateTime renewDate){

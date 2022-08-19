@@ -4,6 +4,7 @@ import com.lemonmul.planetdhance.entity.video.Video;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,14 +13,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Music {
-    @Column(columnDefinition = "INT UNSIGNED", name ="music_id")
+    @Column(name ="music_id")
     @Id
     @GeneratedValue
     private Long id;
 
     private String title;
 
-    private String artist;
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Artist artist;
 
     private String imgUrl;
 
@@ -29,6 +31,8 @@ public class Music {
 
     private String mvUrl;
 
+    private LocalDateTime relDate;
+
     @OneToMany(mappedBy = "music")
     private List<Clear> clears=new ArrayList<>();
 
@@ -36,7 +40,8 @@ public class Music {
     private List<Video> videos=new ArrayList<>();
 
     //==생성 메서드==//
-    public static Music createMusic(String title,String artist,String imgUrl,String modelUrl,String guideUrl,String mvUrl){
+
+    public static Music createMusic(String title,Artist artist,String imgUrl,String modelUrl,String guideUrl,String mvUrl, LocalDateTime relDate){
         Music music=new Music();
         music.setTitle(title);
         music.setArtist(artist);
@@ -44,14 +49,21 @@ public class Music {
         music.modelUrl = modelUrl;
         music.guideUrl = guideUrl;
         music.mvUrl = mvUrl;
+        music.setRelDate(relDate);
         return music;
+    }
+
+    //==연관관계 메서드==//
+    public void setArtist(Artist artist){
+        this.artist=artist;
+        artist.getMusics().add(this);
     }
 
     private void setTitle(String title){
         this.title=title;
     }
 
-    private void setArtist(String artist){
-        this.artist=artist;
+    public void setRelDate(LocalDateTime relDate) {
+        this.relDate = relDate;
     }
 }
