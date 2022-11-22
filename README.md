@@ -1,7 +1,7 @@
 # README
 
 <p align="center">
-  <img src="./IMGS/concept_logo_l.png" width="300px">
+  <img src="./IMGS/concept_logo_l.png" width="300px" height="300px">
 </p>
 
 # 🪐 Planet. Dhance
@@ -15,6 +15,25 @@
 ---
 
 > 목차
+
+[프로젝트 설명](#프로젝트-설명)
+
+[기획 배경](#프로젝트-기획-배경)
+
+[기획](#기획배경)
+
+- 와이어프레임
+- UI 디자인
+- ERD
+
+[주요기능](#주요기능)
+
+[기술스택](#기술스택)
+
+[서비스구조](#서비스-구조)
+
+[팀소개](#팀-소개)
+
 
 ---
 
