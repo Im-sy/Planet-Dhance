@@ -1,0 +1,108 @@
+html,
+body {
+  font-size: 16px;
+  font-family: 'Titillium Web', 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+.demo-section {
+  padding-bottom: 2rem;
+  border-bottom: 2px solid;
+}
+
+.demo-section:last-child {
+  border: none;
+}
+
+video {
+  width: 30%;
+  height: 60%;
+}
+
+.container {
+  padding: 0px;
+}
+
+.slick-arrow{
+  display : none !important;
+}
+
+
+.center {
+  background-color: #060318ff;
+}
+
+.slider{
+  width: 600px;
+  height:150px;
+  margin: -15px ;
+  text-align: center;
+}
+/* .slider div{
+  margin-right: 5px;
+} */
+.slick-slide{
+  -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    transform: scale(1.1);
+    opacity: 1;
+  /* margin-top: -50px; */
+}
+/* .slick-center{
+  display: block;
+  max-width: 10% !important;
+  max-height:20% !important;
+  opacity: 1;
+}  */
+
+.slick-center {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    transform: scale(1.1);
+    /* margin-top: -8px; */
+    /* opacity : 1; */
+}
+
+.slick-list {
+  padding: 0px 0px !important;
+  /* margin-left:30px !important; */
+}
+
+.MuiPaper-root {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.MuiCardMedia-root {
+  opacity: 1;
+
+}
+
+.MuiCardContent-root {
+  opacity: 1;
+
+}
+
+/* .{
+  position: 'absolute',
+  top: '10px',
+  width: '360px',
+  height: '10px',
+  backgroundColor: 'gray',
+}; */
+
+.padding-style {
+  margin: 0;
+  padding : 5vh 1vh 0 1vh; 
+}
+
+.nopadding-style {
+  margin: 0;
+  padding : 0.1vh 0 0 0; 
+}
+
+.full-page > div {
+  height: 10px;
+}
+
+.MuiTypography-body1 {
+  font-family: 'Titillium Web', 'Roboto', Arial, Helvetica, sans-serif;
+}

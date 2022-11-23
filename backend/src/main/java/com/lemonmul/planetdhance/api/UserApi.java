@@ -12,10 +12,7 @@ import com.lemonmul.planetdhance.security.jwt.CustomUserDetails;
 import com.lemonmul.planetdhance.security.jwt.JwtToken;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenJson;
 import com.lemonmul.planetdhance.security.jwt.JwtTokenProvider;
-import com.lemonmul.planetdhance.service.NationService;
-import com.lemonmul.planetdhance.service.UserService;
-import com.lemonmul.planetdhance.service.ValidateService;
-import com.lemonmul.planetdhance.service.VideoService;
+import com.lemonmul.planetdhance.service.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,6 +39,7 @@ public class UserApi {
     private final ValidateService validateService;
     private final JwtTokenProvider jwtTokenProvider;
     private final VideoService videoService;
+    private final TagService tagService;
 
     private final static int videoSize=18;
 
@@ -185,7 +183,7 @@ public class UserApi {
         User user = userService.findById(user_id);
         List<Clear> clearList = user.getClears();
         Slice<Video> videoList=videoService.findAllNewestVideoListByUser(page,videoSize,user);
-        return new UserSearchResponse(user,clearList,videoList, false);
+        return new UserSearchResponse(user,false,clearList,videoList);
     }
 
     /**
@@ -248,7 +246,12 @@ public class UserApi {
 
         try {
             User user=userService.findById(user_id);
-            return new ResponseEntity<>(userService.findFollowingUserInfo(page,size,user.getFroms()).map(UserFollowDto::new), HttpStatus.OK);
+            Slice<UserFollowDto> userFollowDtos = userService.findFollowingUserInfo(page,size,user.getFroms()).map(UserFollowDto::new);
+            for(UserFollowDto dto: userFollowDtos) {
+                Long tagId = tagService.findTagByName(dto.getNickname(), 0).getId();
+                dto.setTagId(tagId);
+            }
+            return new ResponseEntity<>(userFollowDtos, HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -336,7 +339,8 @@ public class UserApi {
 
     @Data
     static class UserFollowDto {
-        private Long id;
+        private Long userId;
+        private Long tagId;
         private String nickname;
         private String introduce;
         private String imgUrl;
@@ -345,7 +349,7 @@ public class UserApi {
         private List<VideoDto> videoList;
 
         public UserFollowDto(User user) {
-            id=user.getId();
+            userId=user.getId();
             nickname=user.getNickname();
             introduce=user.getIntroduce();
             imgUrl=user.getImgUrl();
@@ -358,6 +362,10 @@ public class UserApi {
             //최신 영상 5개만
             videoList=user.getVideos().stream().sorted(Comparator.comparing(Video::getRegDate).reversed())
                     .limit(5).map(VideoDto::new).collect(Collectors.toList());
+        }
+
+        public void setTagId(Long tagId) {
+            this.tagId = tagId;
         }
     }
 }

@@ -122,7 +122,7 @@ public class TagApi {
             List<Music> musicList = musicService.findTitleVideoList(tag.getName());
             Slice<Video> videoList = videoService.findArtistVideoList(page, videoSize, musicList, VideoScope.PUBLIC);
 
-            return new ResponseEntity<>(new MusicSearchResponse(musicList,"music",videoList), HttpStatus.OK);
+            return new ResponseEntity<>(new MusicSearchResponse(musicList,"title",videoList), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -208,7 +208,7 @@ public class TagApi {
             Long fromId = Long.parseLong(jwtTokenProvider.getUserPk(headers.get("authorization").get(0)));
             boolean isFollow = followService.isFollow(fromId, user.getId());
 
-            return new ResponseEntity<>(new UserSearchResponse(user,clearList,videoList, isFollow), HttpStatus.OK);
+            return new ResponseEntity<>(new UserSearchResponse(user, isFollow,clearList,videoList), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -249,10 +249,8 @@ public class TagApi {
             className =tag.getType();
             if(tag.getImgUrl()==null){
                 if(tag.getType().equals(TagType.CUSTOM)) {
-                    //TODO 커스텀 태그 이미지 경로 넣기
-                    imgUrl = "default custom tag img";
+                    imgUrl = "/resource/tag/img/default/default_tag.png";
                 }else if(tag.getType().equals(TagType.NICKNAME)){
-                    //TODO 프로필 이미지 경로 수정
                     imgUrl = "/resource/users/img/default/default_profile.png";
                 }
             }else {

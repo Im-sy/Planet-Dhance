@@ -116,9 +116,6 @@ public class FollowService {
 
         Optional<Follow> findFollow = followRepo.findByFromAndTo(fromUser, toUser);
 
-        if(findFollow.isPresent())
-            return true;
-        else
-            return false;
+        return findFollow.isPresent();
     }
 }

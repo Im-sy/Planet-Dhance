@@ -55,6 +55,7 @@ public class ValidateService {
                     Validate newValidate = new Validate(findUser, tokenString);
                     validateRepo.save(newValidate);
                 }
+                return;
             }
             throw new Exception("Duplicated Login");
         }
