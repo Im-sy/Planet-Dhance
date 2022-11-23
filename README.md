@@ -7,7 +7,7 @@
 
 **Planet. Dhance**는 K-pop을 사랑하는 팬들에게 쉽게 댄스 챌린지에 참여할 수 있는 기회를 제공하는 플랫폼 프로젝트입니다. 유저들이 챌린지에 직접 참여할 수 있도록 모바일 서비스로 기획했습니다. Planet. Dhance의 기획 의도는 모두가 참여할 수 있는 플랫폼과 모션 인식 기술 개발 경험입니다.
 
-**Planet. Dhance** : 누구나 쉽게 춤**_dance_**에 도전**_chance_**할 수 있는 기회를 제공하는 행성, **Planet. Dhance**!
+**Planet. Dhance** : 누구나 쉽게 춤 **_dance_** 에 도전 **_chance_** 할 수 있는 기회를 제공하는 행성, **Planet. Dhance**!
 
 ---
 
@@ -30,7 +30,7 @@
     - [Backend](#backend)
     - [Frontend](#frontend)
     - [Infra](#infra)
-  - [🔨 System Architecture](#-system-architecture)
+    - [시스템 아키텍처](#시스템-아키텍처)
   - [🍋 팀 소개](#-팀-소개)
     - [Team. lemonmul](#team-lemonmul)
     - [ Team Notion](#-team-notion)
@@ -116,7 +116,7 @@
 ![https://img.shields.io/badge/Docker-20.10.17-blue?style=for-the-badge&logo=docker](https://img.shields.io/badge/Docker-20.10.17-blue?style=for-the-badge&logo=docker)
 ![https://img.shields.io/badge/ubuntu-20.04_LTS-orange?style=for-the-badge&logo=ubuntu](https://img.shields.io/badge/ubuntu-20.04_LTS-orange?style=for-the-badge&logo=ubuntu)
 
-## 🔨 System Architecture
+### 시스템 아키텍처
 
 ![Architecture](./IMGS/architecture.png)
 
