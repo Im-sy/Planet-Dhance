@@ -1,4 +1,3 @@
-# README
 
 <p align="center">
   <img src="./IMGS/concept_logo_l.png" width="300px" height="300px">
@@ -14,19 +13,28 @@
 
 ### 목차
 
-[프로젝트 기획](##💡-프로젝트-기획)
-- 기획 배경
-- 주요 서비스 기능
-- 와이어프레임
-- UI 디자인
-- ERD
 
-[결과물](##-💜-결과물)
-
-[기술스택](##-🛠️-기술-스택)
-
-[팀소개](##-팀-소개)
-
+- [🪐 Planet. Dhance](#-planet-dhance)
+    - [목차](#목차)
+  - [💡 프로젝트 기획](#-프로젝트-기획)
+    - [기획 배경](#기획-배경)
+    - [주요 서비스 기능](#주요-서비스-기능)
+    - [Mock-up](#mock-up)
+    - [ERD](#erd)
+  - [💜 결과물](#-결과물)
+    - [Main](#main)
+    - [Search](#search)
+    - [Challenge](#challenge)
+  - [🏁 Run](#-run)
+  - [🛠️ 기술 스택](#️-기술-스택)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
+    - [Infra](#infra)
+  - [🔨 System Architecture](#-system-architecture)
+  - [🍋 팀 소개](#-팀-소개)
+    - [Team. lemonmul](#team-lemonmul)
+    - [ Team Notion](#-team-notion)
+    - [Teammates](#teammates)
 
 ---
 
